@@ -3166,12 +3166,14 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
   }
 
   .timeline-track {
+    cursor: grab;
+    user-select: none;
     display: flex;
     gap: 3rem;
     padding: 2rem 0;
     will-change: transform;
     /* On desktop, translate is controlled by JS. We add a smooth transition for tick-button clicks */
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    /* CSS transition disabled during scroll to prevent stutter */
   }
 
   .timeline-card {
@@ -3687,6 +3689,8 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     showMoreBtn.addEventListener('click', () => {
       showAllTickets = true;
       applyFilters();
+  document.addEventListener("DOMContentLoaded", applyFilters);
+  window.addEventListener("load", applyFilters);
     });
   }
 
@@ -4499,6 +4503,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
   // ====== VINTAGE HORIZONTAL TIMELINE LOGIC ======
   const timelineSection = document.querySelector('.timeline-scroll-section') as HTMLElement;
   const timelineTrack = document.getElementById('timeline-track') as HTMLElement;
+  const timelineViewport = document.querySelector('.timeline-track-viewport') as HTMLElement;
   const timelineCards = document.querySelectorAll('.timeline-card');
   const axisProgress = document.getElementById('axis-progress') as HTMLElement;
   const axisTicks = document.querySelectorAll('.axis-tick');
@@ -4506,8 +4511,11 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
 
   let activeIndex = 0;
   let isDesktop = window.innerWidth > 1024;
+  let currentScrollTranslate = 0;
+  let isDragging = false;
+  let startX = 0;
+  let dragStartTranslate = 0;
 
-  // Track resizing to update layout mode
   window.addEventListener('resize', () => {
     isDesktop = window.innerWidth > 1024;
     if (!isDesktop && timelineTrack) {
@@ -4515,134 +4523,114 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     }
   });
 
-  // Calculate card bounds and positions for scroll translation
   function getTimelineScrollData() {
     if (!timelineTrack) return { maxTranslate: 0, trackWidth: 0, viewportWidth: 0 };
     const trackWidth = timelineTrack.scrollWidth;
     const viewportWidth = timelineTrack.parentElement?.clientWidth || window.innerWidth;
-    const maxTranslate = Math.max(0, trackWidth - viewportWidth);
+    const maxTranslate = Math.max(0, trackWidth - viewportWidth + 60);
     return { maxTranslate, trackWidth, viewportWidth };
   }
 
-  // Set initial scroll bar width and listen to scroll
+  function setTimelinePosition(fraction: number, smooth: boolean = false) {
+    if (!timelineTrack) return;
+    const { maxTranslate } = getTimelineScrollData();
+    const clampedFraction = Math.max(0, Math.min(1, fraction));
+    currentScrollTranslate = clampedFraction * maxTranslate;
+
+    if (smooth) {
+      timelineTrack.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+      setTimeout(() => {
+        if (timelineTrack) timelineTrack.style.transition = 'none';
+      }, 450);
+    } else {
+      timelineTrack.style.transition = 'none';
+    }
+
+    timelineTrack.style.transform = `translateX(-${currentScrollTranslate}px)`;
+
+    if (axisProgress) {
+      axisProgress.style.width = `${clampedFraction * 100}%`;
+    }
+
+    const cardCount = timelineCards.length;
+    const activeIdx = Math.min(cardCount - 1, Math.round(clampedFraction * (cardCount - 1)));
+    updateActiveStates(activeIdx);
+  }
+
   function updateTimelineScroll() {
-    if (!timelineSection || !timelineTrack || !isDesktop) return;
+    if (!timelineSection || !timelineTrack || !isDesktop || isDragging) return;
 
     const rect = timelineSection.getBoundingClientRect();
     const sectionHeight = timelineSection.scrollHeight;
     const viewHeight = window.innerHeight;
-    
-    // Calculate progress fraction [0, 1] through the timeline section
     const scrollDistance = sectionHeight - viewHeight;
     const scrolledAmount = -rect.top;
-    let fraction = scrolledAmount / scrollDistance;
-    fraction = Math.max(0, Math.min(1, fraction));
+    const fraction = scrolledAmount / scrollDistance;
 
-    const { maxTranslate } = getTimelineScrollData();
-    
-    // Apply horizontal translation to track
-    const currentTranslate = fraction * maxTranslate;
-    timelineTrack.style.transform = `translateX(-${currentTranslate}px)`;
-
-    // Update bottom progress bar width
-    if (axisProgress) {
-      axisProgress.style.width = `${fraction * 100}%`;
-    }
-
-    // Determine which card is currently active (closest to the viewport center or index-based)
-    const cardCount = timelineCards.length;
-    const currentActive = Math.min(
-      cardCount - 1,
-      Math.floor(fraction * cardCount)
-    );
-
-    updateActiveStates(currentActive);
+    setTimelinePosition(fraction, false);
   }
 
   function updateActiveStates(index: number) {
     if (index === activeIndex) return;
     activeIndex = index;
 
-    // Update cards active state
     timelineCards.forEach((card, idx) => {
-      if (idx === index) {
-        card.classList.add('active');
-      } else {
-        card.classList.remove('active');
-      }
+      if (idx === index) card.classList.add('active');
+      else card.classList.remove('active');
     });
 
-    // Update axis ticks active state
     axisTicks.forEach((tick, idx) => {
-      if (idx === index) {
-        tick.classList.add('active');
-      } else {
-        tick.classList.remove('active');
-      }
+      if (idx === index) tick.classList.add('active');
+      else tick.classList.remove('active');
     });
 
-    // Update left era list active state
     eraItems.forEach((era) => {
       const targetIdx = parseInt(era.getAttribute('data-target') || '0', 10);
-      // Map index range to nearest era list item
       let activeEra = 0;
       if (index >= 5) activeEra = 5;
       else if (index >= 3) activeEra = 3;
       else if (index >= 1) activeEra = 1;
       else activeEra = 0;
 
-      if (targetIdx === activeEra) {
-        era.classList.add('active');
-      } else {
-        era.classList.remove('active');
-      }
+      if (targetIdx === activeEra) era.classList.add('active');
+      else era.classList.remove('active');
     });
   }
 
-  // Desktop scroll listener
-  window.addEventListener('scroll', updateTimelineScroll);
+  // Scroll listeners
+  window.addEventListener('scroll', updateTimelineScroll, { passive: true });
   window.addEventListener('load', updateTimelineScroll);
 
   // Click handler for axis ticks (Desktop & Mobile)
-  axisTicks.forEach(tick => {
-    tick.addEventListener('click', (e) => {
-      const targetIndex = parseInt(tick.getAttribute('data-index') || '0', 10);
-      
-      if (isDesktop) {
-        // Smoothly scroll the window to the corresponding position in the timeline section
+  axisTicks.forEach((tick, tickIdx) => {
+    tick.addEventListener('click', () => {
+      const targetIndex = parseInt(tick.getAttribute('data-index') || String(tickIdx), 10);
+      const cardCount = timelineCards.length;
+      const targetFraction = targetIndex / (cardCount - 1);
+
+      if (isDesktop && timelineSection) {
         const sectionTop = timelineSection.offsetTop;
         const sectionHeight = timelineSection.scrollHeight;
         const viewHeight = window.innerHeight;
         const scrollDistance = sectionHeight - viewHeight;
-        
-        // Calculate scroll destination representing the target index fraction
-        const cardCount = timelineCards.length;
-        const targetFraction = targetIndex / (cardCount - 1);
         const scrollTarget = sectionTop + (targetFraction * scrollDistance);
 
-        window.scrollTo({
-          top: scrollTarget,
-          behavior: 'smooth'
-        });
+        window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+        setTimelinePosition(targetFraction, true);
       } else {
-        // Mobile snap scroll
-        const viewport = timelineTrack.parentElement;
         const card = timelineCards[targetIndex] as HTMLElement;
-        if (viewport && card) {
-          viewport.scrollTo({
-            left: card.offsetLeft - (viewport.clientWidth - card.clientWidth) / 2,
+        if (timelineViewport && card) {
+          timelineViewport.scrollTo({
+            left: card.offsetLeft - 20,
             behavior: 'smooth'
           });
           updateActiveStates(targetIndex);
-          if (axisProgress) {
-            axisProgress.style.width = `${(targetIndex / (timelineCards.length - 1)) * 100}%`;
-          }
         }
       }
     });
   });
 
-  // Era list item clicks
+  // Click handler for Era list items
   eraItems.forEach(era => {
     era.addEventListener('click', () => {
       const targetIndex = parseInt(era.getAttribute('data-target') || '0', 10);
@@ -4651,26 +4639,44 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     });
   });
 
-  // Mobile Swipe event observer to sync bottom axis progress
-  const viewport = timelineTrack?.parentElement;
-  if (viewport) {
-    viewport.addEventListener('scroll', () => {
-      if (isDesktop) return; // Only process on mobile touch scroll
-      
-      const scrollLeft = viewport.scrollLeft;
-      const scrollWidth = viewport.scrollWidth - viewport.clientWidth;
-      const fraction = scrollWidth > 0 ? scrollLeft / scrollWidth : 0;
-      
-      if (axisProgress) {
-        axisProgress.style.width = `${fraction * 100}%`;
-      }
-      
-      // Map scroll progress to active card
-      const cardCount = timelineCards.length;
-      const index = Math.max(0, Math.min(cardCount - 1, Math.round(fraction * (cardCount - 1))));
-      
-      updateActiveStates(index);
+  // Mouse Drag to Scroll on Timeline Track
+  if (timelineViewport && timelineTrack) {
+    timelineViewport.addEventListener('mousedown', (e) => {
+      if (!isDesktop) return;
+      isDragging = true;
+      startX = e.pageX;
+      dragStartTranslate = currentScrollTranslate;
+      timelineTrack.style.cursor = 'grabbing';
     });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      const dx = e.pageX - startX;
+      const { maxTranslate } = getTimelineScrollData();
+      const newTranslate = Math.max(0, Math.min(maxTranslate, dragStartTranslate - dx));
+      const fraction = maxTranslate > 0 ? newTranslate / maxTranslate : 0;
+      setTimelinePosition(fraction, false);
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        if (timelineTrack) timelineTrack.style.cursor = 'grab';
+      }
+    });
+
+    // Horizontal wheel support inside timeline section
+    timelineViewport.addEventListener('wheel', (e) => {
+      if (!isDesktop) return;
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if (Math.abs(delta) > 5) {
+        const { maxTranslate } = getTimelineScrollData();
+        const newTranslate = Math.max(0, Math.min(maxTranslate, currentScrollTranslate + delta * 1.5));
+        const fraction = maxTranslate > 0 ? newTranslate / maxTranslate : 0;
+        setTimelinePosition(fraction, false);
+      }
+    }, { passive: true });
   }
 
   // Aftermovie 2025 Performance Video Player Logic
