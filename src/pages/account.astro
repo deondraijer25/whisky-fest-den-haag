@@ -1773,7 +1773,7 @@ import Footer from '../components/Footer.astro';
     }
 
     // Initial render
-    updatePortalUI();
+    updatePortalUI(); window.addEventListener("load", updatePortalUI);
 
     // 3. Profile Save Form Submission
     const profileEditForm = document.getElementById('profile-edit-form');
