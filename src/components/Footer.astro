@@ -20,54 +20,87 @@ const { currentCity = 'denhaag' } = Astro.props;
 
   <div class="footer-inner">
 
-    <!-- 1. TOP SECTION: 3 LARGE FREESTANDING WHITE LOGOS IN A ROW (NO CARDS/BOXES) -->
+    <!-- 1. TOP SECTION: 3 FREESTANDING WHITE LOGOS + CITY TEXT + BEZOEK EVENT BUTTON -->
     <div class="footer-hero-logos-strip">
       
       <!-- LOGO 1: AMSTERDAM (Middel 14.svg) -->
-      <a 
-        href="https://whisky-fest-amsterdam.vercel.app" 
-        class="freestanding-logo-link"
-        title="Bezoek Whisky Fest Amsterdam"
-        target={currentCity === 'amsterdam' ? '_self' : '_blank'}
-        rel="noopener noreferrer"
-        aria-label="Whisky Fest Amsterdam"
-      >
-        <div class="freestanding-svg-wrapper">
-          <Fragment set:html={Middel14Svg} />
-        </div>
-      </a>
+      <div class="freestanding-logo-item">
+        <a 
+          href="https://whisky-fest-amsterdam.vercel.app" 
+          class="freestanding-logo-link"
+          title="Bezoek Whisky Fest Amsterdam"
+          target={currentCity === 'amsterdam' ? '_self' : '_blank'}
+          rel="noopener noreferrer"
+          aria-label="Whisky Fest Amsterdam"
+        >
+          <div class="freestanding-svg-wrapper">
+            <Fragment set:html={Middel14Svg} />
+          </div>
+        </a>
+        <span class="logo-city-title">AMSTERDAM</span>
+        <a 
+          href="https://whisky-fest-amsterdam.vercel.app" 
+          class="btn-bezoek-event"
+          target={currentCity === 'amsterdam' ? '_self' : '_blank'}
+          rel="noopener noreferrer"
+        >
+          Bezoek Event &rarr;
+        </a>
+      </div>
 
       <!-- LOGO 2: DEN HAAG (Middel 15.svg) -->
-      <a 
-        href="https://whisky-fest-den-haag.vercel.app" 
-        class="freestanding-logo-link"
-        title="Bezoek International Whisky Festival Den Haag"
-        target={currentCity === 'denhaag' ? '_self' : '_blank'}
-        rel="noopener noreferrer"
-        aria-label="International Whisky Festival Den Haag"
-      >
-        <div class="freestanding-svg-wrapper">
-          <Fragment set:html={Middel15Svg} />
-        </div>
-      </a>
+      <div class="freestanding-logo-item">
+        <a 
+          href="https://whisky-fest-den-haag.vercel.app" 
+          class="freestanding-logo-link"
+          title="Bezoek International Whisky Festival Den Haag"
+          target={currentCity === 'denhaag' ? '_self' : '_blank'}
+          rel="noopener noreferrer"
+          aria-label="International Whisky Festival Den Haag"
+        >
+          <div class="freestanding-svg-wrapper">
+            <Fragment set:html={Middel15Svg} />
+          </div>
+        </a>
+        <span class="logo-city-title">DEN HAAG</span>
+        <a 
+          href="https://whisky-fest-den-haag.vercel.app" 
+          class="btn-bezoek-event"
+          target={currentCity === 'denhaag' ? '_self' : '_blank'}
+          rel="noopener noreferrer"
+        >
+          Bezoek Event &rarr;
+        </a>
+      </div>
 
       <!-- LOGO 3: GENT (Middel 13.svg) -->
-      <a 
-        href="https://whisky-fest-gent.vercel.app" 
-        class="freestanding-logo-link"
-        title="Bezoek Gents Whisky Festival"
-        target={currentCity === 'gent' ? '_self' : '_blank'}
-        rel="noopener noreferrer"
-        aria-label="Gents Whisky Festival"
-      >
-        <div class="freestanding-svg-wrapper">
-          <Fragment set:html={Middel13Svg} />
-        </div>
-      </a>
+      <div class="freestanding-logo-item">
+        <a 
+          href="https://whisky-fest-gent.vercel.app" 
+          class="freestanding-logo-link"
+          title="Bezoek Gents Whisky Festival"
+          target={currentCity === 'gent' ? '_self' : '_blank'}
+          rel="noopener noreferrer"
+          aria-label="Gents Whisky Festival"
+        >
+          <div class="freestanding-svg-wrapper">
+            <Fragment set:html={Middel13Svg} />
+          </div>
+        </a>
+        <span class="logo-city-title">GENT</span>
+        <a 
+          href="https://whisky-fest-gent.vercel.app" 
+          class="btn-bezoek-event"
+          target={currentCity === 'gent' ? '_self' : '_blank'}
+          rel="noopener noreferrer"
+        >
+          Bezoek Event &rarr;
+        </a>
+      </div>
 
     </div>
 
-    <!-- 2. NEWSLETTER LETTERPRESS CARD -->
+    <!-- 2. NEWSLETTER LETTERPRESS CARD WITH INSTANT ON-PAGE FEEDBACK -->
     <div class="newsletter-section">
       <div class="newsletter-card">
         <div class="newsletter-border">
@@ -77,10 +110,16 @@ const { currentCity = 'denhaag' } = Astro.props;
             <p class="newsletter-desc">
               Ontvang als eerste exclusieve updates over de ticketverkoop, speciale festivalbottelingen en zeldzame masterclasses.
             </p>
-            <form class="newsletter-form" onsubmit="event.preventDefault(); const inp = this.querySelector('input'); if(inp && inp.value){ alert('✓ Hartelijk dank! U bent succesvol ingeschreven voor de nieuwsbrief van International Whisky Festival.'); inp.value = ''; }">
+            <form 
+              class="newsletter-form" 
+              onsubmit="event.preventDefault(); const inp = this.querySelector('input'); const msg = this.parentElement.querySelector('.newsletter-success-msg'); if(inp && inp.value){ if(msg) { msg.style.display = 'block'; } alert('✓ Hartelijk dank! U bent succesvol ingeschreven voor de nieuwsbrief van International Whisky Festival.'); inp.value = ''; }"
+            >
               <input type="email" placeholder="Uw e-mailadres invoeren..." required class="newsletter-input" />
               <button type="submit" class="btn-newsletter-submit">Inschrijven</button>
             </form>
+            <div class="newsletter-success-msg" style="display: none; margin-top: 1rem; padding: 0.65rem 1rem; background: rgba(0, 100, 72, 0.2); border: 1px solid #4ade80; border-radius: 6px; color: #4ade80; font-weight: 700; font-size: 0.9rem;">
+              ✓ Hartelijk dank! U bent succesvol ingeschreven voor onze officiële nieuwsbrief.
+            </div>
           </div>
         </div>
       </div>
@@ -212,15 +251,23 @@ const { currentCity = 'denhaag' } = Astro.props;
   }
 
   /* ----------------------------------------------------
-     1. 3 LARGE FREESTANDING WHITE LOGOS IN A ROW
+     1. 3 FREESTANDING WHITE LOGOS + CITY TEXT + BUTTON
      ---------------------------------------------------- */
   .footer-hero-logos-strip {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     gap: 4.5rem;
     margin-bottom: 4.5rem;
     padding: 1.5rem 0;
+  }
+
+  .freestanding-logo-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.65rem;
   }
 
   .freestanding-logo-link {
@@ -233,8 +280,8 @@ const { currentCity = 'denhaag' } = Astro.props;
   }
 
   .freestanding-svg-wrapper {
-    width: 135px;
-    height: 180px;
+    width: 130px;
+    height: 175px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -255,6 +302,40 @@ const { currentCity = 'denhaag' } = Astro.props;
 
   .freestanding-logo-link:hover .freestanding-svg-wrapper :global(svg) {
     filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5));
+  }
+
+  .logo-city-title {
+    font-family: var(--font-display, 'bourbon-rough', serif);
+    font-size: 1.15rem;
+    letter-spacing: 0.08em;
+    color: #FFFFFF;
+    margin-top: 0.25rem;
+  }
+
+  .btn-bezoek-event {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #FFFFFF;
+    font-family: var(--font-sans, sans-serif);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .btn-bezoek-event:hover {
+    background: #D5C28A;
+    color: #171614;
+    border-color: #D5C28A;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   }
 
   /* ----------------------------------------------------

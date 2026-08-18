@@ -152,7 +152,8 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
             <div class="filter-row" style="margin-top: 0.5rem;">
               <span class="filter-label">Type:</span>
               <div class="filter-buttons" id="cat-filter-buttons">
-                <button type="button" class="filter-tab-btn active" data-filter-cat="entree">Sessie Entree</button>
+                <button type="button" class="filter-tab-btn active" data-filter-cat="all">Alles</button>
+                <button type="button" class="filter-tab-btn" data-filter-cat="entree">Sessie Entree</button>
                 <button type="button" class="filter-tab-btn" data-filter-cat="masterclass">Masterclasses</button>
                 <button type="button" class="filter-tab-btn" data-filter-cat="tram">Whiskytram</button>
                 <button type="button" class="filter-tab-btn" data-filter-cat="trail">Whiskytrail</button>
@@ -4656,8 +4657,9 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     videoOverlay.addEventListener('click', startAftermovie);
   }
 
+  
   // ==========================================
-  // MASTERCLASSES INFO MODAL & UPSELL POPUP LOGIC
+  // MASTERCLASSES INFO & UPSELL POPUP CONTROLLER
   // ==========================================
   const masterclassesList = [
   {
@@ -4753,23 +4755,90 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
   const upsellModalCancel = document.getElementById('addon-upsell-cancel');
   const upsellModalProceed = document.getElementById('addon-upsell-proceed-btn');
 
-  // Open Masterclass Info
+  function openCheckoutModal() {
+    promoDiscount = 0;
+    activePromoCode = "";
+    if (promoInput) promoInput.value = "";
+    if (promoMsg) promoMsg.style.display = "none";
+    
+    recalcModalTotal();
+    if (modalStep1) modalStep1.style.display = "block";
+    if (modalStep2) modalStep2.style.display = "none";
+    if (modalStep3) modalStep3.style.display = "none";
+    if (modalOverlay) {
+      modalOverlay.style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  function handleCheckoutClick(e) {
+    if (e && e.preventDefault) e.preventDefault();
+
+    const activeItems = Object.keys(cart).map(k => cart[k]).filter(item => item && item.qty > 0);
+    const hasOnlyEntree = activeItems.length > 0 && activeItems.every(item => item.category === 'entree');
+
+    if (hasOnlyEntree && upsellModal) {
+      upsellModal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    } else {
+      openCheckoutModal();
+    }
+  }
+
+  // Bind to checkoutBtn
+  if (checkoutBtn) {
+    // Remove old listeners by replacing or assigning
+    checkoutBtn.onclick = handleCheckoutClick;
+  }
+
+  const checkoutTriggerBtn = document.getElementById('checkout-trigger-btn');
+  if (checkoutTriggerBtn) {
+    checkoutTriggerBtn.onclick = handleCheckoutClick;
+  }
+
+  // Open Masterclass Modal with bulletproof fuzzy matching
   function openMasterclassModal(mcId) {
     activeMcId = mcId;
-    const mc = masterclassesList.find(m => m.id === mcId);
+    let mc = masterclassesList.find(m => m.id === mcId);
+    if (!mc) {
+      if (mcId === 'session-mc-1' || mcId.includes('macallan')) {
+        mc = masterclassesList.find(m => m.id.includes('macallan') || m.title.includes('Macallan'));
+      } else if (mcId === 'session-mc-2' || mcId.includes('highland')) {
+        mc = masterclassesList.find(m => m.id.includes('highland') || m.title.includes('Highland'));
+      } else if (mcId === 'session-mc-3' || mcId.includes('glenfiddich')) {
+        mc = masterclassesList.find(m => m.id.includes('glenfiddich') || m.title.includes('Glenfiddich'));
+      } else if (mcId === 'session-mc-4' || mcId.includes('islay')) {
+        mc = masterclassesList.find(m => m.id.includes('islay') || m.title.includes('Islay'));
+      } else if (mcId.includes('intro')) {
+        mc = masterclassesList.find(m => m.id.includes('intro') || m.title.includes('Intro'));
+      }
+    }
+    if (!mc && masterclassesList.length > 0) {
+      mc = masterclassesList[0];
+    }
     if (!mc) return;
 
-    document.getElementById('mc-modal-title').textContent = mc.title;
-    document.getElementById('mc-modal-subtitle').textContent = mc.subtitle || 'Exclusieve Proeverij';
-    document.getElementById('mc-modal-location').textContent = mc.location || 'Festival Locatie';
-    document.getElementById('mc-modal-duration').textContent = mc.duration || '45 minuten';
-    document.getElementById('mc-modal-description').textContent = mc.description || '';
-    document.getElementById('mc-modal-price').textContent = mc.price || '€ 0,00';
+    const titleEl = document.getElementById('mc-modal-title');
+    const subEl = document.getElementById('mc-modal-subtitle');
+    const locEl = document.getElementById('mc-modal-location');
+    const durEl = document.getElementById('mc-modal-duration');
+    const descEl = document.getElementById('mc-modal-description');
+    const priceEl = document.getElementById('mc-modal-price');
+
+    if (titleEl) titleEl.textContent = mc.title;
+    if (subEl) subEl.textContent = mc.subtitle || 'Exclusieve Proeverij';
+    if (locEl) locEl.textContent = mc.location || 'Festival Locatie';
+    if (durEl) durEl.textContent = mc.duration || '45 minuten';
+    if (descEl) descEl.textContent = mc.description || '';
+    if (priceEl) priceEl.textContent = mc.price || '€ 0,00';
 
     if (mc.ambassador) {
-      document.getElementById('mc-modal-ambassador-name').textContent = mc.ambassador.name;
-      document.getElementById('mc-modal-ambassador-title').textContent = mc.ambassador.title;
-      document.getElementById('mc-modal-ambassador-bio').textContent = mc.ambassador.bio;
+      const ambName = document.getElementById('mc-modal-ambassador-name');
+      const ambTitle = document.getElementById('mc-modal-ambassador-title');
+      const ambBio = document.getElementById('mc-modal-ambassador-bio');
+      if (ambName) ambName.textContent = mc.ambassador.name;
+      if (ambTitle) ambTitle.textContent = mc.ambassador.title;
+      if (ambBio) ambBio.textContent = mc.ambassador.bio;
     }
 
     const lineupList = document.getElementById('mc-modal-lineup');
@@ -4782,40 +4851,69 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       `).join('');
     }
 
-    if (mcModal) mcModal.style.display = 'flex';
+    if (mcModal) {
+      mcModal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
   }
 
+  // Global delegation for .btn-mc-info-trigger
+  document.addEventListener('click', (e) => {
+    const infoBtn = e.target.closest('.btn-mc-info-trigger');
+    if (infoBtn) {
+      e.preventDefault();
+      const mcId = infoBtn.getAttribute('data-mc-id');
+      if (mcId) openMasterclassModal(mcId);
+    }
+  });
+
   // Close MC Modal
-  if (mcModalClose) mcModalClose.addEventListener('click', () => { if (mcModal) mcModal.style.display = 'none'; });
-  if (mcModal) mcModal.addEventListener('click', (e) => { if (e.target === mcModal) mcModal.style.display = 'none'; });
+  if (mcModalClose) mcModalClose.addEventListener('click', () => {
+    if (mcModal) mcModal.style.display = 'none';
+    document.body.style.overflow = '';
+  });
+  if (mcModal) mcModal.addEventListener('click', (e) => {
+    if (e.target === mcModal) {
+      mcModal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  });
 
   // Add MC to Cart from Modal
   if (mcModalAddBtn) {
     mcModalAddBtn.addEventListener('click', () => {
       if (activeMcId) {
-        const stub = document.querySelector(`.ticket-stub[data-ticket-id="${activeMcId}"]`);
+        let stub = document.querySelector(`.ticket-stub[data-ticket-id="${activeMcId}"]`);
+        if (!stub) {
+          // fallback search
+          const allStubs = Array.from(document.querySelectorAll('.ticket-stub[data-category="masterclass"]'));
+          if (allStubs.length > 0) stub = allStubs[0];
+        }
         if (stub) {
           const plusBtn = stub.querySelector('.plus-btn');
           if (plusBtn) plusBtn.click();
         }
       }
       if (mcModal) mcModal.style.display = 'none';
+      document.body.style.overflow = '';
     });
   }
 
-  // Delegated click for .btn-mc-info-trigger
-  document.addEventListener('click', (e) => {
-    const infoBtn = e.target.closest('.btn-mc-info-trigger');
-    if (infoBtn) {
-      const mcId = infoBtn.getAttribute('data-mc-id');
-      if (mcId) openMasterclassModal(mcId);
+  // Upsell Modal Handlers
+  if (upsellModalClose) upsellModalClose.addEventListener('click', () => {
+    if (upsellModal) upsellModal.style.display = 'none';
+    document.body.style.overflow = '';
+  });
+  if (upsellModalCancel) upsellModalCancel.addEventListener('click', () => {
+    if (upsellModal) upsellModal.style.display = 'none';
+    document.body.style.overflow = '';
+  });
+  if (upsellModal) upsellModal.addEventListener('click', (e) => {
+    if (e.target === upsellModal) {
+      upsellModal.style.display = 'none';
+      document.body.style.overflow = '';
     }
   });
-
-  // Upsell Modal Handlers
-  if (upsellModalClose) upsellModalClose.addEventListener('click', () => { if (upsellModal) upsellModal.style.display = 'none'; });
-  if (upsellModalCancel) upsellModalCancel.addEventListener('click', () => { if (upsellModal) upsellModal.style.display = 'none'; });
-  if (upsellModal) upsellModal.addEventListener('click', (e) => { if (e.target === upsellModal) upsellModal.style.display = 'none'; });
 
   if (upsellModalProceed) {
     upsellModalProceed.addEventListener('click', () => {
@@ -4828,9 +4926,14 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
   document.addEventListener('click', (e) => {
     const upsellBtn = e.target.closest('.btn-upsell-add');
     if (upsellBtn) {
+      e.preventDefault();
       const upsellId = upsellBtn.getAttribute('data-upsell-id');
       if (upsellId) {
-        const stub = document.querySelector(`.ticket-stub[data-ticket-id="${upsellId}"]`);
+        let stub = document.querySelector(`.ticket-stub[data-ticket-id="${upsellId}"]`);
+        if (!stub) {
+          const allStubs = Array.from(document.querySelectorAll('.ticket-stub'));
+          stub = allStubs.find(s => s.getAttribute('data-ticket-id') && s.getAttribute('data-ticket-id').includes(upsellId.replace('session-mc-', '')));
+        }
         if (stub) {
           const plusBtn = stub.querySelector('.plus-btn');
           if (plusBtn) plusBtn.click();

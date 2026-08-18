@@ -197,14 +197,46 @@ const {
               </div>
             </div>
             {description && <p class="ticket-desc-text" style="margin-top:0.5rem; margin-bottom:0.5rem;">{description}</p>}
-            <button type="button" class="btn-mc-info-trigger" data-mc-id={id} aria-label="Bekijk Masterclass Line-up">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-              Line-up & Masterclass Details
-            </button>
             <div class="ticket-select-wrapper">
               <label class="meta-label" for={`select-${id}`}>TIJDSLOT:</label>
               <select id={`select-${id}`} class="ticket-select-input intro-select">
                 {options.map(opt => <option value={opt}>{opt}</option>)}
+              </select>
+            </div>
+            <div class="mc-info-btn-wrap" style="margin-top: 0.75rem;">
+              <button type="button" class="btn-mc-info-trigger" data-mc-id={id} aria-label="Bekijk Masterclass Details & Proeflijst">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 5px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                Bekijk Proeflijst &amp; Details
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <div class="ticket-time-meta">
+              <div class="meta-column">
+                <span class="meta-label">DATUM</span>
+                <span class="meta-value">{date.toUpperCase()}</span>
+              </div>
+              <div class="meta-column">
+                <span class="meta-label">TIJD</span>
+                <span class="meta-value">{time}</span>
+              </div>
+              <div class="meta-column">
+                <span class="meta-label">LOCATIE</span>
+                <span class="meta-value">{extraMeta || 'Nutshuis'}</span>
+              </div>
+            </div>
+            {description && <p class="ticket-desc-text" style="margin-top:0.5rem;">{description}</p>}
+            <div class="mc-info-btn-wrap" style="margin-top: 0.75rem;">
+              <button type="button" class="btn-mc-info-trigger" data-mc-id={id} aria-label="Bekijk Masterclass Details & Proeflijst">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 5px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                Bekijk Proeflijst &amp; Details
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    )}
               </select>
             </div>
           </div>
@@ -582,6 +614,33 @@ const {
     color: #ffffff;
     transform: translateY(-1px);
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+
+
+  .mc-info-btn-wrap {
+    display: flex;
+    margin-top: 0.75rem;
+  }
+  .btn-mc-info-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: rgba(197, 139, 57, 0.12);
+    border: 1.5px solid var(--whisky-gold, #c58b39);
+    color: var(--whisky-gold-dark, #8b5a1b);
+    font-family: var(--font-sans, sans-serif);
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.4rem 0.85rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-mc-info-trigger:hover {
+    background: var(--whisky-gold, #c58b39);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(197, 139, 57, 0.35);
   }
 
 </style>
