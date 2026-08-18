@@ -3584,9 +3584,8 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     font-size: 0.85rem !important;
   }
 </style>
-
 <script>
-  // Enforce 100% reliable background video autoplay
+  // 1. Enforce 100% reliable background video autoplay
   const heroBgVideo = document.getElementById("hero-bg-video") as HTMLVideoElement;
   if (heroBgVideo) {
     heroBgVideo.muted = true;
@@ -3594,7 +3593,6 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     heroBgVideo.playsInline = true;
     const tryPlay = () => {
       heroBgVideo.play().catch(() => {
-        // Retry on user interaction if browser policy blocks initial autoplay
         document.addEventListener('click', () => heroBgVideo.play(), { once: true });
         document.addEventListener('touchstart', () => heroBgVideo.play(), { once: true });
         document.addEventListener('scroll', () => heroBgVideo.play(), { once: true });
@@ -3603,8 +3601,8 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     tryPlay();
     window.addEventListener('load', tryPlay);
   }
-    
-  // safe-preloader-dismiss: Guaranteed preloader fade-out
+
+  // 2. Safe Preloader Dismiss
   (function() {
     const pl = document.getElementById('hp-preloader');
     if (pl) {
@@ -3618,22 +3616,139 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     }
   })();
 
-  // Tabs Interactive Logic
+  // 3. Tab Triggers (Alles wat u moet weten)
   const tabTriggers = document.querySelectorAll('.tab-trigger-card');
   tabTriggers.forEach(tab => {
     tab.addEventListener('click', () => {
       tabTriggers.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      // In a real build, we swap the image in .tab-visual here.
     });
   });
 
-  // Ticket Filtering Logic
+  // 4. Cart & Shop State
+  const cart: Record<string, { title: string; price: number; qty: number; category: string; timeslot?: string; delivery?: string; guide?: string }> = {};
+  const serviceFee = 4.50;
+  const cartItemsContainer = document.getElementById("cart-items");
+  const subtotalEl = document.getElementById("receipt-subtotal");
+  const feeEl = document.getElementById("receipt-fee");
+  const shippingRow = document.getElementById("shipping-row");
+  const shippingEl = document.getElementById("receipt-shipping");
+  const totalEl = document.getElementById("receipt-total");
+  const checkoutBtn = document.getElementById("checkout-trigger-btn") as HTMLButtonElement;
+
+  function updateShop() {
+    let subtotal = 0;
+    let totalItems = 0;
+    let shippingActive = false;
+
+    Object.keys(cart).forEach(id => {
+      const item = cart[id];
+      if (item && item.qty > 0) {
+        subtotal += item.price * item.qty;
+        totalItems += item.qty;
+        if (item.category === "botteling" && item.delivery === "shipping") {
+          shippingActive = true;
+        }
+      }
+    });
+
+    const activeShipping = shippingActive ? 12.50 : 0;
+    const activeFee = totalItems > 0 ? serviceFee : 0;
+    const finalTotal = subtotal + activeFee + activeShipping;
+
+    if (cartItemsContainer) {
+      if (totalItems === 0) {
+        cartItemsContainer.innerHTML = '<p class="empty-cart-msg">Selecteer hiernaast uw ticket(s) om de bestelling te starten.</p>';
+      } else {
+        let listHtml = "";
+        const entries = Object.keys(cart).filter(id => cart[id] && cart[id].qty > 0);
+        
+        entries.forEach((id, index) => {
+          const item = cart[id];
+          let displayTitle = item.title;
+          
+          if (item.category === "tram" && item.timeslot) {
+            displayTitle = `${item.title} (${item.timeslot})`;
+          } else if (item.category === "masterclass" && item.timeslot) {
+            displayTitle = `${item.title} (${item.timeslot})`;
+          } else if (item.category === "trail" && item.timeslot) {
+            const guideSuffix = item.guide ? ` - Gids: ${item.guide}` : '';
+            displayTitle = `${item.title} (${item.timeslot}${guideSuffix})`;
+          } else if (item.category === "vatenmaken" && item.timeslot) {
+            displayTitle = `${item.title} (${item.timeslot})`;
+          } else if (item.category === "botteling" && item.delivery) {
+            const methodText = item.delivery === "shipping" ? "Verzenden" : "Ophalen";
+            displayTitle = `${item.title} [${methodText}]`;
+          }
+
+          const isLast = index === entries.length - 1;
+          listHtml += `
+            <div class="cart-item-row" ${isLast ? 'style="border-bottom:none;"' : ''}>
+              <div class="cart-item-info">
+                <span class="cart-item-name">${displayTitle}</span>
+                <span class="cart-item-meta">${item.qty} × €${item.price.toFixed(2)}</span>
+              </div>
+              <span class="cart-item-price">€${(item.price * item.qty).toFixed(2)}</span>
+            </div>
+          `;
+        });
+        
+        cartItemsContainer.innerHTML = listHtml;
+      }
+    }
+    
+    if (subtotalEl) subtotalEl.innerHTML = `&euro;${subtotal.toFixed(2)}`;
+    if (feeEl) feeEl.innerHTML = `&euro;${activeFee.toFixed(2)}`;
+    if (shippingRow && shippingEl) {
+      if (shippingActive) {
+        shippingRow.style.display = "flex";
+        shippingEl.innerHTML = `&euro;12.50`;
+      } else {
+        shippingRow.style.display = "none";
+      }
+    }
+    if (totalEl) totalEl.innerHTML = `&euro;${finalTotal.toFixed(2)}`;
+    if (checkoutBtn) checkoutBtn.disabled = totalItems === 0;
+
+    saveCartToLocalStorage(subtotal, totalItems);
+  }
+
+  function saveCartToLocalStorage(subtotalVal: number, totalItemsVal: number) {
+    try {
+      localStorage.setItem("whiskyfest_cart", JSON.stringify({
+        subtotal: subtotalVal,
+        totalItems: totalItemsVal,
+        cartRaw: cart
+      }));
+    } catch(e) {}
+  }
+
+  function restoreCartFromLocalStorage() {
+    try {
+      const raw = localStorage.getItem("whiskyfest_cart");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed.cartRaw) {
+          Object.assign(cart, parsed.cartRaw);
+          Object.keys(cart).forEach(id => {
+            const card = document.querySelector(`.ticket-stub[data-ticket-id="${id}"]`);
+            if (card) {
+              const qtyDisplay = card.querySelector(".qty-val");
+              if (qtyDisplay) qtyDisplay.textContent = String(cart[id].qty || 0);
+              if (cart[id].qty > 0) card.classList.add("selected");
+              else card.classList.remove("selected");
+            }
+          });
+        }
+      }
+    } catch(e) {}
+  }
+
+  // 5. Ticket Filtering Logic
   const dayButtons = document.querySelectorAll('#day-filter-buttons .filter-tab-btn');
   const catButtons = document.querySelectorAll('#cat-filter-buttons .filter-tab-btn');
   const timeButtons = document.querySelectorAll('#time-filter-buttons .filter-tab-btn');
   const timeFilterRow = document.getElementById('time-filter-row');
-  const ticketCards = document.querySelectorAll(".ticket-stub");
   
   let activeDay = 'all';
   let activeCat = 'entree';
@@ -3644,11 +3759,10 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
   const showMoreBtn = document.getElementById('show-more-btn');
 
   function applyFilters() {
-    // Show/hide time filter row depending on selected category
     if (timeFilterRow) {
       if (activeCat === 'tram' || activeCat === 'botteling' || activeCat === 'trail' || activeCat === 'vatenmaken') {
         timeFilterRow.style.display = 'none';
-        activeTime = 'all'; // reset time filter
+        activeTime = 'all';
         timeButtons.forEach(b => {
           if (b.getAttribute('data-filter-time') === 'all') b.classList.add('active');
           else b.classList.remove('active');
@@ -3658,9 +3772,82 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       }
     }
 
+    const cards = document.querySelectorAll(".ticket-stub");
     const matchingCards: HTMLElement[] = [];
 
-    // ====== BULLETPROOF EVENT-DELEGATED TICKET SHOP QUANTITY & CART LOGIC ======
+    cards.forEach(card => {
+      const cardDay = card.getAttribute('data-day') || 'all';
+      const cardCat = card.getAttribute('data-category') || 'entree';
+      const cardTime = card.getAttribute('data-daypart') || 'all';
+
+      const matchDay = (activeDay === 'all') || (cardDay === 'all') || (cardDay === activeDay);
+      const matchCat = (activeCat === 'all') || (cardCat === activeCat);
+      const matchTime = (activeTime === 'all') || (cardTime === 'all') || (cardTime === activeTime);
+
+      if (matchDay && matchCat && matchTime) {
+        card.classList.remove('hidden-by-filter');
+        matchingCards.push(card as HTMLElement);
+      } else {
+        card.classList.add('hidden-by-filter');
+        card.classList.remove('hidden-by-limit');
+      }
+    });
+
+    const limit = 6;
+    if (matchingCards.length > limit && !showAllTickets) {
+      matchingCards.forEach((card, idx) => {
+        if (idx >= limit) {
+          card.classList.add('hidden-by-limit');
+        } else {
+          card.classList.remove('hidden-by-limit');
+        }
+      });
+      if (showMoreContainer) showMoreContainer.style.display = 'block';
+      if (showMoreBtn) showMoreBtn.textContent = `Toon alle tickets (${matchingCards.length - limit} extra) ↓`;
+    } else {
+      matchingCards.forEach(card => card.classList.remove('hidden-by-limit'));
+      if (showMoreContainer) showMoreContainer.style.display = 'none';
+    }
+  }
+
+  if (showMoreBtn) {
+    showMoreBtn.addEventListener('click', () => {
+      showAllTickets = true;
+      applyFilters();
+    });
+  }
+
+  dayButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      dayButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeDay = btn.getAttribute('data-filter-day') || 'all';
+      showAllTickets = false;
+      applyFilters();
+    });
+  });
+
+  catButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      catButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeCat = btn.getAttribute('data-filter-cat') || 'all';
+      showAllTickets = false;
+      applyFilters();
+    });
+  });
+
+  timeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      timeButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeTime = btn.getAttribute('data-filter-time') || 'all';
+      showAllTickets = false;
+      applyFilters();
+    });
+  });
+
+  // 6. Global Event-Delegated Quantity Click Listeners
   document.addEventListener('click', (e) => {
     const target = e.target as HTMLElement;
     const btn = target.closest('.qty-btn') as HTMLButtonElement;
@@ -3681,7 +3868,6 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       cart[id] = { title, price, qty: 0, category };
     }
 
-    // Capture dropdown options
     const tramSelect = card.querySelector('.tram-select') as HTMLSelectElement;
     const introSelect = card.querySelector('.intro-select') as HTMLSelectElement;
     const bottlingSelect = card.querySelector('.bottling-select') as HTMLSelectElement;
@@ -3711,7 +3897,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     }
   });
 
-  // Delegated dropdown change listeners
+  // 7. Delegated Dropdown Change Listeners
   document.addEventListener('change', (e) => {
     const target = e.target as HTMLElement;
     const select = target.closest('select') as HTMLSelectElement;
@@ -3740,7 +3926,22 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     }
   });
 
-  // Mock Checkout Flow JS
+  // Initial Filter & Cart Pass
+  applyFilters();
+  restoreCartFromLocalStorage();
+  updateShop();
+  document.addEventListener("DOMContentLoaded", () => {
+    applyFilters();
+    restoreCartFromLocalStorage();
+    updateShop();
+  });
+  window.addEventListener("load", () => {
+    applyFilters();
+    restoreCartFromLocalStorage();
+    updateShop();
+  });
+
+  // 8. Checkout Modal Flow
   const modalOverlay = document.getElementById("checkout-modal");
   const modalCloseX = document.getElementById("modal-close-x");
   const modalSuccessClose = document.getElementById("modal-success-close");
@@ -3773,7 +3974,6 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
 
     const activeShipping = shippingActive ? 12.50 : 0;
     const activeFee = totalItems > 0 ? serviceFee : 0;
-    
     const totalBeforeDiscount = subtotal + activeFee + activeShipping;
     const finalTotal = Math.max(0, totalBeforeDiscount - promoDiscount);
 
@@ -3781,7 +3981,6 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       modalTotalAmt.innerHTML = `&euro;${finalTotal.toFixed(2)}`;
     }
 
-    // Populate dynamic summary items breakdown in popup
     const modalSummaryItems = document.getElementById("modal-summary-items");
     if (modalSummaryItems) {
       modalSummaryItems.innerHTML = "";
@@ -3924,7 +4123,6 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     });
   }
 
-  // Close modal when clicking backdrop
   if (modalOverlay) {
     modalOverlay.addEventListener("click", (e) => {
       if (e.target === modalOverlay) {
@@ -4001,7 +4199,6 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
           
           const finalResNumber = `#${resPrefix}-2026-${Math.floor(10000 + Math.random() * 90000)}`;
 
-          // Save order to localStorage for dynamic account environment
           const orderData = {
             name: name,
             email: email,
@@ -4038,7 +4235,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     });
   }
 
-  // ====== INTERACTIVE TIMETABLE LOGIC ======
+  // 9. Interactive Timetable Logic
   const ttTabs = document.querySelectorAll('.timetable-tab-btn');
   const ttPanes = document.querySelectorAll('.timetable-pane');
   const ttTimeBtns = document.querySelectorAll('.tt-time-btn');
@@ -4090,54 +4287,26 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       const targetStubId = btn.getAttribute('data-target-stub') || "";
       const targetSelectVal = btn.getAttribute('data-target-select') || "";
       
-      // If it's an addon checkbox
-      if (targetStubId.startsWith('addon-')) {
-        const checkbox = document.getElementById(targetStubId) as HTMLInputElement;
-        if (checkbox) {
-          // If disabled, warn the user
-          if (checkbox.disabled) {
-            alert("U moet eerst een entreeticket in uw winkelwagen leggen om deze add-on te boeken!");
-            document.getElementById('ticket-gap')?.scrollIntoView({ behavior: 'smooth' });
-            return;
+      const ticketStub = document.querySelector(`.ticket-stub[data-ticket-id="${targetStubId}"]`);
+      if (ticketStub) {
+        if (targetSelectVal) {
+          const select = ticketStub.querySelector('select') as HTMLSelectElement;
+          if (select) {
+            select.value = targetSelectVal;
+            select.dispatchEvent(new Event('change', { bubbles: true }));
           }
-          checkbox.checked = true;
-          // Trigger change event to run updateShop()
-          checkbox.dispatchEvent(new Event('change'));
-          // Set dropdown value for vaten workshop if needed
-          if (targetStubId === "addon-vaten" && targetSelectVal && vatenTimeSelect) {
-            vatenTimeSelect.value = targetSelectVal;
-            vatenTimeSelect.dispatchEvent(new Event('change'));
-          }
-          // Alert and scroll to cart
-          alert(`Toegevoegd aan winkelwagen: ${checkbox.getAttribute('data-title')}!`);
-          document.getElementById('ticket-gap')?.scrollIntoView({ behavior: 'smooth' });
         }
-      } else {
-        // It's a ticket stub card in the shop
-        const ticketStub = document.querySelector(`.ticket-stub[data-ticket-id="${targetStubId}"]`);
-        if (ticketStub) {
-          // If there's a select field and target select val
-          if (targetSelectVal) {
-            const select = ticketStub.querySelector('select') as HTMLSelectElement;
-            if (select) {
-              select.value = targetSelectVal;
-              // Trigger change event on select to ensure timeslot is updated in cart
-              select.dispatchEvent(new Event('change'));
-            }
-          }
-          // Find plus button and click it
-          const plusBtn = ticketStub.querySelector('[data-action="plus"]') as HTMLButtonElement;
-          if (plusBtn) {
-            plusBtn.click();
-            alert(`Toegevoegd aan winkelwagen: ${ticketStub.getAttribute('data-title')}!`);
-            document.getElementById('ticket-gap')?.scrollIntoView({ behavior: 'smooth' });
-          }
+        const plusBtn = ticketStub.querySelector('.plus-btn') as HTMLButtonElement;
+        if (plusBtn) {
+          plusBtn.click();
+          alert(`Toegevoegd aan winkelwagen: ${ticketStub.getAttribute('data-title')}!`);
+          document.getElementById('ticket-gap')?.scrollIntoView({ behavior: 'smooth' });
         }
       }
     });
   });
 
-  // ====== SCROLL FADE-IN FOR TICKETS ======
+  // 10. Scroll Fade-In
   const fadeGroups = document.querySelectorAll('.fade-in-group');
   if (fadeGroups.length > 0) {
     const observer = new IntersectionObserver((entries) => {
@@ -4157,7 +4326,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     });
   }
 
-  // ====== VINTAGE HORIZONTAL TIMELINE LOGIC ======
+  // 11. Interactive Horizontal Timeline
   const timelineSection = document.querySelector('.timeline-scroll-section') as HTMLElement;
   const timelineTrack = document.getElementById('timeline-track') as HTMLElement;
   const timelineViewport = document.querySelector('.timeline-track-viewport') as HTMLElement;
@@ -4254,11 +4423,9 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     });
   }
 
-  // Scroll listeners
   window.addEventListener('scroll', updateTimelineScroll, { passive: true });
   window.addEventListener('load', updateTimelineScroll);
 
-  // Click handler for axis ticks (Desktop & Mobile)
   axisTicks.forEach((tick, tickIdx) => {
     tick.addEventListener('click', () => {
       const targetIndex = parseInt(tick.getAttribute('data-index') || String(tickIdx), 10);
@@ -4287,7 +4454,6 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     });
   });
 
-  // Click handler for Era list items
   eraItems.forEach(era => {
     era.addEventListener('click', () => {
       const targetIndex = parseInt(era.getAttribute('data-target') || '0', 10);
@@ -4296,7 +4462,6 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     });
   });
 
-  // Mouse Drag to Scroll on Timeline Track
   if (timelineViewport && timelineTrack) {
     timelineViewport.addEventListener('mousedown', (e) => {
       if (!isDesktop) return;
@@ -4323,7 +4488,6 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       }
     });
 
-    // Horizontal wheel support inside timeline section
     timelineViewport.addEventListener('wheel', (e) => {
       if (!isDesktop) return;
       const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
@@ -4336,79 +4500,19 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     }, { passive: true });
   }
 
-  // Aftermovie 2025 Performance Video Player Logic
+  // 12. Aftermovie Video Player Logic
+  const aftermoviePlayBtn = document.getElementById('aftermovie-play-btn');
+  const videoOverlay = document.getElementById('video-overlay');
   const aftermovieVideo = document.getElementById('aftermovie-video') as HTMLVideoElement;
-  const videoOverlay = document.getElementById('video-overlay') as HTMLElement;
 
-  if (aftermovieVideo && videoOverlay) {
-    videoOverlay.addEventListener('click', () => {
+  if (aftermoviePlayBtn && videoOverlay && aftermovieVideo) {
+    const startAftermovie = () => {
       videoOverlay.style.opacity = '0';
       videoOverlay.style.pointerEvents = 'none';
-      aftermovieVideo.setAttribute('controls', 'true');
+      aftermovieVideo.controls = true;
       aftermovieVideo.play();
-    });
-
-    aftermovieVideo.addEventListener('pause', () => {
-      if (aftermovieVideo.currentTime === 0 || aftermovieVideo.ended) {
-        aftermovieVideo.removeAttribute('controls');
-        videoOverlay.style.opacity = '1';
-        videoOverlay.style.pointerEvents = 'auto';
-      }
-    });
-
-    aftermovieVideo.addEventListener('ended', () => {
-      aftermovieVideo.removeAttribute('controls');
-      videoOverlay.style.opacity = '1';
-      videoOverlay.style.pointerEvents = 'auto';
-    });
-  }
-
-  // ====== HORIZONTAL PHOTO CAROUSEL NAVIGATION ======
-  const carouselWrapper = document.querySelector('.horizontal-carousel-wrapper');
-  const carouselPrevBtn = document.getElementById('carousel-prev-btn');
-  const carouselNextBtn = document.getElementById('carousel-next-btn');
-
-  if (carouselWrapper && carouselPrevBtn && carouselNextBtn) {
-    carouselPrevBtn.addEventListener('click', () => {
-      carouselWrapper.scrollBy({ left: -380, behavior: 'smooth' });
-    });
-
-    carouselNextBtn.addEventListener('click', () => {
-      carouselWrapper.scrollBy({ left: 380, behavior: 'smooth' });
-    });
-  }
-
-  // ====== HERO VIDEO TIMESTAMP LOOP (00:09 - 00:45) ======
-  const heroVideo = document.getElementById('hero-bg-video') as HTMLVideoElement;
-  if (heroVideo) {
-    const START_TIME = 9;
-    const END_TIME = 45;
-
-    // Set initial timestamp to 9 seconds
-    heroVideo.currentTime = START_TIME;
-
-    heroVideo.addEventListener('timeupdate', () => {
-      if (heroVideo.currentTime >= END_TIME || heroVideo.currentTime < START_TIME - 0.5) {
-        heroVideo.currentTime = START_TIME;
-      }
-    });
-
-    heroVideo.play().catch(() => {
-      // Autoplay fallback
-    });
-  }
-  // ====== HOMEPAGE 2.5-SECOND COIN-FLIP PRELOADER SCRIPT ======
-  const preloader = document.getElementById('hp-preloader');
-  if (preloader) {
-    document.body.style.overflow = 'hidden';
-
-    setTimeout(() => {
-      preloader.classList.add('fade-out');
-      document.body.style.overflow = '';
-    }, 2200);
-
-    setTimeout(() => {
-      preloader.style.display = 'none';
-    }, 2500);
+    };
+    aftermoviePlayBtn.addEventListener('click', startAftermovie);
+    videoOverlay.addEventListener('click', startAftermovie);
   }
 </script>
