@@ -2130,88 +2130,88 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
 
   
   
-  <!-- ==========================================
-       1. MASTERCLASS INFO & LINE-UP MODAL (CLEAN VINTAGE DESIGN)
+    <!-- ==========================================
+       1. MASTERCLASS INFO & LINE-UP MODAL (AUTHENTIC TICKET STYLING)
        ========================================== -->
   <div 
     class="modal-overlay" 
     id="masterclass-info-modal" 
     style="display: none; position: fixed; inset: 0; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(18, 17, 15, 0.82); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 999999; align-items: center; justify-content: center; padding: 1.5rem; overflow-y: auto; box-sizing: border-box;"
   >
-    <div class="vintage-modal-card" style="background: #FAF7F2; border: 1px solid #D8CFC0; border-radius: 14px; width: 100%; max-width: 660px; box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.45); position: relative; overflow: hidden; margin: auto; color: #171614;">
+    <div class="vintage-modal-card" style="background-color: var(--bg-sand, #FAF7F2); background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.08%22/%3E%3C/svg%3E'); border: 2px solid var(--border-color-dark, #8c6e46); border-radius: 12px; width: 100%; max-width: 680px; box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.5); position: relative; overflow: hidden; margin: auto; color: var(--text-charcoal, #171614);">
       
       <!-- Modal Header -->
-      <div style="padding: 1.5rem 2rem 1.25rem; background-color: #F3ECE0; border-bottom: 1px solid #E2D7C5; display: flex; justify-content: space-between; align-items: flex-start;">
+      <div style="padding: 1.5rem 2rem 1.25rem; background-color: var(--bg-parchment, #F3ECE0); border-bottom: 2px dashed rgba(140, 110, 70, 0.35); display: flex; justify-content: space-between; align-items: flex-start;">
         <div>
-          <span style="font-size: 0.7rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #8A6831; display: block; margin-bottom: 0.3rem;">MASTERCLASS PROEFLIJST &amp; DETAILS</span>
-          <h3 id="mc-modal-title" style="font-family: var(--font-display, serif); font-size: 1.65rem; color: #171614; margin: 0; line-height: 1.15; letter-spacing: 0.02em;">Masterclass Informatie</h3>
-          <p id="mc-modal-subtitle" style="font-size: 0.9rem; color: #665C54; margin: 0.35rem 0 0; line-height: 1.4;">Exclusieve proeverij</p>
+          <span style="font-family: var(--font-sans); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: #8a7050; display: block; margin-bottom: 0.3rem;">SPECIAL MASTERCLASS</span>
+          <h3 id="mc-modal-title" style="font-family: var(--font-display, serif); font-size: 1.85rem; color: var(--text-charcoal, #171614); margin: 0; line-height: 1.1; letter-spacing: 0.05em; text-transform: uppercase;">Masterclass Informatie</h3>
+          <p id="mc-modal-subtitle" style="font-family: var(--font-sans); font-size: 0.88rem; color: var(--text-muted, #665C54); margin: 0.35rem 0 0; line-height: 1.4;">Exclusieve proeverij</p>
         </div>
-        <button type="button" id="mc-modal-close" style="background: rgba(0, 0, 0, 0.05); border: 1px solid #D8CFC0; color: #665C54; cursor: pointer; padding: 0.4rem; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" aria-label="Sluiten">
+        <button type="button" id="mc-modal-close" style="background: rgba(0, 0, 0, 0.05); border: 1px solid rgba(140, 110, 70, 0.4); color: var(--text-charcoal); cursor: pointer; padding: 0.4rem; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" aria-label="Sluiten">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
       </div>
 
       <!-- Modal Body -->
-      <div style="max-height: 62vh; overflow-y: auto; padding: 1.75rem 2rem; display: flex; flex-direction: column; gap: 1.5rem;">
+      <div style="max-height: 60vh; overflow-y: auto; padding: 1.75rem 2rem; display: flex; flex-direction: column; gap: 1.5rem;">
         
         <!-- Ambassador Box -->
-        <div style="background: #FFFFFF; border: 1px solid #E6DDD0; border-radius: 10px; padding: 1.15rem 1.35rem; display: flex; gap: 1.15rem; align-items: flex-start; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);">
-          <div style="width: 44px; height: 44px; border-radius: 50%; background: #F3ECE0; border: 1px solid #D8CFC0; color: #8A6831; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;">
+        <div style="background: #FFFFFF; border: 1px solid rgba(140, 110, 70, 0.3); border-radius: 8px; padding: 1.15rem 1.35rem; display: flex; gap: 1.15rem; align-items: flex-start; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);">
+          <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--bg-parchment, #F3ECE0); border: 1px solid rgba(140, 110, 70, 0.4); color: var(--whisky-gold-dark, #8b5a1b); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
           </div>
           <div>
-            <strong id="mc-modal-ambassador-name" style="display: block; font-size: 1.05rem; color: #171614; font-family: var(--font-sans, sans-serif);">Ambassadeur</strong>
-            <span id="mc-modal-ambassador-title" style="font-size: 0.78rem; font-weight: 800; color: #8A6831; text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-top: 0.15rem; margin-bottom: 0.45rem;">Expert &amp; Host</span>
-            <p id="mc-modal-ambassador-bio" style="font-size: 0.88rem; color: #554D45; margin: 0; line-height: 1.55;">Bio...</p>
+            <strong id="mc-modal-ambassador-name" style="display: block; font-size: 1.05rem; color: var(--text-charcoal, #171614); font-family: var(--font-sans, sans-serif); font-weight: 700;">Ambassadeur</strong>
+            <span id="mc-modal-ambassador-title" style="font-family: var(--font-sans); font-size: 0.75rem; font-weight: 800; color: var(--whisky-gold-dark, #8b5a1b); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-top: 0.15rem; margin-bottom: 0.4rem;">Expert &amp; Host</span>
+            <p id="mc-modal-ambassador-bio" style="font-family: var(--font-sans); font-size: 0.88rem; color: var(--text-muted, #554D45); margin: 0; line-height: 1.55;">Bio...</p>
           </div>
         </div>
 
-        <!-- Meta Grid -->
+        <!-- Meta Grid (Matching TicketStub time-meta) -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-          <div style="background: #FFFFFF; border: 1px solid #E6DDD0; border-radius: 8px; padding: 0.85rem 1.15rem; display: flex; flex-direction: column; gap: 0.25rem;">
-            <span style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #887C70;">LOCATIE</span>
-            <strong id="mc-modal-location" style="font-size: 0.95rem; color: #171614;">-</strong>
+          <div style="background: #FFFFFF; border: 1px solid rgba(140, 110, 70, 0.3); border-radius: 6px; padding: 0.75rem 1rem; display: flex; flex-direction: column; gap: 0.2rem;">
+            <span style="font-family: var(--font-sans); font-size: 0.65rem; letter-spacing: 0.1em; color: rgba(80, 60, 40, 0.5); text-transform: uppercase;">LOCATIE</span>
+            <span id="mc-modal-location" style="font-family: var(--font-sans); font-size: 0.95rem; font-weight: 700; color: var(--text-charcoal); border-bottom: 1px dotted rgba(140, 110, 70, 0.4); padding-bottom: 2px;">-</span>
           </div>
-          <div style="background: #FFFFFF; border: 1px solid #E6DDD0; border-radius: 8px; padding: 0.85rem 1.15rem; display: flex; flex-direction: column; gap: 0.25rem;">
-            <span style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #887C70;">SESSIEDUUR</span>
-            <strong id="mc-modal-duration" style="font-size: 0.95rem; color: #171614;">-</strong>
+          <div style="background: #FFFFFF; border: 1px solid rgba(140, 110, 70, 0.3); border-radius: 6px; padding: 0.75rem 1rem; display: flex; flex-direction: column; gap: 0.2rem;">
+            <span style="font-family: var(--font-sans); font-size: 0.65rem; letter-spacing: 0.1em; color: rgba(80, 60, 40, 0.5); text-transform: uppercase;">SESSIEDUUR</span>
+            <span id="mc-modal-duration" style="font-family: var(--font-sans); font-size: 0.95rem; font-weight: 700; color: var(--text-charcoal); border-bottom: 1px dotted rgba(140, 110, 70, 0.4); padding-bottom: 2px;">-</span>
           </div>
         </div>
 
         <!-- Description -->
         <div>
-          <h4 style="font-family: var(--font-display, serif); font-size: 1.15rem; margin: 0 0 0.45rem 0; color: #171614; letter-spacing: 0.02em;">Over deze Masterclass</h4>
-          <p id="mc-modal-description" style="font-size: 0.92rem; color: #4A423A; line-height: 1.65; margin: 0;">Beschrijving...</p>
+          <h4 style="font-family: var(--font-display, serif); font-size: 1.25rem; margin: 0 0 0.45rem 0; color: var(--text-charcoal); letter-spacing: 0.05em; text-transform: uppercase;">Over deze Masterclass</h4>
+          <p id="mc-modal-description" style="font-family: var(--font-sans); font-size: 0.92rem; color: var(--text-charcoal); line-height: 1.6; margin: 0;">Beschrijving...</p>
         </div>
 
         <!-- Lineup -->
         <div>
-          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
-            <span style="color: #8A6831;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"></path><path d="M12 15v7"></path><path d="M6 3h12l-1 9a5 5 0 0 1-10 0L6 3z"></path></svg></span>
-            <h4 style="font-family: var(--font-display, serif); font-size: 1.15rem; margin: 0; color: #171614; letter-spacing: 0.02em;">Officiële Proeflijst (Inbegrepen Drams)</h4>
-          </div>
-          <ul id="mc-modal-lineup" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.55rem;">
+          <h4 style="font-family: var(--font-display, serif); font-size: 1.25rem; margin: 0 0 0.65rem 0; color: var(--text-charcoal); letter-spacing: 0.05em; text-transform: uppercase;">Officiële Proeflijst (Inbegrepen Drams)</h4>
+          <ul id="mc-modal-lineup" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem;">
           </ul>
         </div>
 
       </div>
 
-      <!-- Modal Footer -->
-      <div style="padding: 1.25rem 2rem; background: #F3ECE0; border-top: 1px solid #E2D7C5; display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+      <!-- Modal Footer (Matching Ticket Price Block Exactly!) -->
+      <div style="padding: 1.25rem 2rem; background-color: var(--bg-parchment, #F3ECE0); border-top: 2px dashed rgba(140, 110, 70, 0.35); display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
         <div>
-          <span style="font-size: 0.68rem; color: #776B5F; text-transform: uppercase; font-weight: 800; letter-spacing: 0.08em; display: block;">PRIJS P.P.</span>
-          <strong id="mc-modal-price" style="font-size: 1.45rem; color: #171614; font-family: var(--font-display, serif);">€ 0,00</strong>
+          <span style="font-family: var(--font-sans); font-size: 0.65rem; letter-spacing: 0.1em; color: rgba(80, 60, 40, 0.6); text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 2px;">PRIJS P.P.</span>
+          <div class="ticket-price-block" id="mc-modal-price-block" style="display: flex; align-items: baseline; color: var(--success-green, #006448);">
+            <span class="price-currency" style="font-size: 1.25rem; font-weight: 700; font-family: var(--font-sans); margin-right: 2px;">&euro;</span>
+            <span class="price-val" id="mc-modal-price-val" style="font-size: 2.8rem; font-family: var(--font-display, serif); line-height: 1;">0</span>
+            <span class="price-cents" id="mc-modal-price-cents" style="font-size: 1.25rem; font-weight: 700; font-family: var(--font-sans);">,00</span>
+          </div>
         </div>
-        <button type="button" id="mc-modal-add-btn" style="display: inline-flex; align-items: center; justify-content: center; background: #C58B39; color: #FFFFFF; border: none; padding: 0.75rem 1.6rem; font-family: var(--font-sans, sans-serif); font-size: 0.92rem; font-weight: 800; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(197, 139, 57, 0.35);">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 6px;"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+        <button type="button" class="btn btn-gold" id="mc-modal-add-btn" style="height: 48px; padding: 0 1.6rem; font-size: 1.15rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 8px;"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
           Toevoegen aan Winkelmand
         </button>
       </div>
     </div>
   </div>
 
-  
   <!-- ==========================================
        2. DYNAMIC ADD-ON UPSELL MODAL
        ========================================== -->
