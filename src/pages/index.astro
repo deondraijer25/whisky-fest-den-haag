@@ -105,15 +105,84 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       </div>
     </section>
 
-    <!-- 3. HORIZONTAL TRUST LOGO BAR -->
-    <section class="trust-strip">
-      <!-- Mocks of partner/distillery names -->
-      <span class="trust-text-logo">Highland Park</span>
-      <span class="trust-text-logo">The Macallan</span>
-      <span class="trust-text-logo">Glenfiddich</span>
-      <span class="trust-text-logo">Laphroaig</span>
-      <span class="trust-text-logo">Ardbeg</span>
-      <span class="trust-text-logo">Springbank</span>
+        <!-- 3. CONTINUOUS MOVING PARTNER & DISTILLERY SLIDER -->
+    <section class="trust-strip" aria-label="Aanwezige Partner Distilleerderijen">
+      <div class="partner-marquee-track">
+        
+        <span class="trust-text-logo">The Macallan</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Highland Park</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Glenfiddich</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">The Balvenie</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Laphroaig</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Ardbeg</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Springbank</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Bowmore</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Teeling Whiskey</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">SMWS</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">House of Suntory</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Glengoyne</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Arran Single Malt</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Talisker</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Lagavulin</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Dalmore</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Oban</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Nc'nean</span>
+        <span class="partner-sep">◆</span>
+        
+        <span class="trust-text-logo">The Macallan</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Highland Park</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Glenfiddich</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">The Balvenie</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Laphroaig</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Ardbeg</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Springbank</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Bowmore</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Teeling Whiskey</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">SMWS</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">House of Suntory</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Glengoyne</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Arran Single Malt</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Talisker</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Lagavulin</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Dalmore</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Oban</span>
+        <span class="partner-sep">◆</span>
+        <span class="trust-text-logo">Nc'nean</span>
+        <span class="partner-sep">◆</span>
+      </div>
     </section>
 
     <!-- 4. TORN PAPER TICKET SECTION -->
@@ -869,6 +938,73 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
+  }
+
+  /* ====================================================
+     CONTINUOUS PARTNER / DISTILLERY MARQUEE SLIDER
+     ==================================================== */
+  .trust-strip {
+    background-color: var(--bg-sand, #FAF7F2);
+    border-top: 1px solid var(--border-color, #E6DDD0);
+    border-bottom: 1px solid var(--border-color, #E6DDD0);
+    padding: 1.65rem 0;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  }
+
+  .partner-marquee-track {
+    display: flex;
+    align-items: center;
+    gap: 3.5rem;
+    width: max-content;
+    white-space: nowrap;
+    animation: partnerMarqueeScroll 42s linear infinite;
+    will-change: transform;
+  }
+
+  .trust-strip:hover .partner-marquee-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes partnerMarqueeScroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .trust-text-logo {
+    font-family: var(--font-display, serif);
+    font-size: 1.4rem;
+    color: var(--text-charcoal, #171614);
+    opacity: 0.55;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    cursor: default;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .trust-text-logo:hover {
+    opacity: 1;
+    color: #006448;
+    transform: scale(1.06);
+  }
+
+  .partner-sep {
+    color: var(--whisky-gold, #C58B39);
+    font-size: 0.8rem;
+    opacity: 0.7;
+    user-select: none;
   }
 </style>
 
