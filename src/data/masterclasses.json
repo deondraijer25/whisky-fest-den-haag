@@ -3,9 +3,8 @@
     "id": "intro-tickets",
     "title": "Whisky Introductie",
     "subtitle": "Basis Nosing & Tasting voor Beginners",
-    "price": "€ 7,50",
+    "price": 7.5,
     "duration": "40 minuten",
-    "location": "Nutshuis - Spaarkamer",
     "ambassador": {
       "name": "Valentijn Klop",
       "title": "Certified Whisky Educator & Sommelier",
@@ -18,12 +17,11 @@
     "description": "De perfecte start van uw festivaldag! Leer de basisprincipes van het proeven, het herkennen van aroma's en hoe u het maximale uit uw festivalbezoek haalt."
   },
   {
-    "id": "macallan-exclusive",
-    "title": "Macallan Exclusive Experience",
-    "subtitle": "Exclusieve Sherry Cask Single Malts",
-    "price": "€ 77,50",
-    "duration": "60 minuten",
-    "location": "Grote Kerk Den Haag (Haagsche Toren)",
+    "id": "mc-macallan-inc",
+    "title": "Macallan Exclusive (Inc. Torenklim)",
+    "subtitle": "Exclusieve Sherry Cask Single Malts & Torenbeleving",
+    "price": 77.5,
+    "duration": "120 minuten",
     "ambassador": {
       "name": "Gerard Spaans",
       "title": "Master of Malt & Senior Brand Ambassador",
@@ -33,18 +31,226 @@
       "The Macallan 12 Y.O. Double Cask",
       "The Macallan 15 Y.O. Double Cask",
       "The Macallan 18 Y.O. Sherry Oak Cask (Iconic)",
-      "The Macallan Rare Cask Release 2025/2026",
+      "The Macallan Rare Cask Release",
       "Secret Distillery Cask Sample (Exclusive)"
     ],
-    "description": "Een ongeëvenaarde proeverij van 's werelds meest begeerde distilleerderij. Inclusief beklimming van de Haagsche Toren."
+    "description": "Een ongeëvenaarde proeverij van 's werelds meest begeerde distilleerderij inclusief adembenemende torenbeklimming."
+  },
+  {
+    "id": "mc-macallan-ex",
+    "title": "Macallan Exclusive (Zonder Klim)",
+    "subtitle": "Exclusieve Sherry Cask Single Malts",
+    "price": 70,
+    "duration": "60 minuten",
+    "ambassador": {
+      "name": "Gerard Spaans",
+      "title": "Master of Malt & Senior Brand Ambassador",
+      "bio": "Al meer dan 20 jaar dé autoriteit op het gebied van Schotse single malts en zeldzame Macallan bottelingen."
+    },
+    "tastingLineup": [
+      "The Macallan 12 Y.O. Double Cask",
+      "The Macallan 15 Y.O. Double Cask",
+      "The Macallan 18 Y.O. Sherry Oak Cask",
+      "The Macallan Rare Cask Release"
+    ],
+    "description": "Exclusieve proeverij van zeldzame Macallan bottelingen in de intieme setting van de festival tasting room."
+  },
+  {
+    "id": "mc-teeling-fri",
+    "title": "Teeling Whiskey Masterclass",
+    "subtitle": "Dublin's Craft Renaissance",
+    "price": 20,
+    "duration": "45 minuten",
+    "ambassador": {
+      "name": "Chris Hayes",
+      "title": "European Brand Ambassador Teeling",
+      "bio": "Chris brengt de energie en innovatie van de Newmarket distilleerderij uit Dublin rechtstreeks naar het festival."
+    },
+    "tastingLineup": [
+      "Teeling Small Batch Rum Cask",
+      "Teeling Single Grain Red Wine Cask",
+      "Teeling Single Pot Still (100% Dublin)",
+      "Teeling Renaissance Series 18 Y.O."
+    ],
+    "description": "Ervaar waarom Irish Whiskey de snelst groeiende categorie ter wereld is met deze baanbrekende Dublin single malts."
+  },
+  {
+    "id": "mc-teeling-sat-mid",
+    "title": "Teeling Whiskey Masterclass",
+    "subtitle": "Dublin's Craft Renaissance",
+    "price": 20,
+    "duration": "45 minuten",
+    "ambassador": {
+      "name": "Chris Hayes",
+      "title": "European Brand Ambassador Teeling",
+      "bio": "Chris brengt de energie en innovatie van de Newmarket distilleerderij uit Dublin rechtstreeks naar het festival."
+    },
+    "tastingLineup": [
+      "Teeling Small Batch Rum Cask",
+      "Teeling Single Grain Red Wine Cask",
+      "Teeling Single Pot Still",
+      "Teeling Renaissance Series"
+    ],
+    "description": "Ervaar waarom Irish Whiskey de snelst groeiende categorie ter wereld is met deze baanbrekende Dublin single malts."
+  },
+  {
+    "id": "mc-teeling-sat-eve",
+    "title": "Teeling Whiskey Masterclass",
+    "subtitle": "Dublin's Craft Renaissance",
+    "price": 20,
+    "duration": "45 minuten",
+    "ambassador": {
+      "name": "Chris Hayes",
+      "title": "European Brand Ambassador Teeling",
+      "bio": "Chris brengt de energie en innovatie van de Newmarket distilleerderij uit Dublin rechtstreeks naar het festival."
+    },
+    "tastingLineup": [
+      "Teeling Small Batch Rum Cask",
+      "Teeling Single Grain Red Wine Cask",
+      "Teeling Single Pot Still",
+      "Teeling Renaissance Series"
+    ],
+    "description": "Ervaar waarom Irish Whiskey de snelst groeiende categorie ter wereld is met deze baanbrekende Dublin single malts."
+  },
+  {
+    "id": "mc-smws-fri",
+    "title": "SMWS - Get into the good stuff!",
+    "subtitle": "The Scotch Malt Whisky Society Cask Strength",
+    "price": 25,
+    "duration": "45 minuten",
+    "ambassador": {
+      "name": "Richard Wayland",
+      "title": "SMWS Tasting Specialist & Cask Master",
+      "bio": "Richard neemt u mee in de fascinerende wereld van single cask, cask strength whisky's zonder concessies."
+    },
+    "tastingLineup": [
+      "SMWS Sweet, Fruity & Mellow Cask Sample",
+      "SMWS Deep, Rich & Dried Fruits (First Fill Sherry)",
+      "SMWS Oily & Coastal Single Cask",
+      "SMWS Heavily Peated Islay Cask Strength"
+    ],
+    "description": "Unieke proeverij van onverdunde, non-chillfiltered single cask bottelingen van 's werelds meest exclusieve whiskyclub."
+  },
+  {
+    "id": "mc-smws-sun",
+    "title": "SMWS - Get into the good stuff!",
+    "subtitle": "The Scotch Malt Whisky Society Cask Strength",
+    "price": 25,
+    "duration": "45 minuten",
+    "ambassador": {
+      "name": "Richard Wayland",
+      "title": "SMWS Tasting Specialist & Cask Master",
+      "bio": "Richard neemt u mee in de fascinerende wereld van single cask, cask strength whisky's zonder concessies."
+    },
+    "tastingLineup": [
+      "SMWS Sweet, Fruity & Mellow Cask Sample",
+      "SMWS Deep, Rich & Dried Fruits (First Fill Sherry)",
+      "SMWS Oily & Coastal Single Cask",
+      "SMWS Heavily Peated Islay Cask Strength"
+    ],
+    "description": "Unieke proeverij van onverdunde, non-chillfiltered single cask bottelingen van 's werelds meest exclusieve whiskyclub."
+  },
+  {
+    "id": "mc-glengoyne-fri",
+    "title": "Glengoyne & Tamdhu Tasting",
+    "subtitle": "The Slow Distillation & Sherry Kings",
+    "price": 35,
+    "duration": "50 minuten",
+    "ambassador": {
+      "name": "Gordon Dallas",
+      "title": "Ian Macleod Distillers Ambassador",
+      "bio": "Gordon is een vat vol verhalen over het langzaamste distillatieproces van Schotland en 's werelds beste Oloroso vaten."
+    },
+    "tastingLineup": [
+      "Glengoyne 12 Y.O. Unpeated Highland Single Malt",
+      "Glengoyne 18 Y.O. First Fill Sherry Oak",
+      "Tamdhu 15 Y.O. 100% Oloroso Sherry Cask",
+      "Tamdhu Batch Strength Release"
+    ],
+    "description": "Ontdek de diepe, weelderige sherrytonen en het geduldige vakmanschap van Glengoyne en Tamdhu."
+  },
+  {
+    "id": "mc-glenfiddich-fri",
+    "title": "Glenfiddich Old Timers",
+    "subtitle": "Legendarische Speyside Vintage Vaten",
+    "price": 55,
+    "duration": "60 minuten",
+    "ambassador": {
+      "name": "Tony van Rooijen",
+      "title": "Brand Ambassador William Grant & Sons",
+      "bio": "Met decennia aan ervaring in de whiskywereld ontrafelt Tony de geheimen achter 's werelds meest bekroonde single malt."
+    },
+    "tastingLineup": [
+      "Glenfiddich 18 Y.O. Small Batch Reserve",
+      "Glenfiddich 21 Y.O. Reserva Rum Cask Finish",
+      "Glenfiddich 23 Y.O. Grand Cru (French Cuvée Cask)",
+      "Glenfiddich Archive Sample 1990s"
+    ],
+    "description": "Een uitzonderlijke proeverij met zeer oude en zeldzame Glenfiddich expressies."
+  },
+  {
+    "id": "mc-sculte-fri",
+    "title": "Stokerij Sculte: The Taste of Oak",
+    "subtitle": "Twentse Eiken & Nederlands Gedistilleerd",
+    "price": 49.5,
+    "duration": "45 minuten",
+    "ambassador": {
+      "name": "Gerard Velthuis",
+      "title": "Meesterstoker Stokerij Sculte",
+      "bio": "Pionier van Nederlandse premium whisky, gerijpt op eeuwenoud Twents eikenhout."
+    },
+    "tastingLineup": [
+      "Sculte Pure Twentse Whisky (Twents Eiken)",
+      "Sculte Cask Strength Special Reserve",
+      "Sculte Sherry Wood Finish Exclusive",
+      "Sculte New Make Cask Sample"
+    ],
+    "description": "Maak kennis met de absolute top van Nederlandse whiskyproductie en de invloed van inheems eikenhout."
+  },
+  {
+    "id": "mc-suntory-fri",
+    "title": "House of Suntory: Japanese Portfolio",
+    "subtitle": "The Art of Japanese Harmony",
+    "price": 20,
+    "duration": "45 minuten",
+    "ambassador": {
+      "name": "Kenji Sato",
+      "title": "Suntory Brand Specialist",
+      "bio": "Kenji brengt de Japanse filosofie van 'Monozukuri' en balans tot leven in het glas."
+    },
+    "tastingLineup": [
+      "Yamazaki Distiller's Reserve",
+      "Hakushu Distiller's Reserve (Fresh & Smoky)",
+      "Hibiki Japanese Harmony",
+      "Chita Single Grain"
+    ],
+    "description": "Een verfijnde zintuiglijke ontdekkingsreis langs de meest iconische distilleerderijen van Japan."
+  },
+  {
+    "id": "mc-balvenie-fri",
+    "title": "The Balvenie Old Timers",
+    "subtitle": "Handcrafted Speyside Single Malts",
+    "price": 65,
+    "duration": "60 minuten",
+    "ambassador": {
+      "name": "Tony van Rooijen",
+      "title": "Brand Ambassador William Grant & Sons",
+      "bio": "Tony laat u proeven hoe traditioneel vloermouten en eigen kuiperij leiden tot ongeëvenaarde honingzachte whisky."
+    },
+    "tastingLineup": [
+      "The Balvenie 14 Y.O. Caribbean Cask",
+      "The Balvenie 16 Y.O. French Oak Pineau Cask",
+      "The Balvenie 21 Y.O. PortWood",
+      "The Balvenie Tun 1509 Exclusive Batch"
+    ],
+    "description": "Proef het ultieme handwerk van David Stewart MBE met deze zeldzame selectie The Balvenie bottelingen."
   },
   {
     "id": "session-mc-highland-park",
     "title": "Highland Park: Orkney Viking Soul",
     "subtitle": "Heidehoning & Subtiele Turf",
-    "price": "€ 22,50",
+    "price": 22.5,
     "duration": "45 minuten",
-    "location": "Nutshuis - Telkamer",
     "ambassador": {
       "name": "Martin Markvardsen",
       "title": "Global Brand Ambassador Highland Park",
@@ -54,29 +260,8 @@
       "Highland Park 12 Y.O. Viking Honour",
       "Highland Park 15 Y.O. Viking Heart (Keramiek)",
       "Highland Park 18 Y.O. Viking Pride",
-      "Highland Park Cask Strength Release No. 5"
+      "Highland Park Cask Strength Release"
     ],
     "description": "Proef het unieke samenspel van aromatische heideturf, Oloroso sherryvaten en het zilte noordelijke zeeklimaat van de Orkney eilanden."
-  },
-  {
-    "id": "session-mc-glenfiddich",
-    "title": "Glenfiddich & The Balvenie Showcase",
-    "subtitle": "Speyside Icons & Ambachtelijk Kuiperijwerk",
-    "price": "€ 25,00",
-    "duration": "45 minuten",
-    "location": "Nutshuis - Foyer",
-    "ambassador": {
-      "name": "Tony van Rooijen",
-      "title": "William Grant & Sons Ambassador",
-      "bio": "Gepassioneerd verhalenverteller over traditioneel vakmanschap, vloermouterijen en ambachtelijk kuiperijwerk in Dufftown."
-    },
-    "tastingLineup": [
-      "Glenfiddich 15 Y.O. Solera Reserve",
-      "Glenfiddich 18 Y.O. Small Batch Reserve",
-      "The Balvenie 12 Y.O. DoubleWood",
-      "The Balvenie 14 Y.O. Caribbean Cask",
-      "The Balvenie 16 Y.O. French Oak"
-    ],
-    "description": "Vergelijk twee legendarische zuster-distilleerderijen uit Dufftown en ontdek hoe houtkeuze en Solera-rijping het smaakprofiel transformeren."
   }
 ]
