@@ -2211,74 +2211,30 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     </div>
   </div>
 
+  
   <!-- ==========================================
-       2. ADD-ON UPSELL MODAL (CLEAN VINTAGE DESIGN)
+       2. DYNAMIC ADD-ON UPSELL MODAL
        ========================================== -->
   <div 
     class="modal-overlay" 
     id="addon-upsell-modal" 
     style="display: none; position: fixed; inset: 0; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(18, 17, 15, 0.82); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 999999; align-items: center; justify-content: center; padding: 1.5rem; overflow-y: auto; box-sizing: border-box;"
   >
-    <div class="vintage-modal-card" style="background: #FAF7F2; border: 1px solid #D8CFC0; border-radius: 14px; width: 100%; max-width: 640px; box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.45); position: relative; overflow: hidden; margin: auto; color: #171614;">
+    <div class="vintage-modal-card" style="background: #FAF7F2; border: 1px solid #D8CFC0; border-radius: 14px; width: 100%; max-width: 680px; box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.45); position: relative; overflow: hidden; margin: auto; color: #171614;">
       
       <div style="padding: 1.5rem 2rem 1.25rem; background-color: #F3ECE0; border-bottom: 1px solid #E2D7C5; display: flex; justify-content: space-between; align-items: flex-start;">
         <div>
-          <span style="font-size: 0.7rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #8A6831; display: block; margin-bottom: 0.3rem;">VERRIJK UW BELEVING</span>
-          <h3 style="font-family: var(--font-display, serif); font-size: 1.65rem; color: #171614; margin: 0; line-height: 1.15; letter-spacing: 0.02em;">Maak uw Festivaldag Compleet</h3>
-          <p style="font-size: 0.9rem; color: #665C54; margin: 0.35rem 0 0; line-height: 1.4;">Wilt u nog een exclusieve Masterclass toevoegen vóór het afrekenen?</p>
+          <span style="font-size: 0.7rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #8A6831; display: block; margin-bottom: 0.3rem;">FESTIVAL ADD-ONS &amp; MASTERCLASSES</span>
+          <h3 style="font-family: var(--font-display, serif); font-size: 1.65rem; color: #171614; margin: 0; line-height: 1.15; letter-spacing: 0.02em;">Maak uw Festivalbeleving Compleet</h3>
+          <p style="font-size: 0.9rem; color: #665C54; margin: 0.35rem 0 0; line-height: 1.4;">Wilt u nog een exclusieve Masterclass toevoegen aan uw bestelling?</p>
         </div>
         <button type="button" id="addon-upsell-close" style="background: rgba(0, 0, 0, 0.05); border: 1px solid #D8CFC0; color: #665C54; cursor: pointer; padding: 0.4rem; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" aria-label="Sluiten">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
       </div>
 
-      <div style="max-height: 58vh; overflow-y: auto; padding: 1.75rem 2rem; display: flex; flex-direction: column; gap: 0.9rem;">
-        <p style="font-size: 0.9rem; color: #554D45; margin: 0 0 0.5rem 0; line-height: 1.5;">
-          Populaire festival add-ons die u direct kunt toevoegen aan uw reservering:
-        </p>
-
-        <!-- Upsell 1 -->
-        <div style="background: #FFFFFF; border: 1px solid #E6DDD0; border-radius: 10px; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);">
-          <div>
-            <strong style="font-size: 1rem; color: #171614; display: block;">Whisky Introductie Masterclass</strong>
-            <span style="font-size: 0.82rem; color: #665C54;">40 min nosing &amp; tasting workshop voor beginners</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 0.85rem; flex-shrink: 0;">
-            <strong style="color: #8A6831; font-size: 1.05rem; font-family: var(--font-display, serif);">€ 7,50</strong>
-            <button type="button" class="btn-upsell-add" data-upsell-id="intro-tickets" style="display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.45rem 0.85rem; font-size: 0.82rem; font-weight: 800; border: 1.5px solid #C58B39; color: #8A6831; background: #FAF7F2; cursor: pointer; border-radius: 6px; transition: all 0.2s;">
-              + In Winkelmand
-            </button>
-          </div>
-        </div>
-
-        <!-- Upsell 2 -->
-        <div style="background: #FFFFFF; border: 1px solid #E6DDD0; border-radius: 10px; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);">
-          <div>
-            <strong style="font-size: 1rem; color: #171614; display: block;">Macallan Exclusive Experience</strong>
-            <span style="font-size: 0.82rem; color: #665C54;">Zeldzame Sherry Cask bottelingen met Gerard Spaans</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 0.85rem; flex-shrink: 0;">
-            <strong style="color: #8A6831; font-size: 1.05rem; font-family: var(--font-display, serif);">€ 77,50</strong>
-            <button type="button" class="btn-upsell-add" data-upsell-id="macallan-exclusive" style="display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.45rem 0.85rem; font-size: 0.82rem; font-weight: 800; border: 1.5px solid #C58B39; color: #8A6831; background: #FAF7F2; cursor: pointer; border-radius: 6px; transition: all 0.2s;">
-              + In Winkelmand
-            </button>
-          </div>
-        </div>
-
-        <!-- Upsell 3 -->
-        <div style="background: #FFFFFF; border: 1px solid #E6DDD0; border-radius: 10px; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);">
-          <div>
-            <strong style="font-size: 1rem; color: #171614; display: block;">Highland Park Masterclass</strong>
-            <span style="font-size: 0.82rem; color: #665C54;">Orkney Viking Soul met Martin Markvardsen</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 0.85rem; flex-shrink: 0;">
-            <strong style="color: #8A6831; font-size: 1.05rem; font-family: var(--font-display, serif);">€ 22,50</strong>
-            <button type="button" class="btn-upsell-add" data-upsell-id="session-mc-highland-park" style="display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.45rem 0.85rem; font-size: 0.82rem; font-weight: 800; border: 1.5px solid #C58B39; color: #8A6831; background: #FAF7F2; cursor: pointer; border-radius: 6px; transition: all 0.2s;">
-              + In Winkelmand
-            </button>
-          </div>
-        </div>
-
+      <div style="max-height: 58vh; overflow-y: auto; padding: 1.75rem 2rem; display: flex; flex-direction: column; gap: 0.85rem;" id="addon-upsell-list">
+        <!-- Populated dynamically with ALL masterclasses & add-ons -->
       </div>
 
       <!-- Footer -->
@@ -4895,32 +4851,126 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     }
   }
 
+  
+  // Render all Masterclasses dynamically in the Add-on Upsell Modal
+  function renderAddonUpsellList() {
+    const listContainer = document.getElementById('addon-upsell-list');
+    if (!listContainer) return;
+
+    if (!masterclassesList || masterclassesList.length === 0) {
+      listContainer.innerHTML = '<p style="color:#777; font-size:0.9rem;">Geen extra masterclasses beschikbaar.</p>';
+      return;
+    }
+
+    listContainer.innerHTML = masterclassesList.map(mc => {
+      const currentQty = (cart[mc.id] && cart[mc.id].qty) || 0;
+      const isAdded = currentQty > 0;
+      return `
+        <div style="background: #FFFFFF; border: 1px solid #E6DDD0; border-radius: 10px; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);">
+          <div style="flex: 1;">
+            <strong style="font-size: 1rem; color: #171614; display: block; line-height: 1.25;">${mc.title}</strong>
+            <span style="font-size: 0.82rem; color: #665C54; display: block; margin-top: 0.2rem;">
+              ${mc.ambassador ? mc.ambassador.name + ' • ' : ''}${mc.location || 'Festivalzaal'} (${mc.duration || '45 min'})
+            </span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.85rem; flex-shrink: 0;">
+            <strong style="color: #8A6831; font-size: 1.1rem; font-family: var(--font-display, serif); white-space: nowrap;">
+              € ${mc.price.toFixed(2).replace('.', ',')}
+            </strong>
+            <button 
+              type="button" 
+              class="btn-upsell-add-item" 
+              data-upsell-mc-id="${mc.id}"
+              style="display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.5rem 0.95rem; font-size: 0.82rem; font-weight: 800; border: 1.5px solid ${isAdded ? '#006448' : '#C58B39'}; color: ${isAdded ? '#FFFFFF' : '#8A6831'}; background: ${isAdded ? '#006448' : '#FAF7F2'}; cursor: pointer; border-radius: 6px; transition: all 0.2s;"
+            >
+              ${isAdded ? '✓ Toegevoegd (' + currentQty + ')' : '+ In Winkelmand'}
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Handle Upsell Add-to-cart clicks
+  document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.btn-upsell-add-item');
+    if (!btn) return;
+    const mcId = btn.getAttribute('data-upsell-mc-id');
+    if (!mcId) return;
+
+    const mc = masterclassesList.find(m => m.id === mcId);
+    if (!mc) return;
+
+    if (!cart[mcId]) {
+      cart[mcId] = {
+        title: mc.title,
+        price: mc.price,
+        qty: 0,
+        category: 'masterclass'
+      };
+    }
+    cart[mcId].qty += 1;
+    saveCart();
+    updateCartUI();
+    renderAddonUpsellList();
+  });
+
+  let upsellShownThisClick = false;
+
   function handleCheckoutClick(e) {
     if (e && e.preventDefault) e.preventDefault();
 
-    const activeItems = Object.keys(cart).map(k => cart[k]).filter(item => item && item.qty > 0);
-    const hasOnlyEntree = activeItems.length > 0 && activeItems.every(item => item.category === 'entree');
+    const activeCount = Object.keys(cart).reduce((sum, k) => sum + ((cart[k] && cart[k].qty) || 0), 0);
+    if (activeCount === 0) {
+      alert('Uw winkelwagen is leeg. Selecteer eerst een ticket.');
+      return;
+    }
 
-    if (hasOnlyEntree && upsellModal) {
+    // Always show upsell popup first when clicking Afrekenen
+    if (upsellModal && !upsellShownThisClick) {
+      renderAddonUpsellList();
       upsellModal.style.display = 'flex';
       document.body.style.overflow = 'hidden';
     } else {
+      upsellShownThisClick = false;
       openCheckoutModal();
     }
   }
 
-  // Bind to checkoutBtn
-  if (checkoutBtn) {
-    // Remove old listeners by replacing or assigning
-    checkoutBtn.onclick = handleCheckoutClick;
+  // Global delegated listener for ANY checkout button across the entire page
+  document.addEventListener('click', function(e) {
+    const target = e.target.closest('#checkout-btn, #checkout-trigger-btn, .btn-checkout, #header-dropdown-checkout-btn, [data-action="checkout"]');
+    if (target) {
+      e.preventDefault();
+      handleCheckoutClick(e);
+    }
+  });
+
+  if (upsellModalProceed) {
+    upsellModalProceed.onclick = function() {
+      if (upsellModal) upsellModal.style.display = 'none';
+      upsellShownThisClick = false;
+      openCheckoutModal();
+    };
   }
 
-  const checkoutTriggerBtn = document.getElementById('checkout-trigger-btn');
-  if (checkoutTriggerBtn) {
-    checkoutTriggerBtn.onclick = handleCheckoutClick;
+  if (upsellModalCancel) {
+    upsellModalCancel.onclick = function() {
+      if (upsellModal) upsellModal.style.display = 'none';
+      upsellShownThisClick = false;
+      openCheckoutModal();
+    };
   }
 
-  // Open Masterclass Modal with bulletproof fuzzy matching
+  if (upsellModalClose) {
+    upsellModalClose.onclick = function() {
+      if (upsellModal) upsellModal.style.display = 'none';
+      upsellShownThisClick = false;
+      document.body.style.overflow = 'auto';
+    };
+  }
+
+
   function openMasterclassModal(mcId) {
     activeMcId = mcId;
     let mc = masterclassesList.find(m => m.id === mcId);
