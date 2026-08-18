@@ -1,8 +1,9 @@
 ---
 // src/components/Footer.astro
-import LogoAmsterdamSvg from '../assets/LogosAll/logo-wit-amsterdam.svg?raw';
-import LogoDenHaagSvg from '../assets/LogosAll/logo-wit-denhaag.svg?raw';
-import LogoGentSvg from '../assets/LogosAll/logo-wit-gent.svg?raw';
+// 1-on-1 original vectors direct from folder: Middel 13, 14, 15
+import Middel13Svg from '../assets/Logo/Logo wit svg/Middel 13.svg?raw'; // Gent
+import Middel14Svg from '../assets/Logo/Logo wit svg/Middel 14.svg?raw'; // Amsterdam
+import Middel15Svg from '../assets/Logo/Logo wit svg/Middel 15.svg?raw'; // Den Haag
 
 interface Props {
   currentCity?: string;
@@ -12,88 +13,59 @@ const { currentCity = 'denhaag' } = Astro.props;
 ---
 
 <footer class="site-footer">
-  <!-- Ripped Paper Overlay (Restored Vintage Light-to-Dark Paper Transition) -->
+  <!-- Ripped Paper Overlay -->
   <div class="torn-edge-wrap" aria-hidden="true">
     <img src="/torn-top.svg?v=2" alt="" class="torn-edge-img" />
   </div>
 
   <div class="footer-inner">
 
-    <!-- 1. TOP SECTION: 3 FESTIVAL CROSS-LINK LOGOS IN A ROW -->
-    <section class="footer-festivals-crosslink">
-      <div class="crosslink-header">
-        <span class="crosslink-tag">ONZE DRIE FESTIVAL LOCATIES</span>
-        <h3 class="crosslink-title">Ontdek Alle Whisky Festivals</h3>
-        <div class="crosslink-gold-line"></div>
-        <p class="crosslink-subtitle">
-          Bezoek onze zusterfestivals en bestel direct uw tickets voor Den Haag, Amsterdam en Gent.
-        </p>
-      </div>
+    <!-- 1. TOP SECTION: 3 LARGE FREESTANDING WHITE LOGOS IN A ROW (NO CARDS/BOXES) -->
+    <div class="footer-hero-logos-strip">
+      
+      <!-- LOGO 1: AMSTERDAM (Middel 14.svg) -->
+      <a 
+        href="https://whisky-fest-amsterdam.vercel.app" 
+        class="freestanding-logo-link"
+        title="Bezoek Whisky Fest Amsterdam"
+        target={currentCity === 'amsterdam' ? '_self' : '_blank'}
+        rel="noopener noreferrer"
+        aria-label="Whisky Fest Amsterdam"
+      >
+        <div class="freestanding-svg-wrapper">
+          <Fragment set:html={Middel14Svg} />
+        </div>
+      </a>
 
-      <div class="festivals-logo-row">
-        
-        <!-- CARD 1: AMSTERDAM -->
-        <a 
-          href="https://whisky-fest-amsterdam.vercel.app" 
-          class={`festival-logo-card ${currentCity === 'amsterdam' ? 'is-current' : ''}`}
-          title="Naar Whisky Fest Amsterdam (De Kromhouthal)"
-          target={currentCity === 'amsterdam' ? '_self' : '_blank'}
-          rel="noopener noreferrer"
-        >
-          <div class="logo-svg-stage">
-            <Fragment set:html={LogoAmsterdamSvg} />
-          </div>
-          <div class="card-info">
-            <strong class="card-city-name">AMSTERDAM</strong>
-            <span class="card-venue">De Kromhouthal</span>
-            <span class="card-badge">
-              {currentCity === 'amsterdam' ? '● Huidige Website' : 'Bezoek Festival →'}
-            </span>
-          </div>
-        </a>
+      <!-- LOGO 2: DEN HAAG (Middel 15.svg) -->
+      <a 
+        href="https://whisky-fest-den-haag.vercel.app" 
+        class="freestanding-logo-link"
+        title="Bezoek International Whisky Festival Den Haag"
+        target={currentCity === 'denhaag' ? '_self' : '_blank'}
+        rel="noopener noreferrer"
+        aria-label="International Whisky Festival Den Haag"
+      >
+        <div class="freestanding-svg-wrapper">
+          <Fragment set:html={Middel15Svg} />
+        </div>
+      </a>
 
-        <!-- CARD 2: DEN HAAG -->
-        <a 
-          href="https://whisky-fest-den-haag.vercel.app" 
-          class={`festival-logo-card ${currentCity === 'denhaag' ? 'is-current' : ''}`}
-          title="Naar International Whisky Festival Den Haag (Grote Kerk)"
-          target={currentCity === 'denhaag' ? '_self' : '_blank'}
-          rel="noopener noreferrer"
-        >
-          <div class="logo-svg-stage">
-            <Fragment set:html={LogoDenHaagSvg} />
-          </div>
-          <div class="card-info">
-            <strong class="card-city-name">DEN HAAG</strong>
-            <span class="card-venue">Grote Kerk</span>
-            <span class="card-badge">
-              {currentCity === 'denhaag' ? '● Huidige Website' : 'Bezoek Festival →'}
-            </span>
-          </div>
-        </a>
+      <!-- LOGO 3: GENT (Middel 13.svg) -->
+      <a 
+        href="https://whisky-fest-gent.vercel.app" 
+        class="freestanding-logo-link"
+        title="Bezoek Gents Whisky Festival"
+        target={currentCity === 'gent' ? '_self' : '_blank'}
+        rel="noopener noreferrer"
+        aria-label="Gents Whisky Festival"
+      >
+        <div class="freestanding-svg-wrapper">
+          <Fragment set:html={Middel13Svg} />
+        </div>
+      </a>
 
-        <!-- CARD 3: GENT -->
-        <a 
-          href="https://whisky-fest-gent.vercel.app" 
-          class={`festival-logo-card ${currentCity === 'gent' ? 'is-current' : ''}`}
-          title="Naar Gents Whisky Festival (ICC Gent)"
-          target={currentCity === 'gent' ? '_self' : '_blank'}
-          rel="noopener noreferrer"
-        >
-          <div class="logo-svg-stage">
-            <Fragment set:html={LogoGentSvg} />
-          </div>
-          <div class="card-info">
-            <strong class="card-city-name">GENT</strong>
-            <span class="card-venue">ICC Gent</span>
-            <span class="card-badge">
-              {currentCity === 'gent' ? '● Huidige Website' : 'Bezoek Festival →'}
-            </span>
-          </div>
-        </a>
-
-      </div>
-    </section>
+    </div>
 
     <!-- 2. NEWSLETTER LETTERPRESS CARD -->
     <div class="newsletter-section">
@@ -215,7 +187,7 @@ const { currentCity = 'denhaag' } = Astro.props;
     font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
   }
 
-  /* Ripped Paper Overlay (Preserving Original Realistic Drop-Shadow and Paper Edge) */
+  /* Ripped Paper Overlay */
   .torn-edge-wrap {
     position: relative;
     z-index: 20;
@@ -236,166 +208,53 @@ const { currentCity = 'denhaag' } = Astro.props;
   .footer-inner {
     max-width: 1380px;
     margin: 0 auto;
-    padding: 3rem 2rem 3rem;
+    padding: 3.5rem 2rem 3rem;
   }
 
   /* ----------------------------------------------------
-     1. 3 FESTIVALS CROSS-LINK LOGO STRIP
+     1. 3 LARGE FREESTANDING WHITE LOGOS IN A ROW
      ---------------------------------------------------- */
-  .footer-festivals-crosslink {
-    margin-bottom: 4rem;
-    background: rgba(0, 0, 0, 0.18);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 12px;
-    padding: 2.5rem 2rem;
-    backdrop-filter: blur(8px);
-  }
-
-  .crosslink-header {
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto 2.25rem;
-  }
-
-  .crosslink-tag {
-    font-size: 0.75rem;
-    font-weight: 800;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #D5C28A;
-    display: block;
-    margin-bottom: 0.4rem;
-  }
-
-  .crosslink-title {
-    font-family: var(--font-display, 'bourbon-rough', serif);
-    font-size: 1.85rem;
-    color: #FFFFFF;
-    letter-spacing: 0.04em;
-    margin-bottom: 0.5rem;
-  }
-
-  .crosslink-gold-line {
-    width: 60px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #D5C28A, transparent);
-    margin: 0.75rem auto 1rem;
-  }
-
-  .crosslink-subtitle {
-    font-size: 0.92rem;
-    color: rgba(255, 255, 255, 0.8);
-    line-height: 1.6;
-  }
-
-  .festivals-logo-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-  }
-
-  .festival-logo-card {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1.5px solid rgba(255, 255, 255, 0.14);
-    border-radius: 10px;
-    padding: 1.75rem 1.25rem;
+  .footer-hero-logos-strip {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    text-align: center;
-    text-decoration: none;
-    color: #FFFFFF;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative;
-    overflow: hidden;
+    gap: 4.5rem;
+    margin-bottom: 4.5rem;
+    padding: 1.5rem 0;
   }
 
-  .festival-logo-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at center, rgba(213, 194, 138, 0.12) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .festival-logo-card:hover {
-    transform: translateY(-4px);
-    border-color: #D5C28A;
-    background: rgba(255, 255, 255, 0.12);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
-  }
-
-  .festival-logo-card:hover::before {
-    opacity: 1;
-  }
-
-  .festival-logo-card.is-current {
-    border-color: #D5C28A;
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: inset 0 0 16px rgba(213, 194, 138, 0.15);
-  }
-
-  .logo-svg-stage {
-    width: 80px;
-    height: 105px;
+  .freestanding-logo-link {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1.25rem;
-    transition: transform 0.3s ease;
+    text-decoration: none;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+    cursor: pointer;
   }
 
-  .festival-logo-card:hover .logo-svg-stage {
-    transform: scale(1.06);
+  .freestanding-svg-wrapper {
+    width: 135px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, filter 0.3s ease;
   }
 
-  .logo-svg-stage :global(svg) {
+  .freestanding-svg-wrapper :global(svg) {
     width: 100%;
     height: 100%;
     object-fit: contain;
     display: block;
-    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
   }
 
-  .card-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
+  .freestanding-logo-link:hover {
+    transform: translateY(-8px) scale(1.08);
   }
 
-  .card-city-name {
-    font-family: var(--font-display, 'bourbon-rough', serif);
-    font-size: 1.25rem;
-    letter-spacing: 0.08em;
-    color: #FFFFFF;
-  }
-
-  .card-venue {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.75);
-    font-weight: 500;
-  }
-
-  .card-badge {
-    margin-top: 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #D5C28A;
-    padding: 0.3rem 0.85rem;
-    border-radius: 20px;
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(213, 194, 138, 0.3);
-    transition: all 0.2s ease;
-  }
-
-  .festival-logo-card:hover .card-badge {
-    background: #D5C28A;
-    color: #171614;
-    border-color: #D5C28A;
+  .freestanding-logo-link:hover .freestanding-svg-wrapper :global(svg) {
+    filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5));
   }
 
   /* ----------------------------------------------------
@@ -724,8 +583,12 @@ const { currentCity = 'denhaag' } = Astro.props;
       grid-template-columns: 1fr 1fr;
       gap: 3rem;
     }
-    .festivals-logo-row {
-      grid-template-columns: 1fr 1fr 1fr;
+    .footer-hero-logos-strip {
+      gap: 2.5rem;
+    }
+    .freestanding-svg-wrapper {
+      width: 110px;
+      height: 150px;
     }
   }
 
@@ -733,9 +596,13 @@ const { currentCity = 'denhaag' } = Astro.props;
     .site-footer {
       padding-top: 1rem;
     }
-    .festivals-logo-row {
-      grid-template-columns: 1fr;
-      gap: 1rem;
+    .footer-hero-logos-strip {
+      flex-direction: column;
+      gap: 2rem;
+    }
+    .freestanding-svg-wrapper {
+      width: 120px;
+      height: 160px;
     }
     .footer-grid {
       grid-template-columns: 1fr;
