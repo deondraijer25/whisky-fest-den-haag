@@ -2676,7 +2676,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     </div>
   </div>
 
-  <!-- ==========================================
+    <!-- ==========================================
        2. DYNAMIC ADD-ON UPSELL MODAL (DEN HAAG THEME)
        ========================================== -->
   <div 
@@ -2684,21 +2684,33 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     id="addon-upsell-modal" 
     style="display: none; position: fixed; inset: 0; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(18, 17, 15, 0.82); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 999999; align-items: center; justify-content: center; padding: 1.5rem; overflow-y: auto; box-sizing: border-box;"
   >
-    <div class="vintage-modal-card" style="background-color: var(--bg-sand, #FAF7F2); border: 2.5px solid #006448; border-radius: 12px; width: 100%; max-width: 680px; box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.5); position: relative; overflow: hidden; margin: auto; color: var(--text-charcoal, #171614);">
+    <div class="vintage-modal-card" style="background-color: var(--bg-sand, #FAF7F2); border: 2.5px solid #006448; border-radius: 12px; width: 100%; max-width: 720px; box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.5); position: relative; overflow: hidden; margin: auto; color: var(--text-charcoal, #171614);">
       
+      <!-- Header -->
       <div style="padding: 1.5rem 2rem 1.25rem; background-color: var(--bg-parchment, #F3ECE0); border-bottom: 2px dashed rgba(140, 110, 70, 0.35); display: flex; justify-content: space-between; align-items: flex-start;">
         <div>
-          <span style="font-family: var(--font-sans); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: #006448; display: block; margin-bottom: 0.3rem;">FESTIVAL ADD-ONS &amp; MASTERCLASSES</span>
+          <span style="font-family: var(--font-sans); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: #C58B39; display: block; margin-bottom: 0.3rem;">FESTIVAL ADD-ONS &amp; SPECIALS</span>
           <h3 style="font-family: var(--font-display, serif); font-size: 1.85rem; color: var(--text-charcoal, #171614); margin: 0; line-height: 1.1; letter-spacing: 0.05em; text-transform: uppercase;">Maak uw Festivalbeleving Compleet</h3>
-          <p style="font-family: var(--font-sans); font-size: 0.88rem; color: var(--text-muted, #665C54); margin: 0.35rem 0 0; line-height: 1.4;">Wilt u nog een exclusieve Masterclass toevoegen aan uw bestelling?</p>
+          <p style="font-family: var(--font-sans); font-size: 0.88rem; color: var(--text-muted, #665C54); margin: 0.35rem 0 0; line-height: 1.4;">Voeg optioneel nog een exclusieve Masterclass, Whiskytram, Trail of Workshop toe:</p>
         </div>
         <button type="button" id="addon-upsell-close" style="background: rgba(0, 0, 0, 0.05); border: 1px solid rgba(140, 110, 70, 0.4); color: var(--text-charcoal); cursor: pointer; padding: 0.4rem; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" aria-label="Sluiten">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="18" x2="18" y2="18"></line></svg>
         </button>
       </div>
 
-      <div style="max-height: 58vh; overflow-y: auto; padding: 1.75rem 2rem; display: flex; flex-direction: column; gap: 0.85rem;" id="addon-upsell-list">
-        <!-- Populated dynamically with ALL masterclasses & add-ons -->
+      <!-- Category Filter Pills inside Modal -->
+      <div class="upsell-modal-filters" style="display: flex; gap: 0.4rem; padding: 0.75rem 1.75rem; background: var(--bg-parchment, #F3ECE0); border-bottom: 1px solid rgba(140, 110, 70, 0.2); overflow-x: auto; flex-wrap: wrap;">
+        <button type="button" class="upsell-filter-btn active" data-upsell-cat="all" style="padding: 0.35rem 0.85rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border-radius: 20px; border: 1px solid #006448; background: #006448; color: #FFFFFF; cursor: pointer; transition: all 0.2s;">Alles</button>
+        <button type="button" class="upsell-filter-btn" data-upsell-cat="masterclass" style="padding: 0.35rem 0.85rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border-radius: 20px; border: 1px solid rgba(140, 110, 70, 0.3); background: transparent; color: var(--text-charcoal); cursor: pointer; transition: all 0.2s;">Masterclasses</button>
+        <button type="button" class="upsell-filter-btn" data-upsell-cat="tram" style="padding: 0.35rem 0.85rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border-radius: 20px; border: 1px solid rgba(140, 110, 70, 0.3); background: transparent; color: var(--text-charcoal); cursor: pointer; transition: all 0.2s;">Whiskytram</button>
+        <button type="button" class="upsell-filter-btn" data-upsell-cat="trail" style="padding: 0.35rem 0.85rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border-radius: 20px; border: 1px solid rgba(140, 110, 70, 0.3); background: transparent; color: var(--text-charcoal); cursor: pointer; transition: all 0.2s;">Whiskytrail</button>
+        <button type="button" class="upsell-filter-btn" data-upsell-cat="vatenmaken" style="padding: 0.35rem 0.85rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border-radius: 20px; border: 1px solid rgba(140, 110, 70, 0.3); background: transparent; color: var(--text-charcoal); cursor: pointer; transition: all 0.2s;">Workshops</button>
+        <button type="button" class="upsell-filter-btn" data-upsell-cat="botteling" style="padding: 0.35rem 0.85rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border-radius: 20px; border: 1px solid rgba(140, 110, 70, 0.3); background: transparent; color: var(--text-charcoal); cursor: pointer; transition: all 0.2s;">Botteling</button>
+      </div>
+
+      <!-- Addons List Container -->
+      <div style="max-height: 52vh; overflow-y: auto; padding: 1.25rem 1.75rem; display: flex; flex-direction: column; gap: 0.75rem;" id="addon-upsell-list">
+        <!-- Populated dynamically with ALL filtered add-ons -->
       </div>
 
       <!-- Footer -->
@@ -2706,7 +2718,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
         <button type="button" id="addon-upsell-cancel" style="background: none; border: none; color: #776B5F; font-size: 0.9rem; font-weight: 600; cursor: pointer; text-decoration: underline;">
           Nee bedankt, direct doorgaan
         </button>
-        <button type="button" id="addon-upsell-proceed-btn" style="height: 48px; padding: 0 1.6rem; font-family: var(--font-display, serif); font-size: 1.2rem; text-transform: uppercase; letter-spacing: 0.08em; background: #006448; color: #FFFFFF; border: 2px solid #171614; border-radius: 4px; box-shadow: 4px 4px 0px rgba(23, 22, 20, 0.9); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s ease;">
+        <button type="button" id="addon-upsell-proceed-btn" style="height: 48px; padding: 0 1.6rem; font-family: var(--font-display, serif); font-size: 1.2rem; text-transform: uppercase; letter-spacing: 0.08em; background: #006448; color: #FFFFFF; border: 2px solid #171614; border-radius: 4px; box-shadow: 4px 4px 0px rgba(23, 22, 20, 0.8); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s ease;">
           Naar Afrekenen &rarr;
         </button>
       </div>
@@ -5339,36 +5351,270 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
   }
 
   
-  // Render all Masterclasses & Add-ons dynamically in the Add-on Upsell Modal
+  // Full Dataset of all Add-ons for Upsell Flow
+  const allAddonsList = [
+  {
+    "id": "whiskytram",
+    "category": "tram",
+    "title": "Historische Whiskytram",
+    "subtitle": "Rijdende Proeverij door de Stad",
+    "price": 39.5,
+    "duration": "50 min",
+    "location": "Vertrek voor de hoofdingang",
+    "ambassador": {
+      "name": "Gids & Tramconducteur",
+      "title": "Historisch Gastheer"
+    }
+  },
+  {
+    "id": "whiskytrail",
+    "category": "trail",
+    "title": "Festival Whisky Trail",
+    "subtitle": "Begeleide Proefroute langs 5 Topdistilleerders",
+    "price": 5,
+    "duration": "90 min",
+    "location": "Start Centrale Balie",
+    "ambassador": {
+      "name": "Festival Gids & Sommelier",
+      "title": "Gecertificeerd Trail Guide"
+    }
+  },
+  {
+    "id": "vatenmaken-tickets",
+    "category": "vatenmaken",
+    "title": "Cooper Workshop Vatenmaken",
+    "subtitle": "Ambacht & Kuiperij in Actie",
+    "price": 5,
+    "duration": "45 min",
+    "location": "Festival Werkplaats",
+    "ambassador": {
+      "name": "Meesterkuiper",
+      "title": "Master Cooper"
+    }
+  },
+  {
+    "id": "festival-botteling",
+    "category": "botteling",
+    "title": "Officiële Festival Botteling 2026",
+    "subtitle": "Gelimiteerde Cask Strength Single Cask Release (70cl + Glas)",
+    "price": 79.5,
+    "duration": "Gelimiteerde Oplage",
+    "location": "Ophalen op festival of thuisbezorgd",
+    "ambassador": {
+      "name": "Festival Bottling Committee",
+      "title": "Cask Selection Masters"
+    }
+  },
+  {
+    "id": "intro-tickets",
+    "category": "masterclass",
+    "title": "Whisky Introductie",
+    "subtitle": "Basis Nosing & Tasting voor Beginners",
+    "price": 7.5,
+    "duration": "40 min",
+    "location": "Tasting Room 1",
+    "ambassador": {
+      "name": "Valentijn Klop",
+      "title": "Certified Whisky Educator"
+    }
+  },
+  {
+    "id": "mc-macallan-inc",
+    "category": "masterclass",
+    "title": "Macallan Exclusive (Inc. Torenklim)",
+    "subtitle": "Exclusieve Sherry Cask Single Malts",
+    "price": 77.5,
+    "duration": "120 min",
+    "location": "Toren-zolder",
+    "ambassador": {
+      "name": "Gerard Spaans",
+      "title": "Master of Malt"
+    }
+  },
+  {
+    "id": "mc-macallan-ex",
+    "category": "masterclass",
+    "title": "Macallan Exclusive (Zonder Klim)",
+    "subtitle": "Exclusieve Sherry Cask Single Malts",
+    "price": 70,
+    "duration": "60 min",
+    "location": "Tasting Room VIP",
+    "ambassador": {
+      "name": "Gerard Spaans",
+      "title": "Master of Malt"
+    }
+  },
+  {
+    "id": "mc-teeling-fri",
+    "category": "masterclass",
+    "title": "Teeling Whiskey Masterclass",
+    "subtitle": "Dublin's Craft Renaissance",
+    "price": 20,
+    "duration": "45 min",
+    "location": "Spaarkamer",
+    "ambassador": {
+      "name": "Chris Hayes",
+      "title": "European Ambassador"
+    }
+  },
+  {
+    "id": "mc-smws-fri",
+    "category": "masterclass",
+    "title": "SMWS - Get into the good stuff!",
+    "subtitle": "The Scotch Malt Whisky Society Cask Strength",
+    "price": 25,
+    "duration": "45 min",
+    "location": "Foyer",
+    "ambassador": {
+      "name": "Richard Wayland",
+      "title": "SMWS Specialist"
+    }
+  },
+  {
+    "id": "mc-glengoyne-fri",
+    "category": "masterclass",
+    "title": "Glengoyne & Tamdhu Tasting",
+    "subtitle": "The Slow Distillation & Sherry Kings",
+    "price": 35,
+    "duration": "50 min",
+    "location": "Telkamer",
+    "ambassador": {
+      "name": "Gordon Dallas",
+      "title": "Ian Macleod Ambassador"
+    }
+  },
+  {
+    "id": "mc-glenfiddich-fri",
+    "category": "masterclass",
+    "title": "Glenfiddich Old Timers",
+    "subtitle": "Legendarische Speyside Vintage Vaten",
+    "price": 55,
+    "duration": "60 min",
+    "location": "Nutshuis",
+    "ambassador": {
+      "name": "Tony van Rooijen",
+      "title": "William Grant & Sons"
+    }
+  },
+  {
+    "id": "mc-sculte-fri",
+    "category": "masterclass",
+    "title": "Stokerij Sculte: The Taste of Oak",
+    "subtitle": "Twentse Eiken & Nederlands Gedistilleerd",
+    "price": 49.5,
+    "duration": "45 min",
+    "location": "Telkamer",
+    "ambassador": {
+      "name": "Gerard Velthuis",
+      "title": "Meesterstoker"
+    }
+  },
+  {
+    "id": "mc-suntory-fri",
+    "category": "masterclass",
+    "title": "House of Suntory: Japanese Portfolio",
+    "subtitle": "The Art of Japanese Harmony",
+    "price": 20,
+    "duration": "45 min",
+    "location": "Spaarkamer",
+    "ambassador": {
+      "name": "Kenji Sato",
+      "title": "Suntory Specialist"
+    }
+  },
+  {
+    "id": "mc-balvenie-fri",
+    "category": "masterclass",
+    "title": "The Balvenie Old Timers",
+    "subtitle": "Handcrafted Speyside Single Malts",
+    "price": 65,
+    "duration": "60 min",
+    "location": "Foyer",
+    "ambassador": {
+      "name": "Tony van Rooijen",
+      "title": "William Grant & Sons"
+    }
+  },
+  {
+    "id": "session-mc-highland-park",
+    "category": "masterclass",
+    "title": "Highland Park: Orkney Viking Soul",
+    "subtitle": "Heidehoning & Subtiele Turf",
+    "price": 22.5,
+    "duration": "45 min",
+    "location": "Telkamer",
+    "ambassador": {
+      "name": "Martin Markvardsen",
+      "title": "Global Ambassador"
+    }
+  },
+  {
+    "id": "mc-oldtimers-sat",
+    "category": "masterclass",
+    "title": "Glenfiddich, Glen Grant & Port Ellen",
+    "subtitle": "Ultra-exclusieve historische bottelingen",
+    "price": 85,
+    "duration": "60 min",
+    "location": "VIP Lounge",
+    "ambassador": {
+      "name": "Tony van Rooijen",
+      "title": "Senior Ambassador"
+    }
+  },
+  {
+    "id": "mc-ultimate-sat",
+    "category": "masterclass",
+    "title": "The Ultimate: Historische Bottelingen",
+    "subtitle": "Van Wees Amersfoort Cask Collection",
+    "price": 35,
+    "duration": "45 min",
+    "location": "Foyer",
+    "ambassador": {
+      "name": "Van Wees Specialist",
+      "title": "Cask Selection"
+    }
+  }
+];
+  let activeUpsellCategory = 'all';
+
   function renderAddonUpsellList() {
     const listContainer = document.getElementById('addon-upsell-list');
     if (!listContainer) return;
 
-    if (!masterclassesList || masterclassesList.length === 0) {
-      listContainer.innerHTML = '<p style="color:#777; font-size:0.9rem;">Geen extra masterclasses beschikbaar.</p>';
+    const filtered = allAddonsList.filter(item => {
+      return activeUpsellCategory === 'all' || item.category === activeUpsellCategory;
+    });
+
+    if (filtered.length === 0) {
+      listContainer.innerHTML = '<p style="color:#777; font-size:0.9rem; text-align:center; padding: 2rem 0;">Geen add-ons gevonden in deze categorie.</p>';
       return;
     }
 
-    listContainer.innerHTML = masterclassesList.map(mc => {
-      const currentQty = (cart[mc.id] && cart[mc.id].qty) || 0;
+    listContainer.innerHTML = filtered.map(item => {
+      const currentQty = (cart[item.id] && cart[item.id].qty) || 0;
       const isAdded = currentQty > 0;
+      const catLabel = item.category === 'tram' ? 'Whiskytram' : item.category === 'trail' ? 'Whiskytrail' : item.category === 'vatenmaken' ? 'Workshop' : item.category === 'botteling' ? 'Botteling' : 'Masterclass';
+
       return `
-        <div style="background: #FFFFFF; border: 1px solid #E6DDD0; border-radius: 10px; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);">
+        <div style="background: #FFFFFF; border: 1px solid #E6DDD0; border-radius: 8px; padding: 0.9rem 1.15rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);">
           <div style="flex: 1;">
-            <strong style="font-size: 1rem; color: #171614; display: block; line-height: 1.25;">${mc.title}</strong>
-            <span style="font-size: 0.82rem; color: #665C54; display: block; margin-top: 0.2rem;">
-              ${mc.ambassador ? mc.ambassador.name + ' • ' : ''}${mc.location || 'Festivalzaal'} (${mc.duration || '45 min'})
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.2rem;">
+              <span style="font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.15rem 0.45rem; border-radius: 3px; background: rgba(140, 110, 70, 0.12); color: #8A6831;">${catLabel}</span>
+              <strong style="font-size: 0.98rem; color: #171614; line-height: 1.25;">${item.title}</strong>
+            </div>
+            <span style="font-size: 0.8rem; color: #665C54; display: block;">
+              ${item.ambassador ? item.ambassador.name + ' • ' : ''}${item.location || 'Festival'} (${item.duration || '45 min'})
             </span>
           </div>
           <div style="display: flex; align-items: center; gap: 0.85rem; flex-shrink: 0;">
             <strong style="color: #006448; font-size: 1.1rem; font-family: var(--font-display, serif); white-space: nowrap;">
-              € ${(typeof mc.price === 'number' ? mc.price : parseFloat(String(mc.price).replace(/[^0-9,.]/g, '').replace(',', '.')) || 0).toFixed(2).replace('.', ',')}
+              € ${item.price.toFixed(2).replace('.', ',')}
             </strong>
             <button 
               type="button" 
               class="btn-upsell-add-item" 
-              data-upsell-mc-id="${mc.id}"
-              style="display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.5rem 0.95rem; font-size: 0.82rem; font-weight: 800; border: 1.5px solid ${isAdded ? '#006448' : '#C58B39'}; color: ${isAdded ? '#FFFFFF' : '#006448'}; background: ${isAdded ? '#006448' : '#FAF7F2'}; cursor: pointer; border-radius: 6px; transition: all 0.2s;"
+              data-upsell-mc-id="${item.id}"
+              style="display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.45rem 0.9rem; font-size: 0.8rem; font-weight: 800; border: 1.5px solid ${isAdded ? '#006448' : '#C58B39'}; color: ${isAdded ? '#FFFFFF' : '#006448'}; background: ${isAdded ? '#006448' : '#FAF7F2'}; cursor: pointer; border-radius: 6px; transition: all 0.2s;"
             >
               ${isAdded ? '✓ Toegevoegd (' + currentQty + ')' : '+ In Winkelmand'}
             </button>
@@ -5378,6 +5624,27 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     }).join('');
   }
 
+  // Handle Category Filter clicks inside Upsell Modal
+  document.addEventListener('click', function(e) {
+    const filterBtn = e.target.closest('.upsell-filter-btn');
+    if (!filterBtn) return;
+    
+    document.querySelectorAll('.upsell-filter-btn').forEach(b => {
+      b.classList.remove('active');
+      (b as HTMLElement).style.background = 'transparent';
+      (b as HTMLElement).style.color = 'var(--text-charcoal)';
+      (b as HTMLElement).style.borderColor = 'rgba(140, 110, 70, 0.3)';
+    });
+
+    filterBtn.classList.add('active');
+    (filterBtn as HTMLElement).style.background = '#006448';
+    (filterBtn as HTMLElement).style.color = '#FFFFFF';
+    (filterBtn as HTMLElement).style.borderColor = '#006448';
+
+    activeUpsellCategory = filterBtn.getAttribute('data-upsell-cat') || 'all';
+    renderAddonUpsellList();
+  });
+
   // Handle Upsell Add-to-cart clicks
   document.addEventListener('click', function(e) {
     const btn = e.target.closest('.btn-upsell-add-item');
@@ -5385,17 +5652,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     const mcId = btn.getAttribute('data-upsell-mc-id');
     if (!mcId) return;
 
-    const mc = masterclassesList.find(m => m.id === mcId);
-    if (!mc) return;
-
-    const numPrice = typeof mc.price === 'number' ? mc.price : parseFloat(String(mc.price).replace(/[^0-9,.]/g, '').replace(',', '.')) || 0;
+    const item = allAddonsList.find(m => m.id === mcId);
+    if (!item) return;
 
     if (!cart[mcId]) {
       cart[mcId] = {
-        title: mc.title,
-        price: numPrice,
+        title: item.title,
+        price: item.price,
         qty: 0,
-        category: 'masterclass'
+        category: item.category
       };
     }
     cart[mcId].qty += 1;
@@ -5407,7 +5672,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     renderAddonUpsellList();
   });
 
-  function handleCheckoutClick(e) {
+  function handleCheckoutClick(e: Event) {
     if (e && e.preventDefault) e.preventDefault();
 
     let totalItems = 0;
@@ -5424,6 +5689,21 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
 
     // Always show upsell popup first when clicking Afrekenen
     if (upsellModal) {
+      activeUpsellCategory = 'all';
+      // Reset filter button UI
+      document.querySelectorAll('.upsell-filter-btn').forEach((b, idx) => {
+        if (idx === 0) {
+          b.classList.add('active');
+          (b as HTMLElement).style.background = '#006448';
+          (b as HTMLElement).style.color = '#FFFFFF';
+          (b as HTMLElement).style.borderColor = '#006448';
+        } else {
+          b.classList.remove('active');
+          (b as HTMLElement).style.background = 'transparent';
+          (b as HTMLElement).style.color = 'var(--text-charcoal)';
+          (b as HTMLElement).style.borderColor = 'rgba(140, 110, 70, 0.3)';
+        }
+      });
       renderAddonUpsellList();
       upsellModal.style.display = 'flex';
       document.body.style.overflow = 'hidden';
@@ -5434,7 +5714,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
 
   // Global delegated listener for ANY checkout button across the entire page
   document.addEventListener('click', function(e) {
-    const target = e.target.closest('#checkout-btn, #checkout-trigger-btn, .btn-checkout, #header-dropdown-checkout-btn, #header-cart-checkout, [data-action="checkout"]');
+    const target = (e.target as HTMLElement).closest('#checkout-btn, #checkout-trigger-btn, .btn-checkout, #header-dropdown-checkout-btn, #header-cart-checkout, [data-action="checkout"]');
     if (target) {
       e.preventDefault();
       handleCheckoutClick(e);
@@ -5461,7 +5741,6 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       document.body.style.overflow = 'auto';
     };
   }
-
 
   function openMasterclassModal(mcId) {
     activeMcId = mcId;
