@@ -2028,6 +2028,146 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     </div>
   </div>
 
+
+  <!-- MASTERCLASS INFO & LINE-UP MODAL -->
+  <div class="modal-overlay" id="masterclass-info-modal" style="display: none; z-index: 100000;">
+    <div class="vintage-modal-card" style="max-width: 680px;">
+      <div class="modal-header">
+        <div>
+          <span class="modal-step-tag" id="mc-modal-tag">MASTERCLASS PROEFLIJST & DETAILS</span>
+          <h3 class="modal-title" id="mc-modal-title">Masterclass Informatie</h3>
+          <p class="modal-subtitle" id="mc-modal-subtitle">Exclusieve proeverij</p>
+        </div>
+        <button type="button" class="modal-close-btn" id="mc-modal-close" aria-label="Sluiten">&times;</button>
+      </div>
+
+      <div class="modal-body-scroll" style="max-height: 70vh; overflow-y: auto; padding: 1.5rem 2rem;">
+        
+        <!-- Ambassador Box -->
+        <div class="mc-ambassador-box" style="background: rgba(197, 139, 57, 0.08); border: 1px solid var(--border-color-dark, #c58b39); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; gap: 1rem; align-items: center;">
+          <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--whisky-gold, #c58b39); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-family: var(--font-display, serif); flex-shrink: 0;">🥃</div>
+          <div>
+            <strong id="mc-modal-ambassador-name" style="display: block; font-size: 1.05rem; color: var(--text-charcoal, #171614);">Ambassadeur</strong>
+            <span id="mc-modal-ambassador-title" style="font-size: 0.82rem; font-weight: 700; color: var(--whisky-gold-dark, #8b5a1b); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.25rem;">Expert</span>
+            <p id="mc-modal-ambassador-bio" style="font-size: 0.88rem; color: var(--text-muted, #555); margin: 0; line-height: 1.45;">Bio van de ambassadeur...</p>
+          </div>
+        </div>
+
+        <!-- Meta Grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+          <div style="background: #FDFBF7; border: 1px solid #E6DEC8; border-radius: 6px; padding: 0.75rem 1rem;">
+            <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted, #777); display: block;">LOCATIE:</span>
+            <strong id="mc-modal-location" style="font-size: 0.95rem; color: var(--text-charcoal, #171614);">-</strong>
+          </div>
+          <div style="background: #FDFBF7; border: 1px solid #E6DEC8; border-radius: 6px; padding: 0.75rem 1rem;">
+            <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted, #777); display: block;">DUUR / SESSIE:</span>
+            <strong id="mc-modal-duration" style="font-size: 0.95rem; color: var(--text-charcoal, #171614);">-</strong>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div style="margin-bottom: 1.5rem;">
+          <h4 style="font-family: var(--font-display, serif); font-size: 1.1rem; margin-bottom: 0.4rem; color: var(--text-charcoal, #171614);">Over deze Sessie</h4>
+          <p id="mc-modal-description" style="font-size: 0.92rem; color: var(--text-muted, #444); line-height: 1.6; margin: 0;">Beschrijving...</p>
+        </div>
+
+        <!-- Tasting Line-up -->
+        <div>
+          <h4 style="font-family: var(--font-display, serif); font-size: 1.1rem; margin-bottom: 0.75rem; color: var(--text-charcoal, #171614);">🥃 Officiële Proef-Lineup (Inbegrepen Drams)</h4>
+          <ul id="mc-modal-lineup" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem;">
+            <!-- Lineup items injected via JS -->
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="modal-footer" style="padding: 1.25rem 2rem; background: #FAF7F2; border-top: 1px solid #E6DEC8; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <span style="font-size: 0.75rem; color: var(--text-muted, #777); text-transform: uppercase; font-weight: 700; display: block;">PRIJS P.P.</span>
+          <strong id="mc-modal-price" style="font-size: 1.35rem; color: var(--whisky-gold-dark, #c58b39);">€ 0,00</strong>
+        </div>
+        <button type="button" class="btn btn-gold" id="mc-modal-add-btn" style="padding: 0.75rem 1.5rem; font-weight: 800;">
+          + Voeg Masterclass Toe
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD-ON UPSELL MODAL (Tussenstap voor het Afrekenen) -->
+  <div class="modal-overlay" id="addon-upsell-modal" style="display: none; z-index: 100000;">
+    <div class="vintage-modal-card" style="max-width: 650px;">
+      <div class="modal-header">
+        <div>
+          <span class="modal-step-tag">VERRIJK UW BELEVING</span>
+          <h3 class="modal-title">Maak uw Festivaldag Compleet</h3>
+          <p class="modal-subtitle">Wilt u nog een exclusieve Masterclass of extra toevoegen?</p>
+        </div>
+        <button type="button" class="modal-close-btn" id="addon-upsell-close" aria-label="Sluiten">&times;</button>
+      </div>
+
+      <div class="modal-body-scroll" style="max-height: 65vh; overflow-y: auto; padding: 1.5rem 2rem;">
+        <p style="font-size: 0.92rem; color: var(--text-muted, #555); margin-bottom: 1.25rem; line-height: 1.5;">
+          Populaire festival add-ons die u direct kunt toevoegen aan uw reservering:
+        </p>
+
+        <div class="upsell-items-list" style="display: flex; flex-direction: column; gap: 0.85rem;">
+          
+          <!-- Upsell Item 1 -->
+          <div class="upsell-card" style="background: #FDFBF7; border: 1px solid #E6DEC8; border-radius: 8px; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+            <div>
+              <strong style="font-size: 1rem; color: var(--text-charcoal, #171614); display: block;">Whisky Introductie Masterclass</strong>
+              <span style="font-size: 0.82rem; color: var(--text-muted, #666);">40 min nosing & tasting workshop voor beginners</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0;">
+              <strong style="color: var(--whisky-gold-dark, #c58b39); font-size: 1.05rem;">€ 7,50</strong>
+              <button type="button" class="btn btn-outline btn-upsell-add" data-upsell-id="intro-tickets" style="padding: 0.4rem 0.85rem; font-size: 0.82rem; font-weight: 700; border-color: var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b);">
+                + Toevoegen
+              </button>
+            </div>
+          </div>
+
+          <!-- Upsell Item 2 -->
+          <div class="upsell-card" style="background: #FDFBF7; border: 1px solid #E6DEC8; border-radius: 8px; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+            <div>
+              <strong style="font-size: 1rem; color: var(--text-charcoal, #171614); display: block;">Macallan Exclusive Experience</strong>
+              <span style="font-size: 0.82rem; color: var(--text-muted, #666);">Zeldzame Sherry Cask bottelingen met Gerard Spaans</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0;">
+              <strong style="color: var(--whisky-gold-dark, #c58b39); font-size: 1.05rem;">€ 77,50</strong>
+              <button type="button" class="btn btn-outline btn-upsell-add" data-upsell-id="macallan-exclusive" style="padding: 0.4rem 0.85rem; font-size: 0.82rem; font-weight: 700; border-color: var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b);">
+                + Toevoegen
+              </button>
+            </div>
+          </div>
+
+          <!-- Upsell Item 3 -->
+          <div class="upsell-card" style="background: #FDFBF7; border: 1px solid #E6DEC8; border-radius: 8px; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+            <div>
+              <strong style="font-size: 1rem; color: var(--text-charcoal, #171614); display: block;">Highland Park Masterclass</strong>
+              <span style="font-size: 0.82rem; color: var(--text-muted, #666);">Orkney Viking Soul met Martin Markvardsen</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0;">
+              <strong style="color: var(--whisky-gold-dark, #c58b39); font-size: 1.05rem;">€ 22,50</strong>
+              <button type="button" class="btn btn-outline btn-upsell-add" data-upsell-id="session-mc-highland-park" style="padding: 0.4rem 0.85rem; font-size: 0.82rem; font-weight: 700; border-color: var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b);">
+                + Toevoegen
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal-footer" style="padding: 1.25rem 2rem; background: #FAF7F2; border-top: 1px solid #E6DEC8; display: flex; justify-content: space-between; align-items: center;">
+        <button type="button" class="tt-text-link" id="addon-upsell-cancel" style="background:none; border:none; color: var(--text-muted, #666); font-size: 0.88rem; cursor:pointer;">
+          Annuleren
+        </button>
+        <button type="button" class="btn btn-gold" id="addon-upsell-proceed-btn" style="padding: 0.75rem 1.75rem; font-weight: 800;">
+          Direct Door naar Afrekenen &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+
 </Layout>
 
 <style>
@@ -4515,4 +4655,191 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     aftermoviePlayBtn.addEventListener('click', startAftermovie);
     videoOverlay.addEventListener('click', startAftermovie);
   }
+
+  // ==========================================
+  // MASTERCLASSES INFO MODAL & UPSELL POPUP LOGIC
+  // ==========================================
+  const masterclassesList = [
+  {
+    "id": "intro-tickets",
+    "title": "Whisky Introductie",
+    "subtitle": "Basis Nosing & Tasting voor Beginners",
+    "price": "€ 7,50",
+    "duration": "40 minuten",
+    "location": "Nutshuis - Spaarkamer",
+    "ambassador": {
+      "name": "Valentijn Klop",
+      "title": "Certified Whisky Educator & Sommelier",
+      "bio": "Valentijn neemt beginnende liefhebbers mee op een toegankelijke reis langs smaakprofielen, distillatietechnieken en vatenrijping."
+    },
+    "tastingLineup": [
+      "Lowland Light & Floral Single Malt (10 Y.O.)",
+      "Speyside Rich Orchard Fruit Single Malt (12 Y.O.)"
+    ],
+    "description": "De perfecte start van uw festivaldag! Leer de basisprincipes van het proeven, het herkennen van aroma's en hoe u het maximale uit uw festivalbezoek haalt."
+  },
+  {
+    "id": "macallan-exclusive",
+    "title": "Macallan Exclusive Experience",
+    "subtitle": "Exclusieve Sherry Cask Single Malts",
+    "price": "€ 77,50",
+    "duration": "60 minuten",
+    "location": "Grote Kerk Den Haag (Haagsche Toren)",
+    "ambassador": {
+      "name": "Gerard Spaans",
+      "title": "Master of Malt & Senior Brand Ambassador",
+      "bio": "Al meer dan 20 jaar dé autoriteit op het gebied van Schotse single malts en zeldzame Macallan bottelingen."
+    },
+    "tastingLineup": [
+      "The Macallan 12 Y.O. Double Cask",
+      "The Macallan 15 Y.O. Double Cask",
+      "The Macallan 18 Y.O. Sherry Oak Cask (Iconic)",
+      "The Macallan Rare Cask Release 2025/2026",
+      "Secret Distillery Cask Sample (Exclusive)"
+    ],
+    "description": "Een ongeëvenaarde proeverij van 's werelds meest begeerde distilleerderij. Inclusief beklimming van de Haagsche Toren."
+  },
+  {
+    "id": "session-mc-highland-park",
+    "title": "Highland Park: Orkney Viking Soul",
+    "subtitle": "Heidehoning & Subtiele Turf",
+    "price": "€ 22,50",
+    "duration": "45 minuten",
+    "location": "Nutshuis - Telkamer",
+    "ambassador": {
+      "name": "Martin Markvardsen",
+      "title": "Global Brand Ambassador Highland Park",
+      "bio": "Rechtstreeks overgevlogen uit Kirkwall, Orkney. Martin deelt de eeuwenoude tradities van de noordelijkste Schotse distilleerderij."
+    },
+    "tastingLineup": [
+      "Highland Park 12 Y.O. Viking Honour",
+      "Highland Park 15 Y.O. Viking Heart (Keramiek)",
+      "Highland Park 18 Y.O. Viking Pride",
+      "Highland Park Cask Strength Release No. 5"
+    ],
+    "description": "Proef het unieke samenspel van aromatische heideturf, Oloroso sherryvaten en het zilte noordelijke zeeklimaat van de Orkney eilanden."
+  },
+  {
+    "id": "session-mc-glenfiddich",
+    "title": "Glenfiddich & The Balvenie Showcase",
+    "subtitle": "Speyside Icons & Ambachtelijk Kuiperijwerk",
+    "price": "€ 25,00",
+    "duration": "45 minuten",
+    "location": "Nutshuis - Foyer",
+    "ambassador": {
+      "name": "Tony van Rooijen",
+      "title": "William Grant & Sons Ambassador",
+      "bio": "Gepassioneerd verhalenverteller over traditioneel vakmanschap, vloermouterijen en ambachtelijk kuiperijwerk in Dufftown."
+    },
+    "tastingLineup": [
+      "Glenfiddich 15 Y.O. Solera Reserve",
+      "Glenfiddich 18 Y.O. Small Batch Reserve",
+      "The Balvenie 12 Y.O. DoubleWood",
+      "The Balvenie 14 Y.O. Caribbean Cask",
+      "The Balvenie 16 Y.O. French Oak"
+    ],
+    "description": "Vergelijk twee legendarische zuster-distilleerderijen uit Dufftown en ontdek hoe houtkeuze en Solera-rijping het smaakprofiel transformeren."
+  }
+]
+;
+  let activeMcId = null;
+
+  const mcModal = document.getElementById('masterclass-info-modal');
+  const mcModalClose = document.getElementById('mc-modal-close');
+  const mcModalAddBtn = document.getElementById('mc-modal-add-btn');
+
+  const upsellModal = document.getElementById('addon-upsell-modal');
+  const upsellModalClose = document.getElementById('addon-upsell-close');
+  const upsellModalCancel = document.getElementById('addon-upsell-cancel');
+  const upsellModalProceed = document.getElementById('addon-upsell-proceed-btn');
+
+  // Open Masterclass Info
+  function openMasterclassModal(mcId) {
+    activeMcId = mcId;
+    const mc = masterclassesList.find(m => m.id === mcId);
+    if (!mc) return;
+
+    document.getElementById('mc-modal-title').textContent = mc.title;
+    document.getElementById('mc-modal-subtitle').textContent = mc.subtitle || 'Exclusieve Proeverij';
+    document.getElementById('mc-modal-location').textContent = mc.location || 'Festival Locatie';
+    document.getElementById('mc-modal-duration').textContent = mc.duration || '45 minuten';
+    document.getElementById('mc-modal-description').textContent = mc.description || '';
+    document.getElementById('mc-modal-price').textContent = mc.price || '€ 0,00';
+
+    if (mc.ambassador) {
+      document.getElementById('mc-modal-ambassador-name').textContent = mc.ambassador.name;
+      document.getElementById('mc-modal-ambassador-title').textContent = mc.ambassador.title;
+      document.getElementById('mc-modal-ambassador-bio').textContent = mc.ambassador.bio;
+    }
+
+    const lineupList = document.getElementById('mc-modal-lineup');
+    if (lineupList) {
+      lineupList.innerHTML = (mc.tastingLineup || []).map(dram => `
+        <li style="display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0.6rem; background: #FDFBF7; border: 1px solid #EAE2D3; border-radius: 4px; font-size: 0.88rem; color: var(--text-charcoal, #171614);">
+          <span style="color: var(--whisky-gold-dark, #c58b39); font-weight: 800;">◆</span>
+          <span>${dram}</span>
+        </li>
+      `).join('');
+    }
+
+    if (mcModal) mcModal.style.display = 'flex';
+  }
+
+  // Close MC Modal
+  if (mcModalClose) mcModalClose.addEventListener('click', () => { if (mcModal) mcModal.style.display = 'none'; });
+  if (mcModal) mcModal.addEventListener('click', (e) => { if (e.target === mcModal) mcModal.style.display = 'none'; });
+
+  // Add MC to Cart from Modal
+  if (mcModalAddBtn) {
+    mcModalAddBtn.addEventListener('click', () => {
+      if (activeMcId) {
+        const stub = document.querySelector(`.ticket-stub[data-ticket-id="${activeMcId}"]`);
+        if (stub) {
+          const plusBtn = stub.querySelector('.plus-btn');
+          if (plusBtn) plusBtn.click();
+        }
+      }
+      if (mcModal) mcModal.style.display = 'none';
+    });
+  }
+
+  // Delegated click for .btn-mc-info-trigger
+  document.addEventListener('click', (e) => {
+    const infoBtn = e.target.closest('.btn-mc-info-trigger');
+    if (infoBtn) {
+      const mcId = infoBtn.getAttribute('data-mc-id');
+      if (mcId) openMasterclassModal(mcId);
+    }
+  });
+
+  // Upsell Modal Handlers
+  if (upsellModalClose) upsellModalClose.addEventListener('click', () => { if (upsellModal) upsellModal.style.display = 'none'; });
+  if (upsellModalCancel) upsellModalCancel.addEventListener('click', () => { if (upsellModal) upsellModal.style.display = 'none'; });
+  if (upsellModal) upsellModal.addEventListener('click', (e) => { if (e.target === upsellModal) upsellModal.style.display = 'none'; });
+
+  if (upsellModalProceed) {
+    upsellModalProceed.addEventListener('click', () => {
+      if (upsellModal) upsellModal.style.display = 'none';
+      openCheckoutModal();
+    });
+  }
+
+  // Add from Upsell Card
+  document.addEventListener('click', (e) => {
+    const upsellBtn = e.target.closest('.btn-upsell-add');
+    if (upsellBtn) {
+      const upsellId = upsellBtn.getAttribute('data-upsell-id');
+      if (upsellId) {
+        const stub = document.querySelector(`.ticket-stub[data-ticket-id="${upsellId}"]`);
+        if (stub) {
+          const plusBtn = stub.querySelector('.plus-btn');
+          if (plusBtn) plusBtn.click();
+          upsellBtn.textContent = '✓ Toegevoegd';
+          upsellBtn.style.backgroundColor = 'var(--whisky-gold, #c58b39)';
+          upsellBtn.style.color = '#fff';
+        }
+      }
+    }
+  });
+
 </script>
