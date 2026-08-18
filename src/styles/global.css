@@ -739,3 +739,19 @@ strong {
   transform: translateX(4px);
   color: var(--whisky-gold);
 }
+
+/* Global Footer High-Contrast Overrides */
+.site-footer,
+.site-footer p,
+.site-footer .brand-pitch,
+.site-footer .contact-line {
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+.site-footer strong,
+.site-footer .contact-line strong,
+.site-footer .contact-box strong {
+  color: #FFFFFF !important;
+}
+.site-footer .footer-gold-link {
+  color: #C58B39 !important;
+}

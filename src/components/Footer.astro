@@ -721,15 +721,19 @@ const { currentCity = 'denhaag' } = Astro.props;
   }
 
   /* High-contrast, crystal clear footer typography */
+  .site-footer,
   .site-footer p,
+  .site-footer span,
   .site-footer .brand-pitch,
+  .site-footer .contact-box,
   .site-footer .contact-line {
-    color: rgba(255, 255, 255, 0.9) !important;
+    color: rgba(255, 255, 255, 0.92) !important;
     font-size: 0.92rem;
     line-height: 1.6;
   }
   .site-footer strong,
-  .site-footer .contact-line strong {
+  .site-footer .contact-line strong,
+  .site-footer .contact-box strong {
     color: #FFFFFF !important;
     font-weight: 700 !important;
   }
@@ -738,6 +742,7 @@ const { currentCity = 'denhaag' } = Astro.props;
     font-weight: 700 !important;
     text-decoration: underline !important;
     text-underline-offset: 3px;
+    transition: color 0.2s ease;
   }
   .site-footer .footer-gold-link:hover {
     color: #FFFFFF !important;
