@@ -3660,436 +3660,85 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
 
     const matchingCards: HTMLElement[] = [];
 
-    ticketCards.forEach(card => {
-      const cardDay = card.getAttribute('data-day') || 'all';
-      const cardCat = card.getAttribute('data-category') || 'entree';
-      const cardTime = card.getAttribute('data-daypart') || 'all';
+    // ====== BULLETPROOF EVENT-DELEGATED TICKET SHOP QUANTITY & CART LOGIC ======
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const btn = target.closest('.qty-btn') as HTMLButtonElement;
+    if (!btn) return;
 
-      const matchDay = (activeDay === 'all') || (cardDay === 'all') || (cardDay === activeDay);
-      const matchCat = (activeCat === 'all') || (cardCat === activeCat);
-      const matchTime = (activeTime === 'all') || (cardTime === 'all') || (cardTime === activeTime);
+    e.preventDefault();
+    const action = btn.getAttribute('data-action');
+    const card = btn.closest('.ticket-stub') as HTMLElement;
+    if (!card) return;
 
-      if (matchDay && matchCat && matchTime) {
-        card.classList.remove('hidden-by-filter');
-        matchingCards.push(card as HTMLElement);
-      } else {
-        card.classList.add('hidden-by-filter');
-        card.classList.remove('hidden-by-limit');
-      }
-    });
+    const id = card.getAttribute('data-ticket-id') || '';
+    const price = parseFloat(card.getAttribute('data-price') || '0');
+    const title = card.getAttribute('data-title') || '';
+    const category = card.getAttribute('data-category') || 'entree';
+    const qtyVal = card.querySelector('.qty-val') as HTMLElement;
 
-    // Handle Limit / Show More
-    const limit = 6;
-    if (matchingCards.length > limit && !showAllTickets) {
-      matchingCards.forEach((card, idx) => {
-        if (idx >= limit) {
-          card.classList.add('hidden-by-limit');
-        } else {
-          card.classList.remove('hidden-by-limit');
-        }
-      });
-      if (showMoreContainer) showMoreContainer.style.display = 'block';
-      if (showMoreBtn) showMoreBtn.textContent = `Toon alle tickets (${matchingCards.length - limit} extra) ↓`;
-    } else {
-      matchingCards.forEach(card => card.classList.remove('hidden-by-limit'));
-      if (showMoreContainer) showMoreContainer.style.display = 'none';
-    }
-  }
-
-  if (showMoreBtn) {
-    showMoreBtn.addEventListener('click', () => {
-      showAllTickets = true;
-      applyFilters();
-  document.addEventListener("DOMContentLoaded", applyFilters);
-  window.addEventListener("load", applyFilters);
-    });
-  }
-
-  dayButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      dayButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeDay = btn.getAttribute('data-filter-day') || 'all';
-      showAllTickets = false; // Reset limit view
-      applyFilters();
-    });
-  });
-
-  catButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      catButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeCat = btn.getAttribute('data-filter-cat') || 'all';
-      showAllTickets = false; // Reset limit view
-      applyFilters();
-    });
-  });
-
-  timeButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      timeButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeTime = btn.getAttribute('data-filter-time') || 'all';
-      showAllTickets = false; // Reset limit view
-      applyFilters();
-    });
-  });
-
-  // Execute initial filter pass on load so tickets display immediately matching active filters
-  applyFilters();
-  restoreCartFromLocalStorage();
-  updateShop();
-
-  // Shop Cart Logic (Preserved and expanded)
-  const cart: Record<string, { title: string; price: number; qty: number; category: string; timeslot?: string; delivery?: string }> = {};
-  const serviceFee = 4.50;
-  const cartItemsContainer = document.getElementById("cart-items");
-  const subtotalEl = document.getElementById("receipt-subtotal");
-  const feeEl = document.getElementById("receipt-fee");
-  const shippingRow = document.getElementById("shipping-row");
-  const shippingEl = document.getElementById("receipt-shipping");
-  const totalEl = document.getElementById("receipt-total");
-  const checkoutBtn = document.getElementById("checkout-trigger-btn") as HTMLButtonElement;
-  
-
-
-  
-  // LocalStorage Cart Sync & Dispatcher
-  function saveCartToLocalStorage(subtotalVal: number, totalItemsVal: number) {
-    const itemsList: any[] = [];
-    Object.keys(cart).forEach(id => {
-      const item = cart[id];
-      if (item && item.qty > 0) {
-        let variantTxt = "";
-        if (item.category === "tram") variantTxt = item.timeslot || "";
-        else if (item.category === "masterclass") variantTxt = item.timeslot || "";
-        else if (item.category === "trail") variantTxt = `${item.timeslot || ""} (${item.guide || ""})`;
-        else if (item.category === "vatenmaken") variantTxt = item.timeslot || "";
-        else if (item.category === "botteling") variantTxt = item.delivery === "shipping" ? "Verzenden (+ €12.50)" : "Ophalen";
-
-        itemsList.push({
-          id,
-          title: item.title,
-          price: item.price,
-          qty: item.qty,
-          category: item.category,
-          variant: variantTxt
-        });
-      }
-    });
-
-    try {
-      localStorage.setItem("whiskyfest_cart", JSON.stringify({
-        items: itemsList,
-        subtotal: subtotalVal,
-        totalItems: totalItemsVal,
-        cartRaw: cart
-      }));
-      window.dispatchEvent(new CustomEvent("cart-updated"));
-    } catch(e) {
-      console.error("Cart save error:", e);
-    }
-  }
-
-  function restoreCartFromLocalStorage() {
-    try {
-      const raw = localStorage.getItem("whiskyfest_cart");
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (parsed.cartRaw) {
-          Object.assign(cart, parsed.cartRaw);
-          Object.keys(cart).forEach(id => {
-            const card = document.querySelector(`.ticket-stub[data-ticket-id="${id}"]`);
-            if (card) {
-              const qtyDisplay = card.querySelector(".qty-val");
-              if (qtyDisplay) qtyDisplay.textContent = String(cart[id].qty || 0);
-              if (cart[id].qty > 0) card.classList.add("selected");
-              else card.classList.remove("selected");
-            }
-          });
-        }
-      }
-    } catch(e) {}
-  }
-
-
-  function updateShop() {
-    let subtotal = 0;
-    let totalItems = 0;
-    let entryTicketsCount = 0;
-    let selectedSessionId = "";
-    let shippingActive = false;
-
-    // 1. Calculate quantities and scan cart
-    Object.keys(cart).forEach(id => {
-      const item = cart[id];
-      if (item.qty > 0) {
-        subtotal += item.price * item.qty;
-        totalItems += item.qty;
-
-        if (item.category === "entree") {
-          entryTicketsCount += item.qty;
-          selectedSessionId = id;
-        }
-
-        if (item.category === "botteling" && item.delivery === "shipping") {
-          shippingActive = true;
-        }
-      }
-    });
-
-    // Shipping calculations
-    const shippingFee = 12.50;
-    const activeShipping = shippingActive ? shippingFee : 0;
-    if (shippingRow && shippingEl) {
-      if (shippingActive) {
-        shippingRow.style.display = "flex";
-        shippingEl.innerHTML = `&euro;${shippingFee.toFixed(2)}`;
-      } else {
-        shippingRow.style.display = "none";
-      }
+    if (!cart[id]) {
+      cart[id] = { title, price, qty: 0, category };
     }
 
-    const activeFee = totalItems > 0 ? serviceFee : 0;
-    const finalTotal = subtotal + activeFee + activeShipping;
+    // Capture dropdown options
+    const tramSelect = card.querySelector('.tram-select') as HTMLSelectElement;
+    const introSelect = card.querySelector('.intro-select') as HTMLSelectElement;
+    const bottlingSelect = card.querySelector('.bottling-select') as HTMLSelectElement;
+    const trailTimeSelect = card.querySelector('.trail-time-select') as HTMLSelectElement;
+    const trailGuideSelect = card.querySelector('.trail-guide-select') as HTMLSelectElement;
+    const vatenmakenTimeSelect = card.querySelector('.vatenmaken-time-select') as HTMLSelectElement;
 
-    // Render Cart HTML
-    if (cartItemsContainer) {
-      if (totalItems === 0) {
-        cartItemsContainer.innerHTML = '<p class="empty-cart-msg">Selecteer hiernaast uw ticket(s) om de bestelling te starten.</p>';
-      } else {
-        let listHtml = "";
-        const entries = Object.keys(cart).filter(id => cart[id].qty > 0);
-        
-        entries.forEach((id, index) => {
-          const item = cart[id];
-          let displayTitle = item.title;
-          
-          if (item.category === "tram" && item.timeslot) {
-            displayTitle = `${item.title} (${item.timeslot})`;
-          } else if (item.category === "masterclass" && item.timeslot) {
-            displayTitle = `${item.title} (${item.timeslot})`;
-          } else if (item.category === "trail" && item.timeslot) {
-            const guideSuffix = item.guide ? ` - Gids: ${item.guide}` : '';
-            displayTitle = `${item.title} (${item.timeslot}${guideSuffix})`;
-          } else if (item.category === "vatenmaken" && item.timeslot) {
-            displayTitle = `${item.title} (${item.timeslot})`;
-          } else if (item.category === "botteling" && item.delivery) {
-            const methodText = item.delivery === "shipping" ? "Verzenden" : "Ophalen";
-            displayTitle = `${item.title} [${methodText}]`;
-          }
+    if (tramSelect) cart[id].timeslot = tramSelect.value;
+    if (introSelect) cart[id].timeslot = introSelect.value;
+    if (bottlingSelect) cart[id].delivery = bottlingSelect.value;
+    if (trailTimeSelect) cart[id].timeslot = trailTimeSelect.value;
+    if (trailGuideSelect) cart[id].guide = trailGuideSelect.value;
+    if (vatenmakenTimeSelect) cart[id].timeslot = vatenmakenTimeSelect.value;
 
-          const isLast = index === entries.length - 1;
-          
-          listHtml += `
-            <div class="cart-item-row" ${isLast ? 'style="border-bottom:none;"' : ''}>
-              <div class="cart-item-info">
-                <span class="cart-item-name">${displayTitle}</span>
-                <span class="cart-item-meta">${item.qty} × €${item.price.toFixed(2)}</span>
-              </div>
-              <span class="cart-item-price">€${(item.price * item.qty).toFixed(2)}</span>
-            </div>
-          `;
-        });
-        
-        cartItemsContainer.innerHTML = listHtml;
-      }
-    }
-    
-    if (subtotalEl) subtotalEl.innerHTML = `&euro;${subtotal.toFixed(2)}`;
-    if (feeEl) feeEl.innerHTML = `&euro;${activeFee.toFixed(2)}`;
-    if (totalEl) totalEl.innerHTML = `&euro;${finalTotal.toFixed(2)}`;
-    if (checkoutBtn) checkoutBtn.disabled = totalItems === 0;
-  }
-
-  ticketCards.forEach(card => {
-    const id = card.getAttribute("data-ticket-id") || "";
-    const price = parseFloat(card.getAttribute("data-price") || "0");
-    const title = card.getAttribute("data-title") || "";
-    const category = card.getAttribute("data-category") || "entree";
-    const minusBtn = card.querySelector('[data-action="minus"]');
-    const plusBtn = card.querySelector('[data-action="plus"]');
-    const qtyVal = card.querySelector(".qty-val");
-
-    const tramSelect = card.querySelector(".tram-select") as HTMLSelectElement;
-    const bottlingSelect = card.querySelector(".bottling-select") as HTMLSelectElement;
-    const introSelect = card.querySelector(".intro-select") as HTMLSelectElement;
-    const trailTimeSelect = card.querySelector(".trail-time-select") as HTMLSelectElement;
-    const trailGuideSelect = card.querySelector(".trail-guide-select") as HTMLSelectElement;
-    const vatenmakenTimeSelect = card.querySelector(".vatenmaken-time-select") as HTMLSelectElement;
-
-    // Availability maps
-    const trailAvailability = {
-      "Vrijdag 20:00": ["Klaas", "Stanley"],
-      "Vrijdag 20:30": ["Ernst", "Marlie", "Sebastiaan"],
-      "Vrijdag 21:00": ["Klaas", "Stanley"],
-      "Vrijdag 21:30": ["Ernst", "Marlie", "Sebastiaan"],
-      "Zaterdag 14:00": ["Ernst", "Sebastiaan"],
-      "Zaterdag 14:30": ["Klaas", "Stanley"],
-      "Zaterdag 15:00": ["Ernst", "Marlie", "Sebastiaan"],
-      "Zaterdag 15:30": ["Klaas", "Stanley"],
-      "Zaterdag 20:00": ["Stanley"],
-      "Zaterdag 20:30": ["Ernst", "Sebastiaan"],
-      "Zaterdag 21:00": ["Klaas", "Stanley"],
-      "Zaterdag 21:30": ["Ernst", "Marlie", "Sebastiaan"],
-      "Zondag 14:00": ["Marlie"],
-      "Zondag 14:30": ["Klaas", "Stanley"],
-      "Zondag 15:00": ["Ernst", "Marlie"],
-      "Zondag 15:30": ["Klaas"]
-    };
-
-    const vatenAvailability = {
-      "Vrijdag 14:30": 12,
-      "Vrijdag 15:30": 8,
-      "Vrijdag 20:30": 15,
-      "Vrijdag 21:30": 2,
-      "Zaterdag 14:30": 4,
-      "Zaterdag 15:30": 0,
-      "Zaterdag 20:30": 18,
-      "Zaterdag 21:30": 9,
-      "Zondag 14:30": 1,
-      "Zondag 15:30": 0
-    };
-
-    if (tramSelect) {
-      tramSelect.addEventListener("change", () => {
-        if (cart[id]) {
-          cart[id].timeslot = tramSelect.value;
-          updateShop();
-        }
-      });
-    }
-
-    if (introSelect) {
-      introSelect.addEventListener("change", () => {
-        if (cart[id]) {
-          cart[id].timeslot = introSelect.value;
-          updateShop();
-        }
-      });
-    }
-
-    if (bottlingSelect) {
-      bottlingSelect.addEventListener("change", () => {
-        if (cart[id]) {
-          cart[id].delivery = bottlingSelect.value;
-          updateShop();
-        }
-      });
-    }
-
-    if (trailTimeSelect && trailGuideSelect) {
-      const updateGuides = () => {
-        const timeVal = trailTimeSelect.value;
-        const allowedGuides = trailAvailability[timeVal] || [];
-        let firstAvailable = "";
-
-        Array.from(trailGuideSelect.options).forEach(opt => {
-          const guideName = opt.value;
-          if (allowedGuides.includes(guideName)) {
-            opt.disabled = false;
-            opt.text = guideName;
-            if (!firstAvailable) firstAvailable = guideName;
-          } else {
-            opt.disabled = true;
-            opt.text = `${guideName} (VOL)`;
-          }
-        });
-
-        const currentSelectedOpt = trailGuideSelect.options[trailGuideSelect.selectedIndex];
-        if (currentSelectedOpt && currentSelectedOpt.disabled) {
-          trailGuideSelect.value = firstAvailable;
-        }
-
-        if (cart[id]) {
-          cart[id].timeslot = timeVal;
-          cart[id].guide = trailGuideSelect.value;
-          updateShop();
-        }
-      };
-
-      trailTimeSelect.addEventListener("change", updateGuides);
-      trailGuideSelect.addEventListener("change", () => {
-        if (cart[id]) {
-          cart[id].guide = trailGuideSelect.value;
-          updateShop();
-        }
-      });
-
-      updateGuides(); // Run once initially
-    }
-
-    if (vatenmakenTimeSelect) {
-      const updateVatenCapacity = () => {
-        const timeVal = vatenmakenTimeSelect.value;
-        const capacity = vatenAvailability[timeVal] ?? 0;
-        
-        if (capacity === 0) {
-          if (plusBtn) (plusBtn as HTMLButtonElement).disabled = true;
-          if (cart[id]) {
-            cart[id].qty = 0;
-            if (qtyVal) qtyVal.textContent = "0";
-            delete cart[id];
-            updateShop();
-          }
-        } else {
-          if (plusBtn) (plusBtn as HTMLButtonElement).disabled = false;
-        }
-
-        if (cart[id]) {
-          cart[id].timeslot = timeVal;
-          if (cart[id].qty > capacity) {
-            cart[id].qty = capacity;
-            if (qtyVal) qtyVal.textContent = String(capacity);
-          }
-          updateShop();
-        }
-      };
-
-      vatenmakenTimeSelect.addEventListener("change", updateVatenCapacity);
-      updateVatenCapacity();
-    }
-
-    if (plusBtn && qtyVal) {
-      plusBtn.addEventListener("click", () => {
-        if (!cart[id]) {
-          cart[id] = { title, price, qty: 0, category };
-        }
-        if (tramSelect) cart[id].timeslot = tramSelect.value;
-        if (introSelect) cart[id].timeslot = introSelect.value;
-        if (bottlingSelect) cart[id].delivery = bottlingSelect.value;
-        if (trailTimeSelect) cart[id].timeslot = trailTimeSelect.value;
-        if (trailGuideSelect) cart[id].guide = trailGuideSelect.value;
-        if (vatenmakenTimeSelect) cart[id].timeslot = vatenmakenTimeSelect.value;
-
-        // Capacity checks
-        if (vatenmakenTimeSelect) {
-          const timeVal = vatenmakenTimeSelect.value;
-          const capacity = vatenAvailability[timeVal] ?? 0;
-          if (cart[id].qty >= capacity) {
-            alert(`Sorry, er zijn nog maar ${capacity} plaatsen beschikbaar voor dit tijdslot.`);
-            return;
-          }
-        }
-
-        cart[id].qty += 1;
-        if (cart[id].qty > 10) cart[id].qty = 10;
-        qtyVal.textContent = String(cart[id].qty);
+    if (action === 'plus') {
+      cart[id].qty = Math.min(10, (cart[id].qty || 0) + 1);
+      if (qtyVal) qtyVal.textContent = String(cart[id].qty);
+      card.classList.add('selected');
+      updateShop();
+    } else if (action === 'minus') {
+      if (cart[id] && cart[id].qty > 0) {
+        cart[id].qty -= 1;
+        if (qtyVal) qtyVal.textContent = String(cart[id].qty);
+        if (cart[id].qty === 0) card.classList.remove('selected');
         updateShop();
-      });
-    }
-    if (minusBtn && qtyVal) {
-      minusBtn.addEventListener("click", () => {
-        if (cart[id] && cart[id].qty > 0) {
-          cart[id].qty -= 1;
-          qtyVal.textContent = String(cart[id].qty);
-          updateShop();
-        }
-      });
+      }
     }
   });
 
-  // Cleanup old addon checks
+  // Delegated dropdown change listeners
+  document.addEventListener('change', (e) => {
+    const target = e.target as HTMLElement;
+    const select = target.closest('select') as HTMLSelectElement;
+    if (!select) return;
+
+    const card = select.closest('.ticket-stub');
+    if (!card) return;
+
+    const id = card.getAttribute('data-ticket-id') || '';
+    if (!cart[id]) {
+      const price = parseFloat(card.getAttribute('data-price') || '0');
+      const title = card.getAttribute('data-title') || '';
+      const category = card.getAttribute('data-category') || 'entree';
+      cart[id] = { title, price, qty: 0, category };
+    }
+
+    if (select.classList.contains('tram-select') || select.classList.contains('intro-select') || select.classList.contains('trail-time-select') || select.classList.contains('vatenmaken-time-select')) {
+      cart[id].timeslot = select.value;
+      updateShop();
+    } else if (select.classList.contains('trail-guide-select')) {
+      cart[id].guide = select.value;
+      updateShop();
+    } else if (select.classList.contains('bottling-select')) {
+      cart[id].delivery = select.value;
+      updateShop();
+    }
+  });
 
   // Mock Checkout Flow JS
   const modalOverlay = document.getElementById("checkout-modal");
