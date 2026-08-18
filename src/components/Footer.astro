@@ -701,4 +701,33 @@ const { currentCity = 'denhaag' } = Astro.props;
       gap: 1rem;
     }
   }
+
+  /* High-contrast, crystal clear footer typography */
+  .site-footer p,
+  .site-footer .brand-pitch,
+  .site-footer .contact-line {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+  .site-footer strong,
+  .site-footer .contact-line strong {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+  }
+  .site-footer .footer-gold-link {
+    color: #C58B39 !important;
+    font-weight: 700 !important;
+    text-decoration: underline !important;
+    text-underline-offset: 3px;
+  }
+  .site-footer .footer-gold-link:hover {
+    color: #FFFFFF !important;
+  }
+  .site-footer .contact-box {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 </style>
