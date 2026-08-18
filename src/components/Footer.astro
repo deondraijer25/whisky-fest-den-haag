@@ -280,28 +280,38 @@ const { currentCity = 'denhaag' } = Astro.props;
   }
 
   .freestanding-svg-wrapper {
-    width: 130px;
-    height: 175px;
+    width: 140px;
+    height: 190px;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: transform 0.3s ease, filter 0.3s ease;
   }
 
-  .freestanding-svg-wrapper :global(svg) {
-    width: 100%;
-    height: 100%;
+  .freestanding-svg-wrapper :global(svg),
+  .freestanding-svg-wrapper svg {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 140px !important;
+    max-height: 190px !important;
     object-fit: contain;
-    display: block;
-    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
+    display: block !important;
+    filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.4));
   }
 
   .freestanding-logo-link:hover {
     transform: translateY(-8px) scale(1.08);
   }
 
-  .freestanding-logo-link:hover .freestanding-svg-wrapper :global(svg) {
-    filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5));
+  .freestanding-logo-link:hover .freestanding-svg-wrapper :global(svg),
+  .freestanding-svg-wrapper svg {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 140px !important;
+    max-height: 190px !important;
+    object-fit: contain;
+    display: block !important;
+    filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.4));
   }
 
   .logo-city-title {
@@ -668,9 +678,13 @@ const { currentCity = 'denhaag' } = Astro.props;
       gap: 2.5rem;
     }
     .freestanding-svg-wrapper {
-      width: 110px;
-      height: 150px;
-    }
+    width: 140px;
+    height: 190px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
   }
 
   @media (max-width: 800px) {
@@ -682,9 +696,13 @@ const { currentCity = 'denhaag' } = Astro.props;
       gap: 2rem;
     }
     .freestanding-svg-wrapper {
-      width: 120px;
-      height: 160px;
-    }
+    width: 140px;
+    height: 190px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
     .footer-grid {
       grid-template-columns: 1fr;
       gap: 2.5rem;
