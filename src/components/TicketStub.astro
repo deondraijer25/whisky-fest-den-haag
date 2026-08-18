@@ -505,23 +505,23 @@ const {
   .btn-mc-info-trigger {
     display: inline-flex;
     align-items: center;
-    background: rgba(197, 139, 57, 0.15);
-    border: 1px solid var(--whisky-gold, #c58b39);
+    gap: 4px;
+    background: transparent;
+    border: none;
+    padding: 0.25rem 0;
     color: var(--whisky-gold-dark, #8b5a1b);
     font-family: var(--font-sans, sans-serif);
-    font-size: 0.76rem;
-    font-weight: 700;
-    padding: 0.35rem 0.75rem;
-    border-radius: 4px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
     cursor: pointer;
-    margin-top: 0.6rem;
-    transition: all 0.2s ease;
+    margin-top: 0.5rem;
+    transition: color 0.2s ease;
   }
   .btn-mc-info-trigger:hover {
-    background: var(--whisky-gold, #c58b39);
-    color: #ffffff;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    color: var(--text-charcoal, #171614);
+    text-decoration: underline;
   }
 
   /* Responsive styling */
