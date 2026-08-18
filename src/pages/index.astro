@@ -799,6 +799,45 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     color: var(--text-charcoal, #171614) !important;
     text-decoration: underline !important;
   }
+
+  /* Compact, Elegant Timetable Boeken Button */
+  .tt-card-action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    width: 100%;
+    gap: 0.5rem;
+  }
+  .tt-book-btn {
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    padding: 0 0.85rem !important;
+    font-family: var(--font-sans, sans-serif) !important;
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.04em !important;
+    text-transform: uppercase !important;
+    border-radius: 4px !important;
+    border: 1.5px solid var(--text-charcoal, #171614) !important;
+    box-shadow: 2px 2px 0px rgba(23, 22, 20, 0.75) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+  }
+  .tt-book-btn:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 2px 3px 0px rgba(23, 22, 20, 0.9) !important;
+  }
+  .tt-book-btn:active {
+    transform: translate(1px, 1px) !important;
+    box-shadow: 1px 1px 0px rgba(23, 22, 20, 0.9) !important;
+  }
+
 </style>
 
             </div>
@@ -1201,7 +1240,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-macallan-inc" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-macallan-inc" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1220,7 +1259,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-macallan-ex" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-macallan-ex" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1239,7 +1278,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-teeling-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-teeling-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1258,7 +1297,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-smws-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-smws-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1277,7 +1316,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vip-session" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vip-session" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1296,7 +1335,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glengoyne-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glengoyne-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1315,7 +1354,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glenfiddich-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glenfiddich-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1334,7 +1373,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-sculte-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-sculte-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1353,7 +1392,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-suntory-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-suntory-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1372,7 +1411,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Vrijdag 13 Nov - 17:15 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Vrijdag 13 Nov - 17:15 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1391,7 +1430,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Vrijdag 13 Nov - 18:30 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Vrijdag 13 Nov - 18:30 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1410,7 +1449,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-balvenie-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-balvenie-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1429,7 +1468,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Vrijdag 13 Nov - 18:45 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Vrijdag 13 Nov - 18:45 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1448,7 +1487,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-1" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-1" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1467,7 +1506,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-ncnean-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-ncnean-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1486,7 +1525,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-bronckhorst-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-bronckhorst-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1505,7 +1544,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Vrijdag 13 Nov - 20:15 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Vrijdag 13 Nov - 20:15 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1524,7 +1563,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-filliers-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-filliers-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1543,7 +1582,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vatenmaken-tickets" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vatenmaken-tickets" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1569,7 +1608,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-bowmore-sat-inc" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-bowmore-sat-inc" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1588,7 +1627,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 12:00 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 12:00 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1607,7 +1646,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-bowmore-sat-ex" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-bowmore-sat-ex" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1626,7 +1665,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-oldtimers-sat" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-oldtimers-sat" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1645,7 +1684,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-ultimate-sat" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-ultimate-sat" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1664,7 +1703,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Zaterdag 14 Nov - 12:30 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Zaterdag 14 Nov - 12:30 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1683,7 +1722,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-2" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-2" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1702,7 +1741,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 13:30 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 13:30 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1721,7 +1760,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-teeling-sat-mid" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-teeling-sat-mid" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1740,7 +1779,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-brugse-sat" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-brugse-sat" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1759,7 +1798,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-sakurao-sat" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-sakurao-sat" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1778,7 +1817,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Zaterdag 14 Nov - 18:30 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Zaterdag 14 Nov - 18:30 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1797,7 +1836,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-oldtimers-sat-eve" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-oldtimers-sat-eve" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1816,7 +1855,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-teeling-sat-eve" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-teeling-sat-eve" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1835,7 +1874,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 18:45 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 18:45 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1854,7 +1893,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-3" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-3" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1873,7 +1912,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-amrut-sat" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-amrut-sat" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1892,7 +1931,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 20:15 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 20:15 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1911,7 +1950,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-arran-sat" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-arran-sat" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1930,7 +1969,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vatenmaken-tickets" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vatenmaken-tickets" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1956,7 +1995,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zondag 15 Nov - 11:00 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zondag 15 Nov - 11:00 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1975,7 +2014,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glenturret-sun-inc" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glenturret-sun-inc" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -1994,7 +2033,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glenturret-sun-ex" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glenturret-sun-ex" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -2013,7 +2052,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-smws-sun" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-smws-sun" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -2032,7 +2071,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Zondag 15 Nov - 12:30 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Zondag 15 Nov - 12:30 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -2051,7 +2090,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zondag 15 Nov - 12:30 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zondag 15 Nov - 12:30 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -2070,7 +2109,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-4" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-4" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -2089,7 +2128,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zondag 15 Nov - 14:00 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zondag 15 Nov - 14:00 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
@@ -2108,7 +2147,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                   Meer Info
                 </button>
-                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vatenmaken-tickets" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;" style="padding: 0.45rem 1.15rem; font-size: 0.8rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vatenmaken-tickets" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   Boeken &rarr;
                 </button>
               </div>
