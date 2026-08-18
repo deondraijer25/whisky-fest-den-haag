@@ -734,3 +734,86 @@ strong {
 .site-footer .footer-gold-link {
   color: #C58B39 !important;
 }
+
+/* ====================================================
+   GLOBAL BULLETPROOF INFINITE PARTNER MARQUEE SLIDER
+   ==================================================== */
+.trust-marquee-section {
+  background-color: var(--bg-sand, #FAF7F2) !important;
+  border-top: 1.5px solid var(--border-color, #E6DDD0) !important;
+  border-bottom: 1.5px solid var(--border-color, #E6DDD0) !important;
+  padding: 1.5rem 0 !important;
+  overflow: hidden !important;
+  position: relative !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%) !important;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%) !important;
+  z-index: 10 !important;
+}
+
+.trust-marquee-wrapper {
+  width: 100% !important;
+  overflow: hidden !important;
+  display: flex !important;
+}
+
+.trust-marquee-track {
+  display: flex !important;
+  align-items: center !important;
+  gap: 3.5rem !important;
+  width: max-content !important;
+  white-space: nowrap !important;
+  animation: partnerMarqueeScroll 30s linear infinite !important;
+  -webkit-animation: partnerMarqueeScroll 30s linear infinite !important;
+  will-change: transform !important;
+}
+
+.trust-marquee-section:hover .trust-marquee-track {
+  animation-play-state: paused !important;
+  -webkit-animation-play-state: paused !important;
+}
+
+@keyframes partnerMarqueeScroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@-webkit-keyframes partnerMarqueeScroll {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+  }
+  100% {
+    -webkit-transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.trust-text-logo {
+  font-family: var(--font-display, "Playfair Display", Georgia, serif) !important;
+  font-size: 1.45rem !important;
+  color: var(--text-charcoal, #171614) !important;
+  opacity: 0.65 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  transition: all 0.25s ease !important;
+  cursor: default !important;
+  user-select: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+}
+
+.trust-text-logo:hover {
+  opacity: 1 !important;
+  transform: scale(1.08) !important;
+}
+
+.partner-sep {
+  font-size: 0.85rem !important;
+  user-select: none !important;
+  flex-shrink: 0 !important;
+}
