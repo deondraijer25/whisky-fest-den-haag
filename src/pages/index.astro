@@ -3591,6 +3591,20 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
 </style>
 
 <script>
+  // safe-preloader-dismiss: Guaranteed preloader fade-out
+  (function() {
+    const pl = document.getElementById('hp-preloader');
+    if (pl) {
+      setTimeout(() => {
+        pl.classList.add('fade-out');
+        document.body.style.overflow = '';
+      }, 1800);
+      setTimeout(() => {
+        pl.style.display = 'none';
+      }, 2300);
+    }
+  })();
+
   // Tabs Interactive Logic
   const tabTriggers = document.querySelectorAll('.tab-trigger-card');
   tabTriggers.forEach(tab => {
