@@ -4972,57 +4972,159 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
 
   function openMasterclassModal(mcId) {
     activeMcId = mcId;
-    let mc = masterclassesList.find(m => m.id === mcId);
-    if (!mc) {
-      if (mcId === 'session-mc-1' || mcId.includes('macallan')) {
-        mc = masterclassesList.find(m => m.id.includes('macallan') || m.title.includes('Macallan'));
-      } else if (mcId === 'session-mc-2' || mcId.includes('highland')) {
-        mc = masterclassesList.find(m => m.id.includes('highland') || m.title.includes('Highland'));
-      } else if (mcId === 'session-mc-3' || mcId.includes('glenfiddich')) {
-        mc = masterclassesList.find(m => m.id.includes('glenfiddich') || m.title.includes('Glenfiddich'));
-      } else if (mcId === 'session-mc-4' || mcId.includes('islay')) {
-        mc = masterclassesList.find(m => m.id.includes('islay') || m.title.includes('Islay'));
-      } else if (mcId.includes('intro')) {
-        mc = masterclassesList.find(m => m.id.includes('intro') || m.title.includes('Intro'));
+
+    // Read details from DOM element if present
+    const ticketStubEl = document.querySelector(`.ticket-stub[data-ticket-id="${mcId}"]`);
+    const domCategory = (ticketStubEl && ticketStubEl.getAttribute('data-category')) || '';
+    const domTitle = (ticketStubEl && ticketStubEl.getAttribute('data-title')) || '';
+    let numericPrice = (ticketStubEl && parseFloat(ticketStubEl.getAttribute('data-price'))) || 0;
+
+    let tag = 'FESTIVAL SPECIAL';
+    let title = domTitle || 'Festival Onderdeel';
+    let subtitle = 'Exclusieve festivalbeleving';
+    let location = 'Grote Kerk Den Haag';
+    let duration = '45 minuten';
+    let description = 'Ontdek een unieke toevoeging aan uw festivaldag onder begeleiding van onze specialisten.';
+    let ambName = 'Festival Team & Specialisten';
+    let ambTitle = 'Expert & Begeleider';
+    let ambBio = 'Ervaren team met passie voor whiskycultuur, vakmanschap en historische tradities.';
+    let lineup = [
+      'Exclusieve Single Malt Sample #1',
+      'Zeldzame Cask Strength Proefdram #2'
+    ];
+
+    // Check specific categories
+    if (domCategory === 'tram' || mcId.includes('tram')) {
+      tag = 'HISTORISCHE TRAMRIT';
+      title = domTitle || 'Historische Whiskytram';
+      subtitle = 'Rijdende Proeverij door de Stad';
+      location = 'Vertrek direct voor de hoofdingang';
+      duration = '50 minuten rondrit';
+      description = 'Geniet van een unieke rit in een gerestaureerde klassieke historische tram. Terwijl de stad aan u voorbijtrekt, schenkt onze gastheer 3 bijzondere whiskys in met boeiende verhalen over de stad en distillatie.';
+      ambName = 'Gids & Tramconducteur';
+      ambTitle = 'Historisch Gastheer';
+      ambBio = 'Gepassioneerd kenner van zowel de lokale stadsgeschiedenis als ambachtelijke whiskyproductie.';
+      lineup = [
+        'Welkomstdram: Speyside Classic 10 Y.O.',
+        'Stadsrit Special: Highland Cask Strength',
+        'Finish Dram: Peated Single Malt'
+      ];
+    } else if (domCategory === 'botteling' || mcId.includes('botteling')) {
+      tag = 'OFFICIËLE FESTIVAL BOTTELING';
+      title = domTitle || 'Festival Botteling 2026';
+      subtitle = 'Gelimiteerde Cask Strength Single Cask Release';
+      location = 'Ophalen op festival of thuisbezorgd';
+      duration = 'Gelimiteerde Oplage';
+      description = 'De officiële festivalbotteling van deze editie, persoonlijk geselecteerd door het proefpanel. Rechtstreeks gebotteld op vatsterkte, non-chill filtered en zonder toevoeging van kleurstoffen. Inclusief genummerd herkomstcertificaat.';
+      ambName = 'Festival Bottling Committee';
+      ambTitle = 'Cask Selection Masters';
+      ambBio = 'Het selectiepanel keurde tientallen vaten om tot deze absolute kroon op het festival te komen.';
+      lineup = [
+        'Volledige 70cl Fles Festival Botteling (Cask Strength)',
+        'Officieel Gegraveerd Proefglas',
+        'Genummerd Certificaat van Echtheid'
+      ];
+    } else if (domCategory === 'trail' || mcId.includes('trail')) {
+      tag = 'FESTIVAL WHISKY TRAIL';
+      title = domTitle || 'Festival Whisky Trail';
+      subtitle = 'Begeleide Proefroute langs Topdistilleerderijen';
+      location = 'Start bij de Centrale Informatiebalie';
+      duration = '90 minuten';
+      description = 'Wandel mee met een van onze officiële festivalgidsen over de beursvloer. U bezoekt 5 toonaangevende standhouders waar de distilleerders zelf hun topstukken laten proeven en tekst en uitleg geven.';
+      ambName = 'Festival Gids & Sommelier';
+      ambTitle = 'Gecertificeerd Trail Guide';
+      ambBio = 'Leidt u langs de absolute hoogtepunten van het festival en deelt insidertips die u anders zou missen.';
+      lineup = [
+        '5 Exclusieve Drams bij Geselecteerde Stands',
+        'VIP Toegang tot de Standhouders Master Drams',
+        'Persoonlijke Proefnotities & Gids Begeleiding'
+      ];
+    } else if (domCategory === 'vatenmaken' || mcId.includes('vatenmaken') || mcId.includes('workshop')) {
+      tag = 'COOPER WORKSHOP';
+      title = domTitle || 'Cooper Workshop Vatenmaken';
+      subtitle = 'Ambacht, Houtbewerking & Kuiperij in Actie';
+      location = 'Festival Werkplaats / Kuiperij';
+      duration = '45 minuten';
+      description = 'Ruik het vers gebrande eikenhout en ervaar hoe essentieel het vat is voor whisky! Leer van de meesterkuiper hoe duigen worden geschaafd, hoe ringen worden geslagen en toast zelf een stuk eikenhout.';
+      ambName = 'Meesterkuiper & Houtspecialist';
+      ambTitle = 'Master Cooper';
+      ambBio = 'Vakman met decennia ervaring in het bouwen en herstellen van eikenhouten vaten voor topdistilleerderijen.';
+      lineup = [
+        'Proefdram: Ex-Bourbon Cask Matured',
+        'Proefdram: First Fill Oloroso Sherry Cask',
+        'Proefdram: Virgin Oak Heavy Char Finish',
+        'Zelf Gemaakt Houten Aandenken'
+      ];
+    } else {
+      // Masterclass Data
+      let mc = masterclassesList.find(m => m.id === mcId);
+      if (!mc) {
+        if (mcId.includes('macallan')) mc = masterclassesList.find(m => m.id.includes('macallan') || m.title.includes('Macallan'));
+        else if (mcId.includes('teeling')) mc = masterclassesList.find(m => m.id.includes('teeling') || m.title.includes('Teeling'));
+        else if (mcId.includes('smws')) mc = masterclassesList.find(m => m.id.includes('smws') || m.title.includes('SMWS'));
+        else if (mcId.includes('glengoyne')) mc = masterclassesList.find(m => m.id.includes('glengoyne'));
+        else if (mcId.includes('glenfiddich')) mc = masterclassesList.find(m => m.id.includes('glenfiddich'));
+        else if (mcId.includes('highland')) mc = masterclassesList.find(m => m.id.includes('highland'));
+        else if (mcId.includes('intro')) mc = masterclassesList.find(m => m.id.includes('intro'));
+      }
+
+      tag = 'SPECIAL MASTERCLASS';
+      if (mc) {
+        title = mc.title || domTitle;
+        subtitle = mc.subtitle || 'Exclusieve festival proeverij';
+        location = mc.location || location;
+        duration = mc.duration || duration;
+        description = mc.description || description;
+        if (mc.ambassador) {
+          ambName = mc.ambassador.name || ambName;
+          ambTitle = mc.ambassador.title || ambTitle;
+          ambBio = mc.ambassador.bio || ambBio;
+        }
+        if (mc.tastingLineup) lineup = mc.tastingLineup;
+        if (mc.price && !numericPrice) {
+          numericPrice = typeof mc.price === 'number' ? mc.price : parseFloat(String(mc.price).replace(/[^0-9,.]/g, '').replace(',', '.')) || 0;
+        }
       }
     }
-    if (!mc && masterclassesList.length > 0) {
-      mc = masterclassesList[0];
-    }
-    if (!mc) return;
 
+    // Populate modal fields
+    const tagEl = document.querySelector('#masterclass-info-modal span[style*="font-family: var(--font-sans)"]');
     const titleEl = document.getElementById('mc-modal-title');
-    const subEl = document.getElementById('mc-modal-subtitle');
-    const locEl = document.getElementById('mc-modal-location');
-    const durEl = document.getElementById('mc-modal-duration');
+    const subtitleEl = document.getElementById('mc-modal-subtitle');
+    const locationEl = document.getElementById('mc-modal-location');
+    const durationEl = document.getElementById('mc-modal-duration');
     const descEl = document.getElementById('mc-modal-description');
-    const priceEl = document.getElementById('mc-modal-price');
-
-    if (titleEl) titleEl.textContent = mc.title;
-    if (subEl) subEl.textContent = mc.subtitle || 'Exclusieve Proeverij';
-    if (locEl) locEl.textContent = mc.location || 'Festival Locatie';
-    if (durEl) durEl.textContent = mc.duration || '45 minuten';
-    if (descEl) descEl.textContent = mc.description || '';
-    if (priceEl) priceEl.textContent = mc.price || '€ 0,00';
-
-    if (mc.ambassador) {
-      const ambName = document.getElementById('mc-modal-ambassador-name');
-      const ambTitle = document.getElementById('mc-modal-ambassador-title');
-      const ambBio = document.getElementById('mc-modal-ambassador-bio');
-      if (ambName) ambName.textContent = mc.ambassador.name;
-      if (ambTitle) ambTitle.textContent = mc.ambassador.title;
-      if (ambBio) ambBio.textContent = mc.ambassador.bio;
-    }
-
     const lineupList = document.getElementById('mc-modal-lineup');
+    const ambNameEl = document.getElementById('mc-modal-ambassador-name');
+    const ambTitleEl = document.getElementById('mc-modal-ambassador-title');
+    const ambBioEl = document.getElementById('mc-modal-ambassador-bio');
+
+    if (tagEl) tagEl.textContent = tag;
+    if (titleEl) titleEl.textContent = title;
+    if (subtitleEl) subtitleEl.textContent = subtitle;
+    if (locationEl) locationEl.textContent = location;
+    if (durationEl) durationEl.textContent = duration;
+    if (descEl) descEl.textContent = description;
+
+    if (ambNameEl) ambNameEl.textContent = ambName;
+    if (ambTitleEl) ambTitleEl.textContent = ambTitle;
+    if (ambBioEl) ambBioEl.textContent = ambBio;
+
     if (lineupList) {
-      lineupList.innerHTML = (mc.tastingLineup || []).map(dram => `
-        <li style="display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.9rem; background: #FFFFFF; border: 1px solid #E6DDD0; border-radius: 6px; font-size: 0.9rem; color: #171614;">
-          <span style="color: #C58B39; font-size: 0.75rem; line-height: 1;">◆</span>
+      lineupList.innerHTML = lineup.map(dram => `
+        <li style="display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.9rem; background: #FFFFFF; border: 1px solid #E6DDD0; border-radius: 6px; font-size: 0.9rem; color: var(--text-charcoal, #171614);">
+          <span style="color: var(--whisky-gold, #C58B39); font-size: 0.75rem; line-height: 1;">◆</span>
           <span style="font-weight: 600;">${dram}</span>
         </li>
       `).join('');
     }
+
+    // Format Price correctly: Price Val & Price Cents
+    const priceSplit = numericPrice.toFixed(2).split('.');
+    const priceValEl = document.getElementById('mc-modal-price-val');
+    const priceCentsEl = document.getElementById('mc-modal-price-cents');
+    if (priceValEl) priceValEl.textContent = priceSplit[0];
+    if (priceCentsEl) priceCentsEl.textContent = ',' + priceSplit[1];
 
     if (mcModal) {
       mcModal.style.display = 'flex';
