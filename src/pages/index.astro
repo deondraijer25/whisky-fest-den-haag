@@ -4769,19 +4769,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
   if (checkoutBtn) {
     checkoutBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      promoDiscount = 0;
-      activePromoCode = "";
-      if (promoInput) promoInput.value = "";
-      if (promoMsg) promoMsg.style.display = "none";
-      
-      recalcModalTotal();
-      if (modalStep1) modalStep1.style.display = "block";
-      if (modalStep2) modalStep2.style.display = "none";
-      if (modalStep3) modalStep3.style.display = "none";
-      if (modalOverlay) {
-        modalOverlay.style.display = "flex";
-        document.body.style.overflow = "hidden";
-      }
+      handleCheckoutClick(e);
     });
   }
 
@@ -5351,7 +5339,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
   }
 
   
-  // Render all Masterclasses dynamically in the Add-on Upsell Modal
+  // Render all Masterclasses & Add-ons dynamically in the Add-on Upsell Modal
   function renderAddonUpsellList() {
     const listContainer = document.getElementById('addon-upsell-list');
     if (!listContainer) return;
@@ -5373,8 +5361,8 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
             </span>
           </div>
           <div style="display: flex; align-items: center; gap: 0.85rem; flex-shrink: 0;">
-            <strong style="color: #8A6831; font-size: 1.1rem; font-family: var(--font-display, serif); white-space: nowrap;">
-              € ${mc.price.toFixed(2).replace('.', ',')}
+            <strong style="color: #006448; font-size: 1.1rem; font-family: var(--font-display, serif); white-space: nowrap;">
+              € ${(typeof mc.price === 'number' ? mc.price : parseFloat(String(mc.price).replace(/[^0-9,.]/g, '').replace(',', '.')) || 0).toFixed(2).replace('.', ',')}
             </strong>
             <button 
               type="button" 
@@ -5400,45 +5388,53 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     const mc = masterclassesList.find(m => m.id === mcId);
     if (!mc) return;
 
+    const numPrice = typeof mc.price === 'number' ? mc.price : parseFloat(String(mc.price).replace(/[^0-9,.]/g, '').replace(',', '.')) || 0;
+
     if (!cart[mcId]) {
       cart[mcId] = {
         title: mc.title,
-        price: mc.price,
+        price: numPrice,
         qty: 0,
         category: 'masterclass'
       };
     }
     cart[mcId].qty += 1;
-    saveCart();
-    updateCartUI();
+
+    const qtyEl = document.getElementById('qty-' + mcId);
+    if (qtyEl) qtyEl.textContent = String(cart[mcId].qty);
+
+    updateShop();
     renderAddonUpsellList();
   });
-
-  let upsellShownThisClick = false;
 
   function handleCheckoutClick(e) {
     if (e && e.preventDefault) e.preventDefault();
 
-    const activeCount = Object.keys(cart).reduce((sum, k) => sum + ((cart[k] && cart[k].qty) || 0), 0);
-    if (activeCount === 0) {
+    let totalItems = 0;
+    Object.keys(cart).forEach(id => {
+      if (cart[id] && cart[id].qty > 0) {
+        totalItems += cart[id].qty;
+      }
+    });
+
+    if (totalItems === 0) {
       alert('Uw winkelwagen is leeg. Selecteer eerst een ticket.');
       return;
     }
 
     // Always show upsell popup first when clicking Afrekenen
-    if (upsellModal && !upsellShownThisClick) {
+    if (upsellModal) {
       renderAddonUpsellList();
       upsellModal.style.display = 'flex';
       document.body.style.overflow = 'hidden';
     } else {
-      upsellShownThisClick = false;
       openCheckoutModal();
     }
   }
 
   // Global delegated listener for ANY checkout button across the entire page
   document.addEventListener('click', function(e) {
-    const target = e.target.closest('#checkout-btn, #checkout-trigger-btn, .btn-checkout, #header-dropdown-checkout-btn, [data-action="checkout"]');
+    const target = e.target.closest('#checkout-btn, #checkout-trigger-btn, .btn-checkout, #header-dropdown-checkout-btn, #header-cart-checkout, [data-action="checkout"]');
     if (target) {
       e.preventDefault();
       handleCheckoutClick(e);
@@ -5448,7 +5444,6 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
   if (upsellModalProceed) {
     upsellModalProceed.onclick = function() {
       if (upsellModal) upsellModal.style.display = 'none';
-      upsellShownThisClick = false;
       openCheckoutModal();
     };
   }
@@ -5456,7 +5451,6 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
   if (upsellModalCancel) {
     upsellModalCancel.onclick = function() {
       if (upsellModal) upsellModal.style.display = 'none';
-      upsellShownThisClick = false;
       openCheckoutModal();
     };
   }
@@ -5464,7 +5458,6 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
   if (upsellModalClose) {
     upsellModalClose.onclick = function() {
       if (upsellModal) upsellModal.style.display = 'none';
-      upsellShownThisClick = false;
       document.body.style.overflow = 'auto';
     };
   }
@@ -5674,52 +5667,4 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     });
   }
 
-  // Upsell Modal Handlers
-  if (upsellModalClose) upsellModalClose.addEventListener('click', () => {
-    if (upsellModal) upsellModal.style.display = 'none';
-    document.body.style.overflow = '';
-  });
-  if (upsellModalCancel) upsellModalCancel.addEventListener('click', () => {
-    if (upsellModal) upsellModal.style.display = 'none';
-    document.body.style.overflow = '';
-  });
-  if (upsellModal) upsellModal.addEventListener('click', (e) => {
-    if (e.target === upsellModal) {
-      upsellModal.style.display = 'none';
-      document.body.style.overflow = '';
-    }
-  });
-
-  if (upsellModalProceed) {
-    upsellModalProceed.addEventListener('click', () => {
-      if (upsellModal) upsellModal.style.display = 'none';
-      openCheckoutModal();
-    });
-  }
-
-  // Add from Upsell Card
-  document.addEventListener('click', (e) => {
-    const upsellBtn = e.target.closest('.btn-upsell-add');
-    if (upsellBtn) {
-      e.preventDefault();
-      const upsellId = upsellBtn.getAttribute('data-upsell-id');
-      if (upsellId) {
-        let stub = document.querySelector(`.ticket-stub[data-ticket-id="${upsellId}"]`);
-        if (!stub) {
-          const allStubs = Array.from(document.querySelectorAll('.ticket-stub'));
-          stub = allStubs.find(s => s.getAttribute('data-ticket-id') && s.getAttribute('data-ticket-id').includes(upsellId.replace('session-mc-', '')));
-        }
-        if (stub) {
-          const plusBtn = stub.querySelector('.plus-btn');
-          if (plusBtn) plusBtn.click();
-          upsellBtn.textContent = '✓ Toegevoegd';
-          upsellBtn.style.backgroundColor = 'var(--whisky-gold, #c58b39)';
-          upsellBtn.style.color = '#fff';
-        }
-      }
-    }
-  });
-
-
-  
-</script>
+  </script>
