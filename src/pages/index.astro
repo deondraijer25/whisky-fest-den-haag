@@ -4109,17 +4109,13 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
   function recalcModalTotal() {
     let subtotal = 0;
     let totalItems = 0;
-    let entryTicketsCount = 0;
     let shippingActive = false;
 
     Object.keys(cart).forEach(id => {
       const item = cart[id];
-      if (item.qty > 0) {
+      if (item && item.qty > 0) {
         subtotal += item.price * item.qty;
         totalItems += item.qty;
-        if (item.category === "entree") {
-          entryTicketsCount += item.qty;
-        }
         if (item.category === "botteling" && item.delivery === "shipping") {
           shippingActive = true;
         }
@@ -4142,7 +4138,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       modalSummaryItems.innerHTML = "";
       Object.keys(cart).forEach(id => {
         const item = cart[id];
-        if (item.qty > 0) {
+        if (item && item.qty > 0) {
           let displayTitle = item.title;
           if (item.category === "tram" && item.timeslot) {
             displayTitle = `${item.title} (${item.timeslot})`;
@@ -4239,8 +4235,8 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
   }
 
   if (checkoutBtn) {
-    checkoutBtn.addEventListener("click", () => {
-      // Reset promo state upon opening checkout
+    checkoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
       promoDiscount = 0;
       activePromoCode = "";
       if (promoInput) promoInput.value = "";
@@ -4250,19 +4246,24 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       if (modalStep1) modalStep1.style.display = "block";
       if (modalStep2) modalStep2.style.display = "none";
       if (modalStep3) modalStep3.style.display = "none";
-      if (modalOverlay) modalOverlay.style.display = "flex";
+      if (modalOverlay) {
+        modalOverlay.style.display = "flex";
+        document.body.style.overflow = "hidden";
+      }
     });
   }
 
   if (modalCloseX) {
     modalCloseX.addEventListener("click", () => {
       if (modalOverlay) modalOverlay.style.display = "none";
+      document.body.style.overflow = "";
     });
   }
 
   if (modalSuccessClose) {
     modalSuccessClose.addEventListener("click", () => {
       if (modalOverlay) modalOverlay.style.display = "none";
+      document.body.style.overflow = "";
       if (modalStep3) modalStep3.style.display = "none";
       if (modalStep1) modalStep1.style.display = "block";
       Object.keys(cart).forEach(id => {
@@ -4279,6 +4280,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     modalOverlay.addEventListener("click", (e) => {
       if (e.target === modalOverlay) {
         modalOverlay.style.display = "none";
+        document.body.style.overflow = "";
       }
     });
   }
@@ -4303,9 +4305,9 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     mockPaymentForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const emailInput = document.getElementById("cust-email") as HTMLInputElement;
-      const email = emailInput ? emailInput.value : "info@whiskyfestival.nl";
+      const email = emailInput ? emailInput.value : "deondraijer@gmail.com";
       const nameInput = document.getElementById("cust-name") as HTMLInputElement;
-      const name = nameInput ? nameInput.value : "Bezoeker";
+      const name = nameInput ? nameInput.value : "Deon Draijer";
       const phoneInput = document.getElementById("cust-phone") as HTMLInputElement;
       const phone = phoneInput ? phoneInput.value : "+31 6 12345678";
       
@@ -4318,7 +4320,6 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
           
           let orderList: string[] = [];
           let itemsOrdered: any[] = [];
-          let primaryTicket: any = null;
           let resPrefix = "WF";
 
           if (activePromoCode.startsWith("WS-") || activePromoCode === "IWS") {
@@ -4327,7 +4328,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
           
           Object.keys(cart).forEach(id => {
             const item = cart[id];
-            if (item.qty > 0) {
+            if (item && item.qty > 0) {
               let itemDisplayTitle = item.title;
               if (item.category === "tram" && item.timeslot) {
                 itemDisplayTitle = `${item.title} (${item.timeslot.split(' - ')[1] || item.timeslot})`;
@@ -4346,10 +4347,6 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
                 timeslot: item.timeslot || "",
                 delivery: item.delivery || ""
               });
-
-              if (!primaryTicket && item.category === "entree") {
-                primaryTicket = item;
-              }
             }
           });
           
@@ -4388,7 +4385,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
           if (modalStep2) modalStep2.style.display = "none";
           if (modalStep3) modalStep3.style.display = "block";
         }
-      }, 2500);
+      }, 1500);
     });
   }
 
