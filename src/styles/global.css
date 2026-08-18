@@ -600,28 +600,7 @@ strong {
   background: var(--text-charcoal);
 }
 
-/* Horizontal Trust Strip */
-.trust-strip {
-  background-color: rgba(222, 214, 201, 0.15);
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
-  padding: 2.5rem 2rem;
-  display: flex;
-  justify-content: center;
-  gap: 4rem;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.trust-logo {
-  opacity: 0.6;
-  filter: grayscale(100%) contrast(120%);
-  transition: all 0.3s;
-  height: 40px;
-}
-.trust-logo:hover {
-  opacity: 1;
-  filter: none;
-}
+
 
 /* 3-Tab Accordion Layout */
 .tab-container {
