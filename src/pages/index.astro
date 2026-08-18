@@ -771,6 +771,35 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     color: #171614;
   }
 
+
+  /* Timetable Type Filter Buttons */
+  .timetable-type-filter {
+    background: rgba(197, 139, 57, 0.08);
+    padding: 0.35rem 0.75rem;
+    border-radius: 30px;
+    border: 1px solid rgba(140, 110, 70, 0.25);
+  }
+  .tt-type-btn {
+    border: none;
+    background: transparent;
+    padding: 0.4rem 0.85rem;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-charcoal);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .tt-type-btn.active, .tt-type-btn:hover {
+    background-color: var(--whisky-gold-dark, #006448);
+    color: #FAF7F2;
+  }
+  .tt-card-info-btn:hover {
+    background-color: var(--whisky-gold, #c58b39) !important;
+    color: #FFFFFF !important;
+    transform: translateY(-1px);
+  }
 </style>
 
             </div>
@@ -1132,6 +1161,19 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
           </div>
 
           <!-- Time Slot Filter -->
+          
+          <!-- Type / Category Filter in Timetable -->
+          <div class="timetable-type-filter" style="display: flex; align-items: center; justify-content: center; gap: 0.4rem; flex-wrap: wrap;">
+            <span class="time-filter-label" style="font-family: var(--font-sans); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--whisky-gold-dark, #8b5a1b); letter-spacing: 0.08em; margin-right: 0.25rem;">Type:</span>
+            <button type="button" class="tt-type-btn active" data-tt-type="all">Alles</button>
+            <button type="button" class="tt-type-btn" data-tt-type="entree">Sessie Entree</button>
+            <button type="button" class="tt-type-btn" data-tt-type="masterclass">Masterclasses</button>
+            <button type="button" class="tt-type-btn" data-tt-type="tram">Whiskytram</button>
+            <button type="button" class="tt-type-btn" data-tt-type="trail">Whiskytrail</button>
+            <button type="button" class="tt-type-btn" data-tt-type="vatenmaken">Workshops</button>
+            <button type="button" class="tt-type-btn" data-tt-type="botteling">Botteling</button>
+          </div>
+
           <div class="timetable-time-filter">
             <span class="time-filter-label">Tijdvak:</span>
             <button type="button" class="tt-time-btn active" data-tt-time="all">Alle Tijden</button>
@@ -1155,7 +1197,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Macallan Exclusive (Inc. Torenklim)</h4>
               <p class="tt-card-desc">Macallan Exclusive tasting onder leiding van Gerard Spaans. Inclusief beklimming van de Haagsche Toren.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-macallan-inc">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-macallan-inc" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-macallan-inc" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="ochtend">
@@ -1166,7 +1216,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Macallan Exclusive (Zonder Klim)</h4>
               <p class="tt-card-desc">Prachtige Macallan tasting onder begeleiding van Gerard Spaans. Geniet van het iconische single malt merk.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-macallan-ex">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-macallan-ex" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-macallan-ex" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="ochtend">
@@ -1177,7 +1235,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Teeling Whiskey Masterclass</h4>
               <p class="tt-card-desc">Proef 6 verschillende whiskeys van Teeling, waarvan 4 gloednieuwe releases.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-teeling-fri">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-teeling-fri" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-teeling-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="ochtend">
@@ -1188,7 +1254,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">SMWS - Get into the good stuff!</h4>
               <p class="tt-card-desc">Ga mee op ontdekkingsreis met Bob Wenting en proef 4 verrassend verschillende cask-strength whisky's.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-smws-fri">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-smws-fri" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-smws-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="middag">
@@ -1199,7 +1273,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">VIP Sessie - Vrijdagmiddag</h4>
               <p class="tt-card-desc">Inclusief 12 gratis drams (€12), Glencairn tastingglas, hapjes-vouchers en VIP masterclass toegang.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vip-session">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="vip-session" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vip-session" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="middag">
@@ -1210,7 +1292,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Glengoyne & Tamdhu Tasting</h4>
               <p class="tt-card-desc">Carlos Perez Anou (ENG) presenteert een contrasterende line-up van sherry-gerijpte Tamdhu en Glengoyne.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glengoyne-fri">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-glengoyne-fri" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glengoyne-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="middag">
@@ -1221,7 +1311,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Glenfiddich Old Timers</h4>
               <p class="tt-card-desc">Een zeer unieke old timers line-up van Glenfiddich, gepresenteerd door Tony van Rooijen.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glenfiddich-fri">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-glenfiddich-fri" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glenfiddich-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="middag">
@@ -1232,7 +1330,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Stokerij Sculte: The Taste of Oak</h4>
               <p class="tt-card-desc">Roy Kroeze toont de invloed van diverse eikenhouten vaten op de New Make spirit van Sculte.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-sculte-fri">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-sculte-fri" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-sculte-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="middag">
@@ -1243,7 +1349,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">House of Suntory: Japanese Portfolio</h4>
               <p class="tt-card-desc">De Kuyper presenteert het Japanse portfolio van Suntory door Brand Ambassador Lyndon Hachey.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-suntory-fri">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-suntory-fri" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-suntory-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="middag">
@@ -1254,7 +1368,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Haagsche Whiskytram</h4>
               <p class="tt-card-desc">Een schitterende rit door Den Haag in een historische HTM-tram met 4 topdrams.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Vrijdag 13 Nov - 17:15 uur">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="whiskytram" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Vrijdag 13 Nov - 17:15 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="avond">
@@ -1265,7 +1387,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Whisky Introductie</h4>
               <p class="tt-card-desc">Tasting van 2 basiswhisky's en een korte introductie voor beginners door Valentijn Klop.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Vrijdag 13 Nov - 18:30 uur">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="intro-tickets" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Vrijdag 13 Nov - 18:30 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="avond">
@@ -1276,7 +1406,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">The Balvenie Old Timers</h4>
               <p class="tt-card-desc">Exclusieve old timers van The Balvenie, begeleid door Tony van Rooijen.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-balvenie-fri">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-balvenie-fri" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-balvenie-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="avond">
@@ -1287,7 +1425,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Haagsche Whiskytram</h4>
               <p class="tt-card-desc">Sfeervolle avondrit door Den Haag met 4 topdrams op wielen.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Vrijdag 13 Nov - 18:45 uur">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="whiskytram" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Vrijdag 13 Nov - 18:45 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="avond">
@@ -1298,7 +1444,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Sessie 1 - Vrijdagavond</h4>
               <p class="tt-card-desc">Avondsessie van het festival. Inclusief Glencairn tastingglas, gratis drams en festivalboekje.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-1">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="session-1" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-1" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="avond">
@@ -1309,7 +1463,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Nc'nean Organic Tasting</h4>
               <p class="tt-card-desc">Proef de duurzame, biologische single malt whisky van Nc'nean onder leiding van Suzanne.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-ncnean-fri">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-ncnean-fri" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-ncnean-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="avond">
@@ -1320,7 +1482,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">De Bronckhorst: Rise of Grain</h4>
               <p class="tt-card-desc">De allereerste masterclass van Distilleerderij de Bronckhorst met nieuwe releases.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-bronckhorst-fri">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-bronckhorst-fri" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-bronckhorst-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="avond">
@@ -1331,7 +1501,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Haagsche Whiskytram</h4>
               <p class="tt-card-desc">Avondrondrit door prachtig verlicht Den Haag. Een sfeervolle tasting on-the-go.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Vrijdag 13 Nov - 20:15 uur">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="whiskytram" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Vrijdag 13 Nov - 20:15 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="avond">
@@ -1342,7 +1520,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Filliers Belgian Whisky</h4>
               <p class="tt-card-desc">Ward Baes vertelt het verhaal achter de Belgische Filliers whisky's tijdens deze proeverij.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-filliers-fri">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-filliers-fri" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-filliers-fri" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="avond">
@@ -1353,7 +1539,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Workshop Vatenmaken</h4>
               <p class="tt-card-desc">Actieve demonstratie van de ambachtelijk vatenmaker (cooperage) op het buitenterrein.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vatenmaken-tickets">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="vatenmaken-tickets" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vatenmaken-tickets" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
           </div>
@@ -1371,7 +1565,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Bowmore & Islay (Inc. Klim)</h4>
               <p class="tt-card-desc">Global Brand Ambassador Teddy Joseph vertelt over Bowmore met een klim naar de top.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-bowmore-sat-inc">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-bowmore-sat-inc" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-bowmore-sat-inc" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="ochtend">
@@ -1382,7 +1584,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Haagsche Whiskytram</h4>
               <p class="tt-card-desc">Vroege zaterdagrit. Heerlijk ontspannen de stad ontdekken onder het genot van 4 drams.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 12:00 uur">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="whiskytram" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 12:00 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="ochtend">
@@ -1393,7 +1603,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Bowmore & Islay (Zonder Klim)</h4>
               <p class="tt-card-desc">Global Brand Ambassador Teddy Joseph vertelt over Bowmore met een nieuwe special release.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-bowmore-sat-ex">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-bowmore-sat-ex" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-bowmore-sat-ex" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="ochtend">
@@ -1404,7 +1622,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Glenfiddich, Glen Grant & Port Ellen</h4>
               <p class="tt-card-desc">Een ultra-exclusieve tasting van historische bottelingen, begeleid door Tony van Rooijen.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-oldtimers-sat">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-oldtimers-sat" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-oldtimers-sat" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="ochtend">
@@ -1415,7 +1641,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">The Ultimate: Historische Bottelingen</h4>
               <p class="tt-card-desc">Proef legendarische vaten uit de 'The Ultimate' serie van Van Wees Amersfoort.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-ultimate-sat">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-ultimate-sat" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-ultimate-sat" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="ochtend">
@@ -1426,7 +1660,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Whisky Introductie</h4>
               <p class="tt-card-desc">Tasting van 2 single malts voor echte beginners + uitleg over de basis.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Zaterdag 14 Nov - 12:30 uur">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="intro-tickets" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Zaterdag 14 Nov - 12:30 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="middag">
@@ -1437,7 +1679,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Sessie 2 - Zaterdagmiddag</h4>
               <p class="tt-card-desc">Zaterdagmiddagsessie van het festival. Inclusief Glencairn tastingglas en festivalboekje.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-2">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="session-2" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-2" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="middag">
@@ -1448,7 +1698,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Haagsche Whiskytram</h4>
               <p class="tt-card-desc">Zaterdagmiddagrit door historisch Den Haag onder begeleiding van gerenommeerde gidsen.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 13:30 uur">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="whiskytram" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 13:30 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="middag">
@@ -1459,7 +1717,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Teeling Whiskey Masterclass</h4>
               <p class="tt-card-desc">Exclusieve Ierse whiskey tasting van Teeling.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-teeling-sat-mid">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-teeling-sat-mid" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-teeling-sat-mid" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="middag">
@@ -1470,7 +1736,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Brugs Heilig Water Tasting</h4>
               <p class="tt-card-desc">Peter de Meyer schenkt het bekroonde 'Brugs Heilig Water' van de Brugse Whisky Company.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-brugse-sat">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-brugse-sat" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-brugse-sat" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="middag">
@@ -1481,7 +1755,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Sakurao Japanese Whisky</h4>
               <p class="tt-card-desc">Sayumi Chavrieir-Oyama introduceert de unieke Sakurao whisky's rechtstreeks uit Hiroshima.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-sakurao-sat">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-sakurao-sat" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-sakurao-sat" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="avond">
@@ -1492,7 +1774,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Whisky Introductie</h4>
               <p class="tt-card-desc">Tasting van 2 single malts voor echte beginners.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Zaterdag 14 Nov - 18:30 uur">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="intro-tickets" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Zaterdag 14 Nov - 18:30 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="avond">
@@ -1503,7 +1793,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Macallan & Highland Park Old Timers</h4>
               <p class="tt-card-desc">Tony van Rooijen schenkt 4 legendarische toppers uit een privécollectie.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-oldtimers-sat-eve">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-oldtimers-sat-eve" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-oldtimers-sat-eve" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="avond">
@@ -1514,7 +1812,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Teeling Whiskey Masterclass</h4>
               <p class="tt-card-desc">Proef 6 verschillende whiskeys van Teeling, waarvan 4 nieuwe releases.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-teeling-sat-eve">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-teeling-sat-eve" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-teeling-sat-eve" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="avond">
@@ -1525,7 +1831,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Haagsche Whiskytram</h4>
               <p class="tt-card-desc">Sfeervolle avondrit tijdens het festival.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 18:45 uur">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="whiskytram" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 18:45 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="avond">
@@ -1536,7 +1850,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Sessie 3 - Zaterdagavond</h4>
               <p class="tt-card-desc">Zaterdagavondsessie van het festival. Inclusief Glencairn proefglas.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-3">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="session-3" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-3" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="avond">
@@ -1547,7 +1869,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Amrut Kumbha Single Malt</h4>
               <p class="tt-card-desc">Pramod Kashyap presenteert de nieuwe gelimiteerde Amrut Kumbha.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-amrut-sat">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-amrut-sat" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-amrut-sat" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="avond">
@@ -1558,7 +1888,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Haagsche Whiskytram</h4>
               <p class="tt-card-desc">Romantische zaterdagavond rondrit door sfeervol verlicht Den Haag.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 20:15 uur">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="whiskytram" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 20:15 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="avond">
@@ -1569,7 +1907,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Arran Cask Samples</h4>
               <p class="tt-card-desc">Proef exclusieve vatsamples en gelimiteerde bottelingen van Arran.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-arran-sat">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-arran-sat" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-arran-sat" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="avond">
@@ -1580,7 +1926,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Workshop Vatenmaken</h4>
               <p class="tt-card-desc">Leer de kunst van het vatenmaken en proef 3 Loch Lomond single malts.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vatenmaken-tickets">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="vatenmaken-tickets" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vatenmaken-tickets" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
           </div>
@@ -1598,7 +1952,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Haagsche Whiskytram</h4>
               <p class="tt-card-desc">Zondagochtend rondrit door historisch Den Haag met 4 drams.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zondag 15 Nov - 11:00 uur">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="whiskytram" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zondag 15 Nov - 11:00 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="ochtend">
@@ -1609,7 +1971,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">The Glenturret Tasting (Inc. Klim)</h4>
               <p class="tt-card-desc">Proef Glenturret single malt whisky onder leiding van Luca Rapetti (ENG), inclusief torenbeklimming.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glenturret-sun-inc">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-glenturret-sun-inc" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glenturret-sun-inc" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="ochtend">
@@ -1620,7 +1990,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">The Glenturret Tasting (Zonder Klim)</h4>
               <p class="tt-card-desc">Proef Glenturret single malt whisky onder leiding van Luca Rapetti (ENG).</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glenturret-sun-ex">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-glenturret-sun-ex" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glenturret-sun-ex" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="ochtend">
@@ -1631,7 +2009,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">SMWS - Get into the good stuff!</h4>
               <p class="tt-card-desc">Bob Wenting presenteert 4 exclusieve single cask bottelingen van de SMWS.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-smws-sun">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="mc-smws-sun" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-smws-sun" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="ochtend">
@@ -1642,7 +2028,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Whisky Introductie</h4>
               <p class="tt-card-desc">Tasting van 2 single malts voor echte beginners + uitleg.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Zondag 15 Nov - 12:30 uur">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="intro-tickets" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Zondag 15 Nov - 12:30 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="ochtend">
@@ -1653,7 +2047,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Haagsche Whiskytram</h4>
               <p class="tt-card-desc">Zondagsrit om uw festivalbezoek perfect te starten.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zondag 15 Nov - 12:30 uur">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="whiskytram" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zondag 15 Nov - 12:30 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="middag">
@@ -1664,7 +2066,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Sessie 4 - Zondagmiddag</h4>
               <p class="tt-card-desc">Slot-sessie op zondagmiddag. Inclusief Glencairn proefglas.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-4">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="session-4" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-4" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="middag">
@@ -1675,7 +2085,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Haagsche Whiskytram</h4>
               <p class="tt-card-desc">Middagrit door historisch Den Haag met diverse bijzondere single cask malts.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zondag 15 Nov - 14:00 uur">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="whiskytram" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zondag 15 Nov - 14:00 uur" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
             <div class="tt-card" data-timepart="middag">
@@ -1686,7 +2104,15 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               </div>
               <h4 class="tt-card-title">Workshop Vatenmaken</h4>
               <p class="tt-card-desc">Leer direct van de vatenmaker en proef de invloed van hout op jonge distillaten.</p>
-              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vatenmaken-tickets">Direct Boeken &rarr;</button>
+              <div class="tt-card-action-row" style="display: flex; gap: 0.5rem; margin-top: 1rem; align-items: stretch; width: 100%;">
+                <button type="button" class="btn-mc-info-trigger tt-card-info-btn" data-mc-id="vatenmaken-tickets" style="flex: 1; padding: 0.5rem 0.6rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border: 1.5px solid var(--whisky-gold, #c58b39); color: var(--whisky-gold-dark, #8b5a1b); background: rgba(197, 139, 57, 0.1); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s ease;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  Meer Info
+                </button>
+                <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vatenmaken-tickets" style="flex: 1.2; padding: 0.5rem 0.75rem; font-size: 0.76rem; font-weight: 800; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
+                  Boeken &rarr;
+                </button>
+              </div>
             </div>
 
           </div>
@@ -4455,34 +4881,59 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     });
   }
 
-  // 9. Interactive Timetable Logic
-  const ttTabs = document.querySelectorAll('.timetable-tab-btn');
-  const ttPanes = document.querySelectorAll('.timetable-pane');
-  const ttTimeBtns = document.querySelectorAll('.tt-time-btn');
+    // 9. Enhanced Interactive Timetable Logic (Day, Timepart & Category Type)
+  let activeTtTab = 'vrijdag';
   let activeTtTime = 'all';
+  let activeTtType = 'all';
+
+  function determineCardCategory(card: HTMLElement) {
+    const infoBtn = card.querySelector('[data-mc-id]');
+    const bookBtn = card.querySelector('[data-target-stub]');
+    const stubId = (infoBtn && infoBtn.getAttribute('data-mc-id')) || (bookBtn && bookBtn.getAttribute('data-target-stub')) || '';
+    const titleText = (card.querySelector('.tt-card-title') && card.querySelector('.tt-card-title').textContent.toLowerCase()) || '';
+
+    if (stubId.includes('session') || stubId.includes('vip') || titleText.includes('sessie') || titleText.includes('vip')) return 'entree';
+    if (stubId.includes('tram') || titleText.includes('tram')) return 'tram';
+    if (stubId.includes('trail') || titleText.includes('trail')) return 'trail';
+    if (stubId.includes('vatenmaken') || stubId.includes('workshop') || titleText.includes('vatenmaken') || titleText.includes('workshop')) return 'vatenmaken';
+    if (stubId.includes('botteling') || titleText.includes('botteling')) return 'botteling';
+    return 'masterclass';
+  }
 
   function filterTimetableCards() {
-    const activePane = document.querySelector('.timetable-pane.active');
+    const activePane = document.getElementById(`tt-pane-${activeTtTab}`);
     if (!activePane) return;
     const cards = activePane.querySelectorAll('.tt-card');
 
     cards.forEach(card => {
-      const cardTimepart = card.getAttribute('data-timepart') || 'all';
-      if (activeTtTime === 'all' || cardTimepart === activeTtTime) {
-        (card as HTMLElement).style.display = 'flex';
+      const cardEl = card as HTMLElement;
+      const cardTimepart = cardEl.getAttribute('data-timepart') || 'all';
+      const category = cardEl.getAttribute('data-category') || determineCardCategory(cardEl);
+      cardEl.setAttribute('data-category', category);
+
+      const matchesTime = (activeTtTime === 'all' || cardTimepart === activeTtTime);
+      const matchesType = (activeTtType === 'all' || category === activeTtType);
+
+      if (matchesTime && matchesType) {
+        cardEl.style.display = 'flex';
       } else {
-        (card as HTMLElement).style.display = 'none';
+        cardEl.style.display = 'none';
       }
     });
   }
+
+  const ttTabs = document.querySelectorAll('.timetable-tab-btn');
+  const ttPanes = document.querySelectorAll('.timetable-pane');
+  const ttTimeBtns = document.querySelectorAll('.tt-time-btn');
+  const ttTypeBtns = document.querySelectorAll('.tt-type-btn');
 
   ttTabs.forEach(tab => {
     tab.addEventListener('click', () => {
       ttTabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      const targetPane = tab.getAttribute('data-tt-tab');
+      activeTtTab = tab.getAttribute('data-tt-tab') || 'vrijdag';
       ttPanes.forEach(pane => {
-        if (pane.id === `tt-pane-${targetPane}`) {
+        if (pane.id === `tt-pane-${activeTtTab}`) {
           pane.classList.add('active');
         } else {
           pane.classList.remove('active');
@@ -4500,6 +4951,17 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       filterTimetableCards();
     });
   });
+
+  ttTypeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      ttTypeBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeTtType = btn.getAttribute('data-tt-type') || 'all';
+      filterTimetableCards();
+    });
+  });
+
+  filterTimetableCards();
 
   const ttBookBtns = document.querySelectorAll('.tt-book-btn');
   ttBookBtns.forEach(btn => {
@@ -5220,4 +5682,6 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     }
   });
 
+
+  
 </script>
