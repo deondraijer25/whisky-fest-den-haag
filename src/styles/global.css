@@ -1,0 +1,741 @@
+/* ----------------------------------------------------
+   WHISKY FEST GLOBAL DESIGN SYSTEM & STYLESHEET
+   ---------------------------------------------------- */
+
+:root {
+  /* HSL Tailored Brand Palette (Logo-infused) */
+  --bg-parchment: #FAF7F2;     /* Warm vintage cotton paper */
+  --bg-sand: #d8e7e2;          /* Light green from logo (#d8e7e2) */
+  --bg-paper-card: #FCFAF7;    /* Pure thick cotton paper for cards */
+  --text-charcoal: #1D1C1A;    /* Charred oak cask black */
+  --text-muted: #4c5752;       /* Soft dark sage for secondary text */
+  
+  /* Whisky Gold & Cooper Tones */
+  --whisky-gold: #d5c28a;      /* Champagne gold from logo (#d5c28a) */
+  --whisky-gold-light: #e9dfb7;  /* Lighter gold tint for hovers */
+  --whisky-gold-dark: #006448;   /* Brand dark green from logo (#006448) */
+  --whisky-gold-trans: rgba(0, 100, 72, 0.08); /* Translucent dark green */
+  
+  /* Accents & Borders */
+  --success-green: #006448;    /* Brand dark green */
+  --success-green-light: #d8e7e2; /* Brand light green */
+  --border-color: #c1d4ce;     /* Soft sage border line */
+  --border-color-dark: #8ba198; /* High contrast sage line */
+  
+  /* Elevation & Shadows */
+  --shadow-paper: 0 10px 35px rgba(29, 28, 26, 0.05), 0 2px 8px rgba(29, 28, 26, 0.02);
+  --shadow-hover: 0 20px 45px rgba(29, 28, 26, 0.08), 0 4px 12px rgba(29, 28, 26, 0.03);
+  
+  /* Fonts */
+  --font-display: 'bourbon-rough', 'bourbon', 'Rye', sans-serif;
+  --font-serif: 'Plus Jakarta Sans', sans-serif;
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Base Reset & Styling */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  background-color: var(--bg-parchment);
+  color: var(--text-charcoal);
+  font-family: var(--font-serif);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(var(--border-color) 0.5px, transparent 0.5px), 
+    radial-gradient(var(--border-color) 0.5px, var(--bg-parchment) 0.5px);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
+  background-opacity: 0.15;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-parchment);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color-dark);
+  border: 2px solid var(--bg-parchment);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--whisky-gold-dark);
+}
+
+/* Typography & Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+  color: var(--text-charcoal);
+}
+
+h1 { font-size: 2.75rem; }
+h2 { font-size: 2.25rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+
+p {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+strong {
+  color: var(--text-charcoal);
+}
+
+/* Decorative Vintage Separators & Borders */
+.vintage-line {
+  height: 2px;
+  background: var(--border-color);
+  width: 100%;
+  max-width: 120px;
+  margin: 1.5rem auto;
+  position: relative;
+}
+.vintage-line::before {
+  content: '◆';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--bg-parchment);
+  padding: 0 8px;
+  color: var(--whisky-gold);
+  font-size: 0.75rem;
+}
+
+.vintage-frame {
+  border: 1px solid var(--border-color);
+  padding: 8px;
+  position: relative;
+}
+.vintage-frame-inner {
+  border: 1px solid var(--border-color-dark);
+  padding: 2rem;
+}
+
+/* Buttons & Links */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem 2.5rem; /* Larger padding for a substantial vintage ticket feel */
+  font-family: var(--font-display); /* Updated to match Bourbon Rough title */
+  font-weight: normal; /* Bourbon Rough is already bold enough */
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 1.45rem; /* Significantly increased for better scaling with display font */
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+}
+
+/* Vintage Letterpress Button (replaces generic gold gradient) */
+.btn-gold {
+  background-color: var(--whisky-gold-dark);
+  color: var(--bg-parchment);
+  border: 2px solid var(--text-charcoal);
+  box-shadow: 4px 4px 0px rgba(29, 28, 26, 0.9);
+  position: relative;
+  overflow: hidden;
+}
+.btn-gold:hover {
+  background-color: var(--text-charcoal);
+  color: var(--whisky-gold-light);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px rgba(29, 28, 26, 0.9);
+}
+.btn-gold:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px rgba(29, 28, 26, 0.9);
+}
+
+/* Charcoal Solid Button */
+.btn-charcoal {
+  background-color: var(--text-charcoal);
+  color: var(--bg-parchment);
+  border: 1px solid var(--text-charcoal);
+}
+.btn-charcoal:hover {
+  background-color: var(--whisky-gold-dark);
+  border-color: var(--whisky-gold-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(29, 28, 26, 0.15);
+}
+.btn-charcoal:active {
+  transform: translateY(0);
+}
+
+/* Outline Muted Button */
+.btn-outline {
+  background-color: transparent;
+  color: var(--text-charcoal);
+  border: 1px solid var(--border-color-dark);
+}
+.btn-outline:hover {
+  background-color: var(--bg-sand);
+  border-color: var(--text-charcoal);
+  transform: translateY(-2px);
+}
+
+/* ----------------------------------------------------
+   TICKET STUB CARD SYSTEM (T tactile paper elements)
+   ---------------------------------------------------- */
+
+.ticket-stub {
+  position: relative;
+  background-color: var(--bg-paper-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-paper);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem;
+}
+
+.ticket-stub:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--border-color-dark);
+}
+
+/* Perforation dashed divider with punch holes */
+.ticket-perforation {
+  position: relative;
+  border-bottom: 2px dashed var(--border-color);
+  margin: 1.5rem -1.75rem; /* Pull flush to card edges */
+}
+
+/* Circular side cutouts */
+.ticket-perforation::before,
+.ticket-perforation::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  /* Blend with global grid background */
+  background-color: var(--bg-parchment);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+}
+
+.ticket-perforation::before {
+  left: -13px;
+  border-right: 1px solid var(--border-color);
+}
+
+.ticket-perforation::after {
+  right: -13px;
+  border-left: 1px solid var(--border-color);
+}
+
+/* Live indicators */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.status-badge.popular {
+  background-color: var(--whisky-gold-trans);
+  color: var(--whisky-gold-dark);
+  border: 1px solid var(--whisky-gold);
+}
+.status-badge.limited {
+  background-color: #FFF3CD;
+  color: #856404;
+  border: 1px solid #FFEBAA;
+}
+.status-badge.selling-fast {
+  background-color: var(--success-green-light);
+  color: var(--success-green);
+  border: 1px solid var(--success-green);
+}
+
+.ticket-receipt-card {
+  position: sticky;
+  top: 20px;
+  background-color: #FFFFFF;
+  border: none;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+/* Cart items — must be in global CSS for dynamic JS content */
+.receipt-header {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-charcoal);
+  margin-bottom: 1.25rem;
+  text-align: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(140,110,70,0.15);
+}
+.empty-cart-msg {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 2.5rem 0;
+}
+.cart-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 100, 72, 0.2) transparent;
+}
+.cart-items-list::-webkit-scrollbar {
+  width: 4px;
+}
+.cart-items-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.cart-items-list::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 100, 72, 0.2);
+  border-radius: 2px;
+}
+.cart-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  padding: 1rem 0;
+  border-bottom: 1px dashed rgba(140,110,70,0.2);
+}
+.cart-item-row:last-child { border-bottom: none; }
+.cart-item-info { display: flex; flex-direction: column; gap: 2px; }
+.cart-item-name { font-weight: 700; color: var(--text-charcoal); font-size: 0.85rem; }
+.cart-item-meta { font-size: 0.7rem; color: var(--text-muted); }
+.cart-item-price { font-weight: 700; font-size: 0.95rem; color: var(--success-green); font-family: var(--font-sans); white-space: nowrap; text-align: right; }
+.cart-addon-row { opacity: 0.8; }
+.cart-addon-row .cart-item-name { font-weight: 600; font-style: italic; font-size: 0.8rem; }
+
+/* Add-ons toggle cards */
+.addons-section {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(140,110,70,0.15);
+}
+.addons-title {
+  display: block;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+.addon-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.5rem;
+  border: 1.5px solid rgba(140,110,70,0.2);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: rgba(243,236,224,0.3);
+}
+.addon-card:hover {
+  border-color: rgba(140,110,70,0.4);
+  background-color: rgba(243,236,224,0.5);
+}
+.addon-card:has(input:checked) {
+  border-color: var(--success-green);
+  background-color: rgba(0, 100, 72, 0.06);
+}
+.addon-card input[type="checkbox"] {
+  margin-top: 3px;
+  accent-color: var(--success-green);
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+.addon-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+.addon-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.addon-card-top strong {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--text-charcoal);
+}
+.addon-price {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--success-green);
+}
+.addon-desc {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Receipt calculation */
+.receipt-calculation { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
+.calc-row { display: flex; justify-content: space-between; font-family: var(--font-sans); font-size: 0.85rem; color: var(--text-muted); }
+.calc-val { font-weight: 600; }
+.calc-row.total-row { font-size: 1.25rem; font-weight: 800; color: var(--text-charcoal); border-top: 2px solid rgba(140,110,70,0.3); padding-top: 0.75rem; margin-top: 0.25rem; }
+.calc-row.total-row .calc-val { color: var(--success-green); font-size: 1.4rem; font-weight: 800; }
+.btn-checkout { width: 100%; padding: 1rem; border-radius: 6px; }
+.btn-checkout:disabled { background: #E5DFC8; border-color: #D3CCA9; color: #A39B7C; cursor: not-allowed; box-shadow: none; transform: none; }
+
+/* Separator for receipt bottom stub */
+.receipt-perforation {
+  border-bottom: 1px solid rgba(140, 110, 70, 0.2);
+  margin: 1.5rem 0;
+}
+
+/* Quantities Controls */
+.qty-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color-dark);
+  background: var(--bg-paper-card);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  color: var(--text-charcoal);
+  transition: all 0.2s;
+}
+.qty-btn:hover {
+  background: var(--bg-sand);
+  border-color: var(--text-charcoal);
+}
+.qty-val {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1rem;
+  width: 30px;
+  text-align: center;
+  color: var(--text-charcoal);
+}
+
+/* Ripped Paper Margins and Dividers */
+.ripped-divider-top {
+  position: relative;
+  height: 20px;
+  width: 100%;
+  background: var(--bg-parchment);
+  clip-path: polygon(0% 0%, 5% 40%, 10% 10%, 15% 50%, 20% 15%, 25% 45%, 30% 20%, 35% 50%, 40% 10%, 45% 40%, 50% 15%, 55% 45%, 60% 20%, 65% 50%, 70% 15%, 75% 45%, 80% 20%, 85% 50%, 90% 10%, 95% 40%, 100% 0%, 100% 100%, 0% 100%);
+  margin-top: -20px;
+  z-index: 10;
+}
+
+.ripped-divider-bottom {
+  position: relative;
+  height: 20px;
+  width: 100%;
+  background: var(--bg-parchment);
+  clip-path: polygon(0% 100%, 5% 60%, 10% 90%, 15% 50%, 20% 85%, 25% 55%, 30% 80%, 35% 50%, 40% 90%, 45% 60%, 50% 85%, 55% 55%, 60% 80%, 65% 50%, 70% 85%, 75% 55%, 80% 80%, 85% 50%, 90% 90%, 95% 60%, 100% 100%, 100% 0%, 0% 0%);
+  margin-bottom: -20px;
+  z-index: 10;
+}
+
+/* Interactive FAQ Accordions */
+.faq-accordion {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-paper-card);
+  margin-bottom: 1rem;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.faq-accordion[open] {
+  border-color: var(--border-color-dark);
+  box-shadow: var(--shadow-paper);
+}
+.faq-trigger {
+  padding: 1.25rem 1.5rem;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.15rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  list-style: none;
+  color: var(--text-charcoal);
+  transition: color 0.2s;
+}
+.faq-trigger::-webkit-details-marker {
+  display: none;
+}
+.faq-trigger:hover {
+  color: var(--whisky-gold-dark);
+}
+.faq-trigger::after {
+  content: '▼';
+  font-size: 0.8rem;
+  color: var(--whisky-gold);
+  transition: transform 0.3s;
+}
+.faq-accordion[open] .faq-trigger::after {
+  transform: rotate(180deg);
+}
+.faq-content {
+  padding: 0 1.5rem 1.5rem;
+  font-size: 1rem;
+}
+
+/* Floating Navigation Sticky Style */
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(250, 247, 242, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+  transition: all 0.3s;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ----------------------------------------------------
+   TICKET TAILOR LAYOUT UTILITIES
+   ---------------------------------------------------- */
+
+/* Asymmetrical Tilted Cards */
+.tilt-slight-left { transform: rotate(-1.5deg); }
+.tilt-slight-right { transform: rotate(1.5deg); }
+.tilt-left { transform: rotate(-3deg); }
+.tilt-right { transform: rotate(3deg); }
+
+.tilt-slight-left:hover, .tilt-slight-right:hover, .tilt-left:hover, .tilt-right:hover {
+  transform: translateY(-5px) rotate(0deg);
+  z-index: 10;
+}
+
+/* Alternating Split Layouts */
+.split-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  margin-bottom: 6rem;
+}
+.split-layout.reverse {
+  direction: rtl;
+}
+.split-layout.reverse > * {
+  direction: ltr;
+}
+.split-text {
+  max-width: 500px;
+}
+.split-visual {
+  position: relative;
+}
+
+/* High-Contrast Banners */
+.banner-dark {
+  background-color: var(--text-charcoal);
+  color: var(--bg-parchment);
+  padding: 5rem 2rem;
+  text-align: center;
+}
+.banner-dark .vintage-line::before {
+  background: var(--text-charcoal);
+}
+
+/* Horizontal Trust Strip */
+.trust-strip {
+  background-color: rgba(222, 214, 201, 0.15);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  padding: 2.5rem 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.trust-logo {
+  opacity: 0.6;
+  filter: grayscale(100%) contrast(120%);
+  transition: all 0.3s;
+  height: 40px;
+}
+.trust-logo:hover {
+  opacity: 1;
+  filter: none;
+}
+
+/* 3-Tab Accordion Layout */
+.tab-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: stretch;
+}
+.tab-visual {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-paper);
+}
+.tab-triggers {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.tab-trigger-card {
+  background-color: var(--bg-paper-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+}
+.tab-trigger-card.active {
+  border-color: var(--whisky-gold);
+  background-color: var(--bg-parchment);
+  box-shadow: var(--shadow-hover);
+}
+.tab-trigger-card.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background-color: var(--whisky-gold);
+  border-radius: 8px 0 0 8px;
+}
+
+/* ====== Account Banner (Success Modal) ====== */
+.account-banner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  margin: 0.75rem 0;
+  background-color: var(--bg-sand);
+  border: 2px solid var(--text-charcoal);
+  border-radius: 4px;
+  text-decoration: none;
+  color: var(--text-charcoal);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  box-shadow: 3px 3px 0px var(--text-charcoal);
+}
+.account-banner:hover {
+  background-color: var(--bg-paper-card);
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px var(--text-charcoal);
+  border-color: var(--whisky-gold-dark);
+}
+.account-banner:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0px 0px 0px var(--text-charcoal);
+}
+.account-banner-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-paper-card);
+  border: 1px solid var(--border-color-dark);
+  border-radius: 4px;
+  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.05);
+}
+.account-banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+.account-banner-text strong {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-charcoal);
+  display: block;
+  text-align: left;
+}
+.account-banner-text span {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  display: block;
+  margin-top: 2px;
+  line-height: 1.4;
+  text-align: left;
+}
+.account-banner-arrow {
+  font-size: 1.5rem;
+  color: var(--whisky-gold-dark);
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+.account-banner:hover .account-banner-arrow {
+  transform: translateX(4px);
+  color: var(--whisky-gold);
+}

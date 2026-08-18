@@ -1,0 +1,99 @@
+Functionele Eisen — whiskysociety.nl;;;;;;
+;;;;;;
+#;Categorie;Beschrijving van de functionaliteit;Prioriteit;Status;Doelgroep; 
+1; Informatievoorziening;Organisatie, doelstelling en bestuur presenteren op de homepage;Hoog;Functionele eis/ bestaande functionaliteit;Bezoeker;"Statische content; bestuurspagina met foto's optioneel, aan te passen door contentbeheer"
+2; Informatievoorziening;Ledenvoordelen overzichtelijk tonen (inclusief partnervoordelen)presenteren op de homepage;Hoog;Functionele eis/ bestaande functionaliteit;Bezoeker / Potentieel lid;Lijst met voordelen per lidmaatschapstype
+3; Informatievoorziening;Externe partnerlinks bieden (Mitra, WhiskyFest, Whisky Unlimited, House of Britain);Midden;Functionele eis/ bestaande functionaliteit;Bezoeker;Openen in nieuw tabblad
+4; Ledenwerving & registratie;Nieuwe leden kunnen zich aanmelden via online formulier;Hoog;Functionele eis/ bestaande functionaliteit;Potentieel lid;Inclusief validatie verplichte velden via online formulier van Conscribo
+5; Ledenwerving & registratie;0;Hoog;Functionele eis/ bestaande functionaliteit;Potentieel lid;Prijs zichtbaar bij keuze
+6; Ledenwerving & registratie;Partnerlidmaatschap koppelen aan bestaand lid;Midden;Functionele eis/ bestaande functionaliteit;Potentieel lid;Veld voor lidnummer partner
+7; Ledenwerving & registratie;Cadeaulidmaatschap apart aanvragen;Midden;Functionele eis/ bestaande functionaliteit;Bezoeker;Aparte pagina /aanmelden-kado
+8; Ledenwerving & registratie;AVG-conforme toestemming vragen (privacyverklaring + nieuwsbrief opt-in);Hoog;Functionele eis/ bestaande functionaliteit;Potentieel lid;Verplichte checkbox privacyverklaring
+9; Ledenbeheer (zelfservice);Leden kunnen eigen gegevens inzien en wijzigen via 'Mijn gegevens';Hoog;Functionele eis/ bestaande functionaliteit;Lid;Vereist authenticatie / login via api van Conscribo
+10; Ledenbeheer (zelfservice);Lid kan lidmaatschap beëindigen (uiterlijk 2 weken voor expiratie);Hoog;Functionele eis/ bestaande functionaliteit;Lid;Via online formulier/ api van Conscribo
+11; Ledenbeheer (zelfservice);Lidmaatschapspasje beschikbaar stellen (digitaal);Midden;Wens;Lid;Apple/Google Wallet (WalletWallet api)
+12; Evenementenbeheer;Aankomende evenementen tonen met datum, locatie en beschrijving;Hoog;Functionele eis/ bestaande functionaliteit;Lid / Bezoeker;Evenementenpagina met actuele lijst
+13; Evenementenbeheer;Online inschrijving per evenement met capaciteitslimiet;Hoog;Wens;Lid;"Bijv. max. 30 deelnemers; melding bij vol"
+14; Evenementenbeheer;Unieke inschrijfpagina per evenement via URL-parameter;Midden;Wens;Content Beheerder;Bijv. aanmelden-evenement.php?evenement=smws-2026
+15; Evenementenbeheer;Gratis festivaltoegang voor leden via koppelingen naar de festivals;Hoog;Functionele eis/ bestaande functionaliteit;Lid;"Beschreven in ledenvoordelen; dit kunnen meerdere festivals zijn, leden boeken bij voorkeur hun kaart bij de club"
+16; Bottelingenaanbod (WCOC);Exclusieve bottelingen presenteren met productdetails en prijs;Hoog;Functionele eis/ bestaande functionaliteit;Lid;Foto's, proefnotities, cask-informatie
+17; Bottelingenaanbod (WCOC);Bestelling plaatsen via contactformulier (botteling + aantal selecteren);Hoog;Functionele eis/ bestaande functionaliteit;Lid;Geïntegreerde webshop exclusief voor leden of via formulier of e-mail
+18; Bottelingenaanbod (WCOC);Maximum aantal flessen per lid communiceren;Hoog;Functionele eis/ bestaande functionaliteit;Beheerder / Lid;
+18; Bottelingenaanbod (WCOC);Voorwaaerden WCOC Lidmaatschap;Hoog;Functionele eis/ bestaande functionaliteit;Beheerder / Lid;
+20; Communicatie;Contactformulier met naam, e-mail, telefoon, lidnummer en berichtveld;Hoog;Functionele eis/ bestaande functionaliteit;Bezoeker / Lid;Huidige formulier op homepage
+21;Communicatie;Contactformulier met naam, e-mail, telefoon, lidnummer en berichtveld;Hoog;Functionele eis/ bestaande functionaliteit;Bezoeker / Lid;Huidige formulier op homepage
+22; Communicatie;Nieuwsbrief aanmelding (standalone en via formulier);Midden;Wens;Bezoeker / Lid;Koppeling met e-mailchimp gewenst
+24; Contentbeheer;Pagina's voor reizen, evenementen en bottelingen eenvoudig te updaten;Hoog;Wens;Content Beheerder;"Geen complex CMS vereist; statische content per pagina"
+25;Communicatie;Nieuwsbrief archief of digitale nieuwsbrief tonen;Laag;Wens;Lid;/nieuwsbrief-iws pagina
+26;Shop;Online betaling integreren voor lidmaatschap en bottelingen;Midden;Wens;Lid;Huidig proces: factuur/overboeking — verbetering gewenst
+27; Lacunes / Aanbevelingen;Evenementenkalender met iCal-export of Google Calendar koppeling;Laag;Wens;Lid;Nog niet aanwezig
+28; Lacunes / Aanbevelingen;Zoek- en filterfunctie voor bottelingen en evenementen;Laag;Wens;Lid / Beheerder;Relevant bij groei van aanbod
+29; Evenementenbeheer;Aankomende evenementen invoeren, afvoeren, aanpassen met datum, locatie en beschrijving, plaatjes ;Hoog;Functionele eis/ bestaande functionaliteit;Content Beheerder;
+30; Ledenbeheer (zelfservice);Inzicht in de bestellingen van flessen/ evenementen en festival tickets;Midden;Wens;Lid;Evenementenpagina met actuele lijst, per lid
+31; Evenementenbeheer;;Hoog;Functionele eis/ bestaande functionaliteit;Lid / Bezoeker;Evenementenpagina met actuele lijst
+32;Algemeen;Aanpassen aan de bestaande tooling voor financiele- en ledenadministratie;Hoog;Functionele eis/ bestaande functionaliteit;;IWS Maakt nu gebruik van Conscribo voor de financiele administratie (boekhouding) en ledenadministratie. De software is nu ingericht op onze situatie en bevat onze boekhouding, die is gekoppeld aan financiele interacties met de leden. 
+33;;;;;;
+34;;;;;;
+35;;;;;;
+36;;;;;;
+37;;;;;;
+38;;;;;;
+39;;;;;;
+40;;;;;;
+41;;;;;;
+42;;;;;;
+43;;;;;;
+44;;;;;;
+45;;;;;;
+46;;;;;;
+47;;;;;;
+48;;;;;;
+49;;;;;;
+50;;;;;;
+51;;;;;;
+52;;;;;;
+53;;;;;;
+54;;;;;;
+55;;;;;;
+56;;;;;;
+57;;;;;;
+58;;;;;;
+59;;;;;;
+60;;;;;;
+61;;;;;;
+62;;;;;;
+63;;;;;;
+64;;;;;;
+65;;;;;;
+66;;;;;;
+67;;;;;;
+68;;;;;;
+69;;;;;;
+70;;;;;;
+71;;;;;;
+72;;;;;;
+73;;;;;;
+74;;;;;;
+75;;;;;;
+76;;;;;;
+77;;;;;;
+78;;;;;;
+79;;;;;;
+80;;;;;;
+81;;;;;;
+82;;;;;;
+83;;;;;;
+84;;;;;;
+85;;;;;;
+86;;;;;;
+87;;;;;;
+88;;;;;;
+89;;;;;;
+90;;;;;;
+91;;;;;;
+92;;;;;;
+93;;;;;;
+94;;;;;;
+95;;;;;;
+96;;;;;;
+97;;;;;;

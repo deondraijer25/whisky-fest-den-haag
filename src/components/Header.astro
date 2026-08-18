@@ -1,0 +1,597 @@
+---
+// src/components/Header.astro
+import LogoSvg from '../assets/Logo/Logo.svg?raw';
+
+const pathname = Astro.url.pathname;
+const isStandhouders = pathname.startsWith("/standhouders");
+const isAccount = pathname.startsWith("/account");
+---
+
+<header class="main-header animate-fade-in">
+  <div class="top-announcement-bar">
+    Sluit je aan bij duizenden whiskyliefhebbers in Den Haag – Bestel vandaag nog je tickets!
+  </div>
+  <div class="header-container">
+    <!-- Overlapping Logo Image (links to Home) -->
+    <a href="/" class="logo-image-container" aria-label="Whisky Fest Den Haag Home">
+      <Fragment set:html={LogoSvg} />
+    </a>
+
+    <!-- Navigation links (Home removed: clicking logo goes home) -->
+    <nav class="nav-menu">
+      <a href="/standhouders" class={`nav-link ${isStandhouders ? 'active' : ''}`}>Plattegrond & Stands</a>
+      <a href="/#sessies" class="nav-link">Sessies & Tickets</a>
+      <a href="/#ervaring" class="nav-link">De Ervaring</a>
+      <a href="/#historie" class="nav-link">Historie</a>
+    </nav>
+
+    <!-- Header Actions: 1. Cart Icon > 2. Bestel Tickets > 3. Mijn Account (Text link) -->
+    <div class="header-actions">
+      <!-- 1. Header Cart Trigger & Dropdown -->
+      <div class="header-cart-wrapper" id="header-cart-wrapper">
+        <button type="button" class="header-cart-btn" id="header-cart-btn" aria-label="Winkelwagen openen" title="Winkelwagen">
+          <svg class="cart-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="header-cart-badge" id="header-cart-badge" style="display: none;">0</span>
+        </button>
+
+        <!-- Dropdown Menu (Generous width & clean structured table) -->
+        <div class="header-cart-dropdown" id="header-cart-dropdown">
+          <div class="cart-dropdown-head">
+            <div class="cart-dropdown-title-wrap">
+              <h4 class="cart-dropdown-title">Uw Winkelwagen</h4>
+            </div>
+            <span class="cart-dropdown-badge-count" id="header-cart-count">0 items</span>
+          </div>
+
+          <div class="cart-dropdown-list" id="header-cart-list">
+            <p class="empty-dropdown-msg">Uw winkelwagen is leeg.</p>
+          </div>
+
+          <div class="cart-dropdown-bottom" id="header-cart-bottom" style="display: none;">
+            <div class="cart-dropdown-subtotal-row">
+              <span class="subtotal-label">Subtotaal:</span>
+              <strong class="subtotal-val" id="header-cart-subtotal">€ 0,00</strong>
+            </div>
+            <a href="/#sessies" class="btn btn-gold btn-dropdown-checkout" id="header-dropdown-checkout-btn">
+              Naar Kassa & Afrekenen →
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Bestel Tickets Button -->
+      <a href="/#sessies" class="btn btn-gold btn-header">Bestel Tickets</a>
+
+      <!-- 3. Mijn Account (Clean Text Link) -->
+      <a href="/account" class={`header-account-link ${isAccount ? 'active' : ''}`} id="header-my-account-link">
+        Mijn Account
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .main-header {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(222, 214, 201, 0.2);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    background-color: var(--bg-paper-card);
+  }
+
+  .top-announcement-bar {
+    background-color: var(--text-charcoal);
+    color: var(--whisky-gold-light);
+    text-align: center;
+    padding: 0.65rem 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .header-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 1.25rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Sticky transition states */
+  :global(.sticky-header) {
+    position: sticky;
+    top: 0;
+    background-color: rgba(250, 247, 242, 0.96);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--border-color);
+    box-shadow: 0 4px 20px rgba(29, 28, 26, 0.04);
+  }
+
+  /* Overlapping Logo Styling */
+  .logo-image-container {
+    position: relative;
+    display: inline-block;
+    z-index: 110;
+    height: 60px;
+    width: 120px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .logo-image-container svg {
+    position: absolute;
+    top: -48px;
+    left: 0;
+    width: 120px;
+    height: auto;
+    filter: drop-shadow(0 5px 16px rgba(29, 28, 26, 0.2));
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: center;
+  }
+  .logo-image-container:hover svg {
+    transform: scale(1.05) rotate(-2deg);
+    filter: drop-shadow(0 6px 20px rgba(197, 139, 57, 0.3));
+  }
+
+  /* Nav Links styling */
+  .nav-menu {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+  .nav-link {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-charcoal);
+    text-decoration: none;
+    position: relative;
+    padding: 0.5rem 0;
+    transition: color 0.3s;
+    white-space: nowrap;
+  }
+  .nav-link:hover {
+    color: var(--whisky-gold-dark);
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--whisky-gold-dark);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    width: 100%;
+  }
+  .nav-link.active {
+    color: var(--whisky-gold-dark);
+  }
+
+  /* Header Actions Group */
+  .header-actions {
+    display: flex;
+    gap: 1.35rem;
+    align-items: center;
+  }
+
+  .btn-header {
+    padding: 0.85rem 1.6rem;
+    font-size: 1.12rem;
+    white-space: nowrap;
+  }
+
+  /* Mijn Account Clean Text Link */
+  .header-account-link {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-charcoal);
+    text-decoration: none;
+    position: relative;
+    padding: 0.5rem 0;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .header-account-link:hover {
+    color: var(--whisky-gold-dark);
+  }
+
+  .header-account-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--whisky-gold-dark);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
+
+  .header-account-link:hover::after,
+  .header-account-link.active::after {
+    width: 100%;
+  }
+
+  .header-account-link.active {
+    color: var(--whisky-gold-dark);
+  }
+
+  /* Cart Wrapper & Button */
+  .header-cart-wrapper {
+    position: relative;
+  }
+
+  .header-cart-btn {
+    position: relative;
+    background-color: var(--bg-paper-card);
+    border: 2px solid var(--border-color-dark);
+    color: var(--text-charcoal);
+    width: 44px;
+    height: 44px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px var(--text-charcoal);
+    transition: all 0.2s ease;
+  }
+
+  .header-cart-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 3px 3px 0px var(--text-charcoal);
+    border-color: var(--whisky-gold-dark);
+    color: var(--whisky-gold-dark);
+  }
+
+  .header-cart-btn.cart-bump {
+    animation: cartBump 0.3s ease;
+  }
+
+  @keyframes cartBump {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.18); color: var(--whisky-gold-dark); }
+    100% { transform: scale(1); }
+  }
+
+  .header-cart-badge {
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    background-color: var(--brand-red, #E30613);
+    color: #FFF;
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 800;
+    line-height: 1;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 4px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bg-paper-card);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+  }
+
+  /* Dropdown Menu (Wider and table-structured) */
+  .header-cart-dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    width: 420px;
+    background-color: var(--bg-paper-card);
+    border: 3px solid var(--border-color-dark);
+    border-radius: 4px;
+    box-shadow: 6px 6px 0px var(--text-charcoal);
+    padding: 1.25rem 1.25rem 1rem 1.25rem;
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    gap: 0.85rem;
+    animation: dropdownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .header-cart-dropdown.active {
+    display: flex;
+  }
+
+  @keyframes dropdownFade {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .cart-dropdown-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.65rem;
+  }
+
+  .cart-dropdown-title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--text-charcoal);
+    margin: 0;
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+
+  .cart-dropdown-badge-count {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--brand-red, #E30613);
+    text-transform: uppercase;
+    background: rgba(227, 6, 19, 0.08);
+    padding: 0.2rem 0.55rem;
+    border-radius: 3px;
+    border: 1px solid rgba(227, 6, 19, 0.2);
+  }
+
+  .cart-dropdown-list {
+    max-height: 270px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .empty-dropdown-msg {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 1.25rem 0;
+    margin: 0;
+  }
+
+  /* Table-like row layout */
+  .dropdown-cart-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1.25rem;
+    align-items: center;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .dropdown-cart-item:last-child {
+    border-bottom: none;
+  }
+
+  .dropdown-item-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .dropdown-item-title {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text-charcoal);
+    line-height: 1.3;
+    word-break: break-word;
+  }
+
+  .dropdown-item-variant {
+    font-family: var(--font-sans);
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--whisky-gold-dark);
+  }
+
+  .dropdown-item-qty-rate {
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .dropdown-item-total {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .dropdown-item-price-val {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 1.08rem;
+    color: var(--text-charcoal);
+  }
+
+  .cart-dropdown-bottom {
+    border-top: 2px solid var(--border-color);
+    padding-top: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .cart-dropdown-subtotal-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-charcoal);
+  }
+
+  .subtotal-val {
+    font-family: var(--font-sans);
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--brand-red, #E30613);
+  }
+
+  .btn-dropdown-checkout {
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 800;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    display: block;
+  }
+
+  /* Responsive styling */
+  @media (max-width: 990px) {
+    .nav-menu {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .header-cart-dropdown {
+      width: calc(100vw - 2rem);
+      right: -1rem;
+    }
+  }
+</style>
+
+<script>
+  // Dynamic header transitions based on page scroll
+  const header = document.querySelector('.main-header');
+  window.addEventListener('scroll', () => {
+    if (header) {
+      if (window.scrollY > 40) {
+        header.classList.add('sticky-header');
+      } else {
+        header.classList.remove('sticky-header');
+      }
+    }
+  });
+
+  // Global Header Cart Synchronization with LocalStorage
+  const cartBtn = document.getElementById('header-cart-btn');
+  const cartDropdown = document.getElementById('header-cart-dropdown');
+  const cartBadge = document.getElementById('header-cart-badge');
+  const cartCount = document.getElementById('header-cart-count');
+  const cartList = document.getElementById('header-cart-list');
+  const cartBottom = document.getElementById('header-cart-bottom');
+  const cartSubtotal = document.getElementById('header-cart-subtotal');
+  const dropdownCheckoutBtn = document.getElementById('header-dropdown-checkout-btn');
+
+  function getStoredCart() {
+    try {
+      const raw = localStorage.getItem('whiskyfest_cart');
+      return raw ? JSON.parse(raw) : { items: [], subtotal: 0, totalItems: 0 };
+    } catch(e) {
+      return { items: [], subtotal: 0, totalItems: 0 };
+    }
+  }
+
+  function updateHeaderCartUI() {
+    const cart = getStoredCart();
+    const items = cart.items || [];
+    const totalCount = items.reduce((acc: number, item: any) => acc + (item.qty || 0), 0);
+    const subtotal = items.reduce((acc: number, item: any) => acc + (item.price * item.qty), 0);
+
+    if (cartBadge) {
+      if (totalCount > 0) {
+        cartBadge.textContent = totalCount.toString();
+        cartBadge.style.display = 'flex';
+      } else {
+        cartBadge.style.display = 'none';
+      }
+    }
+
+    if (cartBtn) {
+      cartBtn.classList.remove('cart-bump');
+      void cartBtn.offsetWidth; // Trigger reflow
+      if (totalCount > 0) cartBtn.classList.add('cart-bump');
+    }
+
+    if (cartCount) {
+      cartCount.textContent = `${totalCount} ${totalCount === 1 ? 'item' : 'items'}`;
+    }
+
+    if (cartSubtotal) {
+      cartSubtotal.innerHTML = `&euro; ${subtotal.toFixed(2).replace('.', ',')}`;
+    }
+
+    if (cartList) {
+      if (items.length === 0) {
+        cartList.innerHTML = '<p class="empty-dropdown-msg">Uw winkelwagen is leeg.</p>';
+        if (cartBottom) cartBottom.style.display = 'none';
+      } else {
+        let html = '';
+        items.forEach((item: any) => {
+          html += `
+            <div class="dropdown-cart-item">
+              <div class="dropdown-item-main">
+                <span class="dropdown-item-title">${item.title}</span>
+                ${item.variant ? `<span class="dropdown-item-variant">${item.variant}</span>` : ''}
+                <span class="dropdown-item-qty-rate">${item.qty} × &euro; ${item.price.toFixed(2).replace('.', ',')}</span>
+              </div>
+              <div class="dropdown-item-total">
+                <span class="dropdown-item-price-val">&euro; ${(item.price * item.qty).toFixed(2).replace('.', ',')}</span>
+              </div>
+            </div>
+          `;
+        });
+        cartList.innerHTML = html;
+        if (cartBottom) cartBottom.style.display = 'flex';
+      }
+    }
+  }
+
+  if (cartBtn && cartDropdown) {
+    cartBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      cartDropdown.classList.toggle('active');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!cartDropdown.contains(e.target as Node) && e.target !== cartBtn) {
+        cartDropdown.classList.remove('active');
+      }
+    });
+  }
+
+  // Handle Checkout Click from Dropdown
+  if (dropdownCheckoutBtn) {
+    dropdownCheckoutBtn.addEventListener('click', (e) => {
+      if (window.location.pathname === '/' || window.location.pathname === '') {
+        const cart = getStoredCart();
+        if (cart.items && cart.items.length > 0) {
+          const checkoutTrigger = document.getElementById('checkout-trigger-btn');
+          if (checkoutTrigger) {
+            e.preventDefault();
+            cartDropdown?.classList.remove('active');
+            checkoutTrigger.click();
+          }
+        }
+      }
+    });
+  }
+
+  window.addEventListener('storage', updateHeaderCartUI);
+  window.addEventListener('cart-updated', updateHeaderCartUI);
+  document.addEventListener('DOMContentLoaded', updateHeaderCartUI);
+  updateHeaderCartUI();
+</script>

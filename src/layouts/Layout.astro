@@ -1,0 +1,252 @@
+---
+// src/layouts/Layout.astro
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  canonicalUrl?: string;
+  type?: string;
+}
+
+const { 
+  title, 
+  description, 
+  image = "/assets/whisky-fest-og.jpg", 
+  canonicalUrl = Astro.url.href, 
+  type = "website" 
+} = Astro.props;
+
+// Dynamic JSON-LD Structured Data Schema for search engine rich results
+const eventSchema = {
+  "@context": "https://schema.org",
+  "@type": "Festival",
+  "name": "International Whisky Festival Den Haag 2026",
+  "description": "Het bekendste en meest premium whisky festival van Nederland. Proef honderden whisky's, volg exclusieve masterclasses en geniet van de sfeer in de Grote Kerk Den Haag.",
+  "startDate": "2026-11-13T13:00:00+01:00",
+  "endDate": "2026-11-15T17:00:00+01:00",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "location": {
+    "@type": "Place",
+    "name": "Grote Kerk Den Haag",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Rond de Grote Kerk 12",
+      "addressLocality": "Den Haag",
+      "postalCode": "2513 AM",
+      "addressCountry": "NL"
+    }
+  },
+  "image": [
+    "https://www.whiskyfestival.nl/assets/whisky-fest-og.jpg"
+  ],
+  "offers": {
+    "@type": "AggregateOffer",
+    "url": "https://www.whiskyfestival.nl/bestellen",
+    "priceCurrency": "EUR",
+    "lowPrice": "55.00",
+    "highPrice": "79.50",
+    "offerCount": "2",
+    "availability": "https://schema.org/InStock",
+    "validFrom": "2026-05-01"
+  },
+  "organizer": {
+    "@type": "Organization",
+    "name": "Highland Consultancy",
+    "url": "https://www.whiskyfestival.nl",
+    "email": "info@whiskyfestival.nl"
+  }
+};
+
+const orgSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "International Whisky Festival",
+  "alternateName": "Whisky Fest",
+  "url": "https://www.whiskyfestival.nl",
+  "logo": "https://www.whiskyfestival.nl/assets/logo.png",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "",
+    "contactType": "customer service",
+    "email": "info@whiskyfestival.nl",
+    "availableLanguage": ["Dutch", "English"]
+  },
+  "sameAs": [
+    "https://www.facebook.com/whiskyfestivalnl",
+    "https://www.instagram.com/whiskyfestivalnl"
+  ]
+};
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- Primary Meta Tags -->
+    <title>{title} | International Whisky Festival</title>
+    <meta name="title" content={`${title} | International Whisky Festival`} />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={`${title} | International Whisky Festival`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalUrl} />
+    <meta property="twitter:title" content={`${title} | International Whisky Festival`} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={image} />
+
+    <!-- Load Google Fonts (Plus Jakarta Sans and Rye as fallback display) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&family=Rye&display=swap" rel="stylesheet" />
+
+    <!-- Adobe Fonts integration -->
+    <link rel="stylesheet" href="https://use.typekit.net/ppq2zvf.css">
+
+    <!-- SEO Structured Data Schema -->
+    <script type="application/ld+json" set:html={JSON.stringify(eventSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+  </head>
+  <body>
+    <slot />
+
+    <!-- FLOATING SOCIAL MEDIA DOCK (Compact) -->
+    <aside class="floating-social-dock" aria-label="Social Media Links">
+      <div class="dock-inner">
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-dock-link" aria-label="Volg ons op Instagram">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+          <span class="dock-tooltip">Instagram</span>
+        </a>
+
+        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-dock-link" aria-label="Volg ons op Facebook">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+          </svg>
+          <span class="dock-tooltip">Facebook</span>
+        </a>
+
+        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-dock-link" aria-label="Bekijk ons YouTube kanaal">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+            <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+          </svg>
+          <span class="dock-tooltip">YouTube</span>
+        </a>
+      </div>
+    </aside>
+
+    <style is:global>
+      /* FLOATING SOCIAL DOCK (COMPACT HORIZONTAL BOTTOM RIGHT) */
+      .floating-social-dock {
+        position: fixed;
+        right: 1.25rem;
+        bottom: 1.25rem;
+        z-index: 990;
+        pointer-events: auto;
+      }
+
+      .dock-inner {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.35rem 0.55rem;
+        background: #FAF7F2;
+        border: 2px solid #1E1C1A;
+        outline: 1.5px solid #D5C28A;
+        outline-offset: -3.5px;
+        border-radius: 40px;
+        box-shadow: 
+          0 6px 18px rgba(30, 28, 26, 0.22),
+          0 2px 10px rgba(0, 0, 0, 0.12);
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .dock-inner:hover {
+        outline-color: #1e6b48;
+        box-shadow: 
+          0 8px 24px rgba(30, 28, 26, 0.28),
+          0 0 14px rgba(213, 194, 138, 0.3);
+      }
+
+      .social-dock-link {
+        position: relative;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #1E1C1A;
+        background: #ffffff;
+        box-shadow: 0 1.5px 5px rgba(30, 28, 26, 0.12);
+        transition: all 0.2s ease;
+        text-decoration: none;
+      }
+
+      .social-dock-link:hover {
+        color: #ffffff;
+        background: #1e6b48;
+        transform: translateY(-2px) scale(1.1);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+      }
+
+      .dock-tooltip {
+        position: absolute;
+        bottom: 42px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-3px);
+        background: #1E1C1A;
+        color: #FAF7F2;
+        font-family: var(--font-sans, system-ui, sans-serif);
+        font-weight: 700;
+        font-size: 0.7rem;
+        letter-spacing: 0.04em;
+        padding: 0.25rem 0.55rem;
+        border-radius: 4px;
+        border: 1px solid #D5C28A;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: all 0.15s ease;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+      }
+
+      .social-dock-link:hover .dock-tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      @media (max-width: 768px) {
+        .floating-social-dock {
+          right: 0.85rem;
+          bottom: 0.85rem;
+        }
+        .dock-tooltip {
+          display: none;
+        }
+      }
+    </style>
+  </body>
+</html>

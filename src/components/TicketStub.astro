@@ -1,0 +1,556 @@
+---
+// src/components/TicketStub.astro
+interface Props {
+  id: string;
+  title: string;
+  price: number;
+  date: string;
+  time: string;
+  status?: 'limited' | 'selling-fast' | 'popular';
+  statusText?: string;
+  included?: string[];
+  category?: 'entree' | 'tram' | 'botteling' | 'masterclass' | 'trail' | 'vatenmaken';
+  description?: string;
+  options?: string[];
+  extraMeta?: string;
+  daypart?: 'ochtend' | 'middag' | 'avond' | 'all';
+}
+
+const { 
+  id, 
+  title, 
+  price, 
+  date, 
+  time, 
+  status, 
+  statusText, 
+  included = [], 
+  category = 'entree',
+  description,
+  options = [],
+  extraMeta,
+  daypart = 'all'
+} = Astro.props;
+
+---
+
+<!-- Warm Cream Vintage Ticket Stub -->
+<div 
+  class={`ticket-stub filterable-ticket ${status || ''}`}
+  data-ticket-id={id}
+  data-price={price}
+  data-title={title}
+  data-category={category}
+  data-daypart={daypart}
+  data-day={
+    date.toLowerCase().includes('vrijdag') ? 'vrijdag' :
+    date.toLowerCase().includes('zaterdag') ? 'zaterdag' :
+    date.toLowerCase().includes('zondag') ? 'zondag' : 'all'
+  }
+>
+  <!-- Inner art-deco border -->
+  <div class="ticket-inner-border"></div>
+  
+  <!-- Left: Fake Barcode / Serial -->
+  <div class="ticket-serial">
+    <div class="barcode"></div>
+    <span class="serial-text">NO. {Math.floor(Math.random() * 90000) + 10000}</span>
+  </div>
+
+  <!-- Middle: Main Ticket Body -->
+  <div class="ticket-body">
+    <div class="ticket-top-meta">
+      <span>{category === 'masterclass' ? 'SPECIAL MASTERCLASS' : category === 'tram' ? 'HISTORISCHE TRAMRIT' : category === 'botteling' ? 'FESTIVAL BOTTELING' : category === 'trail' ? 'FESTIVAL WHISKY TRAIL' : category === 'vatenmaken' ? 'COOPER WORKSHOP' : 'INTERNATIONAAL WHISKY FESTIVAL'}</span>
+      {status && statusText && <span class={`status-badge ${status}`}>{statusText}</span>}
+    </div>
+    
+    <h3 class="ticket-title">{title.toUpperCase()}</h3>
+    
+    {category === 'entree' && (
+      <div class="ticket-time-meta">
+        <div class="meta-column">
+          <span class="meta-label">DATUM</span>
+          <span class="meta-value">{date.toUpperCase()}</span>
+        </div>
+        <div class="meta-column">
+          <span class="meta-label">TIJD</span>
+          <span class="meta-value">{time}</span>
+        </div>
+        <div class="meta-column">
+          <span class="meta-label">TOEGANG</span>
+          <span class="meta-value">1 PERSOON</span>
+        </div>
+      </div>
+    )}
+
+    {category === 'tram' && (
+      <div>
+        {description && <p class="ticket-desc-text">{description}</p>}
+        <div class="ticket-select-wrapper">
+          <label class="meta-label" for={`select-${id}`}>VERTREKTIJD:</label>
+          <select id={`select-${id}`} class="ticket-select-input tram-select">
+            {options.map(opt => <option value={opt}>{opt}</option>)}
+          </select>
+        </div>
+      </div>
+    )}
+
+    {category === 'botteling' && (
+      <div>
+        {description && <p class="ticket-desc-text">{description}</p>}
+        <div class="ticket-select-wrapper">
+          <label class="meta-label" for={`select-${id}`}>AFLEVERING:</label>
+          <select id={`select-${id}`} class="ticket-select-input bottling-select">
+            <option value="pickup">Ophalen op festival (€ 0,00)</option>
+            <option value="shipping">Verzenden na afloop (+ € 12,50)</option>
+          </select>
+        </div>
+      </div>
+    )}
+
+    {category === 'trail' && (
+      <div>
+        {description && <p class="ticket-desc-text">{description}</p>}
+        <div class="ticket-select-wrapper" style="flex-direction: row; gap: 0.5rem; max-width: 100%;">
+          <div style="flex: 1;">
+            <label class="meta-label" for={`select-time-${id}`}>TIJDSLOT:</label>
+            <select id={`select-time-${id}`} class="ticket-select-input trail-time-select">
+              <optgroup label="Vrijdag 13 November (Avond)">
+                <option value="Vrijdag 20:00">20:00 uur</option>
+                <option value="Vrijdag 20:30">20:30 uur</option>
+                <option value="Vrijdag 21:00">21:00 uur</option>
+                <option value="Vrijdag 21:30">21:30 uur</option>
+              </optgroup>
+              <optgroup label="Zaterdag 14 November (Middag)">
+                <option value="Zaterdag 14:00">14:00 uur</option>
+                <option value="Zaterdag 14:30">14:30 uur</option>
+                <option value="Zaterdag 15:00">15:00 uur</option>
+                <option value="Zaterdag 15:30">15:30 uur</option>
+              </optgroup>
+              <optgroup label="Zaterdag 14 November (Avond)">
+                <option value="Zaterdag 20:00">20:00 uur</option>
+                <option value="Zaterdag 20:30">20:30 uur</option>
+                <option value="Zaterdag 21:00">21:00 uur</option>
+                <option value="Zaterdag 21:30">21:30 uur</option>
+              </optgroup>
+              <optgroup label="Zondag 15 November (Middag)">
+                <option value="Zondag 14:00">14:00 uur</option>
+                <option value="Zondag 14:30">14:30 uur</option>
+                <option value="Zondag 15:00">15:00 uur</option>
+                <option value="Zondag 15:30">15:30 uur</option>
+              </optgroup>
+            </select>
+          </div>
+          <div style="flex: 1;">
+            <label class="meta-label" for={`select-guide-${id}`}>GIDS:</label>
+            <select id={`select-guide-${id}`} class="ticket-select-input trail-guide-select">
+              <option value="Ernst">Ernst</option>
+              <option value="Klaas">Klaas</option>
+              <option value="Marlie">Marlie</option>
+              <option value="Sebastiaan">Sebastiaan</option>
+              <option value="Stanley">Stanley</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {category === 'vatenmaken' && (
+      <div>
+        {description && <p class="ticket-desc-text">{description}</p>}
+        <div class="ticket-select-wrapper">
+          <label class="meta-label" for={`select-time-${id}`}>TIJDSLOT:</label>
+          <select id={`select-time-${id}`} class="ticket-select-input vatenmaken-time-select">
+            <optgroup label="Vrijdag 13 November">
+              <option value="Vrijdag 14:30">Middag - 14:30 uur (12 plekken)</option>
+              <option value="Vrijdag 15:30">Middag - 15:30 uur (8 plekken)</option>
+              <option value="Vrijdag 20:30">Avond - 20:30 uur (15 plekken)</option>
+              <option value="Vrijdag 21:30">Avond - 21:30 uur (2 plekken)</option>
+            </optgroup>
+            <optgroup label="Zaterdag 14 November">
+              <option value="Zaterdag 14:30">Middag - 14:30 uur (4 plekken)</option>
+              <option value="Zaterdag 15:30" disabled>Middag - 15:30 uur (VOL)</option>
+              <option value="Zaterdag 20:30">Avond - 20:30 uur (18 plekken)</option>
+              <option value="Zaterdag 21:30">Avond - 21:30 uur (9 plekken)</option>
+            </optgroup>
+            <optgroup label="Zondag 15 November">
+              <option value="Zondag 14:30">Middag - 14:30 uur (1 plek)</option>
+              <option value="Zondag 15:30" disabled>Middag - 15:30 uur (VOL)</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+    )}
+
+    {category === 'masterclass' && (
+      <div>
+        {options && options.length > 0 ? (
+          <div>
+            <div class="ticket-time-meta">
+              <div class="meta-column">
+                <span class="meta-label">LOCATIE</span>
+                <span class="meta-value">{extraMeta || 'Nutshuis'}</span>
+              </div>
+              <div class="meta-column">
+                <span class="meta-label">TAAL</span>
+                <span class="meta-value">NEDERLANDS</span>
+              </div>
+            </div>
+            {description && <p class="ticket-desc-text" style="margin-top:0.5rem; margin-bottom:0.5rem;">{description}</p>}
+            <div class="ticket-select-wrapper">
+              <label class="meta-label" for={`select-${id}`}>TIJDSLOT:</label>
+              <select id={`select-${id}`} class="ticket-select-input intro-select">
+                {options.map(opt => <option value={opt}>{opt}</option>)}
+              </select>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <div class="ticket-time-meta">
+              <div class="meta-column">
+                <span class="meta-label">DATUM</span>
+                <span class="meta-value">{date.toUpperCase()}</span>
+              </div>
+              <div class="meta-column">
+                <span class="meta-label">TIJD</span>
+                <span class="meta-value">{time}</span>
+              </div>
+              <div class="meta-column">
+                <span class="meta-label">LOCATIE</span>
+                <span class="meta-value">{extraMeta || 'Nutshuis'}</span>
+              </div>
+            </div>
+            {description && <p class="ticket-desc-text" style="margin-top:0.5rem;">{description}</p>}
+          </div>
+        )}
+      </div>
+    )}
+  </div>
+
+  <!-- Vertical Perforation with Cutouts -->
+  <div class="ticket-divider-wrapper">
+    <div class="cutout-top"></div>
+    <div class="ticket-divider"></div>
+    <div class="cutout-bottom"></div>
+  </div>
+
+  <!-- Right: Stub / Price & Action -->
+  <div class="ticket-stub-end">
+    <span class="stub-label">PRIJS {category === 'botteling' ? 'PER FLES' : 'P.P.'}</span>
+    <div class="ticket-price-block">
+      <span class="price-currency">&euro;</span>
+      <span class="price-val">{price.toFixed(2).split('.')[0]}</span>
+      <span class="price-cents">,{price.toFixed(2).split('.')[1]}</span>
+    </div>
+
+    <!-- Quantity Controls -->
+    <div class="qty-selector">
+      <button type="button" class="qty-btn minus-btn" aria-label="Aantal verlagen" data-action="minus">&minus;</button>
+      <span class="qty-val" id={`qty-${id}`}>0</span>
+      <button type="button" class="qty-btn plus-btn" aria-label="Aantal verhogen" data-action="plus">&plus;</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Warm Cream Vintage Ticket */
+  .ticket-stub {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 160px;
+    background-color: var(--bg-sand);
+    background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.08%22/%3E%3C/svg%3E');
+    color: var(--text-charcoal);
+    border: none;
+    position: relative;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    /* Real cutout notches via CSS mask */
+    --notch: 16px;
+    --stub-w: 180px;
+    -webkit-mask:
+      radial-gradient(circle var(--notch) at calc(100% - var(--stub-w)) 0,    transparent 98%, #000) top / 100% 51% no-repeat,
+      radial-gradient(circle var(--notch) at calc(100% - var(--stub-w)) 100%, transparent 98%, #000) bottom / 100% 51% no-repeat;
+    mask:
+      radial-gradient(circle var(--notch) at calc(100% - var(--stub-w)) 0,    transparent 98%, #000) top / 100% 51% no-repeat,
+      radial-gradient(circle var(--notch) at calc(100% - var(--stub-w)) 100%, transparent 98%, #000) bottom / 100% 51% no-repeat;
+  }
+
+  .ticket-stub:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+  }
+
+  .ticket-inner-border {
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    left: 6px;
+    right: 6px;
+    border: 4px double rgba(140, 110, 70, 0.25);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .barcode {
+    width: 16px;
+    height: 100%;
+    margin: 0.5rem 0;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      rgba(80, 60, 40, 0.25) 0,
+      rgba(80, 60, 40, 0.25) 2px,
+      transparent 2px,
+      transparent 4px,
+      rgba(80, 60, 40, 0.25) 4px,
+      rgba(80, 60, 40, 0.25) 7px,
+      transparent 7px,
+      transparent 9px,
+      rgba(80, 60, 40, 0.25) 9px,
+      rgba(80, 60, 40, 0.25) 10px,
+      transparent 10px,
+      transparent 13px,
+      rgba(80, 60, 40, 0.25) 13px,
+      rgba(80, 60, 40, 0.25) 15px,
+      transparent 15px,
+      transparent 17px
+    );
+  }
+
+  .ticket-serial {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    padding: 1.5rem 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px dashed rgba(140, 110, 70, 0.3);
+    font-family: monospace;
+    font-size: 0.8rem;
+    letter-spacing: 4px;
+    color: rgba(80, 60, 40, 0.35);
+    z-index: 2;
+  }
+
+  .ticket-body {
+    flex: 1;
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.75rem;
+    z-index: 2;
+  }
+
+  .ticket-top-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: #8a7050;
+  }
+
+  .status-badge {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.65rem;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid #8a7050;
+    color: #8a7050;
+    text-transform: uppercase;
+  }
+
+  .ticket-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--text-charcoal);
+    letter-spacing: 0.05em;
+    margin: 0;
+  }
+
+  .ticket-time-meta {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .meta-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .meta-label {
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: rgba(80, 60, 40, 0.5);
+  }
+
+  .meta-value {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-charcoal);
+    white-space: nowrap;
+    border-bottom: 1px dotted rgba(140, 110, 70, 0.4);
+    padding-bottom: 2px;
+  }
+
+  /* Vertical Perforation */
+  .ticket-divider-wrapper {
+    position: relative;
+    width: 0;
+    height: 100%;
+    z-index: 2;
+  }
+
+  .ticket-divider {
+    height: 100%;
+    border-left: 2px dashed rgba(140, 110, 70, 0.3);
+  }
+
+  /* Cutout divs hidden — replaced by CSS mask */
+  .cutout-top, .cutout-bottom {
+    display: none;
+  }
+
+  /* Stub End */
+  .ticket-stub-end {
+    width: 180px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    z-index: 2;
+  }
+
+  .stub-label {
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: rgba(80, 60, 40, 0.5);
+  }
+
+  .ticket-price-block {
+    display: flex;
+    align-items: baseline;
+    color: var(--success-green); /* Forest green color */
+  }
+
+  .price-val { font-size: 2.8rem; font-family: var(--font-display); line-height: 1; }
+  .price-currency, .price-cents { font-size: 1.25rem; font-weight: 700; font-family: var(--font-sans); }
+  .price-currency { margin-right: 2px; }
+
+  /* Qty */
+  .qty-selector {
+    display: flex;
+    align-items: center;
+    background-color: var(--bg-parchment);
+    padding: 2px;
+    border-radius: 4px;
+    color: var(--text-charcoal);
+  }
+  .qty-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .qty-val {
+    min-width: 30px;
+    text-align: center;
+    font-weight: 700;
+    font-family: var(--font-sans);
+  }
+
+  /* Responsive styling */
+  @media (max-width: 768px) {
+    .ticket-stub {
+      flex-direction: column;
+    }
+    .ticket-serial {
+      display: none; /* Hide on mobile to save space */
+    }
+    .ticket-divider-wrapper {
+      width: 100%;
+      height: 0;
+    }
+    .ticket-divider {
+      height: 0;
+      border-left: none;
+      border-top: 2px dashed rgba(197, 139, 57, 0.5);
+    }
+    .cutout-top, .cutout-bottom {
+      width: 12px;
+      height: 24px;
+      top: -12px;
+    }
+    .cutout-top {
+      left: -2px;
+      border: 2px solid var(--whisky-gold-dark);
+      border-left: none;
+      border-radius: 0 24px 24px 0;
+    }
+    .cutout-bottom {
+      left: auto;
+      right: -2px;
+      border: 2px solid var(--whisky-gold-dark);
+      border-right: none;
+      border-radius: 24px 0 0 24px;
+    }
+    .ticket-time-meta {
+      gap: 1.5rem;
+    }
+    .ticket-stub-end {
+      width: 100%;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+    }
+  }
+
+  .ticket-select-wrapper {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    max-width: 280px;
+  }
+  .ticket-select-input {
+    background-color: var(--bg-parchment);
+    border: 1px solid rgba(140, 110, 70, 0.4);
+    border-radius: 4px;
+    padding: 0.35rem 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--text-charcoal);
+    cursor: pointer;
+    outline: none;
+    width: 100%;
+  }
+  .ticket-select-input:focus {
+    border-color: var(--success-green);
+  }
+  .ticket-desc-text {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+    margin-top: 0.25rem;
+  }
+</style>

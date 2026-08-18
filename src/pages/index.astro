@@ -1,0 +1,4737 @@
+---
+// src/pages/index.astro
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import TicketStub from '../components/TicketStub.astro';
+import LogoSvg from '../assets/Logo/Logo.svg?raw';
+import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
+---
+
+<Layout 
+  title="Home - Premium Vintage-Modern Ontwerp" 
+  description="Bezoek het meest sfeervolle en bekende whiskyfestival van Nederland in de Grote Kerk Den Haag. 13, 14 en 15 november 2026. Bestel hier direct uw entreekaarten via onze mock ticketshop."
+>
+  <!-- 0. HOMEPAGE 2.5-SECOND COIN-FLIP PRELOADER -->
+  <div id="hp-preloader" class="hp-preloader-overlay">
+    <div class="preloader-content">
+      <!-- 3D Flipping Gold Coin Container -->
+      <div class="coin-3d-stage">
+        <div class="coin-flipper-core">
+          <Fragment set:html={LogoSvg} />
+        </div>
+        <div class="coin-glow-shadow"></div>
+      </div>
+
+      <!-- Loading Text & Progress Bar -->
+      <div class="preloader-text-group">
+        <p class="preloader-title">INTERNATIONAL WHISKY FESTIVAL</p>
+        <div class="preloader-progress-track">
+          <div class="preloader-progress-bar"></div>
+        </div>
+        <p class="preloader-subtitle">EST. 1999 &bull; DEN HAAG</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. Navigation Header -->
+  <Header />
+
+  <main>
+    <!-- 2. TT HERO SECTION (Left Text, Right Full-Height Video Banner with Gradient Fade) -->
+    <section class="tt-hero-section">
+      <div class="hero-vintage-overlay"></div>
+
+      <!-- Full-Height Right Side Video Banner -->
+      <div class="hero-video-full-right">
+        <video 
+          id="hero-bg-video"
+          class="hero-video-element"
+          autoplay 
+          muted 
+          loop 
+          playsinline
+          preload="auto"
+          poster="/aftermovie_poster_1786607765573.jpg"
+        >
+          <source src="/Video/Whisky%20Festival%202025%20-%201080p.mp4#t=9,45" type="video/mp4" />
+          Uw browser ondersteunt geen HTML5 video.
+        </video>
+
+        <!-- Seamless Blend Overlays: Left Fade & Warm Vintage Vignette -->
+        <div class="hero-video-blend-gradient"></div>
+        <div class="hero-video-tint-overlay"></div>
+      </div>
+
+      <div class="section-container tt-hero-grid">
+        
+        <div class="tt-hero-text">
+          <!-- Decorative barrel line-art -->
+          <div class="hero-barrel-art" aria-hidden="true">
+            <img src="/barrels line.svg" alt="" width="320" height="380" loading="eager" />
+          </div>
+          <h1 class="tt-hero-title">
+            Het meest <span class="highlight-text">geliefde</span><br>
+            whisky <span class="highlight-text">festival</span><br>
+            van Nederland.
+          </h1>
+          <p class="tt-hero-subtitle">
+            Beleef de magie van het meest toonaangevende whiskyfestival in de historische Grote Kerk van Den Haag. Of u nu een beginnend proever bent of een doorgewinterde kenner, wij bieden een onvergetelijke ervaring.
+          </p>
+          <div class="hero-actions" style="align-items: center;">
+            <a href="#sessies" class="btn btn-gold">Bestel Tickets</a>
+            <a href="#ervaring" class="tt-text-link" style="margin-left: 1rem;">Bekijk Programma</a>
+          </div>
+
+          <div class="tt-hero-reviews">
+            <p class="reviews-title">Geprezen door duizenden liefhebbers!</p>
+            <div class="reviews-grid">
+              <div class="review-item">
+                <span class="stars">★★★★★</span>
+                <span class="review-source">4.9/5 op Trustpilot</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right Column: Glassware SVG Artwork (Middel 15.svg 1-op-1 overgenomen) -->
+        <div class="tt-hero-visual-right" aria-hidden="true">
+          <div class="hero-glass-art-card">
+            <Fragment set:html={GlasswareSvg15} />
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3. HORIZONTAL TRUST LOGO BAR -->
+    <section class="trust-strip">
+      <!-- Mocks of partner/distillery names -->
+      <span class="trust-text-logo">Highland Park</span>
+      <span class="trust-text-logo">The Macallan</span>
+      <span class="trust-text-logo">Glenfiddich</span>
+      <span class="trust-text-logo">Laphroaig</span>
+      <span class="trust-text-logo">Ardbeg</span>
+      <span class="trust-text-logo">Springbank</span>
+    </section>
+
+    <!-- 4. TORN PAPER TICKET SECTION -->
+    <section id="sessies" class="tear-section">
+      
+      <!-- Section header on light paper -->
+      <div class="tear-header-area">
+        <div class="section-container">
+          <div class="tt-section-header text-center">
+            <h2 class="tt-section-title">Kies uw Sessie & Extras</h2>
+            <p class="tt-section-subtitle">Selecteer uw favoriete dag. De capaciteit is gelimiteerd om een exclusieve, rustige proefervaring te garanderen.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top torn edge (light paper over dark) -->
+      <div class="torn-edge-wrap">
+        <img src="/torn-top.svg?v=2" alt="" class="torn-edge-img" />
+      </div>
+
+      <!-- Dark ticket area -->
+      <div class="dark-gap" id="ticket-gap">
+        <div class="section-container">
+          
+          <!-- Shop Filters -->
+          <div class="shop-filters-container">
+            <div class="filter-row">
+              <span class="filter-label">Dag:</span>
+              <div class="filter-buttons" id="day-filter-buttons">
+                <button type="button" class="filter-tab-btn active" data-filter-day="all">Alle Dagen</button>
+                <button type="button" class="filter-tab-btn" data-filter-day="vrijdag">Vrijdag</button>
+                <button type="button" class="filter-tab-btn" data-filter-day="zaterdag">Zaterdag</button>
+                <button type="button" class="filter-tab-btn" data-filter-day="zondag">Zondag</button>
+              </div>
+            </div>
+            <div class="filter-row" style="margin-top: 0.5rem;">
+              <span class="filter-label">Type:</span>
+              <div class="filter-buttons" id="cat-filter-buttons">
+                <button type="button" class="filter-tab-btn active" data-filter-cat="entree">Sessie Entree</button>
+                <button type="button" class="filter-tab-btn" data-filter-cat="masterclass">Masterclasses</button>
+                <button type="button" class="filter-tab-btn" data-filter-cat="tram">Whiskytram</button>
+                <button type="button" class="filter-tab-btn" data-filter-cat="trail">Whiskytrail</button>
+                <button type="button" class="filter-tab-btn" data-filter-cat="vatenmaken">Workshops</button>
+                <button type="button" class="filter-tab-btn" data-filter-cat="botteling">Botteling</button>
+              </div>
+            </div>
+            <div class="filter-row" id="time-filter-row" style="margin-top: 0.5rem; display: flex;">
+              <span class="filter-label">Tijd:</span>
+              <div class="filter-buttons" id="time-filter-buttons">
+                <button type="button" class="filter-tab-btn active" data-filter-time="all">Alles</button>
+                <button type="button" class="filter-tab-btn" data-filter-time="ochtend">Ochtend (tot 13u)</button>
+                <button type="button" class="filter-tab-btn" data-filter-time="middag">Middag (13u - 18u)</button>
+                <button type="button" class="filter-tab-btn" data-filter-time="avond">Avond (vanaf 18u)</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="shop-grid">
+            <!-- Left side: Organized Ticket List -->
+            <div class="tickets-list fade-in-group" id="shop-tickets-list">
+              
+              <!-- 1. ENTRY TICKETS -->
+              <TicketStub
+                id="vip-session"
+                title="VIP Sessie - Vrijdag"
+                price={79.50}
+                date="Vrijdag 13 Nov"
+                time="13:00 - 17:00 uur"
+                status="popular"
+                statusText="Exclusief"
+                category="entree"
+                daypart="middag"
+                included={["12 gratis drams (€12)", "Glencairn tastingglas", "Hapjes-vouchers & Boekje", "VIP masterclasses"]}
+              />
+
+              <TicketStub
+                id="session-1"
+                title="Sessie 1 - Vrijdagavond"
+                price={55.00}
+                date="Vrijdag 13 Nov"
+                time="19:00 - 23:00 uur"
+                status="selling-fast"
+                statusText="Snel Uitverkocht"
+                category="entree"
+                daypart="avond"
+                included={["Glencairn tastingglas", "Talloze gratis drams", "Festivalboekje", "Toegang 4 uur"]}
+              />
+
+              <TicketStub
+                id="session-2"
+                title="Sessie 2 - Zaterdag"
+                price={55.00}
+                date="Zaterdag 14 Nov"
+                time="13:00 - 17:00 uur"
+                status="popular"
+                statusText="Populair"
+                category="entree"
+                daypart="middag"
+                included={["Glencairn tastingglas", "Talloze gratis drams", "Festivalboekje", "Toegang 4 uur"]}
+              />
+
+              <TicketStub
+                id="session-3"
+                title="Sessie 3 - Zaterdagavond"
+                price={55.00}
+                date="Zaterdag 14 Nov"
+                time="19:00 - 23:00 uur"
+                status="popular"
+                statusText="Populair"
+                category="entree"
+                daypart="avond"
+                included={["Glencairn tastingglas", "Talloze gratis drams", "Festivalboekje", "Toegang 4 uur"]}
+              />
+
+              <TicketStub
+                id="session-4"
+                title="Sessie 4 - Zondag"
+                price={55.00}
+                date="Zondag 15 Nov"
+                time="13:00 - 17:00 uur"
+                status="limited"
+                statusText="Laatste Kaarten"
+                category="entree"
+                daypart="middag"
+                included={["Glencairn tastingglas", "Talloze gratis drams", "Festivalboekje", "Toegang 4 uur"]}
+              />
+
+              <!-- 2. WHISKYTRAM -->
+              <!-- 2. WHISKYTRAM -->
+              <TicketStub
+                id="whiskytram"
+                title="Haagsche Whiskytram"
+                price={39.50}
+                date="13, 14 en 15 Nov"
+                time="Diverse tijden"
+                category="tram"
+                daypart="all"
+                description="Rondrit door historisch Den Haag in een klassieke tram inclusief deskundig geleide proeverij van 4 topdrams."
+                options={[
+                  "Vrijdag 13 Nov - 17:15 uur",
+                  "Vrijdag 13 Nov - 18:45 uur",
+                  "Vrijdag 13 Nov - 20:15 uur",
+                  "Zaterdag 14 Nov - 12:00 uur",
+                  "Zaterdag 14 Nov - 13:30 uur",
+                  "Zaterdag 14 Nov - 18:45 uur",
+                  "Zaterdag 14 Nov - 20:15 uur",
+                  "Zondag 15 Nov - 11:00 uur",
+                  "Zondag 15 Nov - 12:30 uur",
+                  "Zondag 15 Nov - 14:00 uur"
+                ]}
+              />
+
+              <!-- Extra Special Tickets -->
+              <TicketStub
+                id="intro-tickets"
+                title="Whisky Introductie"
+                price={7.50}
+                date="13, 14 en 15 Nov"
+                time="Diverse tijden"
+                category="masterclass"
+                daypart="all"
+                extraMeta="Nutshuis"
+                description="Tasting van 2 single malts voor echte beginners + uitleg over de basis en hoe je het festival optimaal beleeft. Begeleid door Valentijn Klop (NED)."
+                options={[
+                  "Vrijdag 13 Nov - 18:30 uur",
+                  "Zaterdag 14 Nov - 12:30 uur",
+                  "Zaterdag 14 Nov - 18:30 uur",
+                  "Zondag 15 Nov - 12:30 uur"
+                ]}
+              />
+
+              <TicketStub
+                id="trail-tickets"
+                title="Festival Whisky Trail"
+                price={5.00}
+                date="13, 14 en 15 Nov"
+                time="Diverse tijden"
+                category="trail"
+                daypart="all"
+                description="Rondleiding door de Grote Kerk onder begeleiding van een gids. Kost €5,00, maar je krijgt er 5 gratis drams voor terug!"
+              />
+
+              <TicketStub
+                id="vatenmaken-tickets"
+                title="Workshop Vatenmaken"
+                price={5.00}
+                date="13, 14 en 15 Nov"
+                time="Diverse tijden"
+                category="vatenmaken"
+                daypart="all"
+                description="Mini-masterclass & workshop in één! Leer de kunst van de Schotse cooper (Loch Lomond) op het buitenterrein en proef 3 Loch Lomond single malts."
+              />
+
+              <!-- 3. FESTIVAL BOTTELINGEN -->
+              <TicketStub
+                id="bottle-amrut-a"
+                title="Festival Botteling: Amrut Cask #9318 (Vat A)"
+                price={85.00}
+                date="Ophalen of Verzenden"
+                time="Single Cask Malt"
+                category="botteling"
+                daypart="all"
+                description="Specially bottled for Int. Whisky Festival 2026. Geur en aroma’s van vijgen, honing en specerijen met een zeer lange afdronk vol gedroogd fruit (Cask Strength, 70cl)."
+              />
+
+              <TicketStub
+                id="bottle-amrut-b"
+                title="Festival Botteling: Amrut Cask #3464 (Vat B)"
+                price={85.00}
+                date="Ophalen of Verzenden"
+                time="Single Cask Malt"
+                category="botteling"
+                daypart="all"
+                description="Specially bottled for Int. Whisky Festival 2026. Een verfijnde expressie met zachte vanille en fris fruit, afgerond met een lange, frisse afdronk (Cask Strength, 70cl)."
+              />
+
+              <!-- 4. MASTERCLASSES -->
+              <!-- Vrijdag Middag -->
+              <TicketStub
+                id="mc-macallan-inc"
+                title="Macallan Exclusive (Inc. Torenklim)"
+                price={77.50}
+                date="Vrijdag 13 Nov"
+                time="11:15 - 13:15 uur"
+                category="masterclass"
+                daypart="ochtend"
+                extraMeta="Toren-zolder"
+                description="Macallan Exclusive tasting onder leiding van Gerard Spaans. Inclusief een adembenemende beklimming van de Haagsche Toren."
+              />
+
+              <TicketStub
+                id="mc-macallan-ex"
+                title="Macallan Exclusive (Zonder Klim)"
+                price={70.00}
+                date="Vrijdag 13 Nov"
+                time="12:00 - 13:15 uur"
+                category="masterclass"
+                daypart="ochtend"
+                extraMeta="Toren-zolder"
+                description="Prachtige Macallan tasting onder begeleiding van Gerard Spaans. Geniet van het iconische single malt merk."
+              />
+
+              <TicketStub
+                id="mc-teeling-fri"
+                title="Teeling Whiskey Masterclass"
+                price={20.00}
+                date="Vrijdag 13 Nov"
+                time="12:15 - 13:00 uur"
+                category="masterclass"
+                daypart="ochtend"
+                extraMeta="Nutshuis - Spaarkamer"
+                description="Proef 6 verschillende whiskeys van Teeling, waarvan 4 gloednieuwe releases."
+              />
+
+              <TicketStub
+                id="mc-smws-fri"
+                title="SMWS - Get into the good stuff!"
+                price={25.00}
+                date="Vrijdag 13 Nov"
+                time="12:15 - 13:00 uur"
+                category="masterclass"
+                daypart="ochtend"
+                extraMeta="Nutshuis - Foyer"
+                description="Ga mee op ontdekkingsreis met Bob Wenting en proef 4 verrassend verschillende, pure cask-strength whisky's recht uit het vat."
+              />
+
+              <TicketStub
+                id="mc-glengoyne-fri"
+                title="Glengoyne & Tamdhu Tasting"
+                price={35.00}
+                date="Vrijdag 13 Nov"
+                time="14:00 - 14:45 uur"
+                status="limited"
+                statusText="Uitverkocht"
+                category="masterclass"
+                daypart="middag"
+                extraMeta="Nutshuis - Telkamer"
+                description="Carlos Perez Anou (ENG) presenteert een contrasterende line-up van sherry-gerijpte Tamdhu en ongeturfde Glengoyne."
+              />
+
+              <TicketStub
+                id="mc-glenfiddich-fri"
+                title="Glenfiddich Old Timers"
+                price={55.00}
+                date="Vrijdag 13 Nov"
+                time="14:00 - 14:45 uur"
+                category="masterclass"
+                daypart="middag"
+                extraMeta="Nutshuis"
+                description="Een zeer unieke old timers line-up van Glenfiddich, gepresenteerd door Tony van Rooijen."
+              />
+
+              <TicketStub
+                id="mc-sculte-fri"
+                title="Stokerij Sculte: The Taste of Oak"
+                price={49.50}
+                date="Vrijdag 13 Nov"
+                time="15:30 - 16:15 uur"
+                category="masterclass"
+                daypart="middag"
+                extraMeta="Nutshuis - Telkamer"
+                description="Roy Kroeze toont de invloed van diverse eikenhouten vaten op de New Make spirit van Sculte."
+              />
+
+              <TicketStub
+                id="mc-suntory-fri"
+                title="House of Suntory: Japanese Portfolio"
+                price={20.00}
+                date="Vrijdag 13 Nov"
+                time="15:30 - 16:15 uur"
+                category="masterclass"
+                daypart="middag"
+                extraMeta="Nutshuis - Foyer"
+                description="De Kuyper presenteert het Japanse portfolio van Suntory door Brand Ambassador Lyndon Hachey (ENG)."
+              />
+
+              <!-- Vrijdag Avond -->
+              <TicketStub
+                id="mc-balvenie-fri"
+                title="The Balvenie Old Timers"
+                price={65.00}
+                date="Vrijdag 13 Nov"
+                time="18:30 - 19:15 uur"
+                category="masterclass"
+                daypart="avond"
+                extraMeta="Nutshuis - Foyer"
+                description="Exclusieve old timers van The Balvenie, begeleid door Tony van Rooijen."
+              />
+
+              <TicketStub
+                id="mc-ncnean-fri"
+                title="Nc'nean Organic Tasting"
+                price={25.00}
+                date="Vrijdag 13 Nov"
+                time="20:00 - 20:45 uur"
+                category="masterclass"
+                daypart="avond"
+                extraMeta="Nutshuis - Telkamer"
+                description="Proef de duurzame, biologische single malt whisky van Nc'nean onder leiding van Suzanne."
+              />
+
+              <TicketStub
+                id="mc-bronckhorst-fri"
+                title="De Bronckhorst: Rise of Grain"
+                price={17.50}
+                date="Vrijdag 13 Nov"
+                time="20:00 - 20:45 uur"
+                category="masterclass"
+                daypart="avond"
+                extraMeta="Nutshuis - Spaarkamer"
+                description="De allereerste masterclass van Distilleerderij de Bronckhorst met spannende nieuwe releases, gepresenteerd door Erik Legters."
+              />
+
+              <TicketStub
+                id="mc-filliers-fri"
+                title="Filliers Belgian Whisky"
+                price={17.50}
+                date="Vrijdag 13 Nov"
+                time="21:30 - 22:15 uur"
+                category="masterclass"
+                daypart="avond"
+                extraMeta="Nutshuis - Telkamer"
+                description="Ward Baes vertelt het verhaal achter de Belgische Filliers whisky's tijdens deze proeverij."
+              />
+
+              <!-- Zaterdag Middag -->
+              <TicketStub
+                id="mc-bowmore-sat-inc"
+                title="Bowmore & Islay (Inc. Klim)"
+                price={35.00}
+                date="Zaterdag 14 Nov"
+                time="11:15 - 13:15 uur"
+                category="masterclass"
+                daypart="ochtend"
+                extraMeta="Toren"
+                description="Global Brand Ambassador Teddy Joseph vertelt over Bowmore met een nieuwe special release en een klim naar de top."
+              />
+
+              <TicketStub
+                id="mc-bowmore-sat-ex"
+                title="Bowmore & Islay (Zonder Klim)"
+                price={35.00}
+                date="Zaterdag 14 Nov"
+                time="12:00 - 13:15 uur"
+                status="limited"
+                statusText="Uitverkocht"
+                category="masterclass"
+                daypart="ochtend"
+                extraMeta="Toren"
+                description="Global Brand Ambassador Teddy Joseph vertelt over Bowmore met een nieuwe special release."
+              />
+
+              <TicketStub
+                id="mc-oldtimers-sat"
+                title="Glenfiddich, Glen Grant & Port Ellen"
+                price={85.00}
+                date="Zaterdag 14 Nov"
+                time="12:15 - 13:00 uur"
+                category="masterclass"
+                daypart="ochtend"
+                extraMeta="Nutshuis"
+                description="Een ultra-exclusieve tasting van historische bottelingen, begeleid door Tony van Rooijen."
+              />
+
+              <TicketStub
+                id="mc-ultimate-sat"
+                title="The Ultimate: Historische Bottelingen"
+                price={35.00}
+                date="Zaterdag 14 Nov"
+                time="12:15 - 13:00 uur"
+                category="masterclass"
+                daypart="ochtend"
+                extraMeta="Nutshuis - Foyer"
+                description="Proef legendarische vaten uit de 'The Ultimate' serie van Van Wees Amersfoort."
+              />
+
+              <TicketStub
+                id="mc-teeling-sat-mid"
+                title="Teeling Whiskey Masterclass"
+                price={20.00}
+                date="Zaterdag 14 Nov"
+                time="14:00 - 14:45 uur"
+                status="limited"
+                statusText="Uitverkocht"
+                category="masterclass"
+                daypart="middag"
+                extraMeta="Nutshuis - Spaarkamer"
+                description="Exclusieve Ierse whiskey tasting van Teeling."
+              />
+
+              <TicketStub
+                id="mc-brugse-sat"
+                title="Brugs Heilig Water Tasting"
+                price={25.00}
+                date="Zaterdag 14 Nov"
+                time="14:00 - 14:45 uur"
+                category="masterclass"
+                daypart="middag"
+                extraMeta="Nutshuis - Foyer"
+                description="Peter de Meyer schenkt het bekroonde 'Brugs Heilig Water' van de Brugse Whisky Company."
+              />
+
+              <TicketStub
+                id="mc-sakurao-sat"
+                title="Sakurao Japanese Whisky"
+                price={20.00}
+                date="Zaterdag 14 Nov"
+                time="15:30 - 16:15 uur"
+                category="masterclass"
+                daypart="middag"
+                extraMeta="Nutshuis - Foyer"
+                description="Sayumi Chavrieir-Oyama introduceert de unieke Sakurao whisky's rechtstreeks uit Hiroshima."
+              />
+
+              <!-- Zaterdag Avond -->
+              <TicketStub
+                id="mc-oldtimers-sat-eve"
+                title="Macallan & Highland Park Old Timers"
+                price={65.00}
+                date="Zaterdag 14 Nov"
+                time="18:30 - 19:15 uur"
+                category="masterclass"
+                daypart="avond"
+                extraMeta="Nutshuis"
+                description="Tony van Rooijen schenkt 4 legendarische toppers uit een privécollectie."
+              />
+
+              <TicketStub
+                id="mc-teeling-sat-eve"
+                title="Teeling Whiskey Masterclass"
+                price={20.00}
+                date="Zaterdag 14 Nov"
+                time="18:30 - 19:15 uur"
+                category="masterclass"
+                daypart="avond"
+                extraMeta="Nutshuis - Foyer"
+                description="Proef 6 verschillende whiskeys van Teeling, waarvan 4 nieuwe releases."
+              />
+
+              <TicketStub
+                id="mc-amrut-sat"
+                title="Amrut Kumbha Single Malt"
+                price={17.50}
+                date="Zaterdag 14 Nov"
+                time="20:00 - 20:45 uur"
+                category="masterclass"
+                daypart="avond"
+                extraMeta="Nutshuis - Telkamer"
+                description="Pramod Kashyap presenteert de nieuwe gelimiteerde Amrut Kumbha speciaal voor de Nederlandse markt."
+              />
+
+              <TicketStub
+                id="mc-arran-sat"
+                title="Arran Cask Samples"
+                price={25.00}
+                date="Zaterdag 14 Nov"
+                time="21:30 - 22:15 uur"
+                category="masterclass"
+                daypart="avond"
+                extraMeta="Nutshuis - Foyer"
+                description="Proef exclusieve vatsamples en gelimiteerde bottelingen van de Arran distilleerderij."
+              />
+
+              <!-- Zondag Middag -->
+              <TicketStub
+                id="mc-glenturret-sun-inc"
+                title="The Glenturret Tasting (Inc. Klim)"
+                price={37.50}
+                date="Zondag 15 Nov"
+                time="11:15 - 13:15 uur"
+                category="masterclass"
+                daypart="ochtend"
+                extraMeta="Toren-zolder"
+                description="Proef Glenturret single malt whisky onder leiding van Luca Rapetti (ENG), inclusief torenbeklimming."
+              />
+
+              <TicketStub
+                id="mc-glenturret-sun-ex"
+                title="The Glenturret Tasting (Zonder Klim)"
+                price={37.50}
+                date="Zondag 15 Nov"
+                time="12:00 - 13:15 uur"
+                category="masterclass"
+                daypart="ochtend"
+                extraMeta="Toren-zolder"
+                description="Proef Glenturret single malt whisky onder leiding van Luca Rapetti (ENG)."
+              />
+
+              <TicketStub
+                id="mc-smws-sun"
+                title="SMWS - Get into the good stuff!"
+                price={25.00}
+                date="Zondag 15 Nov"
+                time="12:15 - 13:00 uur"
+                category="masterclass"
+                daypart="ochtend"
+                extraMeta="Nutshuis - Foyer"
+                description="Bob Wenting presenteert 4 exclusieve single cask bottelingen van de Scotch Malt Whisky Society."
+              />
+
+              <!-- Show More Tickets Button -->
+              <div id="show-more-container" style="display: none; text-align: center; margin-top: 3rem; margin-bottom: 2rem; width: 100%;">
+                <button type="button" id="show-more-btn" style="padding: 1rem 3rem; font-family: var(--font-sans); font-weight: 800; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 8px; border: 2px solid var(--whisky-gold); background-color: var(--whisky-gold); color: #1c1917; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25); display: inline-flex; align-items: center; gap: 0.5rem; justify-content: center;">
+                  Toon alle tickets (0 extra) ↓
+                </button>
+              </div>
+
+              <style>
+                #show-more-btn:hover {
+                  background-color: var(--whisky-gold-light) !important;
+                  border-color: var(--whisky-gold-light) !important;
+                  transform: translateY(-2px);
+                  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
+                }
+                #show-more-btn:active {
+                  transform: translateY(1px);
+                  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+                }
+              </style>
+
+            </div>
+
+            <!-- Right side: Realtime Receipt & Checkout Form -->
+            <div class="checkout-sidebar-container">
+              
+              <div class="ticket-receipt-card">
+                <span class="receipt-header">Winkelwagen</span>
+                
+                <div id="cart-items" class="cart-items-list">
+                  <p class="empty-cart-msg">Selecteer hiernaast uw ticket(s) om de bestelling te starten.</p>
+                </div>
+
+
+
+                <div class="receipt-perforation"></div>
+
+                <div class="receipt-calculation">
+                  <div class="calc-row">
+                    <span class="calc-label">Subtotaal:</span>
+                    <span class="calc-val" id="receipt-subtotal">&euro;0,00</span>
+                  </div>
+                  <div class="calc-row">
+                    <span class="calc-label">Administratiekosten:</span>
+                    <span class="calc-val" id="receipt-fee">&euro;0,00</span>
+                  </div>
+                  <div class="calc-row" id="shipping-row" style="display: none;">
+                    <span class="calc-label">Verzendkosten Fles:</span>
+                    <span class="calc-val" id="receipt-shipping">&euro;0,00</span>
+                  </div>
+                  <div class="calc-row total-row">
+                    <span class="calc-label">Totaal:</span>
+                    <span class="calc-val" id="receipt-total">&euro;0,00</span>
+                  </div>
+                </div>
+
+                <button type="button" class="btn btn-gold btn-checkout" id="checkout-trigger-btn" disabled>
+                  Afrekenen &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom torn edge (light paper over dark) -->
+      <div class="torn-edge-wrap torn-edge-bottom">
+        <img src="/torn-bottom.svg?v=2" alt="" class="torn-edge-img" />
+      </div>
+
+    </section>
+
+    <!-- 5. DRAMS SYSTEM BANNER (Light theme, matching hero) -->
+    <section class="banner-drams">
+      <div class="section-container text-center" style="max-width: 800px; margin: 0 auto;">
+        <h2>Ontdek meer, betaal minder met het Drams-systeem.</h2>
+        <div class="vintage-line"></div>
+        <p style="font-size: 1.25rem; color: var(--text-charcoal); opacity: 0.7; margin-bottom: 2.5rem;">
+          Ons festivalgeld heet 'drams'. Er zijn honderden gratis proeverijen, maar voor zeer oude of exclusieve whisky's vragen importeurs drams (1 dram = 1 euro). Aan het einde inwisselbaar!
+        </p>
+        <a href="#sessies" class="btn btn-gold" style="font-size: 1rem; padding: 1rem 2.5rem;">Koop uw tickets</a>
+      </div>
+    </section>
+
+    <!-- 6. ALTERNATING SPLIT LAYOUTS -->
+    <section id="ervaring" class="split-features-section">
+      <div class="section-container">
+        
+        <!-- Block A: Text Left, Mockup Right -->
+        <div class="split-layout">
+          <div class="split-text">
+            <span class="tt-tag">Verdieping</span>
+            <h3 class="tt-split-title">Exclusieve Masterclasses</h3>
+            <p class="tt-split-desc">Schrijf u in voor een Nosing & Tasting geleid door een echte Brand Ambassador. Ontdek in 45 minuten de diepste geheimen van 4 tot 6 zeldzame single malts in een afgesloten ruimte.</p>
+            <ul class="tt-feature-list">
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--whisky-gold)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:-2px; margin-right:6px;"><polyline points="20 6 9 17 4 12"></polyline></svg>Geleid door internationale experts</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--whisky-gold)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:-2px; margin-right:6px;"><polyline points="20 6 9 17 4 12"></polyline></svg>Proef 4-6 exclusieve zeldzame drams</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--whisky-gold)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:-2px; margin-right:6px;"><polyline points="20 6 9 17 4 12"></polyline></svg>Intieme sessies van max. 50 personen</li>
+            </ul>
+          </div>
+          <div class="split-visual tilt-slight-right">
+            <div class="visual-placeholder vintage-frame">
+              <div class="vintage-frame-inner text-center" style="padding: 0; background: var(--bg-paper-card); overflow: hidden;">
+                <img src="/Afbeeldingen/whisky-festival-2025-0102.jpg" alt="Exclusieve Masterclasses in Grote Kerk Den Haag" style="width: 100%; height: 320px; object-fit: cover; display: block;" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Block B: Visual Left, Text Right (Reverse) -->
+        <div class="split-layout reverse">
+          <div class="split-text">
+            <span class="tt-tag">Unieke Ervaring</span>
+            <h3 class="tt-split-title">De Haagsche Whisky Tram</h3>
+            <p class="tt-split-desc">Stap aan boord van de historische HTM-evenemententram. Rijd door schitterend Den Haag onder begeleiding van gerenommeerde whiskykenners Gerard & Ria Spaans en geniet van 3 unieke drams on-the-go.</p>
+            <a href="#sessies" class="tt-text-link">Voeg de tram toe aan uw ticket &rarr;</a>
+          </div>
+          <div class="split-visual tilt-slight-left">
+            <div class="visual-placeholder vintage-frame">
+              <div class="vintage-frame-inner text-center" style="padding: 0; background: var(--bg-paper-card); overflow: hidden;">
+                <img src="/Afbeeldingen/whisky-festival-2025-0081.jpg" alt="De Haagsche Whisky Tram & Beleving" style="width: 100%; height: 320px; object-fit: cover; display: block;" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+    </section>
+
+    <!-- 7B. HORIZONTELE FOTO MARQUEE SECTIE (2 Rijen Continu Lopende Carousel) -->
+    <section class="horizontal-photo-gallery-section" id="het-festival-in-beeld">
+      <div class="section-container">
+        
+        <!-- Section Header -->
+        <div class="gallery-header-row text-center" style="margin-bottom: 2rem; text-align: center;">
+          <span class="section-tag">SFEER & HERINNERINGEN</span>
+          <h2 class="section-title">Het Festival in Beeld</h2>
+          <div class="vintage-line" style="margin: 0.5rem auto 1rem;"></div>
+          <p class="section-subtitle" style="margin: 0 auto; max-width: 680px;">
+            Een sfeerimpressie van 25 jaar International Whisky Festival Den Haag in de adembenemende Grote Kerk.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- 2-Row Infinite Marquee Container -->
+      <div class="horizontal-marquee-container">
+        
+        <!-- ROW 1: Scrolls Left continuously -->
+        <div class="marquee-row-wrapper">
+          <div class="marquee-row marquee-row-left">
+            <!-- Set A -->
+            <div class="marquee-photo-card rotate-neg-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0155.jpg" alt="Grote Kerk Den Haag" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-pos-2">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0072.jpg" alt="Exclusieve Drams" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-neg-2">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0081.jpg" alt="De Whisky Tram" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-pos-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0102.jpg" alt="Masterclasses" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-neg-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0114.jpg" alt="25 Jaar Jubileum" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-pos-2">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0060.jpg" alt="Brand Ambassadors" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-neg-2">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0176.jpg" alt="Sfeer in de Kerk" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-pos-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0038.jpg" alt="Historische Kelder" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-neg-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0042.jpg" alt="Ambacht & Traditie" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-pos-2">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0053.jpg" alt="Proefglazen" loading="lazy" />
+              </div>
+            </div>
+
+            <!-- Set A Duplicate (for seamless 100% loop) -->
+            <div class="marquee-photo-card rotate-neg-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0155.jpg" alt="Grote Kerk Den Haag" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-pos-2">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0072.jpg" alt="Exclusieve Drams" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-neg-2">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0081.jpg" alt="De Whisky Tram" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-pos-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0102.jpg" alt="Masterclasses" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-neg-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0114.jpg" alt="25 Jaar Jubileum" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-pos-2">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0060.jpg" alt="Brand Ambassadors" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-neg-2">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0176.jpg" alt="Sfeer in de Kerk" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-pos-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0038.jpg" alt="Historische Kelder" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-neg-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0042.jpg" alt="Ambacht & Traditie" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-pos-2">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0053.jpg" alt="Proefglazen" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ROW 2: Scrolls Right continuously -->
+        <div class="marquee-row-wrapper" style="margin-top: 1.5rem;">
+          <div class="marquee-row marquee-row-right">
+            <!-- Set B -->
+            <div class="marquee-photo-card rotate-pos-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0068.jpg" alt="IWS Stand 17" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-neg-2">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0121.jpg" alt="Bezoekers & Liefhebbers" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-pos-2">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0136.jpg" alt="Festivalslijterij" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-neg-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0159.jpg" alt="Gotische Gewelven" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-pos-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0177.jpg" alt="VIP Beleving" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-neg-2">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0032.jpg" alt="Festival Sfeer" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-pos-2">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0064.jpg" alt="Proeftafels" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-neg-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0086.jpg" alt="Distilleerderijen" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-pos-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0089.jpg" alt="Whisky Exponaten" loading="lazy" />
+              </div>
+            </div>
+
+            <!-- Set B Duplicate (for seamless 100% loop) -->
+            <div class="marquee-photo-card rotate-pos-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0068.jpg" alt="IWS Stand 17" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-neg-2">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0121.jpg" alt="Bezoekers & Liefhebbers" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-pos-2">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0136.jpg" alt="Festivalslijterij" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-neg-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0159.jpg" alt="Gotische Gewelven" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-pos-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0177.jpg" alt="VIP Beleving" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-neg-2">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0032.jpg" alt="Festival Sfeer" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-pos-2">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0064.jpg" alt="Proeftafels" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-neg-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0086.jpg" alt="Distilleerderijen" loading="lazy" />
+              </div>
+            </div>
+            <div class="marquee-photo-card rotate-pos-1">
+              <div class="photo-mask-frame">
+                <img src="/Afbeeldingen/whisky-festival-2025-0089.jpg" alt="Whisky Exponaten" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- INTERACTIVE PROGRAM TIMETABLE SECTION -->
+    <section id="programma" class="timetable-section">
+      <div class="section-container">
+        <div class="tt-section-header text-center">
+          <span class="tt-tag">Sessie Programma</span>
+          <h2 class="tt-section-title" style="color: var(--text-charcoal); margin-bottom: 0.5rem;">Het Interactieve Programmaboekje</h2>
+          <p class="tt-section-subtitle" style="color: var(--text-muted); max-width: 700px; margin: 0 auto 3rem;">
+            Bekijk hieronder alle tastings, masterclasses en rondritten chronologisch verdeeld per dag. Voeg ze direct toe aan uw winkelwagen.
+          </p>
+        </div>
+
+        <!-- Timetable Controls: Day Selection & Time Slot Filter -->
+        <div class="timetable-controls text-center" style="margin-bottom: 2.5rem; display: flex; flex-direction: column; align-items: center; gap: 1.25rem;">
+          
+          <!-- Day Selection -->
+          <div class="timetable-tabs">
+            <button type="button" class="timetable-tab-btn active" data-tt-tab="vrijdag">Vrijdag 13 Nov</button>
+            <button type="button" class="timetable-tab-btn" data-tt-tab="zaterdag">Zaterdag 14 Nov</button>
+            <button type="button" class="timetable-tab-btn" data-tt-tab="zondag">Zondag 15 Nov</button>
+          </div>
+
+          <!-- Time Slot Filter -->
+          <div class="timetable-time-filter">
+            <span class="time-filter-label">Tijdvak:</span>
+            <button type="button" class="tt-time-btn active" data-tt-time="all">Alle Tijden</button>
+            <button type="button" class="tt-time-btn" data-tt-time="ochtend">Ochtend (tot 13u)</button>
+            <button type="button" class="tt-time-btn" data-tt-time="middag">Middag (13u - 18u)</button>
+            <button type="button" class="tt-time-btn" data-tt-time="avond">Avond (vanaf 18u)</button>
+          </div>
+
+        </div>
+
+        <!-- Timetable Panes -->
+        <!-- PANE: VRIJDAG -->
+        <div class="timetable-pane active" id="tt-pane-vrijdag">
+          <div class="timetable-grid">
+            
+            <div class="tt-card" data-timepart="ochtend">
+              <div class="tt-card-time">11:15 - 13:15 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Toren-zolder</span>
+                <span class="tt-price">€ 77,50</span>
+              </div>
+              <h4 class="tt-card-title">Macallan Exclusive (Inc. Torenklim)</h4>
+              <p class="tt-card-desc">Macallan Exclusive tasting onder leiding van Gerard Spaans. Inclusief beklimming van de Haagsche Toren.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-macallan-inc">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="ochtend">
+              <div class="tt-card-time">12:00 - 13:15 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Toren-zolder</span>
+                <span class="tt-price">€ 70,00</span>
+              </div>
+              <h4 class="tt-card-title">Macallan Exclusive (Zonder Klim)</h4>
+              <p class="tt-card-desc">Prachtige Macallan tasting onder begeleiding van Gerard Spaans. Geniet van het iconische single malt merk.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-macallan-ex">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="ochtend">
+              <div class="tt-card-time">12:15 - 13:00 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis - Spaarkamer</span>
+                <span class="tt-price">€ 20,00</span>
+              </div>
+              <h4 class="tt-card-title">Teeling Whiskey Masterclass</h4>
+              <p class="tt-card-desc">Proef 6 verschillende whiskeys van Teeling, waarvan 4 gloednieuwe releases.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-teeling-fri">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="ochtend">
+              <div class="tt-card-time">12:15 - 13:00 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis - Foyer</span>
+                <span class="tt-price">€ 25,00</span>
+              </div>
+              <h4 class="tt-card-title">SMWS - Get into the good stuff!</h4>
+              <p class="tt-card-desc">Ga mee op ontdekkingsreis met Bob Wenting en proef 4 verrassend verschillende cask-strength whisky's.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-smws-fri">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="middag">
+              <div class="tt-card-time">13:00 - 17:00 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Grote Kerk</span>
+                <span class="tt-price">€ 79,50</span>
+              </div>
+              <h4 class="tt-card-title">VIP Sessie - Vrijdagmiddag</h4>
+              <p class="tt-card-desc">Inclusief 12 gratis drams (€12), Glencairn tastingglas, hapjes-vouchers en VIP masterclass toegang.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vip-session">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="middag">
+              <div class="tt-card-time">14:00 - 14:45 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis - Telkamer</span>
+                <span class="tt-price">€ 35,00</span>
+              </div>
+              <h4 class="tt-card-title">Glengoyne & Tamdhu Tasting</h4>
+              <p class="tt-card-desc">Carlos Perez Anou (ENG) presenteert een contrasterende line-up van sherry-gerijpte Tamdhu en Glengoyne.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glengoyne-fri">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="middag">
+              <div class="tt-card-time">14:00 - 14:45 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis</span>
+                <span class="tt-price">€ 55,00</span>
+              </div>
+              <h4 class="tt-card-title">Glenfiddich Old Timers</h4>
+              <p class="tt-card-desc">Een zeer unieke old timers line-up van Glenfiddich, gepresenteerd door Tony van Rooijen.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glenfiddich-fri">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="middag">
+              <div class="tt-card-time">15:30 - 16:15 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis - Telkamer</span>
+                <span class="tt-price">€ 49,50</span>
+              </div>
+              <h4 class="tt-card-title">Stokerij Sculte: The Taste of Oak</h4>
+              <p class="tt-card-desc">Roy Kroeze toont de invloed van diverse eikenhouten vaten op de New Make spirit van Sculte.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-sculte-fri">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="middag">
+              <div class="tt-card-time">15:30 - 16:15 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis - Foyer</span>
+                <span class="tt-price">€ 20,00</span>
+              </div>
+              <h4 class="tt-card-title">House of Suntory: Japanese Portfolio</h4>
+              <p class="tt-card-desc">De Kuyper presenteert het Japanse portfolio van Suntory door Brand Ambassador Lyndon Hachey.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-suntory-fri">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="middag">
+              <div class="tt-card-time">17:15 - 18:00 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Grote Kerkplein (Tram)</span>
+                <span class="tt-price">€ 39,50</span>
+              </div>
+              <h4 class="tt-card-title">Haagsche Whiskytram</h4>
+              <p class="tt-card-desc">Een schitterende rit door Den Haag in een historische HTM-tram met 4 topdrams.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Vrijdag 13 Nov - 17:15 uur">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="avond">
+              <div class="tt-card-time">18:30 - 19:00 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis</span>
+                <span class="tt-price">€ 7,50</span>
+              </div>
+              <h4 class="tt-card-title">Whisky Introductie</h4>
+              <p class="tt-card-desc">Tasting van 2 basiswhisky's en een korte introductie voor beginners door Valentijn Klop.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Vrijdag 13 Nov - 18:30 uur">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="avond">
+              <div class="tt-card-time">18:30 - 19:15 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis - Foyer</span>
+                <span class="tt-price">€ 65,00</span>
+              </div>
+              <h4 class="tt-card-title">The Balvenie Old Timers</h4>
+              <p class="tt-card-desc">Exclusieve old timers van The Balvenie, begeleid door Tony van Rooijen.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-balvenie-fri">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="avond">
+              <div class="tt-card-time">18:45 - 19:30 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Grote Kerkplein (Tram)</span>
+                <span class="tt-price">€ 39,50</span>
+              </div>
+              <h4 class="tt-card-title">Haagsche Whiskytram</h4>
+              <p class="tt-card-desc">Sfeervolle avondrit door Den Haag met 4 topdrams op wielen.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Vrijdag 13 Nov - 18:45 uur">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="avond">
+              <div class="tt-card-time">19:00 - 23:00 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Grote Kerk</span>
+                <span class="tt-price">€ 55,00</span>
+              </div>
+              <h4 class="tt-card-title">Sessie 1 - Vrijdagavond</h4>
+              <p class="tt-card-desc">Avondsessie van het festival. Inclusief Glencairn tastingglas, gratis drams en festivalboekje.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-1">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="avond">
+              <div class="tt-card-time">20:00 - 20:45 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis - Telkamer</span>
+                <span class="tt-price">€ 25,00</span>
+              </div>
+              <h4 class="tt-card-title">Nc'nean Organic Tasting</h4>
+              <p class="tt-card-desc">Proef de duurzame, biologische single malt whisky van Nc'nean onder leiding van Suzanne.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-ncnean-fri">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="avond">
+              <div class="tt-card-time">20:00 - 20:45 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis - Spaarkamer</span>
+                <span class="tt-price">€ 17,50</span>
+              </div>
+              <h4 class="tt-card-title">De Bronckhorst: Rise of Grain</h4>
+              <p class="tt-card-desc">De allereerste masterclass van Distilleerderij de Bronckhorst met nieuwe releases.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-bronckhorst-fri">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="avond">
+              <div class="tt-card-time">20:15 - 21:00 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Grote Kerkplein (Tram)</span>
+                <span class="tt-price">€ 39,50</span>
+              </div>
+              <h4 class="tt-card-title">Haagsche Whiskytram</h4>
+              <p class="tt-card-desc">Avondrondrit door prachtig verlicht Den Haag. Een sfeervolle tasting on-the-go.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Vrijdag 13 Nov - 20:15 uur">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="avond">
+              <div class="tt-card-time">21:30 - 22:15 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis - Telkamer</span>
+                <span class="tt-price">€ 17,50</span>
+              </div>
+              <h4 class="tt-card-title">Filliers Belgian Whisky</h4>
+              <p class="tt-card-desc">Ward Baes vertelt het verhaal achter de Belgische Filliers whisky's tijdens deze proeverij.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-filliers-fri">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="avond">
+              <div class="tt-card-time">21:30 - 22:15 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Grote Kerk</span>
+                <span class="tt-price">€ 5,00</span>
+              </div>
+              <h4 class="tt-card-title">Workshop Vatenmaken</h4>
+              <p class="tt-card-desc">Actieve demonstratie van de ambachtelijk vatenmaker (cooperage) op het buitenterrein.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vatenmaken-tickets">Direct Boeken &rarr;</button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- PANE: ZATERDAG -->
+        <div class="timetable-pane" id="tt-pane-zaterdag">
+          <div class="timetable-grid">
+            
+            <div class="tt-card" data-timepart="ochtend">
+              <div class="tt-card-time">11:15 - 13:15 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Toren</span>
+                <span class="tt-price">€ 35,00</span>
+              </div>
+              <h4 class="tt-card-title">Bowmore & Islay (Inc. Klim)</h4>
+              <p class="tt-card-desc">Global Brand Ambassador Teddy Joseph vertelt over Bowmore met een klim naar de top.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-bowmore-sat-inc">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="ochtend">
+              <div class="tt-card-time">12:00 - 12:45 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Grote Kerkplein (Tram)</span>
+                <span class="tt-price">€ 39,50</span>
+              </div>
+              <h4 class="tt-card-title">Haagsche Whiskytram</h4>
+              <p class="tt-card-desc">Vroege zaterdagrit. Heerlijk ontspannen de stad ontdekken onder het genot van 4 drams.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 12:00 uur">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="ochtend">
+              <div class="tt-card-time">12:00 - 13:15 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Toren</span>
+                <span class="tt-price">€ 35,00</span>
+              </div>
+              <h4 class="tt-card-title">Bowmore & Islay (Zonder Klim)</h4>
+              <p class="tt-card-desc">Global Brand Ambassador Teddy Joseph vertelt over Bowmore met een nieuwe special release.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-bowmore-sat-ex">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="ochtend">
+              <div class="tt-card-time">12:15 - 13:00 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis</span>
+                <span class="tt-price">€ 85,00</span>
+              </div>
+              <h4 class="tt-card-title">Glenfiddich, Glen Grant & Port Ellen</h4>
+              <p class="tt-card-desc">Een ultra-exclusieve tasting van historische bottelingen, begeleid door Tony van Rooijen.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-oldtimers-sat">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="ochtend">
+              <div class="tt-card-time">12:15 - 13:00 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis - Foyer</span>
+                <span class="tt-price">€ 35,00</span>
+              </div>
+              <h4 class="tt-card-title">The Ultimate: Historische Bottelingen</h4>
+              <p class="tt-card-desc">Proef legendarische vaten uit de 'The Ultimate' serie van Van Wees Amersfoort.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-ultimate-sat">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="ochtend">
+              <div class="tt-card-time">12:30 - 13:00 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis</span>
+                <span class="tt-price">€ 7,50</span>
+              </div>
+              <h4 class="tt-card-title">Whisky Introductie</h4>
+              <p class="tt-card-desc">Tasting van 2 single malts voor echte beginners + uitleg over de basis.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Zaterdag 14 Nov - 12:30 uur">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="middag">
+              <div class="tt-card-time">13:00 - 17:00 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Grote Kerk</span>
+                <span class="tt-price">€ 55,00</span>
+              </div>
+              <h4 class="tt-card-title">Sessie 2 - Zaterdagmiddag</h4>
+              <p class="tt-card-desc">Zaterdagmiddagsessie van het festival. Inclusief Glencairn tastingglas en festivalboekje.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-2">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="middag">
+              <div class="tt-card-time">13:30 - 14:15 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Grote Kerkplein (Tram)</span>
+                <span class="tt-price">€ 39,50</span>
+              </div>
+              <h4 class="tt-card-title">Haagsche Whiskytram</h4>
+              <p class="tt-card-desc">Zaterdagmiddagrit door historisch Den Haag onder begeleiding van gerenommeerde gidsen.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 13:30 uur">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="middag">
+              <div class="tt-card-time">14:00 - 14:45 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis - Spaarkamer</span>
+                <span class="tt-price">€ 20,00</span>
+              </div>
+              <h4 class="tt-card-title">Teeling Whiskey Masterclass</h4>
+              <p class="tt-card-desc">Exclusieve Ierse whiskey tasting van Teeling.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-teeling-sat-mid">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="middag">
+              <div class="tt-card-time">14:00 - 14:45 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis - Foyer</span>
+                <span class="tt-price">€ 25,00</span>
+              </div>
+              <h4 class="tt-card-title">Brugs Heilig Water Tasting</h4>
+              <p class="tt-card-desc">Peter de Meyer schenkt het bekroonde 'Brugs Heilig Water' van de Brugse Whisky Company.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-brugse-sat">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="middag">
+              <div class="tt-card-time">15:30 - 16:15 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis - Foyer</span>
+                <span class="tt-price">€ 20,00</span>
+              </div>
+              <h4 class="tt-card-title">Sakurao Japanese Whisky</h4>
+              <p class="tt-card-desc">Sayumi Chavrieir-Oyama introduceert de unieke Sakurao whisky's rechtstreeks uit Hiroshima.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-sakurao-sat">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="avond">
+              <div class="tt-card-time">18:30 - 19:00 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis</span>
+                <span class="tt-price">€ 7,50</span>
+              </div>
+              <h4 class="tt-card-title">Whisky Introductie</h4>
+              <p class="tt-card-desc">Tasting van 2 single malts voor echte beginners.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Zaterdag 14 Nov - 18:30 uur">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="avond">
+              <div class="tt-card-time">18:30 - 19:15 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis</span>
+                <span class="tt-price">€ 65,00</span>
+              </div>
+              <h4 class="tt-card-title">Macallan & Highland Park Old Timers</h4>
+              <p class="tt-card-desc">Tony van Rooijen schenkt 4 legendarische toppers uit een privécollectie.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-oldtimers-sat-eve">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="avond">
+              <div class="tt-card-time">18:30 - 19:15 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis - Foyer</span>
+                <span class="tt-price">€ 20,00</span>
+              </div>
+              <h4 class="tt-card-title">Teeling Whiskey Masterclass</h4>
+              <p class="tt-card-desc">Proef 6 verschillende whiskeys van Teeling, waarvan 4 nieuwe releases.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-teeling-sat-eve">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="avond">
+              <div class="tt-card-time">18:45 - 19:30 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Grote Kerkplein (Tram)</span>
+                <span class="tt-price">€ 39,50</span>
+              </div>
+              <h4 class="tt-card-title">Haagsche Whiskytram</h4>
+              <p class="tt-card-desc">Sfeervolle avondrit tijdens het festival.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 18:45 uur">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="avond">
+              <div class="tt-card-time">19:00 - 23:00 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Grote Kerk</span>
+                <span class="tt-price">€ 55,00</span>
+              </div>
+              <h4 class="tt-card-title">Sessie 3 - Zaterdagavond</h4>
+              <p class="tt-card-desc">Zaterdagavondsessie van het festival. Inclusief Glencairn proefglas.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-3">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="avond">
+              <div class="tt-card-time">20:00 - 20:45 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis - Telkamer</span>
+                <span class="tt-price">€ 17,50</span>
+              </div>
+              <h4 class="tt-card-title">Amrut Kumbha Single Malt</h4>
+              <p class="tt-card-desc">Pramod Kashyap presenteert de nieuwe gelimiteerde Amrut Kumbha.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-amrut-sat">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="avond">
+              <div class="tt-card-time">20:15 - 21:00 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Grote Kerkplein (Tram)</span>
+                <span class="tt-price">€ 39,50</span>
+              </div>
+              <h4 class="tt-card-title">Haagsche Whiskytram</h4>
+              <p class="tt-card-desc">Romantische zaterdagavond rondrit door sfeervol verlicht Den Haag.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zaterdag 14 Nov - 20:15 uur">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="avond">
+              <div class="tt-card-time">21:30 - 22:15 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis - Foyer</span>
+                <span class="tt-price">€ 25,00</span>
+              </div>
+              <h4 class="tt-card-title">Arran Cask Samples</h4>
+              <p class="tt-card-desc">Proef exclusieve vatsamples en gelimiteerde bottelingen van Arran.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-arran-sat">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="avond">
+              <div class="tt-card-time">21:30 - 22:15 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Grote Kerk</span>
+                <span class="tt-price">€ 5,00</span>
+              </div>
+              <h4 class="tt-card-title">Workshop Vatenmaken</h4>
+              <p class="tt-card-desc">Leer de kunst van het vatenmaken en proef 3 Loch Lomond single malts.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vatenmaken-tickets">Direct Boeken &rarr;</button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- PANE: ZONDAG -->
+        <div class="timetable-pane" id="tt-pane-zondag">
+          <div class="timetable-grid">
+            
+            <div class="tt-card" data-timepart="ochtend">
+              <div class="tt-card-time">11:00 - 11:45 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Grote Kerkplein (Tram)</span>
+                <span class="tt-price">€ 39,50</span>
+              </div>
+              <h4 class="tt-card-title">Haagsche Whiskytram</h4>
+              <p class="tt-card-desc">Zondagochtend rondrit door historisch Den Haag met 4 drams.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zondag 15 Nov - 11:00 uur">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="ochtend">
+              <div class="tt-card-time">11:15 - 13:15 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Toren-zolder</span>
+                <span class="tt-price">€ 37,50</span>
+              </div>
+              <h4 class="tt-card-title">The Glenturret Tasting (Inc. Klim)</h4>
+              <p class="tt-card-desc">Proef Glenturret single malt whisky onder leiding van Luca Rapetti (ENG), inclusief torenbeklimming.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glenturret-sun-inc">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="ochtend">
+              <div class="tt-card-time">12:00 - 13:15 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Toren-zolder</span>
+                <span class="tt-price">€ 37,50</span>
+              </div>
+              <h4 class="tt-card-title">The Glenturret Tasting (Zonder Klim)</h4>
+              <p class="tt-card-desc">Proef Glenturret single malt whisky onder leiding van Luca Rapetti (ENG).</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-glenturret-sun-ex">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="ochtend">
+              <div class="tt-card-time">12:15 - 13:00 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis - Foyer</span>
+                <span class="tt-price">€ 25,00</span>
+              </div>
+              <h4 class="tt-card-title">SMWS - Get into the good stuff!</h4>
+              <p class="tt-card-desc">Bob Wenting presenteert 4 exclusieve single cask bottelingen van de SMWS.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="mc-smws-sun">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="ochtend">
+              <div class="tt-card-time">12:30 - 13:00 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Nutshuis</span>
+                <span class="tt-price">€ 7,50</span>
+              </div>
+              <h4 class="tt-card-title">Whisky Introductie</h4>
+              <p class="tt-card-desc">Tasting van 2 single malts voor echte beginners + uitleg.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="intro-tickets" data-target-select="Zondag 15 Nov - 12:30 uur">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="ochtend">
+              <div class="tt-card-time">12:30 - 13:15 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Grote Kerkplein (Tram)</span>
+                <span class="tt-price">€ 39,50</span>
+              </div>
+              <h4 class="tt-card-title">Haagsche Whiskytram</h4>
+              <p class="tt-card-desc">Zondagsrit om uw festivalbezoek perfect te starten.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zondag 15 Nov - 12:30 uur">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="middag">
+              <div class="tt-card-time">13:00 - 17:00 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Grote Kerk</span>
+                <span class="tt-price">€ 55,00</span>
+              </div>
+              <h4 class="tt-card-title">Sessie 4 - Zondagmiddag</h4>
+              <p class="tt-card-desc">Slot-sessie op zondagmiddag. Inclusief Glencairn proefglas.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="session-4">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="middag">
+              <div class="tt-card-time">14:00 - 14:45 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Grote Kerkplein (Tram)</span>
+                <span class="tt-price">€ 39,50</span>
+              </div>
+              <h4 class="tt-card-title">Haagsche Whiskytram</h4>
+              <p class="tt-card-desc">Middagrit door historisch Den Haag met diverse bijzondere single cask malts.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="whiskytram" data-target-select="Zondag 15 Nov - 14:00 uur">Direct Boeken &rarr;</button>
+            </div>
+
+            <div class="tt-card" data-timepart="middag">
+              <div class="tt-card-time">15:00 - 15:45 uur</div>
+              <div class="tt-card-meta">
+                <span class="tt-loc">Grote Kerk (Buitenterrein)</span>
+                <span class="tt-price">€ 5,00</span>
+              </div>
+              <h4 class="tt-card-title">Workshop Vatenmaken</h4>
+              <p class="tt-card-desc">Leer direct van de vatenmaker en proef de invloed van hout op jonge distillaten.</p>
+              <button type="button" class="btn btn-sm btn-gold tt-book-btn" data-target-stub="vatenmaken-tickets">Direct Boeken &rarr;</button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 7. THREE-TAB ACCORDION LAYOUT -->
+    <section class="tab-section">
+      <div class="section-container tab-container">
+        <!-- Visual side -->
+        <div class="tab-visual vintage-frame tilt-slight-left">
+          <div class="vintage-frame-inner text-center" style="background: var(--text-charcoal); height: 100%; display:flex; flex-direction:column; justify-content:center; align-items:center; padding: 0; position: relative; overflow: hidden; min-height: 320px;">
+            <img src="/Afbeeldingen/whisky-festival-2025-0155.jpg" alt="De Grote Kerk Den Haag" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;" />
+            <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(28,25,23,0.2) 0%, rgba(28,25,23,0.75) 100%); z-index: 1;"></div>
+            <div style="position: relative; z-index: 2; color: #FFF; padding: 2rem;">
+              <h3 style="font-family: var(--font-display); font-size: 2rem; color: #FFF; margin-bottom: 0.25rem;">De Grote Kerk</h3>
+              <p style="color: var(--whisky-gold-light); font-size: 1.1rem; letter-spacing: 0.05em; text-transform: uppercase;">Den Haag</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Triggers side -->
+        <div class="tab-triggers">
+          <h2 class="tt-section-title" style="margin-bottom: 1.5rem;">Alles wat u moet weten</h2>
+          
+          <div class="tab-trigger-card active">
+            <h4>Adembenemende Sfeer & Locatie</h4>
+            <p style="margin-top: 0.5rem; font-size:0.95rem;">Het festival vindt plaats in de historische Grote Kerk (St. Jacobskerk) in hartje Den Haag. De glas-in-lood ramen en gewelven creëren een ongeëvenaarde ambiance voor whisky-liefhebbers.</p>
+          </div>
+          
+          <div class="tab-trigger-card">
+            <h4>Schotse Culinaire Ervaring</h4>
+            <p style="margin-top: 0.5rem; font-size:0.95rem;">Naast whisky bieden we authentieke hapjes. Geniet van vers bereide zalm, Haggis, of verfijnde oesters die perfect pairen met rokerige Islay malts.</p>
+          </div>
+          
+          <div class="tab-trigger-card">
+            <h4>Uitstekend Bereikbaar</h4>
+            <p style="margin-top: 0.5rem; font-size:0.95rem;">Gelegen in het centrum. We adviseren met de trein te komen; vanaf Den Haag CS bent u met de tram (2, 3, 4 of 6) binnen 5 minuten bij halte Grote Markt direct voor de deur.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VINTAGE HORIZONTAL TIMELINE -->
+    <section class="timeline-scroll-section" id="historie">
+      <div class="timeline-sticky-viewport">
+        <div class="timeline-container">
+          <!-- Left Side Editorial Header -->
+          <div class="timeline-left-header">
+            <span class="tt-tag">Sinds 2000</span>
+            <h2 class="timeline-title">Het Ontstaan van het Festival</h2>
+            <div class="vintage-line" style="margin: 1.5rem 0;"></div>
+            <p class="timeline-intro-text">
+              Ontdek hoe een passie voor Schotse single malts uitgroeide tot het meest sfeervolle en toonaangevende whisky-evenement van Nederland.
+            </p>
+            <div class="timeline-era-list" aria-hidden="true">
+              <div class="era-item active" data-target="0">
+                <span class="era-dot"></span>
+                <span class="era-text">2000 — De Oprichting</span>
+              </div>
+              <div class="era-item" data-target="1">
+                <span class="era-dot"></span>
+                <span class="era-text">2005 — De Grote Kerk</span>
+              </div>
+              <div class="era-item" data-target="3">
+                <span class="era-dot"></span>
+                <span class="era-text">2018 — De Whisky Tram</span>
+              </div>
+              <div class="era-item" data-target="5">
+                <span class="era-dot"></span>
+                <span class="era-text">2026 — Zilveren Jubileum</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Side Scrolling Track -->
+          <div class="timeline-track-viewport">
+            <div class="timeline-track" id="timeline-track">
+              <!-- Card 1: 2000 -->
+              <div class="timeline-card active" data-index="0">
+                <div class="card-year-row">
+                  <span class="card-year">2000</span>
+                  <span class="card-num">01</span>
+                </div>
+                <h3 class="card-title">De Eerste Druppel</h3>
+                <p class="card-desc">Het festival begint als een klein intiem samenzijn van gepassioneerde Schotse whiskyimporteurs en liefhebbers in een sfeervolle Haagse kelder. Slechts 150 bezoekers en 20 verschillende flessen.</p>
+                <div class="card-img-frame">
+                  <img src="/Afbeeldingen/whisky-festival-2025-0038.jpg" alt="Sfeervolle Haagse Kelder" loading="lazy" />
+                </div>
+              </div>
+
+              <!-- Card 2: 2005 -->
+              <div class="timeline-card" data-index="1">
+                <div class="card-year-row">
+                  <span class="card-year">2005</span>
+                  <span class="card-num">02</span>
+                </div>
+                <h3 class="card-title">De Grote Verhuizing</h3>
+                <p class="card-desc">Het festival groeit in sneltreinvaart en verhuist naar de adembenemende Grote Kerk in Den Haag. De gotische gewelven en sfeervolle verlichting bieden het perfecte decor voor een premium beleving.</p>
+                <div class="card-img-frame">
+                  <img src="/Afbeeldingen/whisky-festival-2025-0155.jpg" alt="De Grote Kerk Den Haag" loading="lazy" />
+                </div>
+              </div>
+
+              <!-- Card 3: 2012 -->
+              <div class="timeline-card" data-index="2">
+                <div class="card-year-row">
+                  <span class="card-year">2012</span>
+                  <span class="card-num">03</span>
+                </div>
+                <h3 class="card-title">Het Drams-Systeem</h3>
+                <p class="card-desc">Om zeer zeldzame en kostbare whisky's voor iedereen toegankelijk te maken, introduceren we de 'dram' munt. Bezoekers kunnen nu per proefglas afrekenen en exclusieve whisky's ontdekken.</p>
+                <div class="card-img-frame">
+                  <img src="/Afbeeldingen/whisky-festival-2025-0072.jpg" alt="Het Drams-Systeem" loading="lazy" />
+                </div>
+              </div>
+
+              <!-- Card 4: 2018 -->
+              <div class="timeline-card" data-index="3">
+                <div class="card-year-row">
+                  <span class="card-year">2018</span>
+                  <span class="card-num">04</span>
+                </div>
+                <h3 class="card-title">De Haagsche Whisky Tram</h3>
+                <p class="card-desc">In samenwerking met HTM introduceren we een rijdende proeverij door de hofstad. Een historische tram omgebouwd tot rijdende whiskybar onder leiding van experts — een ongekend succes.</p>
+                <div class="card-img-frame">
+                  <img src="/Afbeeldingen/whisky-festival-2025-0081.jpg" alt="De Haagsche Whisky Tram" loading="lazy" />
+                </div>
+              </div>
+
+              <!-- Card 5: 2023 -->
+              <div class="timeline-card" data-index="4">
+                <div class="card-year-row">
+                  <span class="card-year">2023</span>
+                  <span class="card-num">05</span>
+                </div>
+                <h3 class="card-title">Masterclass Revolutie</h3>
+                <p class="card-desc">Introductie van de vernieuwde Nosing & Tasting masterclasses. Bezoekers proeven zeldzame drams onder begeleiding van internationale Brand Ambassadors in intieme en speciaal ingerichte proefkamers.</p>
+                <div class="card-img-frame">
+                  <img src="/Afbeeldingen/whisky-festival-2025-0102.jpg" alt="Exclusieve Masterclasses" loading="lazy" />
+                </div>
+              </div>
+
+              <!-- Card 6: 2026 -->
+              <div class="timeline-card highlighted-jubilee" data-index="5">
+                <div class="card-year-row">
+                  <span class="card-year text-white">2026</span>
+                  <span class="card-num text-white-muted">06</span>
+                </div>
+                <h3 class="card-title text-white">Zilveren Jubileum</h3>
+                <p class="card-desc text-white-muted">Dit jaar vieren we ons 25-jarig bestaan! Met meer dan 200+ unieke whisky's, exclusieve jubileumbottelingen en een ongeëvenaard programma belooft dit de meest legendarische editie ooit te worden.</p>
+                <div class="card-img-frame">
+                  <img src="/Afbeeldingen/whisky-festival-2025-0114.jpg" alt="25 Jaar Jubileum" loading="lazy" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Timeline Axis Selector -->
+        <div class="timeline-axis-wrap">
+          <div class="timeline-axis-line">
+            <div class="timeline-axis-progress" id="axis-progress"></div>
+          </div>
+          <div class="timeline-axis-ticks">
+            <button class="axis-tick active" data-index="0"><span>2000</span></button>
+            <button class="axis-tick" data-index="1"><span>2005</span></button>
+            <button class="axis-tick" data-index="2"><span>2012</span></button>
+            <button class="axis-tick" data-index="3"><span>2018</span></button>
+            <button class="axis-tick" data-index="4"><span>2023</span></button>
+            <button class="axis-tick" data-index="5"><span>2026</span></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. HERITAGE STATS BAR (Sustainability/Trust) -->
+    <section class="heritage-bar">
+      <div class="section-container">
+        <div class="heritage-grid">
+          <div class="heritage-stat">
+            <div class="stat-icon-wrapper">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--whisky-gold-dark)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+              </svg>
+            </div>
+            <span class="stat-val">Sinds 2000</span>
+            <span class="stat-label">Historische Traditie</span>
+          </div>
+          <div class="heritage-stat">
+            <div class="stat-icon-wrapper">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--whisky-gold-dark)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <span class="stat-val">Duizenden</span>
+            <span class="stat-label">Tevreden Bezoekers</span>
+          </div>
+          <div class="heritage-stat">
+            <div class="stat-icon-wrapper">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--whisky-gold-dark)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 3h10l1 7c0 4.4-3.6 8-8 8s-8-3.6-8-8l1-7z"></path>
+                <line x1="12" y1="18" x2="12" y2="21"></line>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+              </svg>
+            </div>
+            <span class="stat-val">200+</span>
+            <span class="stat-label">Unieke Whisky's</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. ASYMMETRICAL TESTIMONIALS -->
+    <section class="testimonials-section">
+      <div class="section-container split-layout">
+        
+        <div class="split-visual tilt-slight-right">
+          <div class="video-thumbnail-card vintage-frame">
+            <div class="vintage-frame-inner" style="background: var(--text-charcoal); padding: 0; position: relative; overflow: hidden; border-radius: 4px; aspect-ratio: 16/9;">
+              <video 
+                id="aftermovie-video"
+                src="/Video/Whisky%20Festival%202025%20-%201080p.mp4"
+                poster="/aftermovie_poster.jpg"
+                preload="none"
+                playsinline
+                style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 4px;"
+              ></video>
+              <div id="video-overlay" class="video-overlay-cover text-center" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(28, 25, 23, 0.25) 0%, rgba(28, 25, 23, 0.65) 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; z-index: 10;">
+                <div class="play-button" id="aftermovie-play-btn">▶</div>
+                <p style="color: #FFF; font-family: var(--font-sans); letter-spacing:0.12em; margin-top:1.25rem; text-transform:uppercase; font-size:0.85rem; font-weight:bold; text-shadow: 0 2px 10px rgba(0,0,0,0.8);">Bekijk Official Aftermovie 2025</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="split-text">
+          <span class="tt-tag">Wat bezoekers zeggen</span>
+          <h3 class="testimonial-quote">"Dit festival is echt van een ander niveau. De locatie is adembenemend en het aanbod aan unieke masterclasses is enorm."</h3>
+          <p class="testimonial-author">— Jeroen van den Berg, Bezoeker sinds 2012</p>
+          <div class="review-stars">★★★★★</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 10. MEGA-FOOTER (Includes Brand Strip & Footer component) -->
+    <section class="mega-footer-wrapper">
+      <div class="brand-strip text-center" style="padding: 4rem 2rem; background: var(--bg-parchment);">
+        <h4 style="color: var(--text-muted); font-size:0.9rem; font-family: var(--font-sans); letter-spacing:0.15em; margin-bottom: 2rem;">EEN GREEP UIT DE AANWEZIGE MERKEN</h4>
+        <!-- Reusing trust strip styling -->
+        <div class="trust-strip" style="border:none; padding:0; background:transparent;">
+          <span class="trust-text-logo">Dalmore</span>
+          <span class="trust-text-logo">Talisker</span>
+          <span class="trust-text-logo">Lagavulin</span>
+          <span class="trust-text-logo">Bowmore</span>
+          <span class="trust-text-logo">Oban</span>
+        </div>
+      </div>
+      <Footer />
+    </section>
+
+  </main>
+
+  <!-- MOCK CHECKOUT MODAL OVERLAY (Kept intact for full functionality) -->
+  <div class="checkout-modal-overlay" id="checkout-modal" style="display: none;">
+    <div class="checkout-modal-card">
+      <button type="button" class="modal-close-btn" id="modal-close-x">&times;</button>
+      
+      <div id="modal-step-1">
+        <h3 class="modal-title">Voltooi Uw Reservering</h3>
+        <div class="vintage-line"></div>
+        <p class="modal-subtitle">Dit is een demonstratie van uw nieuwe, premium bestelflow.</p>
+
+        <form id="mock-payment-form">
+          <div class="modal-two-columns">
+            
+            <!-- Left Column: Fields & Payment -->
+            <div class="modal-form-side">
+              <div class="form-group">
+                <label for="cust-name" class="form-label">Naam</label>
+                <input type="text" id="cust-name" placeholder="Jan de Vries" required class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="cust-email" class="form-label">E-mailadres</label>
+                <input type="email" id="cust-email" placeholder="jan@devries.nl" required class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="cust-phone" class="form-label">Telefoonnummer</label>
+                <input type="tel" id="cust-phone" placeholder="06 12345678" required class="form-control" />
+              </div>
+
+              <div class="form-group" style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                <label for="checkout-promo-code" class="form-label">Kortingscode of IWS Lidnummer</label>
+                <div style="display: flex; gap: 0.5rem;">
+                  <input type="text" id="checkout-promo-code" placeholder="Bijv. WS-10024 of GIFT-50" class="form-control" style="flex: 1;" />
+                  <button type="button" class="btn btn-outline" id="apply-promo-btn" style="padding: 0 1rem; font-size: 0.85rem; border-color: rgba(140, 110, 70, 0.4); background: transparent; color: var(--text-charcoal);">Toepassen</button>
+                </div>
+                <span id="promo-status-msg" style="display: none; font-size: 0.75rem; margin-top: 4px; font-weight: 600;"></span>
+              </div>
+
+              <div class="payment-method-section" style="margin-top: 0.5rem; padding-top: 0.5rem;">
+                <span class="payment-method-title">Betaalmethode</span>
+                <div class="payment-grids">
+                  <label class="pay-method-card active">
+                    <input type="radio" name="payment-method" value="ideal" checked />
+                    <span class="pay-logo">iDEAL</span>
+                  </label>
+                  <label class="pay-method-card">
+                    <input type="radio" name="payment-method" value="bancontact" />
+                    <span class="pay-logo">Bancontact</span>
+                  </label>
+                </div>
+
+                <div class="form-group bank-select-group" id="bank-group" style="margin-bottom: 0;">
+                  <label for="bank-select" class="form-label">Selecteer uw bank</label>
+                  <select id="bank-select" class="form-control">
+                    <option value="rabobank">Rabobank</option>
+                    <option value="ing">ING</option>
+                    <option value="abnamro">ABN AMRO</option>
+                    <option value="sns">SNS Bank</option>
+                    <option value="bunq">bunq</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Summary & Submit -->
+            <div class="modal-summary-side">
+              <div>
+                <div class="modal-summary-title">Besteloverzicht</div>
+                <div id="modal-summary-items" class="modal-summary-items-list">
+                  <!-- Dynamic items populated by JS -->
+                </div>
+                <div class="modal-summary-calc">
+                  <div class="modal-summary-item-row" id="modal-summary-subtotal-row">
+                    <span>Subtotaal:</span>
+                    <span id="modal-summary-subtotal">€0,00</span>
+                  </div>
+                  <div class="modal-summary-item-row" id="modal-summary-fee-row">
+                    <span>Administratiekosten:</span>
+                    <span id="modal-summary-fee">€0,00</span>
+                  </div>
+                  <div class="modal-summary-item-row" id="modal-summary-shipping-row" style="display: none;">
+                    <span>Verzendkosten:</span>
+                    <span id="modal-summary-shipping">€0,00</span>
+                  </div>
+                  <div class="modal-summary-item-row" id="modal-summary-discount-row" style="display: none; color: #dc3545; font-weight: 600;">
+                    <span>Korting:</span>
+                    <span id="modal-summary-discount">€0,00</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="modal-summary-total-row">
+                  <span>Totaal:</span>
+                  <span id="modal-total-amt">&euro;0,00</span>
+                </div>
+
+                <button type="submit" class="btn btn-gold btn-block" id="modal-submit-btn" style="margin-top: 0; width: 100%;">
+                  Betaling Afronden
+                </button>
+              </div>
+            </div>
+            
+          </div>
+        </form>
+      </div>
+
+      <div id="modal-step-2" style="display: none; text-align: center; padding: 3rem 1rem;">
+        <div class="spinner"></div>
+        <h3 class="processing-title">Verbinding maken met bank...</h3>
+        <p class="processing-desc">Een moment geduld alstublieft, we verifiëren uw betalingsgegevens.</p>
+      </div>
+
+      <div id="modal-step-3" style="display: none;">
+        <div class="success-ticket-stub">
+          <div class="success-header">
+            <span class="success-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="display:block;">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </span>
+            <h3 class="success-title">Reservering Geslaagd!</h3>
+            <p class="success-subtitle">Bedankt voor uw bestelling. Uw tickets zijn gereed.</p>
+          </div>
+          <div class="ticket-perforation"></div>
+          <div class="success-body">
+            <div class="ticket-summary-box">
+              <div class="summary-item">
+                <span>Reserveringsnummer:</span>
+                <strong>#WF-2026-98741</strong>
+              </div>
+              <div class="summary-item">
+                <span>E-mailadres:</span>
+                <strong id="receipt-sent-email">jan@devries.nl</strong>
+              </div>
+              <div class="summary-divider"></div>
+              <div class="summary-items-header">Bestelde Kaarten & Producten</div>
+              <div id="receipt-tickets-list" class="receipt-tickets-ul">
+                <!-- Dynamically populated by JS as list items -->
+              </div>
+            </div>
+            <p class="ticket-delivery-notice">
+              De officiële E-tickets zijn naar uw e-mailadres verzonden. Neem uw geprinte ticket of mobiele barcode mee naar de ingang van de Grote Kerk.
+            </p>
+ 
+            <!-- Mijn Account Banner -->
+            <a href="/account" class="account-banner" id="my-account-link">
+              <div class="account-banner-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--success-green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block;">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+              <div class="account-banner-text">
+                <strong>Bekijk in Mijn Account</strong>
+                <span>Beheer uw tickets, download e-tickets en bekijk uw bestelgeschiedenis.</span>
+              </div>
+              <span class="account-banner-arrow">→</span>
+            </a>
+ 
+            <button type="button" class="btn btn-charcoal btn-block" id="modal-success-close">
+              Sluiten & Terug naar Website
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</Layout>
+
+<style>
+  /* --- 2.5-SECOND COIN-FLIP PRELOADER --- */
+  .hp-preloader-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background-color: var(--bg-parchment);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s ease, filter 0.4s ease;
+  }
+
+  .hp-preloader-overlay.fade-out {
+    opacity: 0;
+    filter: blur(12px);
+    transform: scale(1.04);
+    pointer-events: none;
+  }
+
+  .preloader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.25rem;
+    perspective: 1200px;
+  }
+
+  /* Butter-smooth 3D Coin Toss */
+  .coin-3d-stage {
+    position: relative;
+    width: 140px;
+    height: 170px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+  }
+
+  .coin-flipper-core {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 14px 28px rgba(45, 42, 38, 0.25));
+    will-change: transform;
+    animation: coinTossSmooth 2.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  .coin-flipper-core svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  @keyframes coinTossSmooth {
+    0% {
+      transform: translateY(0) rotateY(0deg) scale(0.85);
+    }
+    40% {
+      transform: translateY(-40px) rotateY(360deg) scale(1.15);
+    }
+    80% {
+      transform: translateY(0) rotateY(720deg) scale(0.98);
+    }
+    92% {
+      transform: translateY(-6px) rotateY(720deg) scale(1.02);
+    }
+    100% {
+      transform: translateY(0) rotateY(720deg) scale(1);
+    }
+  }
+
+  /* Pulsing Floor Shadow */
+  .coin-glow-shadow {
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 110px;
+    height: 18px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(197, 139, 57, 0.55) 0%, transparent 75%);
+    animation: coinShadowPulse 2.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  @keyframes coinShadowPulse {
+    0% { transform: translateX(-50%) scale(0.5); opacity: 0.3; }
+    40% { transform: translateX(-50%) scale(1.35); opacity: 0.85; }
+    80% { transform: translateX(-50%) scale(0.95); opacity: 0.5; }
+    100% { transform: translateX(-50%) scale(1); opacity: 0.65; }
+  }
+
+  /* Preloader Text & Progress Bar */
+  .preloader-text-group {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .preloader-title {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 0.22em;
+    color: var(--text-charcoal);
+    text-transform: uppercase;
+  }
+
+  .preloader-progress-track {
+    width: 220px;
+    height: 4px;
+    background-color: rgba(45, 42, 38, 0.12);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .preloader-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--whisky-gold-dark), var(--whisky-gold), var(--whisky-gold-light));
+    border-radius: 4px;
+    animation: fillLoader 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes fillLoader {
+    0% { width: 0%; }
+    40% { width: 45%; }
+    75% { width: 85%; }
+    100% { width: 100%; }
+  }
+
+  .preloader-subtitle {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    color: var(--whisky-gold-dark);
+  }
+
+  /* ----------------------------------------------------
+     SECTION LAYOUTS (TICKET TAILOR STYLE)
+     ---------------------------------------------------- */
+  .section-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  .text-center { text-align: center; }
+
+  .tt-hero-section {
+    position: relative;
+    padding: 15.5rem 0 3rem; /* Generous top clearance ensuring logo badge sits cleanly above title */
+    background-color: var(--bg-parchment);
+    overflow: hidden;
+  }
+
+  .tt-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--whisky-gold-dark);
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--whisky-gold);
+    padding-bottom: 0.5rem;
+  }
+  .tt-hero-title {
+    font-size: 5.75rem; /* Massive, high-impact grand title */
+    color: var(--text-charcoal);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+  .tt-hero-subtitle {
+    font-size: 1.05rem; /* Refined smaller subtitle font */
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    max-width: 620px;
+  }
+  .tt-hero-text {
+    padding-bottom: 4rem;
+    position: relative;
+    z-index: 3;
+    transition: all 0.3s;
+  }
+  .hero-barrel-art {
+    position: absolute;
+    left: -50px;
+    bottom: -10px;
+    width: 380px;
+    height: auto;
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero-barrel-art img {
+    width: 100%;
+    height: auto;
+    filter: sepia(0.5) contrast(0.9);
+  }
+  .tt-hero-text > *:not(.hero-barrel-art) {
+    position: relative;
+    z-index: 1;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 1.5rem;
+  }
+  /* --- FULL-BLEED SEAMLESS HERO VIDEO BANNER --- */
+  .hero-video-full-right {
+    position: absolute;
+    inset: 0; /* Spans 100% width and height of hero section */
+    z-index: 1;
+    overflow: hidden;
+    /* Alpha Mask: Completely transparent on left 35%, smooth transition to solid on right 72% */
+    mask-image: linear-gradient(to right, transparent 0%, transparent 35%, black 72%, black 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 35%, black 72%, black 100%);
+  }
+
+  .hero-video-element {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 75% center;
+    display: block;
+  }
+
+  /* Multi-stop Parchment Blend & Vignette Overlay */
+  .hero-video-blend-gradient {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: 
+      linear-gradient(
+        to right, 
+        var(--bg-parchment) 0%, 
+        var(--bg-parchment) 32%, 
+        rgba(245, 240, 230, 0.85) 48%, 
+        rgba(245, 240, 230, 0.3) 65%, 
+        transparent 85%
+      ),
+      linear-gradient(
+        to bottom, 
+        var(--bg-parchment) 0%, 
+        rgba(245, 240, 230, 0.6) 12%, 
+        transparent 28%, 
+        transparent 78%, 
+        var(--bg-parchment) 100%
+      );
+  }
+
+  /* Subtle Warm Golden Tint Overlay */
+  .hero-video-tint-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      circle at 70% 50%,
+      rgba(197, 139, 57, 0.06) 0%,
+      rgba(29, 28, 26, 0.22) 100%
+    );
+  }
+
+  /* Center Right Whisky Glass Artwork (Middel 14.svg) 1-op-1 overgenomen */
+  .tt-hero-visual-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 5;
+    pointer-events: none;
+    height: 100%;
+  }
+
+  .hero-glass-art-card {
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.45));
+    opacity: 0.95;
+    margin-bottom: 5.5rem; /* Lift logo higher independently */
+    animation: floatingGlass 6s ease-in-out infinite alternate;
+  }
+
+  .hero-glass-art-card svg {
+    width: 100%;
+    height: auto;
+    max-height: 420px;
+    display: block;
+  }
+
+  @keyframes floatingGlass {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-12px);
+    }
+  }
+
+  .hero-video-badge {
+    position: absolute;
+    bottom: 6.5rem;
+    right: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(29, 28, 26, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--whisky-gold);
+    color: var(--whisky-gold-light);
+    padding: 0.45rem 1rem;
+    border-radius: 20px;
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+    z-index: 5;
+  }
+
+  .hero-video-badge .badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--whisky-gold);
+    box-shadow: 0 0 8px var(--whisky-gold);
+    animation: pulseGlow 1.5s infinite;
+  }
+
+  /* Authentic festival photos for hero infinite masonry */
+  .img-1 { background-image: url('/Afbeeldingen/whisky-festival-2025-0155.jpg'); height: 350px; }
+  .img-2 { background-image: url('/Afbeeldingen/whisky-festival-2025-0114.jpg'); height: 260px; }
+  .img-3 { background-image: url('/Afbeeldingen/whisky-festival-2025-0072.jpg'); height: 420px; }
+  .img-4 { background-image: url('/Afbeeldingen/whisky-festival-2025-0081.jpg'); height: 280px; }
+  .img-5 { background-image: url('/Afbeeldingen/whisky-festival-2025-0102.jpg'); height: 380px; }
+  .img-6 { background-image: url('/Afbeeldingen/whisky-festival-2025-0060.jpg'); height: 320px; }
+  .img-7 { background-image: url('/Afbeeldingen/whisky-festival-2025-0176.jpg'); height: 290px; } 
+  .img-8 { background-image: url('/Afbeeldingen/whisky-festival-2025-0038.jpg'); height: 360px; }
+
+  /* --- HORIZONTAL 2-ROW INFINITE MARQUEE SECTION --- */
+  .horizontal-photo-gallery-section {
+    padding: 4rem 0 5rem;
+    background-color: transparent;
+    border-top: none;
+    border-bottom: none;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .horizontal-marquee-container {
+    width: 100%;
+    overflow: hidden;
+    padding: 3rem 0;
+    mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  }
+
+  .marquee-row-wrapper {
+    width: 100%;
+    overflow: visible;
+    display: flex;
+    padding: 1rem 0;
+  }
+
+  .marquee-row {
+    display: flex;
+    gap: 2.5rem;
+    width: max-content;
+    will-change: transform;
+  }
+
+  .marquee-row-left {
+    animation: scrollMarqueeLeft 50s linear infinite;
+  }
+
+  .marquee-row-right {
+    animation: scrollMarqueeRight 55s linear infinite;
+  }
+
+  .horizontal-marquee-container:hover .marquee-row {
+    animation-play-state: paused;
+  }
+
+  @keyframes scrollMarqueeLeft {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @keyframes scrollMarqueeRight {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+  }
+
+  .marquee-photo-card {
+    flex-shrink: 0;
+    width: 400px;
+    height: 280px;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    padding: 10px;
+  }
+
+  .marquee-photo-card.rotate-neg-1 { transform: rotate(-1.8deg); }
+  .marquee-photo-card.rotate-pos-2 { transform: rotate(2.2deg); }
+  .marquee-photo-card.rotate-neg-2 { transform: rotate(-2.2deg); }
+  .marquee-photo-card.rotate-pos-1 { transform: rotate(1.8deg); }
+
+  .marquee-photo-card:hover {
+    transform: scale(1.08) rotate(0deg) !important;
+    z-index: 10;
+  }
+
+  .photo-mask-frame {
+    width: 100%;
+    height: 100%;
+    -webkit-mask-image: url('/torn-mask.svg');
+    mask-image: url('/torn-mask.svg');
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    filter: drop-shadow(0 10px 20px rgba(45, 42, 38, 0.2));
+  }
+
+  .photo-mask-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .marquee-photo-card:hover .photo-mask-frame img {
+    transform: scale(1.08);
+  }
+
+  /* Hero Text Highlights & Reviews */
+  .highlight-text {
+    background-color: rgba(213, 194, 138, 0.4); /* Translucent brand gold */
+    padding: 0 0.5rem;
+    border-radius: 8px;
+    display: inline-block;
+    line-height: 1.1;
+  }
+
+  .tt-hero-reviews {
+    margin-top: 4rem;
+    position: relative;
+    max-width: 500px;
+  }
+  .reviews-title {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    color: var(--text-charcoal);
+    margin-bottom: 1.25rem;
+  }
+  .reviews-grid {
+    display: flex;
+    gap: 3rem;
+  }
+  .review-item {
+    display: flex;
+    flex-direction: column;
+  }
+  .review-item .stars {
+    color: var(--whisky-gold);
+    font-size: 1.25rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.35rem;
+  }
+  .review-item .review-source {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+  .trophy-icon {
+    position: absolute;
+    right: -20px;
+    bottom: -10px;
+    font-size: 4rem;
+    transform: rotate(15deg);
+    opacity: 0.9;
+  }
+
+  /* Trust Logos text mock */
+  .trust-text-logo {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--text-charcoal);
+    opacity: 0.4;
+    transition: opacity 0.3s;
+    letter-spacing: 0.1em;
+  }
+  .trust-text-logo:hover {
+    opacity: 1;
+  }
+
+  /* ====== TEAR SECTION ====== */
+  .tear-section {
+    position: relative;
+    background-color: var(--bg-parchment);
+  }
+
+  .tear-header-area {
+    padding-top: 6rem;
+    padding-bottom: 3rem;
+    background-color: var(--bg-parchment);
+  }
+
+  /* Torn edge images */
+  .torn-edge-wrap {
+    position: relative;
+    z-index: 20;
+    line-height: 0;
+    filter: drop-shadow(0px 18px 18px rgba(0,0,0,0.55));
+  }
+
+  .torn-edge-img {
+    display: block;
+    width: 100%;
+    height: 60px;
+  }
+
+  /* Top edge: shadow only visible BELOW (into dark gap), clipped above */
+  .torn-edge-wrap:not(.torn-edge-bottom) {
+    margin-bottom: -30px;
+    clip-path: inset(0 -50px -50px -50px);
+  }
+
+  /* Bottom edge: shadow only visible ABOVE (into dark gap), clipped below */
+  .torn-edge-bottom {
+    margin-top: -30px;
+    margin-bottom: 0;
+    filter: drop-shadow(0px -18px 18px rgba(0,0,0,0.55));
+    clip-path: inset(-50px -50px 0px -50px);
+  }
+
+  /* Dark ticket area — sits BEHIND the torn edges */
+  .dark-gap {
+    padding: 3rem 0;
+    padding-top: 3.5rem; /* Reduced to pull content closer to torn edge overlap */
+    background-color: var(--success-green); /* Rich brand dark green (#006448) */
+    position: relative;
+    z-index: 1;
+  }
+
+  :global(.ticket-stub.hidden-by-filter),
+  :global(.ticket-stub.hidden-by-limit) {
+    display: none !important;
+  }
+
+  .shop-filters-container {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    box-shadow: none;
+  }
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .filter-label {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(250, 247, 242, 0.6);
+    width: 60px;
+    flex-shrink: 0;
+  }
+  .filter-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .filter-tab-btn {
+    background-color: rgba(250, 247, 242, 0.05);
+    border: 1px solid rgba(250, 247, 242, 0.18);
+    color: #FAF7F2;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .filter-tab-btn:hover {
+    border-color: #d5c28a;
+    background-color: rgba(213, 194, 138, 0.1);
+  }
+  .filter-tab-btn.active {
+    background-color: #d5c28a;
+    border-color: #d5c28a;
+    color: var(--text-charcoal);
+    font-weight: 700;
+  }
+
+  /* Fade-in animation for tickets on scroll */
+  .fade-in-group :global(.ticket-stub) {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  .fade-in-group.is-visible :global(.ticket-stub) {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .fade-in-group.is-visible :global(.ticket-stub):nth-child(2) { transition-delay: 0.1s; }
+  .fade-in-group.is-visible :global(.ticket-stub):nth-child(3) { transition-delay: 0.2s; }
+  .fade-in-group.is-visible :global(.ticket-stub):nth-child(4) { transition-delay: 0.3s; }
+
+  /* Drams banner — light theme matching hero */
+  .banner-drams {
+    background-color: var(--bg-parchment); /* Match parchment background */
+    color: var(--text-charcoal);
+    padding: 5rem 2rem;
+    text-align: center;
+  }
+
+  .tt-section-header {
+    max-width: 650px;
+    margin: 0 auto 3rem;
+  }
+  .tt-section-title {
+    font-size: 2.75rem;
+    margin-bottom: 1rem;
+  }
+  .tt-section-subtitle {
+    font-size: 1.1rem;
+  }
+  .shop-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 5rem;
+    /* align-items: stretch by default allows the sidebar to fill the height, enabling position: sticky to work */
+  }
+  .tickets-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  /* TT Split Layout specifics */
+  .split-features-section {
+    padding: 8rem 0 2rem;
+    background-color: var(--bg-parchment);
+  }
+  .tt-tag {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--whisky-gold-dark);
+    margin-bottom: 1rem;
+  }
+  .tt-split-title {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .tt-split-desc {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+  .tt-feature-list {
+    list-style: none;
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    color: var(--text-charcoal);
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .tt-text-link {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--whisky-gold-dark);
+    text-decoration: none;
+    border-bottom: 1px solid var(--whisky-gold);
+    padding-bottom: 2px;
+    transition: all 0.2s;
+  }
+  .tt-text-link:hover {
+    color: var(--text-charcoal);
+    border-color: var(--text-charcoal);
+  }
+
+  /* Tab Accordion Section */
+  .tab-section {
+    padding: 5rem 0 8rem;
+    background-color: var(--bg-parchment);
+  }
+
+  /* Heritage Stats Bar */
+  .heritage-bar {
+    background-color: var(--bg-paper);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 4rem 0;
+  }
+  .heritage-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    text-align: center;
+    gap: 2rem;
+  }
+  .heritage-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .stat-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background-color: rgba(140, 110, 70, 0.07);
+    border: 1px solid rgba(140, 110, 70, 0.25);
+    margin-bottom: 0.25rem;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  .heritage-stat:hover .stat-icon-wrapper {
+    transform: translateY(-3px);
+    border-color: var(--whisky-gold-dark);
+  }
+  .stat-val {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: var(--text-charcoal);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--whisky-gold-dark);
+  }
+
+  /* Testimonials Section */
+  .testimonials-section {
+    padding: 8rem 0;
+    background-color: var(--bg-parchment);
+  }
+  .play-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: var(--whisky-gold);
+    color: #FFF;
+    font-size: 2rem;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(197, 139, 57, 0.4);
+    transition: transform 0.2s;
+  }
+  .play-button:hover {
+    transform: scale(1.1);
+  }
+  .testimonial-quote {
+    font-size: 2.25rem;
+    line-height: 1.4;
+    text-transform: none;
+    letter-spacing: 0;
+    margin-bottom: 1.5rem;
+    color: var(--text-charcoal);
+  }
+  .testimonial-author {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+  .review-stars {
+    color: var(--whisky-gold);
+    font-size: 1.5rem;
+  }
+
+  /* Responsive fixes */
+  @media (max-width: 1024px) {
+    .tt-hero-grid, .shop-grid, .split-layout, .tab-container {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    .split-layout.reverse > * {
+      direction: ltr; /* reset */
+    }
+    .tt-hero-visual {
+      height: 400px;
+    }
+    .float-1 {
+      position: static;
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+    .float-2 {
+      position: static;
+    }
+    .checkout-sidebar-container {
+      position: static;
+    }
+    .heritage-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    .split-text {
+      max-width: 100%;
+    }
+  }
+
+
+
+  /* Modal Overlay CSS duplicated from before */
+  .checkout-modal-overlay { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(29, 28, 26, 0.75); 
+    backdrop-filter: blur(5px); 
+    z-index: 1000; 
+    display: flex; 
+    align-items: flex-start; 
+    justify-content: center; 
+    padding: 2rem 1rem; 
+    overflow-y: auto; 
+    animation: fadeIn 0.3s ease-out; 
+  }
+  .checkout-modal-card { 
+    background-color: var(--bg-paper-card); 
+    border: 2px solid var(--text-charcoal); 
+    border-radius: 12px; 
+    width: 100%; 
+    max-width: 860px; 
+    padding: 2rem; 
+    position: relative; 
+    box-shadow: 0 30px 70px rgba(0,0,0,0.5); 
+    transition: max-width 0.3s; 
+    margin: auto;
+  }
+  
+  /* 2-Column Modal Layout */
+  .modal-two-columns {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1.25rem;
+  }
+  .modal-form-side {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 0;
+  }
+  .modal-summary-side {
+    flex: 1;
+    background-color: rgba(0, 100, 72, 0.03);
+    border: 1px solid rgba(140, 110, 70, 0.25);
+    border-radius: 8px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+  }
+  .modal-summary-title {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--success-green);
+    margin-bottom: 0.5rem;
+    border-bottom: 1px dashed rgba(140, 110, 70, 0.25);
+    padding-bottom: 0.25rem;
+  }
+  .modal-summary-items-list {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: var(--text-charcoal);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    max-height: 120px;
+    overflow-y: auto;
+    margin-bottom: 0.75rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 100, 72, 0.2) transparent;
+  }
+  .modal-summary-items-list::-webkit-scrollbar {
+    width: 4px;
+  }
+  .modal-summary-items-list::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .modal-summary-items-list::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 100, 72, 0.2);
+    border-radius: 2px;
+  }
+  .modal-summary-item-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .modal-summary-calc {
+    border-top: 1px solid rgba(140, 110, 70, 0.2);
+    padding-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+  }
+  .modal-summary-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--text-charcoal);
+    border-top: 1px dashed rgba(140, 110, 70, 0.25);
+    padding-top: 0.5rem;
+    margin-top: 0.25rem;
+    margin-bottom: 1rem;
+  }
+  .modal-summary-total-row span {
+    color: var(--success-green);
+  }
+
+  @media (max-width: 800px) {
+    .checkout-modal-card {
+      max-width: 520px;
+      padding: 1.25rem;
+    }
+    .modal-two-columns {
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+  }
+
+  .modal-close-btn { position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; background: transparent; border: none; cursor: pointer; color: var(--text-muted); transition: color 0.2s; }
+  .modal-close-btn:hover { color: var(--text-charcoal); }
+  .modal-title { font-size: 1.5rem; color: var(--text-charcoal); text-align: center; margin-bottom: 0.25rem; }
+  .modal-subtitle { font-family: var(--font-sans); font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-bottom: 1rem; }
+  .form-group { margin-bottom: 0.85rem; display: flex; flex-direction: column; gap: 0.3rem; }
+  .form-label { font-family: var(--font-sans); font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-charcoal); }
+  .form-control { background-color: var(--bg-parchment); border: 1px solid var(--border-color-dark); padding: 0.6rem 0.85rem; border-radius: 6px; font-family: var(--font-sans); font-size: 0.9rem; color: var(--text-charcoal); transition: all 0.3s; }
+  .form-control:focus { outline: none; border-color: var(--whisky-gold-dark); box-shadow: 0 0 8px rgba(197, 139, 57, 0.15); }
+  .payment-method-section { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px dashed var(--border-color); }
+  .payment-method-title { display: block; font-family: var(--font-sans); font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-charcoal); margin-bottom: 0.5rem; }
+  .payment-grids { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 1rem; }
+  .pay-method-card { border: 1px solid var(--border-color-dark); padding: 0.6rem; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; background-color: var(--bg-parchment); transition: all 0.2s; }
+  .pay-method-card input[type="radio"] { display: none; }
+  .pay-logo { font-family: var(--font-sans); font-weight: 800; font-size: 0.95rem; color: var(--text-muted); }
+  .pay-method-card.active { border-color: var(--whisky-gold-dark); background-color: var(--whisky-gold-trans); }
+  .pay-method-card.active .pay-logo { color: var(--whisky-gold-dark); }
+  .modal-amount-row { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-sans); font-size: 1.05rem; margin-top: 2rem; padding: 1rem 0; border-top: 1px solid var(--border-color-dark); border-bottom: 1px solid var(--border-color-dark); margin-bottom: 1.5rem; }
+  .modal-amount-row strong { font-size: 1.45rem; color: var(--whisky-gold-dark); }
+  .btn-block { width: 100%; padding: 1rem; }
+  .spinner { width: 50px; height: 50px; border: 4px solid var(--bg-sand); border-top: 4px solid var(--whisky-gold); border-radius: 50%; margin: 0 auto 1.5rem; animation: spin 1s linear infinite; }
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  .processing-title { font-size: 1.35rem; color: var(--text-charcoal); margin-bottom: 0.5rem; }
+  .processing-desc { font-size: 0.95rem; color: var(--text-muted); }
+  .success-ticket-stub { display: flex; flex-direction: column; }
+  .success-header { text-align: center; padding: 0.5rem 0 0.5rem; }
+  .success-icon { display: inline-flex; width: 48px; height: 48px; border-radius: 50%; background-color: rgba(0, 100, 72, 0.08); color: var(--success-green); align-items: center; justify-content: center; margin-bottom: 0.75rem; border: 2px solid var(--success-green); }
+  .success-title { font-size: 1.5rem; color: var(--text-charcoal); margin-bottom: 0.1rem; }
+  .success-subtitle { font-size: 0.85rem; color: var(--text-muted); }
+  .success-body { padding-top: 0.75rem; }
+  .ticket-summary-box { background-color: #FAF7F2; border: 1.5px solid #d5c28a; border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.01); }
+  .summary-item { display: flex; justify-content: space-between; font-family: var(--font-sans); font-size: 0.85rem; }
+  .summary-item span { color: var(--text-muted); font-weight: 600; }
+  .summary-item strong { color: var(--text-charcoal); font-weight: 700; }
+  .summary-divider { border-top: 1px dashed rgba(140, 110, 70, 0.25); margin: 0.4rem 0; }
+  .summary-items-header { font-family: var(--font-sans); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--success-green); margin-bottom: 0.25rem; text-align: left; }
+  .receipt-tickets-ul { font-family: var(--font-sans); font-size: 0.82rem; color: var(--text-charcoal); display: flex; flex-direction: column; gap: 0.35rem; text-align: left; }
+  .receipt-ticket-li { display: flex; justify-content: space-between; padding-left: 0.75rem; position: relative; }
+  .receipt-ticket-li::before { content: "•"; color: var(--whisky-gold-dark); position: absolute; left: 0; font-weight: bold; }
+  .ticket-delivery-notice { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; text-align: center; margin-bottom: 1rem; }
+
+  /* ====================================================
+     VINTAGE HORIZONTAL TIMELINE STYLING
+     ==================================================== */
+  .timeline-scroll-section {
+    position: relative;
+    background-color: var(--bg-parchment);
+    /* On desktop, we want a taller section to map vertical scroll to horizontal scroll */
+    height: 300vh;
+  }
+
+  .timeline-sticky-viewport {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    padding: 2rem 0;
+  }
+
+  .timeline-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 4rem;
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 4rem;
+    align-items: center;
+    height: calc(100vh - 180px);
+    width: 100%;
+  }
+
+  .timeline-left-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 10;
+  }
+
+  .timeline-title {
+    font-size: 3rem;
+    color: var(--text-charcoal);
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-intro-text {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  /* Left Era List styling */
+  .timeline-era-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 1rem;
+    border-left: 2px solid var(--border-color);
+    padding-left: 1.5rem;
+  }
+
+  .era-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    left: -25px; /* overlay the dot on the border line */
+  }
+
+  .era-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--border-color-dark);
+    border: 2px solid var(--bg-parchment);
+    transition: all 0.3s ease;
+    box-sizing: content-box;
+  }
+
+  .era-text {
+    transition: transform 0.3s ease;
+  }
+
+  .era-item.active {
+    color: var(--whisky-gold-dark);
+  }
+
+  .era-item.active .era-dot {
+    background-color: var(--whisky-gold);
+    transform: scale(1.5);
+    box-shadow: 0 0 0 4px var(--whisky-gold-trans);
+  }
+
+  .era-item.active .era-text {
+    transform: translateX(4px);
+  }
+
+  /* Right Side Scrolling Track */
+  .timeline-track-viewport {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .timeline-track {
+    display: flex;
+    gap: 3rem;
+    padding: 2rem 0;
+    will-change: transform;
+    /* On desktop, translate is controlled by JS. We add a smooth transition for tick-button clicks */
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .timeline-card {
+    width: 400px;
+    flex-shrink: 0;
+    background-color: var(--bg-paper-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2.25rem;
+    box-shadow: var(--shadow-paper);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    height: fit-content;
+  }
+
+  .timeline-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--border-color-dark);
+  }
+
+  .timeline-card.active {
+    border-color: var(--whisky-gold);
+    box-shadow: 0 15px 40px rgba(197, 139, 57, 0.1), var(--shadow-paper);
+  }
+
+  /* Special Highlighted Card for Jubilee */
+  .timeline-card.highlighted-jubilee {
+    background: linear-gradient(145deg, #1d1c1a 0%, #2f2a24 100%);
+    border: 2px solid var(--whisky-gold);
+    color: #fff;
+  }
+
+  .timeline-card.highlighted-jubilee:hover {
+    box-shadow: 0 25px 55px rgba(197, 139, 57, 0.25), 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .timeline-card.highlighted-jubilee .card-title {
+    color: var(--whisky-gold-light);
+  }
+
+  .text-white-muted {
+    color: rgba(250, 247, 242, 0.6) !important;
+  }
+
+  .card-year-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.75rem;
+  }
+
+  .timeline-card.highlighted-jubilee .card-year-row {
+    border-color: rgba(222, 214, 201, 0.2);
+  }
+
+  .card-year {
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    color: var(--whisky-gold-dark);
+    line-height: 1;
+  }
+
+  .card-num {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+  }
+
+  .card-title {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.4rem;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--text-charcoal);
+  }
+
+  .card-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0;
+    min-height: 90px;
+  }
+
+  .card-img-frame {
+    width: 100%;
+    height: 180px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    position: relative;
+    /* Sepia vintage mask / look */
+    filter: sepia(0.35) contrast(1.05) brightness(0.95);
+    transition: filter 0.3s ease;
+  }
+
+  .timeline-card:hover .card-img-frame {
+    filter: sepia(0) contrast(1) brightness(1);
+  }
+
+  .card-img-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Bottom Axis Wrap */
+  .timeline-axis-wrap {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 4rem;
+    margin-top: 1.5rem;
+    position: relative;
+    z-index: 10;
+  }
+
+  .timeline-axis-line {
+    width: 100%;
+    height: 2px;
+    background-color: var(--border-color);
+    position: relative;
+  }
+
+  .timeline-axis-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background-color: var(--whisky-gold);
+    transition: width 0.3s ease-out;
+  }
+
+  .timeline-axis-ticks {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.75rem;
+  }
+
+  .axis-tick {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    position: relative;
+    padding: 0.25rem 0.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .axis-tick::before {
+    content: '';
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--border-color-dark);
+    transition: all 0.3s ease;
+  }
+
+  .axis-tick:hover {
+    color: var(--text-charcoal);
+  }
+
+  .axis-tick.active {
+    color: var(--whisky-gold-dark);
+    font-weight: 800;
+  }
+
+  .axis-tick.active::before {
+    background-color: var(--whisky-gold);
+    transform: translateX(-50%) scale(1.5);
+    box-shadow: 0 0 0 3px var(--whisky-gold-trans);
+  }
+
+  /* ====================================================
+     RESPONSIVE TIMELINE (MOBILE DEGRADATION)
+     ==================================================== */
+  @media (max-width: 1024px) {
+    .timeline-scroll-section {
+      height: auto !important; /* Disables the sticky scroll track depth */
+      padding: 6rem 0;
+    }
+
+    .timeline-sticky-viewport {
+      position: relative !important;
+      height: auto !important;
+      top: auto !important;
+      padding: 0 !important;
+    }
+
+    .timeline-container {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      height: auto !important;
+      padding: 0 2rem;
+    }
+
+    .timeline-left-header {
+      text-align: center;
+      align-items: center;
+    }
+
+    .timeline-intro-text {
+      max-width: 600px;
+    }
+
+    .timeline-era-list {
+      display: none; /* Hide era list on mobile to save vertical space */
+    }
+
+    .timeline-track-viewport {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 1.5rem;
+      scrollbar-width: none; /* Hide standard scrollbar on Firefox */
+    }
+
+    .timeline-track-viewport::-webkit-scrollbar {
+      display: none; /* Hide standard scrollbar on Chrome/Safari */
+    }
+
+    .timeline-track {
+      padding: 1rem 0;
+      gap: 1.5rem;
+      /* On mobile we want natural touch swipe, no JS transform override */
+      transform: none !important; 
+      transition: none !important;
+    }
+
+    .timeline-card {
+      width: 290px;
+      scroll-snap-align: center;
+      padding: 1.75rem;
+    }
+
+    .card-desc {
+      min-height: auto;
+    }
+
+    .timeline-axis-wrap {
+      padding: 0 2rem;
+      margin-top: 1rem;
+    }
+
+    .axis-tick span {
+      font-size: 0.75rem;
+    }
+  }
+
+  /* Interactive Timetable Styles */
+  .timetable-section {
+    background: var(--bg-parchment);
+    padding: 5rem 0;
+    border-top: 1px solid rgba(140, 110, 70, 0.15);
+  }
+  .timetable-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .timetable-tab-btn {
+    background-color: transparent;
+    border: 2px solid rgba(140, 110, 70, 0.3);
+    color: var(--text-charcoal);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .timetable-tab-btn:hover {
+    border-color: var(--success-green);
+    background-color: rgba(0, 100, 72, 0.05);
+  }
+  .timetable-tab-btn.active {
+    background-color: var(--success-green);
+    border-color: var(--success-green);
+    color: #FAF7F2;
+  }
+  .timetable-time-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: rgba(140, 110, 70, 0.08);
+    padding: 0.4rem 1rem;
+    border-radius: 30px;
+    border: 1px solid rgba(140, 110, 70, 0.15);
+  }
+  .time-filter-label {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-right: 0.35rem;
+  }
+  .tt-time-btn {
+    padding: 0.4rem 0.9rem;
+    font-family: var(--font-sans);
+    font-size: 0.825rem;
+    font-weight: 700;
+    border-radius: 20px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-charcoal);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .tt-time-btn:hover {
+    color: var(--success-green);
+    background-color: rgba(0, 100, 72, 0.08);
+  }
+  .tt-time-btn.active {
+    background-color: var(--success-green);
+    border-color: var(--success-green);
+    color: #FAF7F2;
+    box-shadow: 0 2px 8px rgba(0, 100, 72, 0.25);
+  }
+  .timetable-pane {
+    display: none;
+    animation: fadeIn 0.4s ease-out;
+  }
+  .timetable-pane.active {
+    display: block;
+  }
+  .timetable-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .tt-card {
+    background: var(--bg-paper-card);
+    border: 1px solid rgba(140, 110, 70, 0.2);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    position: relative;
+    overflow: hidden;
+  }
+  .tt-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    border-color: var(--success-green);
+  }
+  .tt-card-time {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--success-green);
+    margin-bottom: 0.25rem;
+  }
+  .tt-card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .tt-loc {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+  }
+  .tt-price {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--success-green);
+  }
+  .tt-card-title {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text-charcoal);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+  .tt-card-desc {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+  }
+  .tt-book-btn {
+    align-self: flex-start;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.85rem !important;
+  }
+</style>
+
+<script>
+  // Tabs Interactive Logic
+  const tabTriggers = document.querySelectorAll('.tab-trigger-card');
+  tabTriggers.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabTriggers.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      // In a real build, we swap the image in .tab-visual here.
+    });
+  });
+
+  // Ticket Filtering Logic
+  const dayButtons = document.querySelectorAll('#day-filter-buttons .filter-tab-btn');
+  const catButtons = document.querySelectorAll('#cat-filter-buttons .filter-tab-btn');
+  const timeButtons = document.querySelectorAll('#time-filter-buttons .filter-tab-btn');
+  const timeFilterRow = document.getElementById('time-filter-row');
+  const ticketCards = document.querySelectorAll(".ticket-stub");
+  
+  let activeDay = 'all';
+  let activeCat = 'entree';
+  let activeTime = 'all';
+  let showAllTickets = false;
+
+  const showMoreContainer = document.getElementById('show-more-container');
+  const showMoreBtn = document.getElementById('show-more-btn');
+
+  function applyFilters() {
+    // Show/hide time filter row depending on selected category
+    if (timeFilterRow) {
+      if (activeCat === 'tram' || activeCat === 'botteling' || activeCat === 'trail' || activeCat === 'vatenmaken') {
+        timeFilterRow.style.display = 'none';
+        activeTime = 'all'; // reset time filter
+        timeButtons.forEach(b => {
+          if (b.getAttribute('data-filter-time') === 'all') b.classList.add('active');
+          else b.classList.remove('active');
+        });
+      } else {
+        timeFilterRow.style.display = 'flex';
+      }
+    }
+
+    const matchingCards: HTMLElement[] = [];
+
+    ticketCards.forEach(card => {
+      const cardDay = card.getAttribute('data-day') || 'all';
+      const cardCat = card.getAttribute('data-category') || 'entree';
+      const cardTime = card.getAttribute('data-daypart') || 'all';
+
+      const matchDay = (activeDay === 'all') || (cardDay === 'all') || (cardDay === activeDay);
+      const matchCat = (activeCat === 'all') || (cardCat === activeCat);
+      const matchTime = (activeTime === 'all') || (cardTime === 'all') || (cardTime === activeTime);
+
+      if (matchDay && matchCat && matchTime) {
+        card.classList.remove('hidden-by-filter');
+        matchingCards.push(card as HTMLElement);
+      } else {
+        card.classList.add('hidden-by-filter');
+        card.classList.remove('hidden-by-limit');
+      }
+    });
+
+    // Handle Limit / Show More
+    const limit = 6;
+    if (matchingCards.length > limit && !showAllTickets) {
+      matchingCards.forEach((card, idx) => {
+        if (idx >= limit) {
+          card.classList.add('hidden-by-limit');
+        } else {
+          card.classList.remove('hidden-by-limit');
+        }
+      });
+      if (showMoreContainer) showMoreContainer.style.display = 'block';
+      if (showMoreBtn) showMoreBtn.textContent = `Toon alle tickets (${matchingCards.length - limit} extra) ↓`;
+    } else {
+      matchingCards.forEach(card => card.classList.remove('hidden-by-limit'));
+      if (showMoreContainer) showMoreContainer.style.display = 'none';
+    }
+  }
+
+  if (showMoreBtn) {
+    showMoreBtn.addEventListener('click', () => {
+      showAllTickets = true;
+      applyFilters();
+    });
+  }
+
+  dayButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      dayButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeDay = btn.getAttribute('data-filter-day') || 'all';
+      showAllTickets = false; // Reset limit view
+      applyFilters();
+    });
+  });
+
+  catButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      catButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeCat = btn.getAttribute('data-filter-cat') || 'all';
+      showAllTickets = false; // Reset limit view
+      applyFilters();
+    });
+  });
+
+  timeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      timeButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeTime = btn.getAttribute('data-filter-time') || 'all';
+      showAllTickets = false; // Reset limit view
+      applyFilters();
+    });
+  });
+
+  // Execute initial filter pass on load so tickets display immediately matching active filters
+  applyFilters();
+  restoreCartFromLocalStorage();
+  updateShop();
+
+  // Shop Cart Logic (Preserved and expanded)
+  const cart: Record<string, { title: string; price: number; qty: number; category: string; timeslot?: string; delivery?: string }> = {};
+  const serviceFee = 4.50;
+  const cartItemsContainer = document.getElementById("cart-items");
+  const subtotalEl = document.getElementById("receipt-subtotal");
+  const feeEl = document.getElementById("receipt-fee");
+  const shippingRow = document.getElementById("shipping-row");
+  const shippingEl = document.getElementById("receipt-shipping");
+  const totalEl = document.getElementById("receipt-total");
+  const checkoutBtn = document.getElementById("checkout-trigger-btn") as HTMLButtonElement;
+  
+
+
+  
+  // LocalStorage Cart Sync & Dispatcher
+  function saveCartToLocalStorage(subtotalVal: number, totalItemsVal: number) {
+    const itemsList: any[] = [];
+    Object.keys(cart).forEach(id => {
+      const item = cart[id];
+      if (item && item.qty > 0) {
+        let variantTxt = "";
+        if (item.category === "tram") variantTxt = item.timeslot || "";
+        else if (item.category === "masterclass") variantTxt = item.timeslot || "";
+        else if (item.category === "trail") variantTxt = `${item.timeslot || ""} (${item.guide || ""})`;
+        else if (item.category === "vatenmaken") variantTxt = item.timeslot || "";
+        else if (item.category === "botteling") variantTxt = item.delivery === "shipping" ? "Verzenden (+ €12.50)" : "Ophalen";
+
+        itemsList.push({
+          id,
+          title: item.title,
+          price: item.price,
+          qty: item.qty,
+          category: item.category,
+          variant: variantTxt
+        });
+      }
+    });
+
+    try {
+      localStorage.setItem("whiskyfest_cart", JSON.stringify({
+        items: itemsList,
+        subtotal: subtotalVal,
+        totalItems: totalItemsVal,
+        cartRaw: cart
+      }));
+      window.dispatchEvent(new CustomEvent("cart-updated"));
+    } catch(e) {
+      console.error("Cart save error:", e);
+    }
+  }
+
+  function restoreCartFromLocalStorage() {
+    try {
+      const raw = localStorage.getItem("whiskyfest_cart");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed.cartRaw) {
+          Object.assign(cart, parsed.cartRaw);
+          Object.keys(cart).forEach(id => {
+            const card = document.querySelector(`.ticket-stub[data-ticket-id="${id}"]`);
+            if (card) {
+              const qtyDisplay = card.querySelector(".qty-val");
+              if (qtyDisplay) qtyDisplay.textContent = String(cart[id].qty || 0);
+              if (cart[id].qty > 0) card.classList.add("selected");
+              else card.classList.remove("selected");
+            }
+          });
+        }
+      }
+    } catch(e) {}
+  }
+
+
+  function updateShop() {
+    let subtotal = 0;
+    let totalItems = 0;
+    let entryTicketsCount = 0;
+    let selectedSessionId = "";
+    let shippingActive = false;
+
+    // 1. Calculate quantities and scan cart
+    Object.keys(cart).forEach(id => {
+      const item = cart[id];
+      if (item.qty > 0) {
+        subtotal += item.price * item.qty;
+        totalItems += item.qty;
+
+        if (item.category === "entree") {
+          entryTicketsCount += item.qty;
+          selectedSessionId = id;
+        }
+
+        if (item.category === "botteling" && item.delivery === "shipping") {
+          shippingActive = true;
+        }
+      }
+    });
+
+    // Shipping calculations
+    const shippingFee = 12.50;
+    const activeShipping = shippingActive ? shippingFee : 0;
+    if (shippingRow && shippingEl) {
+      if (shippingActive) {
+        shippingRow.style.display = "flex";
+        shippingEl.innerHTML = `&euro;${shippingFee.toFixed(2)}`;
+      } else {
+        shippingRow.style.display = "none";
+      }
+    }
+
+    const activeFee = totalItems > 0 ? serviceFee : 0;
+    const finalTotal = subtotal + activeFee + activeShipping;
+
+    // Render Cart HTML
+    if (cartItemsContainer) {
+      if (totalItems === 0) {
+        cartItemsContainer.innerHTML = '<p class="empty-cart-msg">Selecteer hiernaast uw ticket(s) om de bestelling te starten.</p>';
+      } else {
+        let listHtml = "";
+        const entries = Object.keys(cart).filter(id => cart[id].qty > 0);
+        
+        entries.forEach((id, index) => {
+          const item = cart[id];
+          let displayTitle = item.title;
+          
+          if (item.category === "tram" && item.timeslot) {
+            displayTitle = `${item.title} (${item.timeslot})`;
+          } else if (item.category === "masterclass" && item.timeslot) {
+            displayTitle = `${item.title} (${item.timeslot})`;
+          } else if (item.category === "trail" && item.timeslot) {
+            const guideSuffix = item.guide ? ` - Gids: ${item.guide}` : '';
+            displayTitle = `${item.title} (${item.timeslot}${guideSuffix})`;
+          } else if (item.category === "vatenmaken" && item.timeslot) {
+            displayTitle = `${item.title} (${item.timeslot})`;
+          } else if (item.category === "botteling" && item.delivery) {
+            const methodText = item.delivery === "shipping" ? "Verzenden" : "Ophalen";
+            displayTitle = `${item.title} [${methodText}]`;
+          }
+
+          const isLast = index === entries.length - 1;
+          
+          listHtml += `
+            <div class="cart-item-row" ${isLast ? 'style="border-bottom:none;"' : ''}>
+              <div class="cart-item-info">
+                <span class="cart-item-name">${displayTitle}</span>
+                <span class="cart-item-meta">${item.qty} × €${item.price.toFixed(2)}</span>
+              </div>
+              <span class="cart-item-price">€${(item.price * item.qty).toFixed(2)}</span>
+            </div>
+          `;
+        });
+        
+        cartItemsContainer.innerHTML = listHtml;
+      }
+    }
+    
+    if (subtotalEl) subtotalEl.innerHTML = `&euro;${subtotal.toFixed(2)}`;
+    if (feeEl) feeEl.innerHTML = `&euro;${activeFee.toFixed(2)}`;
+    if (totalEl) totalEl.innerHTML = `&euro;${finalTotal.toFixed(2)}`;
+    if (checkoutBtn) checkoutBtn.disabled = totalItems === 0;
+  }
+
+  ticketCards.forEach(card => {
+    const id = card.getAttribute("data-ticket-id") || "";
+    const price = parseFloat(card.getAttribute("data-price") || "0");
+    const title = card.getAttribute("data-title") || "";
+    const category = card.getAttribute("data-category") || "entree";
+    const minusBtn = card.querySelector('[data-action="minus"]');
+    const plusBtn = card.querySelector('[data-action="plus"]');
+    const qtyVal = card.querySelector(".qty-val");
+
+    const tramSelect = card.querySelector(".tram-select") as HTMLSelectElement;
+    const bottlingSelect = card.querySelector(".bottling-select") as HTMLSelectElement;
+    const introSelect = card.querySelector(".intro-select") as HTMLSelectElement;
+    const trailTimeSelect = card.querySelector(".trail-time-select") as HTMLSelectElement;
+    const trailGuideSelect = card.querySelector(".trail-guide-select") as HTMLSelectElement;
+    const vatenmakenTimeSelect = card.querySelector(".vatenmaken-time-select") as HTMLSelectElement;
+
+    // Availability maps
+    const trailAvailability = {
+      "Vrijdag 20:00": ["Klaas", "Stanley"],
+      "Vrijdag 20:30": ["Ernst", "Marlie", "Sebastiaan"],
+      "Vrijdag 21:00": ["Klaas", "Stanley"],
+      "Vrijdag 21:30": ["Ernst", "Marlie", "Sebastiaan"],
+      "Zaterdag 14:00": ["Ernst", "Sebastiaan"],
+      "Zaterdag 14:30": ["Klaas", "Stanley"],
+      "Zaterdag 15:00": ["Ernst", "Marlie", "Sebastiaan"],
+      "Zaterdag 15:30": ["Klaas", "Stanley"],
+      "Zaterdag 20:00": ["Stanley"],
+      "Zaterdag 20:30": ["Ernst", "Sebastiaan"],
+      "Zaterdag 21:00": ["Klaas", "Stanley"],
+      "Zaterdag 21:30": ["Ernst", "Marlie", "Sebastiaan"],
+      "Zondag 14:00": ["Marlie"],
+      "Zondag 14:30": ["Klaas", "Stanley"],
+      "Zondag 15:00": ["Ernst", "Marlie"],
+      "Zondag 15:30": ["Klaas"]
+    };
+
+    const vatenAvailability = {
+      "Vrijdag 14:30": 12,
+      "Vrijdag 15:30": 8,
+      "Vrijdag 20:30": 15,
+      "Vrijdag 21:30": 2,
+      "Zaterdag 14:30": 4,
+      "Zaterdag 15:30": 0,
+      "Zaterdag 20:30": 18,
+      "Zaterdag 21:30": 9,
+      "Zondag 14:30": 1,
+      "Zondag 15:30": 0
+    };
+
+    if (tramSelect) {
+      tramSelect.addEventListener("change", () => {
+        if (cart[id]) {
+          cart[id].timeslot = tramSelect.value;
+          updateShop();
+        }
+      });
+    }
+
+    if (introSelect) {
+      introSelect.addEventListener("change", () => {
+        if (cart[id]) {
+          cart[id].timeslot = introSelect.value;
+          updateShop();
+        }
+      });
+    }
+
+    if (bottlingSelect) {
+      bottlingSelect.addEventListener("change", () => {
+        if (cart[id]) {
+          cart[id].delivery = bottlingSelect.value;
+          updateShop();
+        }
+      });
+    }
+
+    if (trailTimeSelect && trailGuideSelect) {
+      const updateGuides = () => {
+        const timeVal = trailTimeSelect.value;
+        const allowedGuides = trailAvailability[timeVal] || [];
+        let firstAvailable = "";
+
+        Array.from(trailGuideSelect.options).forEach(opt => {
+          const guideName = opt.value;
+          if (allowedGuides.includes(guideName)) {
+            opt.disabled = false;
+            opt.text = guideName;
+            if (!firstAvailable) firstAvailable = guideName;
+          } else {
+            opt.disabled = true;
+            opt.text = `${guideName} (VOL)`;
+          }
+        });
+
+        const currentSelectedOpt = trailGuideSelect.options[trailGuideSelect.selectedIndex];
+        if (currentSelectedOpt && currentSelectedOpt.disabled) {
+          trailGuideSelect.value = firstAvailable;
+        }
+
+        if (cart[id]) {
+          cart[id].timeslot = timeVal;
+          cart[id].guide = trailGuideSelect.value;
+          updateShop();
+        }
+      };
+
+      trailTimeSelect.addEventListener("change", updateGuides);
+      trailGuideSelect.addEventListener("change", () => {
+        if (cart[id]) {
+          cart[id].guide = trailGuideSelect.value;
+          updateShop();
+        }
+      });
+
+      updateGuides(); // Run once initially
+    }
+
+    if (vatenmakenTimeSelect) {
+      const updateVatenCapacity = () => {
+        const timeVal = vatenmakenTimeSelect.value;
+        const capacity = vatenAvailability[timeVal] ?? 0;
+        
+        if (capacity === 0) {
+          if (plusBtn) (plusBtn as HTMLButtonElement).disabled = true;
+          if (cart[id]) {
+            cart[id].qty = 0;
+            if (qtyVal) qtyVal.textContent = "0";
+            delete cart[id];
+            updateShop();
+          }
+        } else {
+          if (plusBtn) (plusBtn as HTMLButtonElement).disabled = false;
+        }
+
+        if (cart[id]) {
+          cart[id].timeslot = timeVal;
+          if (cart[id].qty > capacity) {
+            cart[id].qty = capacity;
+            if (qtyVal) qtyVal.textContent = String(capacity);
+          }
+          updateShop();
+        }
+      };
+
+      vatenmakenTimeSelect.addEventListener("change", updateVatenCapacity);
+      updateVatenCapacity();
+    }
+
+    if (plusBtn && qtyVal) {
+      plusBtn.addEventListener("click", () => {
+        if (!cart[id]) {
+          cart[id] = { title, price, qty: 0, category };
+        }
+        if (tramSelect) cart[id].timeslot = tramSelect.value;
+        if (introSelect) cart[id].timeslot = introSelect.value;
+        if (bottlingSelect) cart[id].delivery = bottlingSelect.value;
+        if (trailTimeSelect) cart[id].timeslot = trailTimeSelect.value;
+        if (trailGuideSelect) cart[id].guide = trailGuideSelect.value;
+        if (vatenmakenTimeSelect) cart[id].timeslot = vatenmakenTimeSelect.value;
+
+        // Capacity checks
+        if (vatenmakenTimeSelect) {
+          const timeVal = vatenmakenTimeSelect.value;
+          const capacity = vatenAvailability[timeVal] ?? 0;
+          if (cart[id].qty >= capacity) {
+            alert(`Sorry, er zijn nog maar ${capacity} plaatsen beschikbaar voor dit tijdslot.`);
+            return;
+          }
+        }
+
+        cart[id].qty += 1;
+        if (cart[id].qty > 10) cart[id].qty = 10;
+        qtyVal.textContent = String(cart[id].qty);
+        updateShop();
+      });
+    }
+    if (minusBtn && qtyVal) {
+      minusBtn.addEventListener("click", () => {
+        if (cart[id] && cart[id].qty > 0) {
+          cart[id].qty -= 1;
+          qtyVal.textContent = String(cart[id].qty);
+          updateShop();
+        }
+      });
+    }
+  });
+
+  // Cleanup old addon checks
+
+  // Mock Checkout Flow JS
+  const modalOverlay = document.getElementById("checkout-modal");
+  const modalCloseX = document.getElementById("modal-close-x");
+  const modalSuccessClose = document.getElementById("modal-success-close");
+  const mockPaymentForm = document.getElementById("mock-payment-form");
+  const modalStep1 = document.getElementById("modal-step-1");
+  const modalStep2 = document.getElementById("modal-step-2");
+  const modalStep3 = document.getElementById("modal-step-3");
+  const modalTotalAmt = document.getElementById("modal-total-amt");
+  const receiptSentEmail = document.getElementById("receipt-sent-email");
+  const receiptTicketsList = document.getElementById("receipt-tickets-list");
+
+  let promoDiscount = 0;
+  let activePromoCode = "";
+
+  function recalcModalTotal() {
+    let subtotal = 0;
+    let totalItems = 0;
+    let entryTicketsCount = 0;
+    let shippingActive = false;
+
+    Object.keys(cart).forEach(id => {
+      const item = cart[id];
+      if (item.qty > 0) {
+        subtotal += item.price * item.qty;
+        totalItems += item.qty;
+        if (item.category === "entree") {
+          entryTicketsCount += item.qty;
+        }
+        if (item.category === "botteling" && item.delivery === "shipping") {
+          shippingActive = true;
+        }
+      }
+    });
+
+    const activeShipping = shippingActive ? 12.50 : 0;
+    const activeFee = totalItems > 0 ? serviceFee : 0;
+    
+    const totalBeforeDiscount = subtotal + activeFee + activeShipping;
+    const finalTotal = Math.max(0, totalBeforeDiscount - promoDiscount);
+
+    if (modalTotalAmt) {
+      modalTotalAmt.innerHTML = `&euro;${finalTotal.toFixed(2)}`;
+    }
+
+    // Populate dynamic summary items breakdown in popup
+    const modalSummaryItems = document.getElementById("modal-summary-items");
+    if (modalSummaryItems) {
+      modalSummaryItems.innerHTML = "";
+      Object.keys(cart).forEach(id => {
+        const item = cart[id];
+        if (item.qty > 0) {
+          let displayTitle = item.title;
+          if (item.category === "tram" && item.timeslot) {
+            displayTitle = `${item.title} (${item.timeslot})`;
+          } else if (item.category === "masterclass" && item.timeslot) {
+            displayTitle = `${item.title} (${item.timeslot})`;
+          } else if (item.category === "trail" && item.timeslot) {
+            const guideSuffix = item.guide ? ` - Gids: ${item.guide}` : '';
+            displayTitle = `${item.title} (${item.timeslot}${guideSuffix})`;
+          } else if (item.category === "vatenmaken" && item.timeslot) {
+            displayTitle = `${item.title} (${item.timeslot})`;
+          } else if (item.category === "botteling" && item.delivery) {
+            const methodText = item.delivery === "shipping" ? "Verzenden" : "Ophalen";
+            displayTitle = `${item.title} [${methodText}]`;
+          }
+
+          const row = document.createElement("div");
+          row.className = "modal-summary-item-row";
+          row.innerHTML = `
+            <span>${item.qty}x ${displayTitle}</span>
+            <span>&euro;${(item.price * item.qty).toFixed(2)}</span>
+          `;
+          modalSummaryItems.appendChild(row);
+        }
+      });
+    }
+
+    const modalSummarySub = document.getElementById("modal-summary-subtotal");
+    if (modalSummarySub) modalSummarySub.innerHTML = `&euro;${subtotal.toFixed(2)}`;
+
+    const modalSummaryFee = document.getElementById("modal-summary-fee");
+    if (modalSummaryFee) modalSummaryFee.innerHTML = `&euro;${activeFee.toFixed(2)}`;
+
+    const modalSummaryShipping = document.getElementById("modal-summary-shipping");
+    const modalSummaryShippingRow = document.getElementById("modal-summary-shipping-row");
+    if (modalSummaryShippingRow && modalSummaryShipping) {
+      if (shippingActive) {
+        modalSummaryShippingRow.style.display = "flex";
+        modalSummaryShipping.innerHTML = `&euro;12.50`;
+      } else {
+        modalSummaryShippingRow.style.display = "none";
+      }
+    }
+
+    const modalSummaryDiscount = document.getElementById("modal-summary-discount");
+    const modalSummaryDiscountRow = document.getElementById("modal-summary-discount-row");
+    if (modalSummaryDiscountRow && modalSummaryDiscount) {
+      if (promoDiscount > 0) {
+        modalSummaryDiscountRow.style.display = "flex";
+        modalSummaryDiscount.innerHTML = `- &euro;${promoDiscount.toFixed(2)}`;
+      } else {
+        modalSummaryDiscountRow.style.display = "none";
+      }
+    }
+
+    return finalTotal;
+  }
+
+  const promoInput = document.getElementById("checkout-promo-code") as HTMLInputElement;
+  const promoMsg = document.getElementById("promo-status-msg");
+  const applyPromoBtn = document.getElementById("apply-promo-btn");
+
+  if (applyPromoBtn && promoInput && promoMsg) {
+    applyPromoBtn.addEventListener("click", () => {
+      const code = promoInput.value.trim().toUpperCase();
+      if (!code) {
+        promoDiscount = 0;
+        activePromoCode = "";
+        promoMsg.style.display = "none";
+        recalcModalTotal();
+        return;
+      }
+
+      if (code.startsWith("WS-") || code === "IWS") {
+        promoDiscount = 55.00;
+        activePromoCode = code;
+        promoMsg.style.display = "block";
+        promoMsg.style.color = "var(--success-green)";
+        promoMsg.textContent = "✓ Lidmaatschap gevalideerd: €55,00 korting toegepast.";
+      } else if (code === "GIFT-50" || code === "CADEAU-50") {
+        promoDiscount = 50.00;
+        activePromoCode = code;
+        promoMsg.style.display = "block";
+        promoMsg.style.color = "var(--success-green)";
+        promoMsg.textContent = "✓ Cadeaubon toegepast: €50,00 korting verwerkt.";
+      } else {
+        promoDiscount = 0;
+        activePromoCode = "";
+        promoMsg.style.display = "block";
+        promoMsg.style.color = "#d9534f";
+        promoMsg.textContent = "✗ Ongeldige code. Probeer het opnieuw.";
+      }
+      recalcModalTotal();
+    });
+  }
+
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener("click", () => {
+      // Reset promo state upon opening checkout
+      promoDiscount = 0;
+      activePromoCode = "";
+      if (promoInput) promoInput.value = "";
+      if (promoMsg) promoMsg.style.display = "none";
+      
+      recalcModalTotal();
+      if (modalStep1) modalStep1.style.display = "block";
+      if (modalStep2) modalStep2.style.display = "none";
+      if (modalStep3) modalStep3.style.display = "none";
+      if (modalOverlay) modalOverlay.style.display = "flex";
+    });
+  }
+
+  if (modalCloseX) {
+    modalCloseX.addEventListener("click", () => {
+      if (modalOverlay) modalOverlay.style.display = "none";
+    });
+  }
+
+  if (modalSuccessClose) {
+    modalSuccessClose.addEventListener("click", () => {
+      if (modalOverlay) modalOverlay.style.display = "none";
+      if (modalStep3) modalStep3.style.display = "none";
+      if (modalStep1) modalStep1.style.display = "block";
+      Object.keys(cart).forEach(id => {
+        cart[id].qty = 0;
+        const qEl = document.getElementById(`qty-${id}`);
+        if (qEl) qEl.textContent = "0";
+      });
+      updateShop();
+    });
+  }
+
+  // Close modal when clicking backdrop
+  if (modalOverlay) {
+    modalOverlay.addEventListener("click", (e) => {
+      if (e.target === modalOverlay) {
+        modalOverlay.style.display = "none";
+      }
+    });
+  }
+
+  const payCards = document.querySelectorAll(".pay-method-card");
+  const bankGroup = document.getElementById("bank-group");
+  payCards.forEach(card => {
+    const radio = card.querySelector('input[type="radio"]') as HTMLInputElement;
+    card.addEventListener("click", () => {
+      payCards.forEach(c => c.classList.remove("active"));
+      card.classList.add("active");
+      if (radio) {
+        radio.checked = true;
+        if (bankGroup) {
+          bankGroup.style.display = radio.value === "ideal" ? "flex" : "none";
+        }
+      }
+    });
+  });
+
+  if (mockPaymentForm) {
+    mockPaymentForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const emailInput = document.getElementById("cust-email") as HTMLInputElement;
+      const email = emailInput ? emailInput.value : "info@whiskyfestival.nl";
+      const nameInput = document.getElementById("cust-name") as HTMLInputElement;
+      const name = nameInput ? nameInput.value : "Bezoeker";
+      const phoneInput = document.getElementById("cust-phone") as HTMLInputElement;
+      const phone = phoneInput ? phoneInput.value : "+31 6 12345678";
+      
+      if (modalStep1) modalStep1.style.display = "none";
+      if (modalStep2) modalStep2.style.display = "block";
+      
+      setTimeout(() => {
+        try {
+          if (modalStep2) modalStep2.style.display = "none";
+          
+          let orderList: string[] = [];
+          let itemsOrdered: any[] = [];
+          let primaryTicket: any = null;
+          let resPrefix = "WF";
+
+          if (activePromoCode.startsWith("WS-") || activePromoCode === "IWS") {
+            resPrefix = "WS";
+          }
+          
+          Object.keys(cart).forEach(id => {
+            const item = cart[id];
+            if (item.qty > 0) {
+              let itemDisplayTitle = item.title;
+              if (item.category === "tram" && item.timeslot) {
+                itemDisplayTitle = `${item.title} (${item.timeslot.split(' - ')[1] || item.timeslot})`;
+              } else if (item.category === "botteling" && item.delivery) {
+                const method = item.delivery === "shipping" ? "Verzenden" : "Ophalen";
+                itemDisplayTitle = `${item.title} [${method}]`;
+              }
+              
+              orderList.push(`${itemDisplayTitle} (${item.qty}x)`);
+              itemsOrdered.push({
+                id: id,
+                title: item.title,
+                qty: item.qty,
+                price: item.price,
+                category: item.category,
+                timeslot: item.timeslot || "",
+                delivery: item.delivery || ""
+              });
+
+              if (!primaryTicket && item.category === "entree") {
+                primaryTicket = item;
+              }
+            }
+          });
+          
+          const finalResNumber = `#${resPrefix}-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+
+          // Save order to localStorage for dynamic account environment
+          const orderData = {
+            name: name,
+            email: email,
+            phone: phone,
+            items: itemsOrdered,
+            isMember: resPrefix === "WS",
+            resNumber: finalResNumber,
+            discountApplied: promoDiscount,
+            totalPrice: recalcModalTotal()
+          };
+          localStorage.setItem('wf_last_order', JSON.stringify(orderData));
+
+          const successResNumEl = document.querySelector("#modal-step-3 .ticket-summary-box strong");
+          if (successResNumEl) successResNumEl.textContent = finalResNumber;
+          
+          if (receiptSentEmail) receiptSentEmail.textContent = email;
+          if (receiptTicketsList) {
+            receiptTicketsList.innerHTML = "";
+            orderList.forEach(txt => {
+              const div = document.createElement("div");
+              div.className = "receipt-ticket-li";
+              div.innerHTML = `<span>${txt}</span>`;
+              receiptTicketsList.appendChild(div);
+            });
+          }
+        } catch (err) {
+          console.error("Order processing error:", err);
+        } finally {
+          if (modalStep1) modalStep1.style.display = "none";
+          if (modalStep2) modalStep2.style.display = "none";
+          if (modalStep3) modalStep3.style.display = "block";
+        }
+      }, 2500);
+    });
+  }
+
+  // ====== INTERACTIVE TIMETABLE LOGIC ======
+  const ttTabs = document.querySelectorAll('.timetable-tab-btn');
+  const ttPanes = document.querySelectorAll('.timetable-pane');
+  const ttTimeBtns = document.querySelectorAll('.tt-time-btn');
+  let activeTtTime = 'all';
+
+  function filterTimetableCards() {
+    const activePane = document.querySelector('.timetable-pane.active');
+    if (!activePane) return;
+    const cards = activePane.querySelectorAll('.tt-card');
+
+    cards.forEach(card => {
+      const cardTimepart = card.getAttribute('data-timepart') || 'all';
+      if (activeTtTime === 'all' || cardTimepart === activeTtTime) {
+        (card as HTMLElement).style.display = 'flex';
+      } else {
+        (card as HTMLElement).style.display = 'none';
+      }
+    });
+  }
+
+  ttTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      ttTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const targetPane = tab.getAttribute('data-tt-tab');
+      ttPanes.forEach(pane => {
+        if (pane.id === `tt-pane-${targetPane}`) {
+          pane.classList.add('active');
+        } else {
+          pane.classList.remove('active');
+        }
+      });
+      filterTimetableCards();
+    });
+  });
+
+  ttTimeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      ttTimeBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeTtTime = btn.getAttribute('data-tt-time') || 'all';
+      filterTimetableCards();
+    });
+  });
+
+  const ttBookBtns = document.querySelectorAll('.tt-book-btn');
+  ttBookBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetStubId = btn.getAttribute('data-target-stub') || "";
+      const targetSelectVal = btn.getAttribute('data-target-select') || "";
+      
+      // If it's an addon checkbox
+      if (targetStubId.startsWith('addon-')) {
+        const checkbox = document.getElementById(targetStubId) as HTMLInputElement;
+        if (checkbox) {
+          // If disabled, warn the user
+          if (checkbox.disabled) {
+            alert("U moet eerst een entreeticket in uw winkelwagen leggen om deze add-on te boeken!");
+            document.getElementById('ticket-gap')?.scrollIntoView({ behavior: 'smooth' });
+            return;
+          }
+          checkbox.checked = true;
+          // Trigger change event to run updateShop()
+          checkbox.dispatchEvent(new Event('change'));
+          // Set dropdown value for vaten workshop if needed
+          if (targetStubId === "addon-vaten" && targetSelectVal && vatenTimeSelect) {
+            vatenTimeSelect.value = targetSelectVal;
+            vatenTimeSelect.dispatchEvent(new Event('change'));
+          }
+          // Alert and scroll to cart
+          alert(`Toegevoegd aan winkelwagen: ${checkbox.getAttribute('data-title')}!`);
+          document.getElementById('ticket-gap')?.scrollIntoView({ behavior: 'smooth' });
+        }
+      } else {
+        // It's a ticket stub card in the shop
+        const ticketStub = document.querySelector(`.ticket-stub[data-ticket-id="${targetStubId}"]`);
+        if (ticketStub) {
+          // If there's a select field and target select val
+          if (targetSelectVal) {
+            const select = ticketStub.querySelector('select') as HTMLSelectElement;
+            if (select) {
+              select.value = targetSelectVal;
+              // Trigger change event on select to ensure timeslot is updated in cart
+              select.dispatchEvent(new Event('change'));
+            }
+          }
+          // Find plus button and click it
+          const plusBtn = ticketStub.querySelector('[data-action="plus"]') as HTMLButtonElement;
+          if (plusBtn) {
+            plusBtn.click();
+            alert(`Toegevoegd aan winkelwagen: ${ticketStub.getAttribute('data-title')}!`);
+            document.getElementById('ticket-gap')?.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      }
+    });
+  });
+
+  // ====== SCROLL FADE-IN FOR TICKETS ======
+  const fadeGroups = document.querySelectorAll('.fade-in-group');
+  if (fadeGroups.length > 0) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, { threshold: 0.01, rootMargin: '100px 0px 100px 0px' });
+    
+    fadeGroups.forEach(g => {
+      const rect = g.getBoundingClientRect();
+      if (rect.top < window.innerHeight + 200 && rect.bottom > -200) {
+        g.classList.add('is-visible');
+      }
+      observer.observe(g);
+    });
+  }
+
+  // ====== VINTAGE HORIZONTAL TIMELINE LOGIC ======
+  const timelineSection = document.querySelector('.timeline-scroll-section') as HTMLElement;
+  const timelineTrack = document.getElementById('timeline-track') as HTMLElement;
+  const timelineCards = document.querySelectorAll('.timeline-card');
+  const axisProgress = document.getElementById('axis-progress') as HTMLElement;
+  const axisTicks = document.querySelectorAll('.axis-tick');
+  const eraItems = document.querySelectorAll('.era-item');
+
+  let activeIndex = 0;
+  let isDesktop = window.innerWidth > 1024;
+
+  // Track resizing to update layout mode
+  window.addEventListener('resize', () => {
+    isDesktop = window.innerWidth > 1024;
+    if (!isDesktop && timelineTrack) {
+      timelineTrack.style.transform = 'none';
+    }
+  });
+
+  // Calculate card bounds and positions for scroll translation
+  function getTimelineScrollData() {
+    if (!timelineTrack) return { maxTranslate: 0, trackWidth: 0, viewportWidth: 0 };
+    const trackWidth = timelineTrack.scrollWidth;
+    const viewportWidth = timelineTrack.parentElement?.clientWidth || window.innerWidth;
+    const maxTranslate = Math.max(0, trackWidth - viewportWidth);
+    return { maxTranslate, trackWidth, viewportWidth };
+  }
+
+  // Set initial scroll bar width and listen to scroll
+  function updateTimelineScroll() {
+    if (!timelineSection || !timelineTrack || !isDesktop) return;
+
+    const rect = timelineSection.getBoundingClientRect();
+    const sectionHeight = timelineSection.scrollHeight;
+    const viewHeight = window.innerHeight;
+    
+    // Calculate progress fraction [0, 1] through the timeline section
+    const scrollDistance = sectionHeight - viewHeight;
+    const scrolledAmount = -rect.top;
+    let fraction = scrolledAmount / scrollDistance;
+    fraction = Math.max(0, Math.min(1, fraction));
+
+    const { maxTranslate } = getTimelineScrollData();
+    
+    // Apply horizontal translation to track
+    const currentTranslate = fraction * maxTranslate;
+    timelineTrack.style.transform = `translateX(-${currentTranslate}px)`;
+
+    // Update bottom progress bar width
+    if (axisProgress) {
+      axisProgress.style.width = `${fraction * 100}%`;
+    }
+
+    // Determine which card is currently active (closest to the viewport center or index-based)
+    const cardCount = timelineCards.length;
+    const currentActive = Math.min(
+      cardCount - 1,
+      Math.floor(fraction * cardCount)
+    );
+
+    updateActiveStates(currentActive);
+  }
+
+  function updateActiveStates(index: number) {
+    if (index === activeIndex) return;
+    activeIndex = index;
+
+    // Update cards active state
+    timelineCards.forEach((card, idx) => {
+      if (idx === index) {
+        card.classList.add('active');
+      } else {
+        card.classList.remove('active');
+      }
+    });
+
+    // Update axis ticks active state
+    axisTicks.forEach((tick, idx) => {
+      if (idx === index) {
+        tick.classList.add('active');
+      } else {
+        tick.classList.remove('active');
+      }
+    });
+
+    // Update left era list active state
+    eraItems.forEach((era) => {
+      const targetIdx = parseInt(era.getAttribute('data-target') || '0', 10);
+      // Map index range to nearest era list item
+      let activeEra = 0;
+      if (index >= 5) activeEra = 5;
+      else if (index >= 3) activeEra = 3;
+      else if (index >= 1) activeEra = 1;
+      else activeEra = 0;
+
+      if (targetIdx === activeEra) {
+        era.classList.add('active');
+      } else {
+        era.classList.remove('active');
+      }
+    });
+  }
+
+  // Desktop scroll listener
+  window.addEventListener('scroll', updateTimelineScroll);
+  window.addEventListener('load', updateTimelineScroll);
+
+  // Click handler for axis ticks (Desktop & Mobile)
+  axisTicks.forEach(tick => {
+    tick.addEventListener('click', (e) => {
+      const targetIndex = parseInt(tick.getAttribute('data-index') || '0', 10);
+      
+      if (isDesktop) {
+        // Smoothly scroll the window to the corresponding position in the timeline section
+        const sectionTop = timelineSection.offsetTop;
+        const sectionHeight = timelineSection.scrollHeight;
+        const viewHeight = window.innerHeight;
+        const scrollDistance = sectionHeight - viewHeight;
+        
+        // Calculate scroll destination representing the target index fraction
+        const cardCount = timelineCards.length;
+        const targetFraction = targetIndex / (cardCount - 1);
+        const scrollTarget = sectionTop + (targetFraction * scrollDistance);
+
+        window.scrollTo({
+          top: scrollTarget,
+          behavior: 'smooth'
+        });
+      } else {
+        // Mobile snap scroll
+        const viewport = timelineTrack.parentElement;
+        const card = timelineCards[targetIndex] as HTMLElement;
+        if (viewport && card) {
+          viewport.scrollTo({
+            left: card.offsetLeft - (viewport.clientWidth - card.clientWidth) / 2,
+            behavior: 'smooth'
+          });
+          updateActiveStates(targetIndex);
+          if (axisProgress) {
+            axisProgress.style.width = `${(targetIndex / (timelineCards.length - 1)) * 100}%`;
+          }
+        }
+      }
+    });
+  });
+
+  // Era list item clicks
+  eraItems.forEach(era => {
+    era.addEventListener('click', () => {
+      const targetIndex = parseInt(era.getAttribute('data-target') || '0', 10);
+      const tickBtn = document.querySelector(`.axis-tick[data-index="${targetIndex}"]`) as HTMLButtonElement;
+      if (tickBtn) tickBtn.click();
+    });
+  });
+
+  // Mobile Swipe event observer to sync bottom axis progress
+  const viewport = timelineTrack?.parentElement;
+  if (viewport) {
+    viewport.addEventListener('scroll', () => {
+      if (isDesktop) return; // Only process on mobile touch scroll
+      
+      const scrollLeft = viewport.scrollLeft;
+      const scrollWidth = viewport.scrollWidth - viewport.clientWidth;
+      const fraction = scrollWidth > 0 ? scrollLeft / scrollWidth : 0;
+      
+      if (axisProgress) {
+        axisProgress.style.width = `${fraction * 100}%`;
+      }
+      
+      // Map scroll progress to active card
+      const cardCount = timelineCards.length;
+      const index = Math.max(0, Math.min(cardCount - 1, Math.round(fraction * (cardCount - 1))));
+      
+      updateActiveStates(index);
+    });
+  }
+
+  // Aftermovie 2025 Performance Video Player Logic
+  const aftermovieVideo = document.getElementById('aftermovie-video') as HTMLVideoElement;
+  const videoOverlay = document.getElementById('video-overlay') as HTMLElement;
+
+  if (aftermovieVideo && videoOverlay) {
+    videoOverlay.addEventListener('click', () => {
+      videoOverlay.style.opacity = '0';
+      videoOverlay.style.pointerEvents = 'none';
+      aftermovieVideo.setAttribute('controls', 'true');
+      aftermovieVideo.play();
+    });
+
+    aftermovieVideo.addEventListener('pause', () => {
+      if (aftermovieVideo.currentTime === 0 || aftermovieVideo.ended) {
+        aftermovieVideo.removeAttribute('controls');
+        videoOverlay.style.opacity = '1';
+        videoOverlay.style.pointerEvents = 'auto';
+      }
+    });
+
+    aftermovieVideo.addEventListener('ended', () => {
+      aftermovieVideo.removeAttribute('controls');
+      videoOverlay.style.opacity = '1';
+      videoOverlay.style.pointerEvents = 'auto';
+    });
+  }
+
+  // ====== HORIZONTAL PHOTO CAROUSEL NAVIGATION ======
+  const carouselWrapper = document.querySelector('.horizontal-carousel-wrapper');
+  const carouselPrevBtn = document.getElementById('carousel-prev-btn');
+  const carouselNextBtn = document.getElementById('carousel-next-btn');
+
+  if (carouselWrapper && carouselPrevBtn && carouselNextBtn) {
+    carouselPrevBtn.addEventListener('click', () => {
+      carouselWrapper.scrollBy({ left: -380, behavior: 'smooth' });
+    });
+
+    carouselNextBtn.addEventListener('click', () => {
+      carouselWrapper.scrollBy({ left: 380, behavior: 'smooth' });
+    });
+  }
+
+  // ====== HERO VIDEO TIMESTAMP LOOP (00:09 - 00:45) ======
+  const heroVideo = document.getElementById('hero-bg-video') as HTMLVideoElement;
+  if (heroVideo) {
+    const START_TIME = 9;
+    const END_TIME = 45;
+
+    // Set initial timestamp to 9 seconds
+    heroVideo.currentTime = START_TIME;
+
+    heroVideo.addEventListener('timeupdate', () => {
+      if (heroVideo.currentTime >= END_TIME || heroVideo.currentTime < START_TIME - 0.5) {
+        heroVideo.currentTime = START_TIME;
+      }
+    });
+
+    heroVideo.play().catch(() => {
+      // Autoplay fallback
+    });
+  }
+  // ====== HOMEPAGE 2.5-SECOND COIN-FLIP PRELOADER SCRIPT ======
+  const preloader = document.getElementById('hp-preloader');
+  if (preloader) {
+    document.body.style.overflow = 'hidden';
+
+    setTimeout(() => {
+      preloader.classList.add('fade-out');
+      document.body.style.overflow = '';
+    }, 2200);
+
+    setTimeout(() => {
+      preloader.style.display = 'none';
+    }, 2500);
+  }
+</script>

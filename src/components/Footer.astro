@@ -1,0 +1,371 @@
+---
+// src/components/Footer.astro
+---
+
+<footer class="site-footer">
+  <!-- Ripped Paper Overlay (Light paper to dark footer transition) -->
+  <div class="torn-edge-wrap">
+    <img src="/torn-top.svg?v=2" alt="" class="torn-edge-img" />
+  </div>
+
+  <div class="footer-inner">
+    <!-- Newsletter Letterpress Card -->
+    <div class="newsletter-section">
+      <div class="newsletter-card">
+        <div class="newsletter-border">
+          <div class="newsletter-content">
+            <h3 class="newsletter-title">Schrijf u in voor onze nieuwsbrief</h3>
+            <p class="newsletter-desc">Blijf op de hoogte van de ticketverkoop, exclusieve masterclasses en speciale festivalbottelingen.</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Bedankt voor uw inschrijving!');">
+              <input type="email" placeholder="Uw e-mailadres" required class="newsletter-input" />
+              <button type="submit" class="btn btn-gold btn-newsletter">Inschrijven</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Footer Information Grid -->
+    <div class="footer-grid">
+      <!-- Organizer Column -->
+      <div class="footer-col brand-col">
+        <div class="footer-logo">
+          <span class="logo-top">Est. 2000</span>
+          <span class="logo-text">Whisky Fest</span>
+          <span class="logo-bottom">Den Haag</span>
+        </div>
+        <p class="brand-pitch">Al meer dan 26 jaar het meest toonaangevende en sfeervolle whisky evenement in de historische Grote Kerk van Den Haag.</p>
+      </div>
+
+      <!-- Links Column -->
+      <div class="footer-col links-col">
+        <h4 class="footer-title">Navigatie</h4>
+        <div class="footer-links">
+          <a href="#" class="footer-link">De Ervaring</a>
+          <a href="#sessies" class="footer-link">Sessies & Tickets</a>
+          <a href="#programma" class="footer-link">Programma</a>
+          <a href="#standhouders" class="footer-link">Standhouders</a>
+          <a href="#faq" class="footer-link">Veelgestelde Vragen</a>
+        </div>
+      </div>
+
+      <!-- Contact / Secretary Column -->
+      <div class="footer-col contact-col">
+        <h4 class="footer-title">Organisatie</h4>
+        <p class="contact-text"><strong>Highland Consultancy</strong></p>
+        <p class="contact-text">Secretariaat Ringdijk 15</p>
+        <p class="contact-text">1424 AW De Kwakel</p>
+        <p class="contact-text">E-mail: <a href="mailto:info@whiskyfestival.nl" class="contact-link">info@whiskyfestival.nl</a></p>
+      </div>
+    </div>
+
+    <!-- Bottom Credits & Safety bar -->
+    <div class="footer-bottom">
+      <div class="footer-separator"></div>
+      <div class="bottom-row">
+        <p class="copyright">&copy; {new Date().getFullYear()} International Whisky Festival. Alle rechten voorbehouden.</p>
+        <div class="social-links">
+          <a href="https://facebook.com" target="_blank" class="social-icon" aria-label="Facebook">FB</a>
+          <a href="https://instagram.com" target="_blank" class="social-icon" aria-label="Instagram">IG</a>
+        </div>
+        <div class="safety-badges">
+          <span class="safety-badge">Geen 18, Geen Alcohol</span>
+          <span class="safety-badge-text">Geniet, maar drink met mate</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background-color: #171614; /* Deep dark roasted oak */
+    color: var(--bg-parchment);
+    position: relative;
+    padding-top: 1rem;
+    margin-top: 0;
+  }
+
+  .torn-edge-wrap {
+    position: relative;
+    z-index: 20;
+    line-height: 0;
+    margin-top: -60px;
+    margin-bottom: -30px;
+    filter: drop-shadow(0px 18px 18px rgba(0,0,0,0.55));
+    clip-path: inset(0 -50px -50px -50px);
+    pointer-events: none;
+  }
+
+  .torn-edge-img {
+    display: block;
+    width: 100%;
+    height: 60px;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem 2.5rem;
+  }
+
+  /* Newsletter card with letterpress borders */
+  .newsletter-section {
+    margin-bottom: 4rem;
+  }
+
+  .newsletter-card {
+    background-color: #24221F;
+    border: 1px solid rgba(222, 214, 201, 0.15);
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  .newsletter-border {
+    border: 1px dashed rgba(222, 214, 201, 0.3);
+    padding: 2rem;
+    border-radius: 6px;
+  }
+
+  .newsletter-content {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .newsletter-title {
+    color: #FAF7F2;
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+    font-family: var(--font-display);
+    letter-spacing: 0.05em;
+  }
+
+  .newsletter-desc {
+    color: rgba(250, 247, 242, 0.7);
+    font-size: 0.95rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .newsletter-form {
+    display: flex;
+    gap: 0.75rem;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .newsletter-input {
+    flex: 1;
+    background-color: #171614;
+    border: 1px solid rgba(222, 214, 201, 0.2);
+    color: #FAF7F2;
+    padding: 0.75rem 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    border-radius: 4px;
+    transition: all 0.3s;
+  }
+
+  .newsletter-input:focus {
+    outline: none;
+    border-color: var(--whisky-gold);
+    box-shadow: 0 0 8px rgba(197, 139, 57, 0.2);
+  }
+
+  .btn-newsletter {
+    padding: 0.75rem 1.75rem;
+  }
+
+  /* Grid Layouts */
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .footer-title {
+    font-size: 1.1rem;
+    color: #FAF7F2;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+    letter-spacing: 0.08em;
+  }
+
+  .footer-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 35px;
+    height: 1px;
+    background-color: var(--whisky-gold);
+  }
+
+  /* Logo styling in footer */
+  .footer-logo {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: 1px solid rgba(222, 214, 201, 0.2);
+    padding: 0.5rem 1rem;
+    max-width: 180px;
+    margin-bottom: 1.25rem;
+  }
+
+  .footer-logo .logo-top, .footer-logo .logo-bottom {
+    font-family: var(--font-sans);
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--whisky-gold);
+    font-weight: 600;
+  }
+
+  .footer-logo .logo-text {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #FAF7F2;
+  }
+
+  .brand-pitch {
+    font-size: 0.95rem;
+    color: rgba(250, 247, 242, 0.6);
+    line-height: 1.7;
+  }
+
+  /* Link layouts */
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .footer-link {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(250, 247, 242, 0.7);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .footer-link:hover {
+    color: var(--whisky-gold);
+    padding-left: 4px;
+  }
+
+  /* Contact layouts */
+  .contact-text {
+    font-size: 0.95rem;
+    color: rgba(250, 247, 242, 0.7);
+    line-height: 1.6;
+    margin-bottom: 0.35rem;
+  }
+
+  .contact-link {
+    color: var(--whisky-gold);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .contact-link:hover {
+    color: var(--whisky-gold-light);
+    text-decoration: underline;
+  }
+
+  /* Separators and Bottom Row */
+  .footer-separator {
+    height: 1px;
+    background-color: rgba(222, 214, 201, 0.1);
+    margin-bottom: 2rem;
+  }
+
+  .bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .copyright {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: rgba(250, 247, 242, 0.4);
+  }
+
+  .social-links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .social-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(222, 214, 201, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FAF7F2;
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-size: 0.80rem;
+    font-weight: 700;
+    transition: all 0.3s;
+  }
+
+  .social-icon:hover {
+    border-color: var(--whisky-gold);
+    background-color: var(--whisky-gold);
+    color: #171614;
+    transform: translateY(-2px);
+  }
+
+  /* Safety elements */
+  .safety-badges {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .safety-badge {
+    background-color: #C0392B; /* Strong red banner */
+    color: #FAF7F2;
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+  }
+
+  .safety-badge-text {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.85rem;
+    color: rgba(250, 247, 242, 0.5);
+  }
+
+  /* Responsive layout */
+  @media (max-width: 850px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    .bottom-row {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>

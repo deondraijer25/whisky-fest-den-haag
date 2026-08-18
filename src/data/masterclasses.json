@@ -1,0 +1,82 @@
+[
+  {
+    "id": "intro-tickets",
+    "title": "Whisky Introductie",
+    "subtitle": "Basis Nosing & Tasting voor Beginners",
+    "price": "€ 7,50",
+    "duration": "40 minuten",
+    "location": "Nutshuis - Spaarkamer",
+    "ambassador": {
+      "name": "Valentijn Klop",
+      "title": "Certified Whisky Educator & Sommelier",
+      "bio": "Valentijn neemt beginnende liefhebbers mee op een toegankelijke reis langs smaakprofielen, distillatietechnieken en vatenrijping."
+    },
+    "tastingLineup": [
+      "Lowland Light & Floral Single Malt (10 Y.O.)",
+      "Speyside Rich Orchard Fruit Single Malt (12 Y.O.)"
+    ],
+    "description": "De perfecte start van uw festivaldag! Leer de basisprincipes van het proeven, het herkennen van aroma's en hoe u het maximale uit uw festivalbezoek haalt."
+  },
+  {
+    "id": "macallan-exclusive",
+    "title": "Macallan Exclusive Experience",
+    "subtitle": "Exclusieve Sherry Cask Single Malts",
+    "price": "€ 77,50",
+    "duration": "60 minuten",
+    "location": "Grote Kerk Den Haag (Haagsche Toren)",
+    "ambassador": {
+      "name": "Gerard Spaans",
+      "title": "Master of Malt & Senior Brand Ambassador",
+      "bio": "Al meer dan 20 jaar dé autoriteit op het gebied van Schotse single malts en zeldzame Macallan bottelingen."
+    },
+    "tastingLineup": [
+      "The Macallan 12 Y.O. Double Cask",
+      "The Macallan 15 Y.O. Double Cask",
+      "The Macallan 18 Y.O. Sherry Oak Cask (Iconic)",
+      "The Macallan Rare Cask Release 2025/2026",
+      "Secret Distillery Cask Sample (Exclusive)"
+    ],
+    "description": "Een ongeëvenaarde proeverij van 's werelds meest begeerde distilleerderij. Inclusief beklimming van de Haagsche Toren."
+  },
+  {
+    "id": "session-mc-highland-park",
+    "title": "Highland Park: Orkney Viking Soul",
+    "subtitle": "Heidehoning & Subtiele Turf",
+    "price": "€ 22,50",
+    "duration": "45 minuten",
+    "location": "Nutshuis - Telkamer",
+    "ambassador": {
+      "name": "Martin Markvardsen",
+      "title": "Global Brand Ambassador Highland Park",
+      "bio": "Rechtstreeks overgevlogen uit Kirkwall, Orkney. Martin deelt de eeuwenoude tradities van de noordelijkste Schotse distilleerderij."
+    },
+    "tastingLineup": [
+      "Highland Park 12 Y.O. Viking Honour",
+      "Highland Park 15 Y.O. Viking Heart (Keramiek)",
+      "Highland Park 18 Y.O. Viking Pride",
+      "Highland Park Cask Strength Release No. 5"
+    ],
+    "description": "Proef het unieke samenspel van aromatische heideturf, Oloroso sherryvaten en het zilte noordelijke zeeklimaat van de Orkney eilanden."
+  },
+  {
+    "id": "session-mc-glenfiddich",
+    "title": "Glenfiddich & The Balvenie Showcase",
+    "subtitle": "Speyside Icons & Ambachtelijk Kuiperijwerk",
+    "price": "€ 25,00",
+    "duration": "45 minuten",
+    "location": "Nutshuis - Foyer",
+    "ambassador": {
+      "name": "Tony van Rooijen",
+      "title": "William Grant & Sons Ambassador",
+      "bio": "Gepassioneerd verhalenverteller over traditioneel vakmanschap, vloermouterijen en ambachtelijk kuiperijwerk in Dufftown."
+    },
+    "tastingLineup": [
+      "Glenfiddich 15 Y.O. Solera Reserve",
+      "Glenfiddich 18 Y.O. Small Batch Reserve",
+      "The Balvenie 12 Y.O. DoubleWood",
+      "The Balvenie 14 Y.O. Caribbean Cask",
+      "The Balvenie 16 Y.O. French Oak"
+    ],
+    "description": "Vergelijk twee legendarische zuster-distilleerderijen uit Dufftown en ontdek hoe houtkeuze en Solera-rijping het smaakprofiel transformeren."
+  }
+]

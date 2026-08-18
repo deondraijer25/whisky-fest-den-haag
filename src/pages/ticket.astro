@@ -1,0 +1,470 @@
+---
+// src/pages/ticket.astro - 100% 1-op-1 identiek aan Mijn Account + perfecte mobiele uitlijning
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="E-Ticket | International Whisky Festival"
+  description="Digitaal E-Ticket voor International Whisky Festival"
+>
+  <main class="single-ticket-standalone-view">
+    <div class="ticket-centered-container">
+      
+      <!-- Top Action Buttons (Under each other on mobile, side-by-side on desktop) -->
+      <div class="ticket-top-actions-bar">
+        <button type="button" class="btn btn-gold btn-ticket-action" onclick="window.print()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          DOWNLOAD E-TICKET (PDF)
+        </button>
+
+        <a href="/account" class="btn btn-outline btn-ticket-action">
+          MIJN ACCOUNT
+        </a>
+      </div>
+
+      <!-- Exact Ticket Envelope Card from Mijn Account -->
+      <div class="ticket-envelope">
+        <div class="ticket-stub-large">
+          <!-- QR Code & Scanner stub (Left on desktop, Top on mobile) -->
+          <div class="ticket-right-stub">
+            <span class="scan-label">CONTROLE STUB</span>
+            
+            <div class="qr-code-holder">
+              <svg width="110" height="110" viewBox="0 0 100 100" style="shape-rendering: crispedges; display:block;">
+                <path d="M0,0 h30 v10 h-20 v20 h-10 z" fill="#1D1C1A"/>
+                <path d="M10,10 h10 v10 h-10 z" fill="#1D1C1A"/>
+                <path d="M70,0 h30 v30 h-10 v-20 h-20 z" fill="#1D1C1A"/>
+                <path d="M80,10 h10 v10 h-10 z" fill="#1D1C1A"/>
+                <path d="M0,70 h10 v20 h20 v10 h-30 z" fill="#1D1C1A"/>
+                <path d="M10,80 h10 v10 h-10 z" fill="#1D1C1A"/>
+                <path d="M45,45 h10 v10 h-10 z" fill="var(--whisky-gold-dark)"/>
+                <path d="M30,30 h10 v5 h-10 z M35,40 h15 v5 h-15 z M55,30 h10 v10 h-5 v-5 h-5 z" fill="#1D1C1A"/>
+                <path d="M70,70 h30 v10 h-10 v10 h-20 z M80,80 h10 v10 h-10 z" fill="#1D1C1A"/>
+                <path d="M40,65 h10 v10 h-10 z M55,60 h10 v5 h-10 z M60,75 h5 v15 h-5 z" fill="#1D1C1A"/>
+                <path d="M65,45 h10 v5 h-10 z M30,55 h5 v15 h-5 z M45,85 h10 v5 h-10 z" fill="#1D1C1A"/>
+              </svg>
+            </div>
+
+            <span class="scan-instructions">SCAN BIJ DE DEUR</span>
+            <span class="scan-res-hash" id="tv-code">#WF-2026-84387-1</span>
+          </div>
+
+          <!-- Session & Holder details (Right on desktop, Bottom on mobile) -->
+          <div class="ticket-left-stub">
+            <div class="ticket-watermark" id="tv-watermark">WF</div>
+            
+            <div class="ticket-stub-header">
+              <div class="ticket-stub-date-badge">
+                <span class="badge-month" id="tv-month">NOV</span>
+                <span class="badge-day" id="tv-day">13</span>
+              </div>
+              <div class="ticket-stub-org">
+                <span class="org-established">Est. 2000</span>
+                <span class="org-name" id="tv-org">International Whisky Festival</span>
+                <span class="org-location" id="tv-loc">Grote Kerk, Den Haag</span>
+              </div>
+            </div>
+
+            <div class="vintage-divider"></div>
+
+            <div class="ticket-stub-body">
+              <h2 class="ticket-session-title" id="tv-session-title">VIP SESSIE - VRIJDAG</h2>
+              
+              <div class="ticket-meta-grid">
+                <div class="meta-item">
+                  <span class="meta-label">KAARTHOUDER:</span>
+                  <strong class="meta-value" id="tv-name">Deon Draijer</strong>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">STATUS:</span>
+                  <strong class="meta-value" style="color: var(--success-green);">GELDIG TOEGANGSBEWIJS</strong>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">TIJDSSLOT:</span>
+                  <strong class="meta-value" id="tv-time">13:00 - 17:00 UUR</strong>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">TICKET CODE:</span>
+                  <strong class="meta-value" style="color: var(--brand-red, #E30613);" id="tv-ticket-code">#WF-2026-84387-1</strong>
+                </div>
+              </div>
+
+              <div class="ticket-stub-footer">
+                <p class="stub-disclaimer">* Toegang uitsluitend voor personen van 18 jaar en ouder. Legitimatie verplicht bij de deur.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="ticket-tip-bottom">
+        💡 U kunt dit e-ticket direct op uw smartphone bewaren of tonen bij de entree.
+      </p>
+
+    </div>
+  </main>
+</Layout>
+
+<style>
+  /* Hide floating social dock on standalone ticket page */
+  :global(.floating-social-dock), :global(.social-dock) {
+    display: none !important;
+  }
+
+  .single-ticket-standalone-view {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+    background-color: var(--bg-parchment);
+  }
+
+  .ticket-centered-container {
+    width: 100%;
+    max-width: 820px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  /* TOP ACTION BUTTONS BAR */
+  .ticket-top-actions-bar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.85rem;
+    width: 100%;
+  }
+
+  .btn-ticket-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 1.2;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  /* 100% Exact styles from account.astro */
+  .ticket-envelope {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .ticket-stub-large {
+    background-color: var(--bg-paper-card);
+    border: 2px solid var(--text-charcoal);
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.06);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .ticket-right-stub {
+    background-color: var(--bg-sand);
+    border-right: 2px dashed var(--border-color-dark);
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .scan-label {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  .qr-code-holder {
+    background-color: #ffffff;
+    border: 2px solid var(--text-charcoal);
+    padding: 0.85rem;
+    border-radius: 6px;
+    margin-bottom: 0.85rem;
+  }
+
+  .scan-instructions {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--whisky-gold-dark);
+  }
+
+  .scan-res-hash {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-charcoal);
+    margin-top: 2px;
+  }
+
+  .ticket-left-stub {
+    padding: 2rem 2.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .ticket-watermark {
+    position: absolute;
+    right: 2rem;
+    bottom: 1rem;
+    font-family: var(--font-display);
+    font-size: 7rem;
+    color: rgba(0, 100, 72, 0.04);
+    pointer-events: none;
+    line-height: 1;
+    font-weight: 900;
+    user-select: none;
+  }
+
+  .ticket-stub-header {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .ticket-stub-date-badge {
+    background-color: var(--text-charcoal);
+    color: var(--whisky-gold);
+    border-radius: 6px;
+    padding: 0.4rem 0.85rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 54px;
+    line-height: 1;
+  }
+
+  .badge-month {
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .badge-day {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #FFFFFF;
+    margin-top: 2px;
+  }
+
+  .ticket-stub-org {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .org-established {
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: var(--whisky-gold-dark);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .org-name {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-charcoal);
+  }
+
+  .org-location {
+    font-family: var(--font-serif);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .vintage-divider {
+    border-bottom: 1px dashed var(--border-color-dark);
+    margin: 1.25rem 0;
+  }
+
+  .ticket-session-title {
+    font-family: var(--font-display);
+    font-size: 1.85rem;
+    color: var(--text-charcoal);
+    margin: 0 0 1rem;
+    line-height: 1.15;
+  }
+
+  .ticket-meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem 1.5rem;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .meta-label {
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .meta-value {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-charcoal);
+  }
+
+  .ticket-stub-footer {
+    margin-top: 1.25rem;
+  }
+
+  .stub-disclaimer {
+    font-family: var(--font-serif);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .ticket-tip-bottom {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+
+  /* PERFECT MOBILE OPTIMIZATION */
+  @media (max-width: 768px) {
+    .single-ticket-standalone-view {
+      padding: 2rem 1rem 3rem 1rem;
+    }
+    .ticket-top-actions-bar {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 0.65rem !important;
+    }
+    .btn-ticket-action {
+      width: 100% !important;
+      padding: 0.85rem 1rem !important;
+      text-align: center !important;
+      justify-content: center !important;
+    }
+    .ticket-stub-large {
+      grid-template-columns: 1fr;
+    }
+    .ticket-right-stub {
+      border-right: none;
+      border-bottom: 2px dashed var(--border-color-dark);
+      padding: 1.75rem 1.25rem;
+    }
+    .ticket-left-stub {
+      padding: 1.5rem 1.25rem;
+    }
+    .ticket-session-title {
+      font-size: 1.55rem;
+    }
+    .ticket-meta-grid {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+  }
+
+  @media print {
+    body {
+      background: white !important;
+      color: black !important;
+      padding: 0 !important;
+    }
+    .ticket-top-actions-bar, .ticket-tip-bottom {
+      display: none !important;
+    }
+    .ticket-centered-container {
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .ticket-envelope {
+      border: none !important;
+      box-shadow: none !important;
+      margin: 0 !important;
+    }
+    .ticket-stub-large {
+      border: 1.5px solid #1D1C1A !important;
+      box-shadow: none !important;
+      background: white !important;
+      color: black !important;
+      page-break-inside: avoid;
+    }
+    .ticket-left-stub, .ticket-right-stub {
+      background: white !important;
+      color: black !important;
+    }
+    .ticket-watermark {
+      color: rgba(29, 28, 26, 0.04) !important;
+    }
+  }
+</style>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  let code = params.get('id') || params.get('code') || 'WF-2026-84387-1';
+  if (!code.startsWith('#')) code = '#' + code;
+  const title = params.get('title') || 'VIP Sessie - Vrijdag';
+  const name = params.get('name') || 'Deon Draijer';
+  const time = params.get('time') || '13:00 - 17:00 UUR';
+
+  const tvSessionTitle = document.getElementById('tv-session-title');
+  const tvName = document.getElementById('tv-name');
+  const tvTime = document.getElementById('tv-time');
+  const tvCode = document.getElementById('tv-code');
+  const tvTicketCode = document.getElementById('tv-ticket-code');
+  const tvDay = document.getElementById('tv-day');
+
+  if (tvSessionTitle) tvSessionTitle.textContent = title.toUpperCase();
+  if (tvName) tvName.textContent = name;
+  if (tvTime) tvTime.textContent = time.toUpperCase();
+  if (tvCode) tvCode.textContent = code;
+  if (tvTicketCode) tvTicketCode.textContent = code;
+
+  const titleLower = title.toLowerCase();
+  if (titleLower.includes('vrijdag')) {
+    if (tvDay) tvDay.textContent = '13';
+  } else if (titleLower.includes('zondag')) {
+    if (tvDay) tvDay.textContent = '15';
+  } else {
+    if (tvDay) tvDay.textContent = '14';
+  }
+</script>

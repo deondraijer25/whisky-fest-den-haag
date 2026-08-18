@@ -1,0 +1,181 @@
+---
+// src/pages/kaart.astro
+import fs from 'fs';
+import path from 'path';
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// Read the SVG content dynamically to render it inline
+const svgPath = path.resolve('src/assets/Landkaart pdf/WHISKY KAART 5 FEB 2026 vintage.svg');
+const svgContent = fs.readFileSync(svgPath, 'utf8');
+---
+
+<Layout 
+  title="Whisky Kaart 2026" 
+  description="De complete landkaart met alle Schotse whisky-distilleerderijen in de vintage stijl van Whisky Fest."
+>
+  <Header />
+
+  <main class="kaart-page-wrapper">
+    <div class="page-title-section animate-fade-in no-print">
+      <span class="page-tag">Ledencadeau 2026</span>
+      <h1 class="page-title">Whisky Kaart Schotland</h1>
+      <div class="vintage-line"></div>
+      <p class="page-subtitle">Exclusieve A3 poster voor Whisky Fest leden, ontworpen in de vintage huisstijl van de website.</p>
+    </div>
+
+    <!-- Map Print/Download Actions -->
+    <div class="action-section no-print animate-fade-in" style="animation-delay: 0.05s;">
+      <button class="btn btn-gold" onclick="window.print()">
+        <span>Print Kaart (A3 PDF)</span>
+      </button>
+      <p class="action-hint">Tip: Stel in het print-scherm de papiergrootte in op <strong>A3</strong> (liggend of staand), marges op <strong>Geen</strong>, en vink <strong>Achtergrondafbeeldingen</strong> aan.</p>
+    </div>
+
+    <!-- The Map Render Area -->
+    <div class="kaart-container vintage-frame animate-fade-in" style="animation-delay: 0.1s;">
+      <div class="vintage-frame-inner map-scroll-wrapper">
+        <div class="svg-inline-wrapper" set:html={svgContent} />
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style is:global>
+  /* SVG Styling overrides to integrate with Web Fonts */
+  .svg-inline-wrapper svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    aspect-ratio: 1686.61 / 2383.94;
+    background-color: var(--bg-parchment);
+  }
+  
+  /* Ensure the SVG text nodes use the Google Fonts imported by Layout */
+  .svg-inline-wrapper text {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+  }
+</style>
+
+<style>
+  .kaart-page-wrapper {
+    background-color: var(--bg-parchment);
+    min-height: 100vh;
+    padding: 9rem 2rem 6rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .page-title-section {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .page-tag {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--whisky-gold-dark);
+  }
+
+  .page-title {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    color: var(--text-charcoal);
+  }
+
+  .page-subtitle {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    line-height: 1.5;
+  }
+
+  .action-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .action-hint {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    max-width: 500px;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .kaart-container {
+    background-color: var(--bg-paper-card);
+    border-radius: 4px;
+    box-shadow: 6px 6px 0px var(--text-charcoal);
+    overflow: hidden;
+  }
+
+  .map-scroll-wrapper {
+    padding: 1.5rem !important;
+    overflow-x: auto;
+  }
+
+  .svg-inline-wrapper {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /* Print Stylesheet overrides */
+  @media print {
+    :global(body) {
+      background-color: #FAF7F2 !important;
+      background-image: none !important;
+    }
+    
+    :global(header), :global(footer), .no-print, .page-title-section {
+      display: none !important;
+    }
+    
+    .kaart-page-wrapper {
+      padding: 0 !important;
+      margin: 0 !important;
+      max-width: 100% !important;
+      min-height: 0 !important;
+    }
+    
+    .kaart-container {
+      border: none !important;
+      box-shadow: none !important;
+      background-color: transparent !important;
+    }
+    
+    .map-scroll-wrapper {
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+    
+    .svg-inline-wrapper {
+      max-width: 100% !important;
+      width: 100vw !important;
+      height: auto !important;
+    }
+
+    @page {
+      size: A3 portrait;
+      margin: 0;
+    }
+  }
+</style>

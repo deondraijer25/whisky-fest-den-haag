@@ -1,0 +1,1894 @@
+---
+// src/pages/account.astro
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Mijn Account Portaal | International Whisky Festival">
+  <!-- 1. Global Navigation Header -->
+  <Header />
+
+  <main class="account-page-wrapper">
+    <!-- Top Welcome Header -->
+    <div class="portal-header animate-fade-in">
+      <span class="portal-tag">Bezoekers Portaal</span>
+      <h1 class="portal-title" id="portal-title-name">Portaal van Deon Draijer</h1>
+      <div class="vintage-line"></div>
+      <p class="portal-subtitle" id="portal-welcome-email">Welkom in uw bezoeker omgeving · deondraijer@gmail.com</p>
+    </div>
+
+    <!-- Demonstration Banner (shown if demo account is active) -->
+    <div class="demo-banner animate-fade-in" id="demo-banner" style="display: none;">
+      <div class="demo-banner-inner">
+        <div class="demo-text">
+          <strong>Demonstratie Account Actief</strong>
+          <span>U bekijkt een voorbeeld account. Bestel uw tickets op de homepage om uw eigen bestelling hier live te bekijken.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vintage Portal Tab Menu (Restored Original Design Structure) -->
+    <div class="portal-tabs-container animate-fade-in">
+      <div class="portal-tabs-inner">
+        <button class="portal-tab-trigger active" data-tab="tab-tickets">
+          Mijn Tickets
+        </button>
+        <button class="portal-tab-trigger" data-tab="tab-profile">
+          Persoonsgegevens
+        </button>
+        <button class="portal-tab-trigger" data-tab="tab-info">
+          Event Informatie
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB 1: TICKETS PANEL -->
+    <div class="portal-tab-pane active" id="tab-tickets">
+      <div class="portal-container">
+        <!-- Dynamic Tickets List (Rendered via JS) -->
+        <div id="tickets-container" class="tickets-main-column">
+          <!-- Dynamic ticket stubs and maps rendered here -->
+        </div>
+
+        <!-- Sidebar Actions & Venue Info -->
+        <div class="portal-sidebar-grid">
+          <!-- Printable Action Card -->
+          <div class="sidebar-card">
+            <div class="card-padded">
+              <h3 class="card-inner-title">Ticket Acties</h3>
+              <div class="vintage-line" style="margin: 0;"></div>
+              
+              <div class="sidebar-actions-list">
+                <button class="btn btn-gold btn-sidebar-action" onclick="window.print()">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right: 6px;">
+                    <polyline points="6 9 6 2 18 2 18 9"/>
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                    <rect x="6" y="14" width="12" height="8"/>
+                  </svg>
+                  Print Alle E-Tickets (PDF)
+                </button>
+                <p class="action-note-text">
+                  Tip: U kunt uw e-ticket ook digitaal op uw smartphone laten scannen bij de ingang van de Grote Kerk.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Venue & Interactive Map Link Card -->
+          <div class="sidebar-card">
+            <div class="card-padded">
+              <h3 class="card-inner-title">Locatie & Info</h3>
+              <div class="vintage-line" style="margin: 0;"></div>
+              <p class="sidebar-card-text">
+                <strong>Grote Kerk Den Haag</strong><br/>
+                Rond de Grote Kerk 12,<br/>
+                2513 AM Den Haag
+              </p>
+
+              <div class="sidebar-links-group">
+                <a href="/standhouders" class="btn btn-outline btn-sidebar-action" style="text-align: center; text-decoration: none; border-color: var(--whisky-gold-dark); color: var(--whisky-gold-dark);">
+                  Bekijk Standhouders & Plattegrond
+                </a>
+                <a href="https://maps.google.com/?q=Grote+Kerk+Den+Haag" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sidebar-action" style="text-align: center; text-decoration: none;">
+                  Open Routeplanner
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: PROFILE & HISTORY PANEL -->
+    <div class="portal-tab-pane" id="tab-profile" style="display: none;">
+      <div class="portal-container" style="grid-template-columns: 1fr 1fr;">
+        <!-- Details Card -->
+        <div class="sidebar-card">
+          <div class="card-padded">
+            <h3 class="card-inner-title">Persoonlijke Gegevens</h3>
+            <div class="vintage-line" style="margin: 0;"></div>
+            
+            <form id="profile-edit-form" class="vintage-form">
+              <div class="form-group">
+                <label class="form-label" for="profile-input-name">Volledige Naam (Kaarthouder)</label>
+                <input type="text" id="profile-input-name" class="form-control" value="Deon Draijer" required />
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="profile-input-email">E-mailadres</label>
+                <input type="email" id="profile-input-email" class="form-control" value="deondraijer@gmail.com" required />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="profile-input-phone">Telefoonnummer</label>
+                <input type="tel" id="profile-input-phone" class="form-control" value="+31 6 12345678" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="profile-input-whisky">Favoriete Whisky Stijl</label>
+                <select id="profile-input-whisky" class="form-control" style="background-color: var(--bg-sand);">
+                  <option value="Single Malt Scotch">Single Malt Scotch</option>
+                  <option value="Bourbon & Rye">Bourbon & Rye</option>
+                  <option value="Peated / Islay">Peated / Islay (Rokerig)</option>
+                  <option value="Irish Whiskey">Irish Whiskey</option>
+                  <option value="Nederlandse Craft Whisky">Nederlandse Craft Whisky</option>
+                  <option value="Blended Scotch">Blended Scotch</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-gold btn-block btn-sidebar-action" style="margin-top: 1rem;">
+                Wijzigingen Opslaan
+              </button>
+            </form>
+
+            <div class="demo-banner" id="profile-success-banner" style="display: none; border-color: #006448; background-color: rgba(0, 100, 72, 0.08); margin-top: 1rem; padding: 0.75rem 1rem;">
+              <span style="color: #006448; font-family: var(--font-sans); font-weight: 700; font-size: 0.9rem;">Gegevens succesvol opgeslagen! De naam op uw e-tickets is bijgewerkt.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order History Card -->
+        <div class="sidebar-card">
+          <div class="card-padded" style="justify-content: flex-start; gap: 1.5rem;">
+            <h3 class="card-inner-title">Bestelgeschiedenis</h3>
+            <div class="vintage-line" style="margin: 0;"></div>
+            
+            <div class="receipt-table-wrapper">
+              <table class="receipt-table">
+                <thead>
+                  <tr>
+                    <th>Reservering</th>
+                    <th>Datum</th>
+                    <th>Totaal</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong id="receipt-res-no">#WF-2026-84387</strong></td>
+                    <td>26 Mei 2026</td>
+                    <td><strong id="receipt-total" style="color: var(--whisky-gold-dark);">€ 79,50</strong></td>
+                    <td><span class="status-badge paid">Betaald</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="receipt-billing-note" style="border-top: 1px dotted var(--border-color-dark); padding-top: 1.25rem;">
+              <p class="sidebar-card-subtext">
+                Heeft u vragen over uw factuur of wilt u uw bestelling annuleren? Neem direct contact op via <a href="mailto:tickets@internationalwhiskyfestival.nl" class="text-gold" style="font-weight: 700;">tickets@internationalwhiskyfestival.nl</a>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: EVENT GUIDE PANEL -->
+    <div class="portal-tab-pane" id="tab-info" style="display: none;">
+      <div class="event-info-wrapper">
+        
+        <!-- HERO CARD: OFFICIAL INTERACTIVE GROTE KERK FLOOR PLAN (1-ON-1 MATCH WITH STANDHOUDERS) -->
+        <div class="sidebar-card event-hero-card">
+          <div class="card-padded">
+            <div class="event-hero-header">
+              <div>
+                <h3 class="card-inner-title">Interactieve Plattegrond Grote Kerk Den Haag</h3>
+                <p class="sidebar-card-subtext" style="margin-top: 4px;">
+                  Klik op een standnummer om direct de gegevens en merken van de standhouder te bekijken.
+                </p>
+              </div>
+              <a href="/standhouders" class="btn btn-gold btn-sidebar-action" style="text-align: center; text-decoration: none; width: auto; padding: 0.75rem 1.25rem;">
+                Bekijk Volledige Standhouderslijst →
+              </a>
+            </div>
+
+            <div class="vintage-line" style="margin: 0.75rem 0 1.25rem;"></div>
+
+            <!-- 1-to-1 Interactive Map Layout (Map + Detail Panel) -->
+            <div class="portal-map-interactive-grid">
+              
+              <!-- SVG Church Map Container -->
+              <div class="official-map-container">
+                <svg viewBox="0 0 980 500" class="church-svg-map" id="account-church-map" style="width: 100%; height: auto; display: block;">
+                  <!-- Church Outer Walls Silhouette -->
+                  <path d="M 140 150 
+                           L 140 80 Q 140 70 150 70 L 640 70 L 640 20 Q 640 10 650 10 L 760 10 Q 770 10 770 20 L 770 70 L 820 70 
+                           L 860 90 L 900 130 L 920 180 L 930 250 L 920 320 L 900 370 L 860 410 L 820 430 L 770 430 L 770 480 Q 770 490 760 490 L 650 490 Q 640 490 640 480 L 640 430 L 250 430 L 250 480 Q 250 490 240 490 L 150 490 Q 140 490 140 480 L 140 430 L 140 350
+                           L 90 350 L 50 310 L 30 250 L 50 190 L 90 150 Z" 
+                        fill="var(--bg-sand)" stroke="var(--text-charcoal)" stroke-width="2.5" stroke-linejoin="round" class="church-outline" />
+
+                  <!-- Interior Architecture Zones -->
+                  <rect x="670" y="150" width="180" height="200" fill="#EBE4D5" stroke="var(--border-color-dark)" stroke-width="1.5" stroke-dasharray="4 4" />
+                  <text x="760" y="255" class="map-zone-label" style="font-family: var(--font-sans); font-size: 11px; fill: var(--text-muted); text-anchor: middle;">Hoogkoor</text>
+                  
+                  <path d="M 670 80 A 170 170 0 0 1 890 250 A 170 170 0 0 1 670 420" fill="none" stroke="var(--border-color-dark)" stroke-width="1" stroke-dasharray="6 6" />
+
+                  <!-- Pillars -->
+                  <g class="pillars">
+                    <circle cx="200" cy="140" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <circle cx="280" cy="140" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <circle cx="360" cy="140" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <circle cx="440" cy="140" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <circle cx="520" cy="140" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <circle cx="600" cy="140" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    
+                    <circle cx="200" cy="360" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <circle cx="280" cy="360" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <circle cx="360" cy="360" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <circle cx="440" cy="360" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <circle cx="520" cy="360" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <circle cx="600" cy="360" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+
+                    <circle cx="670" cy="150" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <circle cx="720" cy="115" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <circle cx="780" cy="100" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <circle cx="840" cy="115" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <circle cx="890" cy="150" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    
+                    <circle cx="670" cy="350" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <circle cx="720" cy="385" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <circle cx="780" cy="400" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <circle cx="840" cy="385" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <circle cx="890" cy="350" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                  </g>
+
+                  <!-- 1-to-1 Interactive Stands -->
+                  <g class="svg-stand" data-stand="U">
+                    <rect x="50" y="210" width="60" height="80" rx="4" class="stand-box" />
+                    <text x="80" y="255" class="stand-num">U</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="C">
+                    <rect x="145" y="300" width="45" height="45" rx="4" class="stand-box catering" />
+                    <text x="167" y="327" class="stand-num text-small">C</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="3">
+                    <rect x="155" y="85" width="85" height="45" rx="3" class="stand-box" />
+                    <text x="197" y="112" class="stand-num">3</text>
+                  </g>
+                  <g class="svg-stand" data-stand="4">
+                    <rect x="250" y="85" width="130" height="35" rx="3" class="stand-box" />
+                    <text x="315" y="107" class="stand-num">4</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="5">
+                    <rect x="410" y="85" width="50" height="35" rx="3" class="stand-box" />
+                    <text x="435" y="107" class="stand-num">5</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="6">
+                    <rect x="525" y="85" width="22" height="35" rx="2" class="stand-box" />
+                    <text x="536" y="107" class="stand-num text-small">6</text>
+                  </g>
+                  <g class="svg-stand" data-stand="6">
+                    <rect x="552" y="85" width="22" height="35" rx="2" class="stand-box" />
+                    <text x="563" y="107" class="stand-num text-small">6</text>
+                  </g>
+                  <g class="svg-stand" data-stand="6">
+                    <rect x="579" y="85" width="22" height="35" rx="2" class="stand-box" />
+                    <text x="590" y="107" class="stand-num text-small">6</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="12">
+                    <rect x="250" y="170" width="130" height="60" rx="3" class="stand-box" />
+                    <text x="315" y="205" class="stand-num">12</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="14">
+                    <rect x="250" y="285" width="65" height="35" rx="3" class="stand-box" />
+                    <text x="282" y="307" class="stand-num">14</text>
+                  </g>
+                  <g class="svg-stand" data-stand="15">
+                    <rect x="315" y="285" width="65" height="35" rx="3" class="stand-box" />
+                    <text x="347" y="307" class="stand-num">15</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="22">
+                    <rect x="250" y="325" width="40" height="30" rx="3" class="stand-box" />
+                    <text x="270" y="345" class="stand-num text-small">22</text>
+                  </g>
+                  <g class="svg-stand" data-stand="21">
+                    <rect x="290" y="325" width="40" height="30" rx="3" class="stand-box" />
+                    <text x="310" y="345" class="stand-num text-small">21</text>
+                  </g>
+                  <g class="svg-stand" data-stand="20">
+                    <rect x="330" y="325" width="50" height="30" rx="3" class="stand-box" />
+                    <text x="355" y="345" class="stand-num text-small">20</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="11">
+                    <rect x="440" y="170" width="80" height="70" rx="3" class="stand-box" />
+                    <text x="480" y="210" class="stand-num">11</text>
+                  </g>
+                  <g class="svg-stand" data-stand="8">
+                    <rect x="525" y="170" width="35" height="33" rx="3" class="stand-box" />
+                    <text x="542" y="191" class="stand-num text-small">8</text>
+                  </g>
+                  <g class="svg-stand" data-stand="9">
+                    <rect x="565" y="170" width="35" height="33" rx="3" class="stand-box" />
+                    <text x="582" y="191" class="stand-num text-small">9</text>
+                  </g>
+                  <g class="svg-stand" data-stand="10">
+                    <rect x="525" y="208" width="75" height="32" rx="3" class="stand-box" />
+                    <text x="562" y="229" class="stand-num text-small">10</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="O">
+                    <rect x="395" y="285" width="45" height="34" rx="3" class="stand-box organisation" />
+                    <text x="417" y="307" class="stand-num text-small">O</text>
+                  </g>
+                  <g class="svg-stand" data-stand="16">
+                    <rect x="395" y="322" width="45" height="34" rx="3" class="stand-box" />
+                    <text x="417" y="343" class="stand-num text-small">16</text>
+                  </g>
+                  <g class="svg-stand" data-stand="17">
+                    <rect x="443" y="285" width="45" height="34" rx="3" class="stand-box organisation" />
+                    <text x="465" y="307" class="stand-num text-small">17</text>
+                  </g>
+                  <g class="svg-stand" data-stand="18">
+                    <rect x="443" y="322" width="45" height="34" rx="3" class="stand-box" />
+                    <text x="465" y="343" class="stand-num text-small">18</text>
+                  </g>
+                  
+                  <g class="svg-stand" data-stand="15">
+                    <rect x="500" y="285" width="60" height="71" rx="3" class="stand-box" />
+                    <text x="530" y="325" class="stand-num">15</text>
+                  </g>
+                  <g class="svg-stand" data-stand="19">
+                    <rect x="570" y="285" width="60" height="71" rx="3" class="stand-box" />
+                    <text x="600" y="325" class="stand-num">19</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="20">
+                    <rect x="250" y="375" width="85" height="35" rx="3" class="stand-box" />
+                    <text x="292" y="397" class="stand-num">20</text>
+                  </g>
+                  <g class="svg-stand" data-stand="21">
+                    <rect x="335" y="375" width="45" height="35" rx="3" class="stand-box" />
+                    <text x="357" y="397" class="stand-num text-small">21</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="S">
+                    <rect x="260" y="420" width="110" height="60" rx="4" class="stand-box shop" />
+                    <text x="315" y="455" class="stand-num">S</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="22">
+                    <rect x="400" y="375" width="45" height="35" rx="3" class="stand-box" />
+                    <text x="422" y="397" class="stand-num text-small">22</text>
+                  </g>
+                  <g class="svg-stand" data-stand="23">
+                    <rect x="450" y="375" width="65" height="35" rx="3" class="stand-box" />
+                    <text x="482" y="397" class="stand-num">23</text>
+                  </g>
+                  <g class="svg-stand" data-stand="25">
+                    <rect x="525" y="375" width="45" height="35" rx="3" class="stand-box" />
+                    <text x="547" y="397" class="stand-num text-small">25</text>
+                  </g>
+                  <g class="svg-stand" data-stand="28">
+                    <rect x="575" y="375" width="45" height="35" rx="3" class="stand-box" />
+                    <text x="597" y="397" class="stand-num text-small">28</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="42">
+                    <rect x="645" y="20" width="90" height="60" rx="4" class="stand-box chapel" />
+                    <text x="690" y="55" class="stand-num">42</text>
+                  </g>
+                  <g class="svg-stand" data-stand="29">
+                    <rect x="645" y="420" width="90" height="60" rx="4" class="stand-box chapel" />
+                    <text x="690" y="455" class="stand-num">29</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="44">
+                    <rect x="700" y="190" width="120" height="120" rx="6" class="stand-box choir" />
+                    <text x="760" y="255" class="stand-num">44</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="43">
+                    <rect x="795" y="150" width="30" height="30" rx="3" class="stand-box" />
+                    <text x="810" y="170" class="stand-num text-small">43</text>
+                  </g>
+                  <g class="svg-stand" data-stand="45">
+                    <rect x="830" y="170" width="30" height="30" rx="3" class="stand-box" />
+                    <text x="845" y="190" class="stand-num text-small">45</text>
+                  </g>
+                  <g class="svg-stand" data-stand="46">
+                    <rect x="845" y="210" width="30" height="80" rx="3" class="stand-box" />
+                    <text x="860" y="255" class="stand-num text-small">46</text>
+                  </g>
+                  <g class="svg-stand" data-stand="47">
+                    <rect x="830" y="300" width="30" height="30" rx="3" class="stand-box" />
+                    <text x="845" y="320" class="stand-num text-small">47</text>
+                  </g>
+                  <g class="svg-stand" data-stand="48">
+                    <rect x="795" y="320" width="30" height="30" rx="3" class="stand-box" />
+                    <text x="810" y="340" class="stand-num text-small">48</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="41">
+                    <rect x="680" y="85" width="35" height="28" rx="2" class="stand-box" />
+                    <text x="697" y="103" class="stand-num text-small">41</text>
+                  </g>
+                  <g class="svg-stand" data-stand="40">
+                    <rect x="720" y="85" width="35" height="28" rx="2" class="stand-box" />
+                    <text x="737" y="103" class="stand-num text-small">40</text>
+                  </g>
+                  <g class="svg-stand" data-stand="39">
+                    <rect x="760" y="85" width="35" height="28" rx="2" class="stand-box catering" />
+                    <text x="777" y="103" class="stand-num text-small">39</text>
+                  </g>
+                  <g class="svg-stand" data-stand="38">
+                    <rect x="800" y="85" width="35" height="28" rx="2" class="stand-box" />
+                    <text x="817" y="103" class="stand-num text-small">38</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="37">
+                    <rect x="838" y="105" width="35" height="28" rx="2" class="stand-box" />
+                    <text x="855" y="123" class="stand-num text-small">37</text>
+                  </g>
+                  <g class="svg-stand" data-stand="36">
+                    <rect x="865" y="145" width="35" height="28" rx="2" class="stand-box" />
+                    <text x="882" y="163" class="stand-num text-small">36</text>
+                  </g>
+                  <g class="svg-stand" data-stand="35">
+                    <rect x="880" y="190" width="28" height="38" rx="2" class="stand-box" />
+                    <text x="894" y="214" class="stand-num text-small">35</text>
+                  </g>
+                  <g class="svg-stand" data-stand="34">
+                    <rect x="880" y="265" width="28" height="38" rx="2" class="stand-box" />
+                    <text x="894" y="289" class="stand-num text-small">34</text>
+                  </g>
+                  <g class="svg-stand" data-stand="33">
+                    <rect x="865" y="325" width="35" height="28" rx="2" class="stand-box" />
+                    <text x="882" y="343" class="stand-num text-small">33</text>
+                  </g>
+                  <g class="svg-stand" data-stand="32">
+                    <rect x="838" y="365" width="35" height="28" rx="2" class="stand-box" />
+                    <text x="855" y="383" class="stand-num text-small">32</text>
+                  </g>
+                  <g class="svg-stand" data-stand="31">
+                    <rect x="800" y="385" width="40" height="28" rx="2" class="stand-box" />
+                    <text x="820" y="403" class="stand-num text-small">31</text>
+                  </g>
+                  <g class="svg-stand" data-stand="30">
+                    <rect x="755" y="385" width="40" height="28" rx="2" class="stand-box" />
+                    <text x="775" y="403" class="stand-num text-small">30</text>
+                  </g>
+                </svg>
+              </div>
+
+              <!-- Interactive Stand Detail Side Card -->
+              <div class="sidebar-card info-card-detail" id="account-stand-info-card" style="margin: 0;">
+                <div class="card-padded" id="account-default-info-state" style="height: 100%; justify-content: center; text-align: center;">
+                  <h3 class="card-inner-title">Stand Details</h3>
+                  <div class="vintage-line"></div>
+                  <p class="sidebar-card-text" style="font-style: italic; color: var(--text-muted);">
+                    Klik op een standnummer op de plattegrond om de standhouder, merken en beschrijving te bekijken.
+                  </p>
+                </div>
+                
+                <div class="card-padded" id="account-active-info-state" style="display: none;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="status-badge paid" id="account-stand-badge" style="background: var(--whisky-gold-dark); color: #fff; border: none;">STAND 17</span>
+                    <span class="meta-label" id="account-stand-category" style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase;">SCHOTSE SINGLE MALTS</span>
+                  </div>
+                  
+                  <h3 class="card-inner-title" id="account-stand-title" style="margin-top: 0.5rem; font-size: 1.5rem;">International Whisky Society</h3>
+                  <div class="vintage-line" style="margin: 0.25rem 0;"></div>
+
+                  <p class="sidebar-card-text" id="account-stand-desc" style="font-size: 0.9rem;">
+                    De International Whisky Society viert het 25-jarig jubileum met exclusieve festivalbottelingen door de jaren heen!
+                  </p>
+
+                  <div style="margin-top: 0.75rem;">
+                    <span class="meta-label" style="display: block; margin-bottom: 0.35rem;">MERKEN & HIGHLIGHTS:</span>
+                    <div id="account-stand-brands-list" style="display: flex; flex-wrap: wrap; gap: 6px;">
+                      <span class="addon-badge">Festival Bottelingen</span>
+                      <span class="addon-badge">Whisky Club</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- BOTTOM GRID: 3 BALANCED EQUAL-HEIGHT COLUMNS -->
+        <div class="event-info-grid-three">
+          
+          <!-- COLUMN 1: BEREIKBAARHEID & PARKEREN -->
+          <div class="sidebar-card">
+            <div class="card-padded" style="height: 100%; justify-content: space-between;">
+              <div>
+                <h3 class="card-inner-title">Bereikbaarheid & Parkeren</h3>
+                <div class="vintage-line" style="margin: 0.5rem 0 1rem;"></div>
+
+                <div class="rules-list">
+                  <div class="rule-item">
+                    <h5>◆ Openbaar Vervoer (OV)</h5>
+                    <p class="sidebar-card-subtext">
+                      Vanaf Den Haag CS of Hollands Spoor neemt u Tram 2, 3, 4 of 6. Uitstappen bij halte <strong>Grote Markt</strong> of <strong>Gravenstraat</strong> (2 min. lopen).
+                    </p>
+                  </div>
+
+                  <div class="rule-item">
+                    <h5>◆ Parkeergarages</h5>
+                    <p class="sidebar-card-subtext">
+                      • <strong>Parkeergarage Torenstraat</strong> (Torenstraat 19) — 3 min. lopen.<br/>
+                      • <strong>Q-Park City Parking</strong> (Laan 20) — 4 min. lopen.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <a href="https://maps.google.com/?q=Grote+Kerk+Den+Haag" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sidebar-action" style="text-align: center; text-decoration: none; border-color: var(--whisky-gold-dark); color: var(--whisky-gold-dark); margin-top: 1rem;">
+                Open in Google Maps
+              </a>
+            </div>
+          </div>
+
+          <!-- COLUMN 2: DRAMS, SLIJTERIJ & HORECA -->
+          <div class="sidebar-card">
+            <div class="card-padded" style="height: 100%;">
+              <div>
+                <h3 class="card-inner-title">Drams, Slijterij & Horeca</h3>
+                <div class="vintage-line" style="margin: 0.5rem 0 1rem;"></div>
+
+                <div class="rules-list">
+                  <div class="rule-item">
+                    <h5>◆ Drams (Proefmunten)</h5>
+                    <p class="sidebar-card-subtext">
+                      Het proeven van whisky's gebeurt met "Drams", verkregen bij de kassa's in de kerk (pinnen/contant). Restitutie is niet mogelijk.
+                    </p>
+                  </div>
+
+                  <div class="rule-item">
+                    <h5>◆ Festivalslijterij (Stand 48)</h5>
+                    <p class="sidebar-card-subtext">
+                      Koop uw favoriete flessen direct bij Stand 48 in het schip of haal uw bestelde jubileumbotteling op.
+                    </p>
+                  </div>
+
+                  <div class="rule-item">
+                    <h5>◆ Horeca & Garderobe</h5>
+                    <p class="sidebar-card-subtext">
+                      Warme snacks bij het Food Court. Gratis bewaakte garderobe bij de hoofdingang.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- COLUMN 3: SESSIE SCHEMA & FAQ -->
+          <div class="sidebar-card">
+            <div class="card-padded" style="height: 100%;">
+              <div>
+                <h3 class="card-inner-title">Sessie Schema & FAQ</h3>
+                <div class="vintage-line" style="margin: 0.5rem 0 1rem;"></div>
+
+                <div class="program-guide-booklet">
+                  <div class="program-booklet-column">
+                    <h4 class="booklet-chapter-title">I. Sessietijden</h4>
+                    <ul class="booklet-list">
+                      <li><strong>Vrijdag VIP:</strong> 13:00 - 17:00 (Inloop 12:30).</li>
+                      <li><strong>Vrijdag Avond:</strong> 19:00 - 23:00 (Inloop 18:30).</li>
+                      <li><strong>Zaterdag Middag:</strong> 13:00 - 17:00 (Inloop 12:30).</li>
+                      <li><strong>Zaterdag Avond:</strong> 19:00 - 23:00 (Inloop 18:30).</li>
+                      <li><strong>Zondag Middag:</strong> 13:00 - 17:00 (Inloop 12:30).</li>
+                    </ul>
+                  </div>
+
+                  <div class="program-booklet-column" style="margin-top: 0.75rem;">
+                    <h4 class="booklet-chapter-title">II. Proefglas & Toegang</h4>
+                    <p class="sidebar-card-subtext" style="margin-top: 0.4rem;">
+                      Officiële glas inbegrepen bij de deur. Gebruik de spoelstations. De Grote Kerk is volledig rolstoeltoegankelijk. 18+ legitimatie verplicht.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 3. Global Footer Component -->
+  <Footer />
+</Layout>
+
+<style is:global>
+  /* --- Global Reset & Page Wrapper --- */
+  .account-page-wrapper {
+    background-color: var(--bg-parchment);
+    min-height: calc(100vh - 100px);
+    padding: 10rem 2rem 6rem;
+    max-width: 1250px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2.25rem;
+  }
+
+  /* --- Portal Header --- */
+  .portal-header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .portal-tag {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--whisky-gold-dark);
+  }
+
+  .portal-title {
+    font-family: var(--font-display);
+    font-size: 3.25rem;
+    color: var(--text-charcoal);
+    margin: 0;
+    line-height: 1.1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .member-tag-badge {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background-color: var(--whisky-gold-dark);
+    color: #ffffff;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    vertical-align: middle;
+  }
+
+  .portal-subtitle {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: var(--text-muted);
+  }
+
+  /* Demonstration Banner */
+  .demo-banner {
+    background-color: var(--bg-paper-card);
+    border: 1.5px solid var(--border-color-dark);
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+  }
+
+  .demo-banner-inner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .demo-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .demo-text strong {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--text-charcoal);
+  }
+
+  .demo-text span {
+    font-family: var(--font-serif);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  /* --- RESTORED VINTAGE TAB NAVIGATION DESIGN --- */
+  .portal-tabs-container {
+    width: 100%;
+    border-bottom: 2px solid var(--text-charcoal);
+  }
+
+  .portal-tabs-inner {
+    display: flex;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .portal-tab-trigger {
+    flex: 1;
+    background-color: var(--bg-sand);
+    border: 2px solid var(--text-charcoal);
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    padding: 1rem 1.5rem;
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-charcoal);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+  }
+
+  .portal-tab-trigger:hover {
+    background-color: #c9dbd5;
+  }
+
+  .portal-tab-trigger.active {
+    background-color: var(--bg-paper-card);
+    border: 2px solid var(--text-charcoal);
+    border-bottom: 3px solid var(--bg-paper-card);
+    margin-bottom: -2px;
+    position: relative;
+    z-index: 2;
+    color: var(--whisky-gold-dark);
+  }
+
+  /* --- Tab Content Layout --- */
+  .portal-tab-pane {
+    animation: fade-in-up 0.3s ease-out;
+  }
+
+  .portal-container {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  /* --- Event Info Restructured Layout --- */
+  .event-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  /* --- 1-to-1 Interactive Map Layout (Matching standhouders.astro) --- */
+  .map-detail-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .map-visual-container {
+    background-color: var(--bg-paper-card);
+    border: 2px solid var(--text-charcoal);
+    border-radius: 4px;
+    box-shadow: 6px 6px 0px var(--text-charcoal);
+    overflow: hidden;
+  }
+
+  .map-scroll-area {
+    padding: 1.5rem;
+    position: relative;
+    overflow-x: auto;
+  }
+
+  .map-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--text-charcoal);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .toolbar-title {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    color: var(--text-charcoal);
+  }
+
+  .church-svg-map {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .church-outline {
+    fill: var(--bg-sand);
+    stroke: var(--text-charcoal);
+    stroke-width: 2.5;
+  }
+
+  .pillar {
+    fill: var(--border-color-dark);
+    stroke: var(--text-charcoal);
+    stroke-width: 1;
+    opacity: 0.9;
+  }
+
+  .map-zone-label {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.1rem;
+    fill: var(--text-muted);
+    opacity: 0.25;
+    text-anchor: middle;
+    pointer-events: none;
+  }
+
+  /* --- SVG Stand Boxes (Exact match with standhouders page) --- */
+  .stand-box {
+    fill: var(--bg-paper-card) !important;
+    stroke: var(--text-charcoal) !important;
+    stroke-width: 1.8 !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .stand-num {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.85rem;
+    fill: var(--text-charcoal) !important;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .stand-num.text-small {
+    font-size: 0.75rem;
+  }
+
+  .svg-stand {
+    cursor: pointer;
+  }
+
+  .svg-stand:hover .stand-box {
+    fill: var(--whisky-gold-light) !important;
+    stroke: var(--whisky-gold-dark) !important;
+    filter: drop-shadow(0 2px 5px rgba(197, 139, 57, 0.2));
+  }
+
+  .stand-box.shop {
+    fill: rgba(44, 94, 67, 0.05) !important;
+    stroke: var(--success-green) !important;
+  }
+  .svg-stand[data-stand="S"] .stand-num {
+    fill: var(--success-green) !important;
+  }
+
+  .stand-box.organisation {
+    fill: rgba(143, 91, 25, 0.05) !important;
+    stroke: var(--whisky-gold-dark) !important;
+  }
+  .svg-stand[data-stand="O"] .stand-num,
+  .svg-stand[data-stand="17"] .stand-num {
+    fill: var(--whisky-gold-dark) !important;
+  }
+
+  .stand-box.catering {
+    fill: #FFF3CD !important;
+    stroke: #856404 !important;
+  }
+  .svg-stand[data-stand="C"] .stand-num {
+    fill: #856404 !important;
+  }
+
+  .svg-stand.selected-stand .stand-box {
+    fill: var(--whisky-gold-dark) !important;
+    stroke: var(--text-charcoal) !important;
+    stroke-width: 2.5px !important;
+  }
+
+  .svg-stand.selected-stand .stand-num {
+    fill: #ffffff !important;
+    font-weight: 900;
+  }
+
+  .sidebar-exhibitors-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .detail-stand-badge-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--text-charcoal);
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .detail-stand-number {
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    color: var(--whisky-gold-dark);
+    line-height: 1;
+  }
+
+  .detail-content-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .detail-brands-box {
+    border-top: 1px dotted var(--border-color-dark);
+    padding-top: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .brands-label {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+  }
+
+  .brands-list-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .brand-tag {
+    background-color: var(--bg-sand);
+    border: 1px solid var(--border-color-dark);
+    color: var(--text-charcoal);
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .event-info-grid-three {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+    align-items: stretch;
+  }
+
+  @media (max-width: 1024px) {
+    .map-detail-layout,
+    .event-info-grid-three {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .tickets-main-column {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    min-width: 0;
+  }
+
+  /* --- Sidebar Cards --- */
+  .portal-sidebar-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .sidebar-card {
+    background-color: var(--bg-paper-card);
+    border: 2px solid var(--text-charcoal);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+    overflow: hidden;
+  }
+
+  .card-padded {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .card-inner-title {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    color: var(--text-charcoal);
+    margin: 0;
+  }
+
+  .sidebar-card-text {
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--text-charcoal);
+  }
+
+  .sidebar-card-subtext {
+    font-family: var(--font-serif);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .sidebar-actions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .sidebar-links-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .action-note-text {
+    font-family: var(--font-serif);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+    font-style: italic;
+    margin: 0;
+  }
+
+  .btn-sidebar-action {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  /* --- Ticket Stub Card Styling --- */
+  .ticket-envelope {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ticket-stub-large {
+    background-color: var(--bg-paper-card);
+    border: 2px solid var(--text-charcoal);
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.06);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .ticket-right-stub {
+    background-color: var(--bg-sand);
+    border-right: 2px dashed var(--border-color-dark);
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .scan-label {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .qr-code-holder {
+    background-color: #ffffff;
+    border: 2px solid var(--text-charcoal);
+    padding: 0.85rem;
+    border-radius: 6px;
+    margin-bottom: 0.85rem;
+  }
+
+  .scan-instructions {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--whisky-gold-dark);
+  }
+
+  .scan-res-hash {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-charcoal);
+    margin-top: 2px;
+  }
+
+  .ticket-left-stub {
+    padding: 2rem 2.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .ticket-watermark {
+    position: absolute;
+    right: 2rem;
+    bottom: 1rem;
+    font-family: var(--font-display);
+    font-size: 7rem;
+    color: rgba(0, 100, 72, 0.04);
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  .ticket-stub-header {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .ticket-stub-date-badge {
+    background-color: var(--text-charcoal);
+    color: var(--whisky-gold);
+    border-radius: 6px;
+    padding: 0.4rem 0.85rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 54px;
+  }
+
+  .badge-month {
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+  }
+
+  .badge-day {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .ticket-stub-org {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .org-established {
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: var(--whisky-gold-dark);
+    letter-spacing: 0.1em;
+  }
+
+  .org-name {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-charcoal);
+  }
+
+  .org-location {
+    font-family: var(--font-serif);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .vintage-divider {
+    border-bottom: 1px dashed var(--border-color-dark);
+    margin: 1.25rem 0;
+  }
+
+  .ticket-session-title {
+    font-family: var(--font-display);
+    font-size: 1.85rem;
+    color: var(--text-charcoal);
+    margin: 0 0 1rem;
+    line-height: 1.15;
+  }
+
+  .ticket-meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem 1.5rem;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .meta-label {
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  .meta-value {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-charcoal);
+  }
+
+  .ticket-stub-footer {
+    margin-top: 1.25rem;
+  }
+
+  .stub-disclaimer {
+    font-family: var(--font-serif);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* --- Form Inputs Styling --- */
+  .vintage-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-label {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-charcoal);
+  }
+
+  .form-control {
+    background-color: var(--bg-parchment);
+    border: 2px solid var(--text-charcoal);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    color: var(--text-charcoal);
+    outline: none;
+    transition: box-shadow 0.2s;
+  }
+
+  .form-control:focus {
+    box-shadow: 0px 0px 0px 3px var(--whisky-gold-trans);
+  }
+
+  /* --- Receipt Table styling --- */
+  .receipt-table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+  }
+
+  .receipt-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    text-align: left;
+  }
+
+  .receipt-table th {
+    border-bottom: 2px solid var(--text-charcoal);
+    padding: 0.85rem 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .receipt-table td {
+    padding: 1.1rem 0.65rem;
+    border-bottom: 1px dotted var(--border-color-dark);
+  }
+
+  .status-badge {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 0.3rem 0.65rem;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    display: inline-block;
+  }
+
+  .status-badge.paid {
+    background-color: rgba(0, 100, 72, 0.08);
+    color: var(--whisky-gold-dark);
+    border: 1px solid rgba(0, 100, 72, 0.25);
+  }
+
+  /* --- Event booklet layout --- */
+  .program-guide-booklet {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .booklet-chapter-title {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--whisky-gold-dark);
+    margin: 0;
+  }
+
+  .booklet-list {
+    margin: 0.65rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .booklet-list li {
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--text-charcoal);
+    position: relative;
+    padding-left: 1.25rem;
+  }
+
+  .booklet-list li::before {
+    content: "◆";
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 0.65rem;
+    color: var(--whisky-gold-dark);
+  }
+
+  .rules-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .rule-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .rule-item h5 {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-charcoal);
+    margin: 0;
+  }
+
+  /* --- Keyframes --- */
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* --- Responsive Styles --- */
+  @media (max-width: 1024px) {
+    .portal-container {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .account-page-wrapper {
+      padding-top: 8rem;
+    }
+
+    .ticket-stub-large {
+      grid-template-columns: 1fr;
+    }
+    
+    .ticket-right-stub {
+      border-right: none;
+      border-bottom: 2px dashed var(--border-color-dark);
+      padding: 1.5rem;
+    }
+
+    .ticket-left-stub {
+      padding: 1.5rem;
+    }
+
+    .portal-title {
+      font-size: 2.25rem;
+    }
+  }
+
+  /* Print styling for 1-page A4 PDF output */
+  @media print {
+    body {
+      background: white !important;
+      color: black !important;
+    }
+    header, footer, .portal-tabs-container, .portal-header, .demo-banner, .portal-sidebar-grid, .btn-sidebar-action, .btn-ticket-download {
+      display: none !important;
+    }
+    .account-page-wrapper {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .portal-tab-pane {
+      display: block !important;
+      padding: 0 !important;
+    }
+    .portal-container {
+      display: block !important;
+      max-width: 100% !important;
+      padding: 0 !important;
+    }
+    .ticket-envelope {
+      border: none !important;
+      box-shadow: none !important;
+      margin: 0 0 2cm 0 !important;
+      page-break-after: always;
+    }
+    .ticket-stub-large {
+      border: 1.5px solid #1D1C1A !important;
+      box-shadow: none !important;
+      background: white !important;
+      color: black !important;
+      page-break-inside: avoid;
+    }
+    .ticket-left-stub, .ticket-right-stub {
+      background: white !important;
+      color: black !important;
+    }
+    .ticket-watermark {
+      color: rgba(29, 28, 26, 0.04) !important;
+    }
+  }
+</style>
+
+<script>
+  // ====== MY ACCOUNT TABS & DYNAMIC DATA LOADING ======
+  document.addEventListener('DOMContentLoaded', () => {
+    // toggle-share-menu-handler: Click to toggle share popup
+    document.addEventListener('click', (e) => {
+      const trigger = e.target.closest('.btn-share-trigger');
+      const allMenus = document.querySelectorAll('.ticket-share-menu');
+      
+      if (trigger) {
+        e.stopPropagation();
+        const wrapper = trigger.closest('.ticket-share-wrapper');
+        const menu = wrapper ? wrapper.querySelector('.ticket-share-menu') : null;
+        
+        allMenus.forEach(m => {
+          if (m !== menu) m.classList.remove('active');
+        });
+        
+        if (menu) {
+          menu.classList.toggle('active');
+        }
+      } else if (!e.target.closest('.ticket-share-menu')) {
+        allMenus.forEach(m => m.classList.remove('active'));
+      }
+    });
+    // 1. Tab Swapping Trigger Logic
+    const tabTriggers = document.querySelectorAll('.portal-tab-trigger');
+    const tabPanes = document.querySelectorAll('.portal-tab-pane');
+
+    tabTriggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const targetTab = trigger.getAttribute('data-tab');
+
+        tabTriggers.forEach(t => t.classList.remove('active'));
+        trigger.classList.add('active');
+
+        tabPanes.forEach(pane => {
+          if (pane.id === targetTab) {
+            pane.classList.add('active');
+            pane.style.display = "block";
+          } else {
+            pane.classList.remove('active');
+            pane.style.display = "none";
+          }
+        });
+      });
+    });
+
+    // 2. Data Population & Synchronization
+    const portalWelcomeEmail = document.getElementById('portal-welcome-email');
+    const portalTitleName = document.getElementById('portal-title-name');
+    const demoBanner = document.getElementById('demo-banner');
+
+    // Profile inputs
+    const profileInputName = document.getElementById('profile-input-name') as HTMLInputElement;
+    const profileInputEmail = document.getElementById('profile-input-email') as HTMLInputElement;
+    const profileInputPhone = document.getElementById('profile-input-phone') as HTMLInputElement;
+    const profileInputWhisky = document.getElementById('profile-input-whisky') as HTMLSelectElement;
+    
+    // Receipt elements
+    const receiptResNo = document.getElementById('receipt-res-no');
+    const receiptTotal = document.getElementById('receipt-total');
+
+    // Retrieve order details from localStorage
+    const stored = localStorage.getItem('wf_last_order');
+    let orderData: any = null;
+    
+    if (stored) {
+      try {
+        orderData = JSON.parse(stored);
+      } catch (e) {
+        console.error("Failed to parse stored order:", e);
+      }
+    }
+
+    // Fallback default order data (Demo Mode)
+    if (!orderData) {
+      orderData = {
+        name: "Deon Draijer",
+        email: "deondraijer@gmail.com",
+        items: [
+          {
+            id: "vip-session",
+            title: "VIP Sessie - Vrijdag",
+            qty: 1,
+            price: 79.50,
+            category: "entree"
+          }
+        ],
+        resNumber: "#WF-2026-84387",
+        phone: "+31 6 12345678",
+        whiskyStyle: "Single Malt Scotch",
+        isMember: true,
+        isDemo: true,
+        totalPrice: 79.50
+      };
+      if (demoBanner) demoBanner.style.display = "block";
+    } else {
+      if (demoBanner) demoBanner.style.display = "none";
+    }
+
+    if (!orderData.items || orderData.items.length === 0) {
+      orderData.items = [
+        {
+          id: "vip-session",
+          title: "VIP Sessie - Vrijdag",
+          qty: 1,
+          price: 79.50,
+          category: "entree"
+        }
+      ];
+    }
+
+    // Dynamic UI Renderer
+    function updatePortalUI() {
+      const userName = orderData.name || "Deon Draijer";
+      const userEmail = orderData.email || "deondraijer@gmail.com";
+
+      if (portalWelcomeEmail) {
+        portalWelcomeEmail.textContent = `Welkom in uw bezoeker omgeving · ${userEmail}`;
+      }
+
+      if (portalTitleName) {
+        if (orderData.isMember) {
+          portalTitleName.innerHTML = `Portaal van ${userName} <span class="member-tag-badge">IWS Lid</span>`;
+        } else {
+          portalTitleName.innerHTML = `Portaal van ${userName}`;
+        }
+      }
+
+      if (receiptResNo) receiptResNo.textContent = orderData.resNumber || "#WF-2026-84387";
+      if (receiptTotal) {
+        receiptTotal.textContent = `€ ${(orderData.totalPrice || 79.50).toFixed(2).replace('.', ',')}`;
+      }
+
+      // Populate form inputs
+      if (profileInputName) profileInputName.value = userName;
+      if (profileInputEmail) profileInputEmail.value = userEmail;
+      if (profileInputPhone) profileInputPhone.value = orderData.phone || "+31 6 12345678";
+      if (profileInputWhisky) profileInputWhisky.value = orderData.whiskyStyle || "Single Malt Scotch";
+
+      // Render Dynamic Tickets in Tab 1 (Each ticket contains an individual Download Button)
+      const ticketsContainer = document.getElementById("tickets-container");
+      if (ticketsContainer && orderData.items) {
+        ticketsContainer.innerHTML = "";
+        
+        orderData.items.forEach((item: any) => {
+          let displayDay = "13";
+          let displayMonth = "NOV";
+          let displayTime = item.timeslot || "13:00 - 17:00 UUR";
+          let watermark = "WF";
+          
+          const titleLower = item.title.toLowerCase();
+          
+          if (item.category === "entree") {
+            watermark = orderData.isMember ? "WS" : "WF";
+            if (titleLower.includes("vrijdag")) {
+              displayDay = "13";
+              displayTime = titleLower.includes("vip") ? "13:00 - 17:00 UUR" : "19:00 - 23:00 UUR";
+            } else if (titleLower.includes("zondag")) {
+              displayDay = "15";
+              displayTime = "13:00 - 17:00 UUR";
+            } else {
+              displayDay = "14";
+              displayTime = "13:00 - 17:00 UUR";
+            }
+          } else if (item.category === "tram") {
+            watermark = "WT";
+            displayDay = "14";
+            displayTime = item.timeslot || "14:00 UUR";
+          } else if (item.category === "botteling") {
+            watermark = "FB";
+            displayDay = "13-15";
+            displayTime = item.delivery === "shipping" ? "VERZENDING PER POST" : "AFHALEN (STAND 48)";
+          } else if (item.category === "masterclass") {
+            watermark = "MC";
+            displayDay = "14";
+            displayTime = item.timeslot || "14:00 - 14:45 UUR";
+          }
+
+          const ticketHTML = `
+            <div class="ticket-envelope">
+              <div class="ticket-stub-large">
+                <!-- QR Code & Scanner stub -->
+                <div class="ticket-right-stub">
+                  <span class="scan-label">CONTROLE STUB</span>
+                  
+                  <div class="qr-code-holder">
+                    <svg width="110" height="110" viewBox="0 0 100 100" style="shape-rendering: crispedges; display:block;">
+                      <path d="M0,0 h30 v10 h-20 v20 h-10 z" fill="#1D1C1A"/>
+                      <path d="M10,10 h10 v10 h-10 z" fill="#1D1C1A"/>
+                      <path d="M70,0 h30 v30 h-10 v-20 h-20 z" fill="#1D1C1A"/>
+                      <path d="M80,10 h10 v10 h-10 z" fill="#1D1C1A"/>
+                      <path d="M0,70 h10 v20 h20 v10 h-30 z" fill="#1D1C1A"/>
+                      <path d="M10,80 h10 v10 h-10 z" fill="#1D1C1A"/>
+                      <path d="M45,45 h10 v10 h-10 z" fill="var(--whisky-gold-dark)"/>
+                      <path d="M30,30 h10 v5 h-10 z M35,40 h15 v5 h-15 z M55,30 h10 v10 h-5 v-5 h-5 z" fill="#1D1C1A"/>
+                      <path d="M70,70 h30 v10 h-10 v10 h-20 z M80,80 h10 v10 h-10 z" fill="#1D1C1A"/>
+                      <path d="M40,65 h10 v10 h-10 z M55,60 h10 v5 h-10 z M60,75 h5 v15 h-5 z" fill="#1D1C1A"/>
+                      <path d="M65,45 h10 v5 h-10 z M30,55 h5 v15 h-5 z M45,85 h10 v5 h-10 z" fill="#1D1C1A"/>
+                    </svg>
+                  </div>
+
+                  <span class="scan-instructions">${item.category === 'botteling' && item.delivery === 'shipping' ? 'VERZONDEN' : 'SCAN BIJ DE DEUR'}</span>
+                  <span class="scan-res-hash">${orderData.resNumber || "#WF-2026-84387"}</span>
+                </div>
+
+                <!-- Session & Holder details -->
+                <div class="ticket-left-stub">
+                  <div class="ticket-watermark">${watermark}</div>
+                  
+                  <div class="ticket-stub-header">
+                    <div class="ticket-stub-date-badge">
+                      <span class="badge-month">${displayMonth}</span>
+                      <span class="badge-day">${displayDay}</span>
+                    </div>
+                    <div class="ticket-stub-org">
+                      <span class="org-established">Est. 2000</span>
+                      <span class="org-name">${item.category === 'masterclass' ? 'Festival Masterclass' : item.category === 'tram' ? 'Haagsche Whiskytram' : item.category === 'botteling' ? 'Festival Botteling' : 'International Whisky Fest'}</span>
+                      <span class="org-location">${item.category === 'masterclass' ? 'Nutshuis, Den Haag' : 'Grote Kerk, Den Haag'}</span>
+                    </div>
+                  </div>
+
+                  <div class="vintage-divider"></div>
+
+                  <div class="ticket-stub-body">
+                    <h2 class="ticket-session-title">${item.title}</h2>
+                    
+                    <div class="ticket-meta-grid">
+                      <div class="meta-item">
+                        <span class="meta-label">KAARTHOUDER:</span>
+                        <strong class="meta-value">${userName}</strong>
+                      </div>
+                      <div class="meta-item">
+                        <span class="meta-label">AANTAL:</span>
+                        <strong class="meta-value">${item.qty}x</strong>
+                      </div>
+                      <div class="meta-item">
+                        <span class="meta-label">TIJDSSLOT:</span>
+                        <strong class="meta-value">${displayTime.toUpperCase()}</strong>
+                      </div>
+                      <div class="meta-item">
+                        <span class="meta-label">RESERVERING #:</span>
+                        <strong class="meta-value" style="color: var(--whisky-gold-dark);">${orderData.resNumber || "#WF-2026-84387"}</strong>
+                      </div>
+                    </div>
+
+                    <!-- Individual Download Ticket Button for every ordered ticket -->
+                    <button type="button" class="btn btn-gold btn-ticket-download" onclick="window.print()" style="margin-top: 1.25rem; width: 100%; font-size: 0.85rem; padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                      </svg>
+                      Download E-Ticket (PDF)
+                    </button>
+                  </div>
+
+                  <div class="ticket-stub-footer">
+                    <span class="stub-disclaimer">* Toegang uitsluitend voor personen van 18 jaar en ouder. Legitimatie verplicht bij de deur.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+
+          ticketsContainer.innerHTML += ticketHTML;
+        });
+      }
+    }
+
+    // Initial render
+    updatePortalUI();
+
+    // 3. Profile Save Form Submission
+    const profileEditForm = document.getElementById('profile-edit-form');
+    const profileSuccessBanner = document.getElementById('profile-success-banner');
+
+    if (profileEditForm) {
+      profileEditForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        orderData.name = profileInputName.value;
+        orderData.email = profileInputEmail.value;
+        orderData.phone = profileInputPhone.value;
+        orderData.whiskyStyle = profileInputWhisky.value;
+        
+        if (orderData.isDemo) {
+          delete orderData.isDemo;
+          if (demoBanner) demoBanner.style.display = "none";
+        }
+
+        localStorage.setItem('wf_last_order', JSON.stringify(orderData));
+        updatePortalUI();
+
+        if (profileSuccessBanner) {
+          profileSuccessBanner.style.display = "block";
+          setTimeout(() => {
+            profileSuccessBanner.style.display = "none";
+          }, 4000);
+        }
+      });
+    }
+
+    // 4. Interactive Stand Map Click Logic on Account Page (1-to-1 match with standhouders page)
+    const exhibitorsData = [
+      { id: "1", name: "Distilleerderij de Bronckhorst", category: "dutch", brands: ["Nederlandse Whisky"], description: "Ambachtelijke Nederlandse single malt whisky, ter plaatse gedistilleerd in de Achterhoek." },
+      { id: "2", name: "Mitra", category: "world", brands: ["Merken volgen later"], description: "Mitra slijterijen presenteert een gevarieerde selectie van bekende en zeldzame whisky's." },
+      { id: "3", name: "Bresser en Timmer", category: "scotch", brands: ["Craft Spirits"], description: "Toonaangevende importeur van craft spirits. Stand 3 & 4." },
+      { id: "4", name: "Bresser en Timmer", category: "scotch", brands: ["Craft Spirits"], description: "Toonaangevende importeur van craft spirits. Stand 3 & 4." },
+      { id: "5", name: "Cley Whisky", category: "dutch", brands: ["Nederlandse Whisky (Rotterdam)"], description: "Rotterdamse craft distilleerderij die eigentijdse single malt en rye whisky's maakt met lokaal graan." },
+      { id: "6", name: "SMWS (Scotch Malt Whisky Society)", category: "world", brands: ["Whisky Club"], description: "De Schotse Malt Whisky Society biedt exclusieve single cask bottelingen voor clubleden." },
+      { id: "7", name: "De Monnik Dranken", category: "scotch", brands: ["Merken volgen later"], description: "Familiebedrijf en importeur met een prachtig portfolio aan Schotse single malts." },
+      { id: "8", name: "Whisky Import Nederland (WIN)", category: "independent", brands: ["Merken volgen later"], description: "Importeur van exclusieve onafhankelijke bottelingen." },
+      { id: "9", name: "Cane & Grain", category: "independent", brands: ["Merken volgen later"], description: "Onafhankelijke bottelingen en unieke single casks." },
+      { id: "10", name: "Anker Amsterdam Spirits", category: "world", brands: ["Merken volgen later"], description: "Groothandel en importeur van diverse dranken en spirits." },
+      { id: "11", name: "Diageo", category: "scotch", brands: ["Singleton", "Talisker", "Lagavulin"], description: "Klassieke Schotse single malts, van de zachte Singleton tot de intens rokerige Lagavulin." },
+      { id: "12", name: "Van Wees Holland", category: "independent", brands: ["Merken volgen later"], description: "Bekende importeur uit Amersfoort met een rijk aanbod aan onafhankelijke bottelingen." },
+      { id: "13", name: "Maltstock", category: "world", brands: ["Whisky Club", "Trail begeleiders"], description: "Het gezelligste whisky-weekend ter wereld, met proeverijen en trail-begeleiding." },
+      { id: "14", name: "Brouwers2Import", category: "world", brands: ["Merken volgen later"], description: "Importeur van diverse internationale whisky's en gedistilleerd." },
+      { id: "15", name: "Moët Hennessy", category: "scotch", brands: ["Ardbeg", "Glenmorangie"], description: "De ultieme Islay malts Ardbeg en de verfijnde Glenmorangie uit de hoogste ketels van Schotland." },
+      { id: "16", name: "Trade in Spirits", category: "world", brands: ["Merken volgen later"], description: "Importeur van diverse premium spirits." },
+      { id: "17", name: "International Whisky Society (IWS)", category: "world", brands: ["Whisky Club", "Festival Bottelings", "Glazen"], description: "De International Whisky Society viert het 25-jarig jubileum met exclusieve festivalbottelingen door de jaren heen!" },
+      { id: "18", name: "BUS Whisky", category: "dutch", brands: ["Nederlandse Whisky"], description: "Duurzame Nederlandse single malt whisky, lokaal verbouwd op de BUS boerderij." },
+      { id: "19", name: "Helvetia Spirits", category: "world", brands: ["Zwitserse Whisky"], description: "Ambachtelijke single malt whisky uit Zwitserland." },
+      { id: "20", name: "Helvetia Spirits", category: "world", brands: ["Zwitserse Whisky"], description: "Ambachtelijke single malt whisky uit Zwitserland." },
+      { id: "21", name: "The Chamberick", category: "dutch", brands: ["Nederlandse Whisky"], description: "Lokale Nederlandse whisky uit Kamerik." },
+      { id: "22", name: "Ben Becula Distillery", category: "scotch", brands: ["Ben Becula"], description: "Nieuwe distilleerderij van de Schotse Outer Hebrides." },
+      { id: "23", name: "Willem’s Whisky", category: "dutch", brands: ["Merken volgen later"], description: "Ambachtelijke Nederlandse whisky." },
+      { id: "24", name: "Het Anker België", category: "world", brands: ["Merken volgen later"], description: "Belgische whisky en bieren van stokerij Het Anker." },
+      { id: "25", name: "Bresser en Timmer (Proeftafel)", category: "scotch", brands: ["Merken volgen later"], description: "Extra proeftafel van Bresser en Timmer." },
+      { id: "27", name: "Kapel Zuid", category: "organisation", brands: ["Standruimte"], description: "Kapelruimte aan de zuidzijde van het kerkgebouw." },
+      { id: "28", name: "Bacardi", category: "world", brands: ["Teeling"], description: "Importeur van Teeling Irish Whiskey en andere premium merken." },
+      { id: "29", name: "Remy Cointreau", category: "scotch", brands: ["Bruichladdich"], description: "Progressieve Islay distilleerderij, producent van Bruichladdich, Port Charlotte en Octomore." },
+      { id: "31", name: "La Martiniquaise Benelux", category: "scotch", brands: ["Merken volgen later"], description: "Toegankelijke Speyside single malts met rijping op diverse vaten." },
+      { id: "32", name: "Dutch Whisky Teers", category: "independent", brands: ["Merken volgen later"], description: "Onafhankelijke bottelaars van bijzondere en zeldzame whisky's." },
+      { id: "34", name: "Barrel Tea", category: "catering", brands: ["Thee", "Gifts"], description: "Thee met de smaak van whisky, en diverse whisky-gerelateerde gifts." },
+      { id: "35", name: "Brugse Whisky Company", category: "world", brands: ["Belgische Whisky"], description: "Belgische single malt en rye whisky uit Brugge." },
+      { id: "36", name: "Perfect Dram", category: "independent", brands: ["Merken volgen later"], description: "Standruimte voor Perfect Dram." },
+      { id: "38", name: "Kapel Noord Stand", category: "organisation", brands: ["Standruimte"], description: "Standruimte in de kapel." },
+      { id: "39", name: "Worsten-stand", category: "catering", brands: ["Food"], description: "Uitgifte van worstenplateaus en hapjes." },
+      { id: "40", name: "Barrel Atelier", category: "catering", brands: ["Gifts"], description: "Meubels en accessoires gemaakt van gebruikte eikenhouten whiskyvaten." },
+      { id: "41", name: "Whisky Passion", category: "catering", brands: ["Boeken"], description: "Het bekende tijdschrift Whisky Passion en diverse whiskyboeken." },
+      { id: "42", name: "Kapel Noord (Tasting Room)", category: "organisation", brands: ["Tasting Room"], description: "Exclusieve tasting room in Kapel Noord." },
+      { id: "43", name: "Stokerij Sculte", category: "dutch", brands: ["Nederlandse Whisky"], description: "Bekroonde Nederlandse single malt whisky, gerijpt op Twents eiken." },
+      { id: "44", name: "De Monnik Dranken (Tafel B)", category: "scotch", brands: ["Merken volgen later"], description: "Extra tasting proeftafel van De Monnik Dranken." },
+      { id: "45", name: "Disaronno International", category: "world", brands: ["The Irishman", "Cotswolds"], description: "Importeur van The Irishman Irish Whiskey en Cotswolds single malt." },
+      { id: "46", name: "Maple & More", category: "world", brands: ["Whisky Likeur"], description: "Canadian Whisky Liqueur." },
+      { id: "47", name: "Koninklijke De Kuyper", category: "world", brands: ["Bowmore", "Laphroaig"], description: "De Kuyper Royal Distillers toont legendarische turfwhisky's." },
+      { id: "48", name: "Festivalslijterij (Stand 48)", category: "independent", brands: ["Festivalslijterij", "Bottelings"], description: "De officiële festivalslijterij waar u flessen kunt aanschaffen." },
+      { id: "O", name: "Organisatie & Infobalie", category: "organisation", brands: ["Infobalie", "Muntinname"], description: "Centrale organisatiebalie voor vragen, muntinname en programma." },
+      { id: "S", name: "Slijterij", category: "organisation", brands: ["Festivalslijterij"], description: "De officiële festivalslijterij." },
+      { id: "C", name: "Catering & Food Court", category: "catering", brands: ["Food", "Buitenruimte"], description: "Food court en uitgifte van warme maaltijden en snacks." },
+      { id: "U", name: "Uitgifte Glazen & Entree", category: "organisation", brands: ["Entree", "Glazen"], description: "Entree en uitgifte van festival proefglazen." }
+    ];
+
+    const accountStands = document.querySelectorAll('#account-church-map .svg-stand');
+    const defaultState = document.getElementById('account-default-info-state');
+    const activeState = document.getElementById('account-active-info-state');
+
+    const badgeEl = document.getElementById('account-stand-badge');
+    const titleEl = document.getElementById('account-stand-title');
+    const catEl = document.getElementById('account-stand-category');
+    const descEl = document.getElementById('account-stand-desc');
+    const brandsEl = document.getElementById('account-stand-brands-list');
+
+    accountStands.forEach(standNode => {
+      standNode.addEventListener('click', () => {
+        const sId = standNode.getAttribute('data-stand');
+        const match = exhibitorsData.find(e => e.id === sId);
+
+        accountStands.forEach(s => s.classList.remove('selected-stand'));
+        standNode.classList.add('selected-stand');
+
+        if (match && defaultState && activeState) {
+          defaultState.style.display = 'none';
+          activeState.style.display = 'block';
+
+          if (badgeEl) badgeEl.textContent = `STAND ${match.id}`;
+          if (titleEl) titleEl.textContent = match.name;
+          if (catEl) catEl.textContent = match.category.toUpperCase();
+          if (descEl) descEl.textContent = match.description || "";
+
+          if (brandsEl && match.brands) {
+            brandsEl.innerHTML = match.brands.map(b => `<span class="addon-badge">${b}</span>`).join(' ');
+          }
+        }
+      });
+    });
+  });
+</script>
