@@ -2330,7 +2330,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.45));
     opacity: 0.95;
     margin-bottom: 5.5rem; /* Lift logo higher independently */
-    animation: floatingGlass 6s ease-in-out infinite alternate;
+    /* No animation - clean static artwork */
   }
 
   .hero-glass-art-card svg {
@@ -2340,14 +2340,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     display: block;
   }
 
-  @keyframes floatingGlass {
-    0% {
-      transform: translateY(0);
-    }
-    100% {
-      transform: translateY(-12px);
-    }
-  }
+  /* floatingGlass removed */
 
   .hero-video-badge {
     position: absolute;
@@ -3593,6 +3586,24 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
 </style>
 
 <script>
+  // Enforce 100% reliable background video autoplay
+  const heroBgVideo = document.getElementById("hero-bg-video") as HTMLVideoElement;
+  if (heroBgVideo) {
+    heroBgVideo.muted = true;
+    heroBgVideo.defaultMuted = true;
+    heroBgVideo.playsInline = true;
+    const tryPlay = () => {
+      heroBgVideo.play().catch(() => {
+        // Retry on user interaction if browser policy blocks initial autoplay
+        document.addEventListener('click', () => heroBgVideo.play(), { once: true });
+        document.addEventListener('touchstart', () => heroBgVideo.play(), { once: true });
+        document.addEventListener('scroll', () => heroBgVideo.play(), { once: true });
+      });
+    };
+    tryPlay();
+    window.addEventListener('load', tryPlay);
+  }
+    
   // safe-preloader-dismiss: Guaranteed preloader fade-out
   (function() {
     const pl = document.getElementById('hp-preloader');
