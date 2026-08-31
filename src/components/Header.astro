@@ -663,12 +663,12 @@ const isAccount = pathname.startsWith("/account");
     z-index: 10;
   }
 
-  /* Dropdown Menu (Clean, Luxury Receipt Styling) */
+  /* Dropdown Menu (Clean 1-Line Row Layout) */
   .header-cart-dropdown {
     position: absolute;
     top: calc(100% + 14px);
     right: 0;
-    width: 440px;
+    width: 460px;
     max-width: calc(100vw - 2rem);
     background-color: var(--bg-paper-card, #FAF7F2);
     border: 1.5px solid var(--border-color, #E2D9CC);
@@ -741,67 +741,58 @@ const isAccount = pathname.startsWith("/account");
     margin: 0;
   }
 
-  /* Clean, structured item row */
-  .dropdown-cart-item {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid rgba(226, 217, 204, 0.8);
+  /* Single-line item row with horizontal divider */
+  :global(.cart-dropdown-row) {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 0.75rem !important;
+    padding: 0.7rem 0 !important;
+    border-bottom: 1px solid #E5DFD5 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
-  .dropdown-cart-item:last-child {
-    border-bottom: none;
+  :global(.cart-dropdown-row:last-child) {
+    border-bottom: none !important;
   }
 
-  .dropdown-item-qty-badge {
-    width: 32px;
-    height: 32px;
-    background: rgba(0, 100, 72, 0.08);
-    border: 1px solid rgba(0, 100, 72, 0.22);
-    color: var(--brand-green, #006448);
-    border-radius: 6px;
-    font-family: var(--font-sans);
-    font-weight: 800;
-    font-size: 0.82rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+  :global(.cart-row-qty) {
+    font-family: var(--font-sans) !important;
+    font-weight: 800 !important;
+    font-size: 0.85rem !important;
+    color: var(--brand-green, #006448) !important;
+    background: rgba(0, 100, 72, 0.08) !important;
+    padding: 0.2rem 0.45rem !important;
+    border-radius: 4px !important;
+    border: 1px solid rgba(0, 100, 72, 0.18) !important;
+    flex-shrink: 0 !important;
+    min-width: 28px !important;
+    text-align: center !important;
+    display: inline-block !important;
   }
 
-  .dropdown-item-info {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
+  :global(.cart-row-title) {
+    font-family: var(--font-sans) !important;
+    font-weight: 700 !important;
+    font-size: 0.88rem !important;
+    color: var(--text-charcoal, #1D1C1A) !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+    text-align: left !important;
   }
 
-  .dropdown-item-title {
-    font-family: var(--font-sans);
-    font-weight: 700;
-    font-size: 0.88rem;
-    color: var(--text-charcoal, #1D1C1A);
-    line-height: 1.35;
-    word-break: break-word;
-  }
-
-  .dropdown-item-meta {
-    font-family: var(--font-sans);
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--text-muted, #7A746B);
-  }
-
-  .dropdown-item-total {
-    font-family: var(--font-sans);
-    font-weight: 800;
-    font-size: 0.95rem;
-    color: var(--text-charcoal, #1D1C1A);
-    text-align: right;
-    white-space: nowrap;
-    flex-shrink: 0;
+  :global(.cart-row-price) {
+    font-family: var(--font-sans) !important;
+    font-weight: 800 !important;
+    font-size: 0.95rem !important;
+    color: var(--text-charcoal, #1D1C1A) !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    text-align: right !important;
   }
 
   .cart-dropdown-bottom {
@@ -951,17 +942,11 @@ const isAccount = pathname.startsWith("/account");
         let html = '';
         items.forEach((item: any) => {
           const totalVal = (item.price * item.qty).toFixed(2).replace('.', ',');
-          const unitVal = item.price.toFixed(2).replace('.', ',');
           html += `
-            <div class="dropdown-cart-item">
-              <div class="dropdown-item-qty-badge">${item.qty}&times;</div>
-              <div class="dropdown-item-info">
-                <div class="dropdown-item-title">${item.title}</div>
-                <div class="dropdown-item-meta">&euro; ${unitVal} p.st.</div>
-              </div>
-              <div class="dropdown-item-total">
-                &euro; ${totalVal}
-              </div>
+            <div class="cart-dropdown-row">
+              <span class="cart-row-qty">${item.qty}&times;</span>
+              <span class="cart-row-title" title="${item.title}">${item.title}</span>
+              <span class="cart-row-price">&euro; ${totalVal}</span>
             </div>
           `;
         });
