@@ -38,6 +38,63 @@ function parseGhlBoolean(val: any): boolean {
   return Boolean(val);
 }
 
+const CATEGORY_ORDER: Record<string, number> = {
+  entree: 1,
+  masterclass: 2,
+  warehouse: 3,
+  tram: 4,
+  trail: 5,
+  vatenmaken: 6,
+  botteling: 7
+};
+
+const DAY_ORDER: Record<string, number> = {
+  vrijdag: 1,
+  zaterdag: 2,
+  zondag: 3,
+  all: 4
+};
+
+function sortTickets(ticketsList: TicketItem[]): TicketItem[] {
+  return ticketsList.sort((a, b) => {
+    // 1. Sort by category (Entree always 1st)
+    const catA = CATEGORY_ORDER[a.category] || 99;
+    const catB = CATEGORY_ORDER[b.category] || 99;
+    if (catA !== catB) return catA - catB;
+
+    // For entree: VIP session is always first
+    if (a.category === 'entree' && b.category === 'entree') {
+      const isVipA = a.title.toLowerCase().includes('vip') ? 0 : 1;
+      const isVipB = b.title.toLowerCase().includes('vip') ? 0 : 1;
+      if (isVipA !== isVipB) return isVipA - isVipB;
+    }
+
+    // 2. Sort by day (vrijdag -> zaterdag -> zondag)
+    const dayA = DAY_ORDER[a.day] || 99;
+    const dayB = DAY_ORDER[b.day] || 99;
+    if (dayA !== dayB) return dayA - dayB;
+
+    // 3. Sort by start time if available
+    const timeA = a.time ? (a.time.match(/(\d{1,2}:\d{2})/) ? a.time.match(/(\d{1,2}:\d{2})/)![1] : a.time) : '';
+    const timeB = b.time ? (b.time.match(/(\d{1,2}:\d{2})/) ? b.time.match(/(\d{1,2}:\d{2})/)![1] : b.time) : '';
+    if (timeA && timeB && timeA !== timeB) return timeA.localeCompare(timeB);
+
+    // 4. Sort by title
+    return a.title.localeCompare(b.title);
+  });
+}
+
+function sortStandhouders(standsList: ExhibitorItem[]): ExhibitorItem[] {
+  return standsList.sort((a, b) => {
+    const numA = parseInt(a.id, 10);
+    const numB = parseInt(b.id, 10);
+    if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+    if (!isNaN(numA)) return -1;
+    if (!isNaN(numB)) return 1;
+    return a.id.localeCompare(b.id);
+  });
+}
+
 /**
  * Fetch tickets from GHL Custom Object with automatic fallback to local dataset.
  * @param city - 'den_haag' | 'gent' | 'amsterdam'
@@ -133,8 +190,9 @@ export async function getTickets(city: string = 'den_haag'): Promise<TicketItem[
       };
     });
 
-    ticketsCache[normalizedCity] = { data: parsedTickets, timestamp: now };
-    return parsedTickets;
+    const sortedTickets = sortTickets(parsedTickets);
+    ticketsCache[normalizedCity] = { data: sortedTickets, timestamp: now };
+    return sortedTickets;
   } catch (err) {
     console.error(`[GHL API] Error fetching tickets for ${city}:`, err);
     return TICKETS_DEN_HAAG;
@@ -208,8 +266,9 @@ export async function getStandhouders(city: string = 'den_haag'): Promise<Exhibi
       };
     });
 
-    standsCache[normalizedCity] = { data: parsedStandhouders, timestamp: now };
-    return parsedStandhouders;
+    const sortedStandhouders = sortStandhouders(parsedStandhouders);
+    standsCache[normalizedCity] = { data: sortedStandhouders, timestamp: now };
+    return sortedStandhouders;
   } catch (err) {
     console.error(`[GHL API] Error fetching standhouders for ${city}:`, err);
     return EXHIBITORS_DEN_HAAG;
