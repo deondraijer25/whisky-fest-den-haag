@@ -5187,6 +5187,14 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       ];
     }
 
+    // Dynamic overrides from GHL or dataset if provided
+    if (item?.ambassadorName) ambName = item.ambassadorName;
+    if (item?.ambassadorTitle) ambTitle = item.ambassadorTitle;
+    if (item?.ambassadorBio) ambBio = item.ambassadorBio;
+    if (item?.tastingLineup && Array.isArray(item.tastingLineup) && item.tastingLineup.length > 0) {
+      lineup = item.tastingLineup;
+    }
+
     // Populate modal fields
     const tagEl = document.querySelector('#masterclass-info-modal span[style*="font-family: var(--font-sans)"]');
     const titleEl = document.getElementById('mc-modal-title');

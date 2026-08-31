@@ -21,8 +21,11 @@ export interface TicketItem {
   status?: 'sold-out' | 'limited' | 'popular' | 'selling-fast';
   statusText?: string;
   extra?: string;
-  included?: string[];
   description?: string;
+  ambassadorName?: string;
+  ambassadorTitle?: string;
+  ambassadorBio?: string;
+  tastingLineup?: string[];
 }
 
 export const TICKETS_DEN_HAAG: TicketItem[] = [

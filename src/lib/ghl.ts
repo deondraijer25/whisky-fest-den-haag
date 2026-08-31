@@ -121,7 +121,13 @@ export async function getTickets(city: string = 'den_haag'): Promise<TicketItem[
         status: statusBadge,
         statusText: effectiveSoldOut ? 'Uitverkocht' : undefined,
         description: p.description || '',
-        extra: p.description || ''
+        extra: p.description || '',
+        ambassadorName: p.ambassador_name || undefined,
+        ambassadorTitle: p.ambassador_title || undefined,
+        ambassadorBio: p.ambassador_bio || undefined,
+        tastingLineup: p.tasting_lineup
+          ? (Array.isArray(p.tasting_lineup) ? p.tasting_lineup : String(p.tasting_lineup).split(/[\n,]+/).map((s: string) => s.trim()).filter(Boolean))
+          : undefined
       };
     });
 
