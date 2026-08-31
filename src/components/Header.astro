@@ -971,34 +971,38 @@ const isAccount = pathname.startsWith("/account");
   const loggedInView = document.getElementById('header-account-logged-in');
   const loggedOutView = document.getElementById('header-account-logged-out');
   const navLogoutBtn = document.getElementById('header-nav-logout-btn');
+  const navLoginBtn = document.querySelector('.btn-drop-login');
 
   function updateHeaderAccountState() {
-    const stored = sessionStorage.getItem('wf_auth_session') || localStorage.getItem('wf_auth_session');
-    let session = null;
-    if (stored) {
-      try { session = JSON.parse(stored); } catch(e) {}
+    const isLoggedOut = localStorage.getItem('wf_user_logged_out') === 'true';
+    const storedOrder = localStorage.getItem('wf_last_order');
+    const storedAuth = sessionStorage.getItem('wf_auth_session') || localStorage.getItem('wf_auth_session');
+
+    let userName = 'Deon Draijer';
+
+    if (storedOrder) {
+      try {
+        const p = JSON.parse(storedOrder);
+        if (p.name) userName = p.name;
+      } catch(e) {}
+    } else if (storedAuth) {
+      try {
+        const s = JSON.parse(storedAuth);
+        if (s.name) userName = s.name;
+        else if (s.email) userName = s.email.split('@')[0];
+      } catch(e) {}
     }
 
-    if (session) {
-      if (loggedInView) loggedInView.style.display = 'block';
-      if (loggedOutView) loggedOutView.style.display = 'none';
-      if (accountUserName) {
-        const lastOrder = localStorage.getItem('wf_last_order');
-        if (lastOrder) {
-          try {
-            const p = JSON.parse(lastOrder);
-            if (p.name) { accountUserName.textContent = p.name; return; }
-          } catch(e) {}
-        }
-        if (session.resNumber === '#WF-2026-84387' || session.resNumber === 'WF-2026-84387') {
-          accountUserName.textContent = 'Deon Draijer';
-        } else if (session.email) {
-          accountUserName.textContent = session.email.split('@')[0];
-        }
-      }
-    } else {
+    if (accountUserName) {
+      accountUserName.textContent = userName;
+    }
+
+    if (isLoggedOut) {
       if (loggedInView) loggedInView.style.display = 'none';
       if (loggedOutView) loggedOutView.style.display = 'block';
+    } else {
+      if (loggedInView) loggedInView.style.display = 'block';
+      if (loggedOutView) loggedOutView.style.display = 'none';
     }
   }
 
@@ -1020,17 +1024,22 @@ const isAccount = pathname.startsWith("/account");
   if (navLogoutBtn) {
     navLogoutBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      localStorage.setItem('wf_user_logged_out', 'true');
       sessionStorage.removeItem('wf_auth_session');
       localStorage.removeItem('wf_auth_session');
       if (accountDropdown) accountDropdown.classList.remove('active');
       updateHeaderAccountState();
       
-      // If on account page, reload or notify
+      // If on account page, reload or redirect
       if (window.location.pathname.startsWith('/account')) {
         window.location.href = '/account';
-      } else {
-        window.location.reload();
       }
+    });
+  }
+
+  if (navLoginBtn) {
+    navLoginBtn.addEventListener('click', () => {
+      localStorage.removeItem('wf_user_logged_out');
     });
   }
 
