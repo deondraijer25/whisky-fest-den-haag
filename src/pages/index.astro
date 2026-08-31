@@ -1925,13 +1925,13 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
 
         <!-- Description -->
         <div>
-          <h4 style="font-family: var(--font-sans, sans-serif); font-size: 1.05rem; font-weight: 800; margin: 0 0 0.45rem 0; color: var(--text-charcoal); letter-spacing: -0.01em;">Over deze Masterclass</h4>
+          <h4 id="mc-modal-about-heading" style="font-family: var(--font-sans, sans-serif); font-size: 1.05rem; font-weight: 800; margin: 0 0 0.45rem 0; color: var(--text-charcoal); letter-spacing: -0.01em;">Over deze Masterclass</h4>
           <p id="mc-modal-description" style="font-family: var(--font-sans); font-size: 0.92rem; color: var(--text-charcoal); line-height: 1.6; margin: 0;">Beschrijving...</p>
         </div>
 
         <!-- Lineup -->
         <div>
-          <h4 style="font-family: var(--font-sans, sans-serif); font-size: 1.05rem; font-weight: 800; margin: 0 0 0.65rem 0; color: var(--text-charcoal); letter-spacing: -0.01em;">Officiële Proeflijst (Inbegrepen Drams)</h4>
+          <h4 id="mc-modal-lineup-heading" style="font-family: var(--font-sans, sans-serif); font-size: 1.05rem; font-weight: 800; margin: 0 0 0.65rem 0; color: var(--text-charcoal); letter-spacing: -0.01em;">Officiële Proeflijst (Inbegrepen Drams)</h4>
           <ul id="mc-modal-lineup" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem;">
           </ul>
         </div>
@@ -5046,7 +5046,8 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     let ambName = 'International Whisky Festival';
     let ambTitle = 'Expert & Begeleider';
     let ambBio = 'Ervaren team met passie voor whiskycultuur, vakmanschap en historische tradities.';
-    let lineupHeading = 'Officiële Proeflijst (Inbegrepen Drams)';
+    let descHeading = 'Over deze Masterclass';
+    let lineupHeading = 'Officiële Proeflijst (Inbegrepen Drams):';
     let lineup = [
       'Exclusieve Single Malt Proefdram #1',
       'Zeldzame Cask Strength Proefdram #2'
@@ -5058,6 +5059,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       subtitle = `${item?.date || 'Vrijdag 13 Nov 2026'} • ${item?.time || '13:00 – 17:00 uur'}`;
       location = 'Grote Kerk Den Haag';
       duration = '4 uur exclusieve festivaltoegang';
+      descHeading = 'Over het VIP Arrangement';
       description = 'De ultieme festivalbeleving voor de echte whiskyliefhebber. Geniet van 4 uur lang ongestoord proeven, vroege toegang vóór de reguliere opening, toegang tot exclusieve VIP masterclasses en verwennerij met luxe hapjes.';
       ambName = 'Festival Organisatie & VIP Concierge';
       ambTitle = 'VIP Host & Begeleiding';
@@ -5076,6 +5078,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       subtitle = `${item?.date || 'Festivaldag 2026'} • ${item?.time || '4 uur toegang'}`;
       location = 'Grote Kerk Den Haag';
       duration = '4 uur festivaltoegang';
+      descHeading = 'Over deze Festivalsessie';
       description = 'Beleef de magie van het meest toonaangevende whiskyfestival van Nederland in de historische Grote Kerk van Den Haag. Ontdek meer dan 40 standhouders en honderden verschillende Schotse single malts, wereldwhisky’s en Nederlandse distilleerderijen.';
       ambName = 'International Whisky Festival Team';
       ambTitle = 'Festival Host';
@@ -5092,6 +5095,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       subtitle = `${item?.date || ''} • Kapel (Grote Kerk)`;
       location = 'Kapel (Grote Kerk Den Haag)';
       duration = '30 minuten';
+      descHeading = 'Over deze Warehouse Tasting';
       description = `Exclusieve Warehouse Tasting: ${item?.title || ''}. Proef unieke vatmonsters rechtstreeks uit de opslag onder deskundige toelichting.`;
       ambName = (item?.title && item.title.includes('Cadenhead')) ? 'Cadenhead Brand Ambassador' : 'Bresser & Timmer Specialist';
       ambTitle = 'Cask Warehouse Keeper';
@@ -5107,6 +5111,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       subtitle = `${item?.date || ''} • Vertrek: ${item?.time || ''}`;
       location = 'Opstelplaats Tram direct buiten de kerk';
       duration = '60 minuten rondrit';
+      descHeading = 'Over deze Historische Tramrit';
       description = `Geniet van een sfeervolle rit door historisch Den Haag in een gerestaureerde klassieke HTM-tram onder begeleiding van deskundige gidsen en topdrams van ${item?.extra || 'Schotse distilleerderijen'}.`;
       ambName = item?.extra ? `${item.extra} Ambassador` : 'Gids & Tramconducteur';
       ambTitle = 'Historisch Gastheer';
@@ -5122,6 +5127,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       subtitle = `${item?.date || ''} • ${item?.time || ''}`;
       location = 'Informatie-stand (Centraal in de kerk)';
       duration = '30 minuten';
+      descHeading = 'Over deze Whiskytrail';
       description = `Wandel mee met onze officiële festivalgids langs 5 toonaangevende standhouders. Kost € 5,00 en je krijgt er 5 gratis geselecteerde drams voor terug!`;
       ambName = item?.title ? item.title.replace('Trail ', 'Gids ') : 'Festival Trail Guide';
       ambTitle = 'Gecertificeerd Whisky Sommelier';
@@ -5137,6 +5143,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       subtitle = `${item?.date || ''} • ${item?.time || ''}`;
       location = 'Buitenterrein (Festival Kuiperij)';
       duration = '45 minuten';
+      descHeading = 'Over deze Kuiperij Workshop';
       description = `Cooperclass: workshop vatenmaken met mini-tasting. Leer de eeuwenoude kunst van het vatenmaken en ervaar het branden en toasten van eikenhouten duigen.`;
       ambName = 'Meesterkuiper & Houtspecialist';
       ambTitle = 'Master Cooper';
@@ -5152,6 +5159,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       subtitle = 'Gelimiteerde Cask Strength Single Cask';
       location = 'Ophalen op het festival of thuisbezorgd';
       duration = 'Festival Cask Exclusive';
+      descHeading = 'Over deze Festival Botteling';
       description = `Officiële exclusieve botteling voor het International Whisky Festival Den Haag 2026. ${item?.title || ''}`;
       ambName = 'Festival Bottling Panel';
       ambTitle = 'Cask Selection Committee';
@@ -5166,6 +5174,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
       subtitle = `${item?.date || ''} • ${item?.time || ''}`;
       location = item?.location || 'Nutshuis (Spaarkamer)';
       duration = '45 minuten';
+      descHeading = 'Over deze Masterclass';
       description = `Exclusieve masterclass: ${item?.title || ''}. ${item?.extra ? 'Extra toelichting: ' + item.extra : ''}`;
       ambName = (item?.title && item.title.includes('Macallan')) ? 'Gerard Spaans' : 'Brand Ambassador';
       ambTitle = (item?.title && item.title.includes('Macallan')) ? 'Senior Brand Ambassador & Master of Malt' : 'Senior Brand Ambassador';
@@ -5184,9 +5193,10 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     const subtitleEl = document.getElementById('mc-modal-subtitle');
     const locationEl = document.getElementById('mc-modal-location');
     const durationEl = document.getElementById('mc-modal-duration');
+    const aboutHeadingEl = document.getElementById('mc-modal-about-heading');
     const descEl = document.getElementById('mc-modal-description');
     const lineupList = document.getElementById('mc-modal-lineup');
-    const lineupHeadingEl = document.querySelector('#masterclass-info-modal h4:nth-of-type(2)');
+    const lineupHeadingEl = document.getElementById('mc-modal-lineup-heading');
     const ambNameEl = document.getElementById('mc-modal-ambassador-name');
     const ambTitleEl = document.getElementById('mc-modal-ambassador-title');
     const ambBioEl = document.getElementById('mc-modal-ambassador-bio');
@@ -5196,6 +5206,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     if (subtitleEl) subtitleEl.textContent = subtitle;
     if (locationEl) locationEl.textContent = location;
     if (durationEl) durationEl.textContent = duration;
+    if (aboutHeadingEl) aboutHeadingEl.textContent = descHeading;
     if (descEl) descEl.textContent = description;
 
     if (lineupHeadingEl) lineupHeadingEl.textContent = lineupHeading;
