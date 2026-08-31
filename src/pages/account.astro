@@ -1915,27 +1915,29 @@ import Footer from '../components/Footer.astro';
   }
 
 
-  /* --- Login View Styles (Non-intrusive) --- */
+  /* --- High-End Login View Styles --- */
   .login-view-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 50vh;
-    padding: 1.5rem 0;
+    min-height: 60vh;
+    padding: 3rem 1.5rem;
     width: 100%;
   }
 
   .login-card-box {
-    background: #FFFFFF;
-    border: 2px solid var(--text-charcoal);
-    box-shadow: 6px 6px 0px var(--text-charcoal);
-    border-radius: 4px;
-    padding: 2.75rem 2.5rem;
-    max-width: 540px;
+    background: var(--bg-paper-card, #FBF9F5);
+    border: 1.5px solid var(--border-color, #E2D9CC);
+    box-shadow: 0 12px 40px rgba(29, 28, 26, 0.08);
+    border-radius: 12px;
+    padding: 3rem 2.5rem;
+    max-width: 520px;
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.75rem;
+    position: relative;
+    box-sizing: border-box;
   }
 
   .login-card-header {
@@ -1943,22 +1945,38 @@ import Footer from '../components/Footer.astro';
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.5rem;
+  }
+
+  .login-card-header .portal-tag {
+    background: rgba(0, 100, 72, 0.08);
+    color: var(--brand-green, #006448);
+    border: 1px solid rgba(0, 100, 72, 0.2);
+    padding: 0.35rem 0.85rem;
+    border-radius: 4px;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    display: inline-block;
   }
 
   .login-card-title {
     font-family: var(--font-display);
-    font-size: 2.25rem;
-    color: var(--text-charcoal);
-    margin: 0;
-    line-height: 1.2;
+    font-size: clamp(2rem, 3.5vw, 2.5rem);
+    color: var(--text-charcoal, #1D1C1A);
+    margin: 0.25rem 0 0;
+    line-height: 1.15;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
 
   .login-card-subtitle {
-    font-family: var(--font-serif);
-    font-size: 0.95rem;
-    color: var(--text-muted);
-    line-height: 1.5;
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    color: var(--text-muted, #666);
+    line-height: 1.55;
     margin: 0.25rem 0 0;
   }
 
@@ -1970,65 +1988,123 @@ import Footer from '../components/Footer.astro';
     border: 1.5px solid #E30613;
     color: #A8040E;
     padding: 0.75rem 1rem;
-    border-radius: 3px;
+    border-radius: 6px;
     font-family: var(--font-sans);
-    font-size: 0.82rem;
+    font-size: 0.84rem;
     font-weight: 700;
   }
 
   .login-form-body {
     display: flex;
     flex-direction: column;
-    gap: 1.15rem;
+    gap: 1.25rem;
+  }
+
+  .login-form-body .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    text-align: left;
+  }
+
+  .login-form-body .form-label {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-charcoal, #1D1C1A);
+  }
+
+  .login-form-body .form-input {
+    width: 100% !important;
+    padding: 0.85rem 1.15rem !important;
+    background: #FFFFFF !important;
+    border: 1.5px solid var(--border-color-dark, #D1C7B7) !important;
+    border-radius: 6px !important;
+    font-family: var(--font-sans) !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    color: var(--text-charcoal, #1D1C1A) !important;
+    transition: all 0.2s ease !important;
+    box-sizing: border-box !important;
+  }
+
+  .login-form-body .form-input:focus {
+    outline: none !important;
+    border-color: var(--whisky-gold-dark, #C58B39) !important;
+    box-shadow: 0 0 0 3.5px rgba(197, 139, 57, 0.18) !important;
+    background: #FFFFFF !important;
+  }
+
+  .login-form-body .form-input::placeholder {
+    color: #A0988C !important;
+    font-weight: 500 !important;
   }
 
   .form-subtext {
     font-family: var(--font-sans);
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    margin-top: 0.2rem;
+    font-size: 0.75rem;
+    color: var(--text-muted, #7A746B);
+    line-height: 1.4;
   }
 
   .btn-login-submit {
     font-family: var(--font-sans);
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
-    padding: 0.9rem 1.5rem;
-    border-radius: 3px;
+    letter-spacing: 0.08em;
+    padding: 1rem 1.75rem;
+    border-radius: 4px;
     cursor: pointer;
-    margin-top: 0.4rem;
-    box-shadow: 2px 2px 0px var(--text-charcoal);
+    margin-top: 0.5rem;
+    background-color: var(--brand-green, #006448);
+    color: #FFFFFF;
+    border: none;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 15px rgba(0, 100, 72, 0.25);
+  }
+
+  .btn-login-submit:hover {
+    background-color: #004D37;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 100, 72, 0.35);
   }
 
   .login-card-footer {
     text-align: center;
     border-top: 1px dashed var(--border-color, #E2D9CC);
-    padding-top: 1.15rem;
+    padding-top: 1.25rem;
     display: flex;
     flex-direction: column;
-    gap: 0.65rem;
+    gap: 0.75rem;
   }
 
   .login-footer-help {
     font-family: var(--font-sans);
-    font-size: 0.82rem;
-    color: var(--text-muted);
+    font-size: 0.86rem;
+    color: var(--text-muted, #666);
     margin: 0;
   }
 
   .btn-demo-quick {
-    background: none;
-    border: none;
-    color: var(--whisky-gold-dark);
+    background: rgba(197, 139, 57, 0.08);
+    border: 1px solid rgba(197, 139, 57, 0.3);
+    color: var(--whisky-gold-dark, #C58B39);
     font-family: var(--font-sans);
-    font-size: 0.76rem;
+    font-size: 0.82rem;
     font-weight: 700;
-    text-decoration: underline;
     cursor: pointer;
-    padding: 0.25rem 0.5rem;
-    border-radius: 3px;
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+
+  .btn-demo-quick:hover {
+    background: rgba(197, 139, 57, 0.16);
+    border-color: var(--whisky-gold-dark, #C58B39);
+    color: #A36F25;
   }
 
   
