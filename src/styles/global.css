@@ -229,9 +229,9 @@ strong {
   box-shadow: 0px 0px 0px rgba(29, 28, 26, 0.9);
 }
 
-/* Warm Parchment Beige Button (High-Contrast for Dark Backgrounds) */
+/* Warm Champagne Beige Button (Exact match with date-line highlight) */
 .btn-beige {
-  background-color: var(--bg-parchment, #FAF7F2);
+  background-color: var(--whisky-gold-light, #E9DFB7);
   color: var(--text-charcoal, #1D1C1A);
   border: 2px solid var(--text-charcoal, #1D1C1A);
   box-shadow: 4px 4px 0px rgba(29, 28, 26, 0.9);
@@ -239,8 +239,8 @@ strong {
   overflow: hidden;
 }
 .btn-beige:hover {
-  background-color: #FFFFFF;
-  color: var(--brand-green, #006448);
+  background-color: var(--whisky-gold, #D5C28A);
+  color: var(--text-charcoal, #1D1C1A);
   transform: translate(-2px, -2px);
   box-shadow: 6px 6px 0px rgba(29, 28, 26, 0.9);
 }
