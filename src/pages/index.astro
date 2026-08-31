@@ -4,9 +4,11 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import TicketStub from '../components/TicketStub.astro';
-import { TICKETS_DEN_HAAG } from '../data/ticketsDenHaag';
+import { getTickets } from '../lib/ghl';
 import LogoSvg from '../assets/Logo/Logo.svg?raw';
 import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
+
+const tickets = await getTickets('den_haag');
 ---
 
 <Layout 
@@ -256,7 +258,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
           <div class="shop-grid">
             <!-- Left side: Organized Ticket List -->
             <div class="tickets-list fade-in-group" id="shop-tickets-list">
-              {TICKETS_DEN_HAAG.map((ticket) => (
+              {tickets.map((ticket) => (
                 <TicketStub
                   id={ticket.id}
                   title={ticket.title}
@@ -3679,7 +3681,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
     font-size: 0.85rem !important;
   }
 </style>
-<script id="tickets-data-json" type="application/json" set:html={JSON.stringify(TICKETS_DEN_HAAG)}></script>
+<script id="tickets-data-json" type="application/json" set:html={JSON.stringify(tickets)}></script>
 <script>
   // FAQ Exclusive Accordion: Close other items when opening an item
   const faqDetailsList = document.querySelectorAll<HTMLDetailsElement>('.faq-item');

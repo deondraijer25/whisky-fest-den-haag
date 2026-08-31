@@ -3,7 +3,9 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { EXHIBITORS_DEN_HAAG as exhibitors } from '../data/standhouders';
+import { getStandhouders } from '../lib/ghl';
+
+const exhibitors = await getStandhouders('den_haag');
 ---
 
 <Layout 
