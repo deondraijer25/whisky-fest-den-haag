@@ -105,7 +105,7 @@ export async function getTickets(city: string = 'den_haag'): Promise<TicketItem[
         id: r.id || `ghl-ticket-${idx}`,
         row: idx + 1,
         title: p.title || 'Ticket',
-        price: typeof p.price === 'number' ? p.price : (parseFloat(p.price) || 0),
+        price: typeof p.price === 'number' ? p.price : (parseFloat(p.price) || parseFloat(p.ticket_price) || 0),
         date: p.date_label || 'Datum volgt',
         time: p.time_label || 'Tijd volgt',
         day: p.day || 'all',
@@ -120,8 +120,8 @@ export async function getTickets(city: string = 'den_haag'): Promise<TicketItem[
         isLowStock: capacity > 0 && (capacity - sold <= 10) && !effectiveSoldOut,
         status: statusBadge,
         statusText: effectiveSoldOut ? 'Uitverkocht' : undefined,
-        description: p.description || '',
-        extra: p.description || '',
+        description: p.ticket_description || p.description || '',
+        extra: p.ticket_description || p.description || '',
         ambassadorName: p.ambassador_name || undefined,
         ambassadorTitle: p.ambassador_title || undefined,
         ambassadorBio: p.ambassador_bio || undefined,
@@ -200,7 +200,7 @@ export async function getStandhouders(city: string = 'den_haag'): Promise<Exhibi
         name: p.name || 'Standhouder',
         category: p.category || 'world',
         brands: brandsList,
-        description: p.description || '',
+        description: p.stand_description || p.description || '',
         isNotOnMap: parseGhlBoolean(p.is_not_on_map)
       };
     });
