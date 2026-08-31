@@ -663,13 +663,14 @@ const isAccount = pathname.startsWith("/account");
     z-index: 10;
   }
 
-  /* Dropdown Menu (Clean 1-Line Row Layout) */
+  /* Dropdown Menu (Centered under cart icon with caret pointer) */
   .header-cart-dropdown {
     position: absolute;
     top: calc(100% + 14px);
-    right: 0;
-    width: 460px;
-    max-width: calc(100vw - 2rem);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 440px;
+    max-width: min(440px, calc(100vw - 2rem));
     background-color: var(--bg-paper-card, #FAF7F2);
     border: 1.5px solid var(--border-color, #E2D9CC);
     border-radius: 10px;
@@ -683,13 +684,27 @@ const isAccount = pathname.startsWith("/account");
     box-sizing: border-box;
   }
 
+  .header-cart-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -7px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 12px;
+    height: 12px;
+    background-color: var(--bg-paper-card, #FAF7F2);
+    border-top: 1.5px solid var(--border-color, #E2D9CC);
+    border-left: 1.5px solid var(--border-color, #E2D9CC);
+    z-index: 1;
+  }
+
   .header-cart-dropdown.active {
     display: flex;
   }
 
   @keyframes dropdownFade {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translate(-50%, -8px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
   }
 
   .cart-dropdown-head {
