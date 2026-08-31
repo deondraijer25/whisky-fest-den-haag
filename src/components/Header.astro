@@ -868,7 +868,20 @@ const isAccount = pathname.startsWith("/account");
   function getStoredCart() {
     try {
       const raw = localStorage.getItem('whiskyfest_cart');
-      return raw ? JSON.parse(raw) : { items: [], subtotal: 0, totalItems: 0 };
+      if (!raw) return { items: [], subtotal: 0, totalItems: 0 };
+      const parsed = JSON.parse(raw);
+      let items = parsed.items;
+      if (!items && parsed.cartRaw) {
+        items = Object.keys(parsed.cartRaw)
+          .filter(id => parsed.cartRaw[id] && parsed.cartRaw[id].qty > 0)
+          .map(id => parsed.cartRaw[id]);
+      }
+      return { 
+        items: items || [], 
+        subtotal: parsed.subtotal || (items ? items.reduce((a: number, b: any) => a + (b.price * b.qty), 0) : 0), 
+        totalItems: parsed.totalItems || (items ? items.reduce((a: number, b: any) => a + (b.qty || 0), 0) : 0),
+        cartRaw: parsed.cartRaw || {}
+      };
     } catch(e) {
       return { items: [], subtotal: 0, totalItems: 0 };
     }

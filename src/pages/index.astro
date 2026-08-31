@@ -3798,11 +3798,44 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
 
   function saveCartToLocalStorage(subtotalVal: number, totalItemsVal: number) {
     try {
+      const activeItems = Object.keys(cart)
+        .filter(id => cart[id] && cart[id].qty > 0)
+        .map(id => {
+          const item = cart[id];
+          let displayTitle = item.title;
+          if (item.category === "tram" && item.timeslot) {
+            displayTitle = `${item.title} (${item.timeslot})`;
+          } else if (item.category === "masterclass" && item.timeslot) {
+            displayTitle = `${item.title} (${item.timeslot})`;
+          } else if (item.category === "trail" && item.timeslot) {
+            const guideSuffix = item.guide ? ` - Gids: ${item.guide}` : '';
+            displayTitle = `${item.title} (${item.timeslot}${guideSuffix})`;
+          } else if (item.category === "vatenmaken" && item.timeslot) {
+            displayTitle = `${item.title} (${item.timeslot})`;
+          } else if (item.category === "botteling" && item.delivery) {
+            const methodText = item.delivery === "shipping" ? "Verzenden" : "Ophalen";
+            displayTitle = `${item.title} [${methodText}]`;
+          }
+          return {
+            id,
+            title: displayTitle,
+            price: item.price,
+            qty: item.qty,
+            category: item.category || 'entree',
+            date: item.date || '',
+            time: item.time || ''
+          };
+        });
+
       localStorage.setItem("whiskyfest_cart", JSON.stringify({
         subtotal: subtotalVal,
         totalItems: totalItemsVal,
+        items: activeItems,
         cartRaw: cart
       }));
+
+      // Notify Header Cart and other components immediately
+      window.dispatchEvent(new Event('cart-updated'));
     } catch(e) {}
   }
 
@@ -3822,6 +3855,7 @@ import GlasswareSvg15 from '../assets/Logo/Logo wit svg/Middel 15.svg?raw';
               else card.classList.remove("selected");
             }
           });
+          updateShop();
         }
       }
     } catch(e) {}
