@@ -41,10 +41,10 @@ export const TICKETS_DEN_HAAG: TicketItem[] = [
     "location": "",
     "capacity": 850,
     "sold": 850,
-    "isSoldOut": false,
+    "isSoldOut": true,
     "isLowStock": false,
-    "status": "limited",
-    "statusText": "Exclusief",
+    "status": "sold-out",
+    "statusText": "Uitverkocht",
     "extra": ""
   },
   {
@@ -102,9 +102,11 @@ export const TICKETS_DEN_HAAG: TicketItem[] = [
     "location": "",
     "capacity": 1250,
     "sold": 1250,
-    "isSoldOut": false,
+    "isSoldOut": true,
     "isLowStock": false,
-    "extra": ""
+    "extra": "",
+    "status": "sold-out",
+    "statusText": "Uitverkocht"
   },
   {
     "id": "dh-entree-8-entree-zondagmiddag",
