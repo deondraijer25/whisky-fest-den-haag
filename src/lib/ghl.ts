@@ -56,6 +56,8 @@ export async function getTickets(city: string = 'den_haag'): Promise<TicketItem[
     return TICKETS_DEN_HAAG;
   }
 
+  const citySearchQuery = normalizedCity === 'den_haag' ? 'Den Haag' : (normalizedCity === 'gent' ? 'Gent' : (normalizedCity === 'amsterdam' ? 'Amsterdam' : normalizedCity));
+
   try {
     const url = `${GHL_API_BASE}/objects/${GHL_TICKETS_OBJECT_KEY}/records/search`;
     const response = await fetch(url, {
@@ -68,8 +70,8 @@ export async function getTickets(city: string = 'den_haag'): Promise<TicketItem[
       body: JSON.stringify({
         locationId: GHL_LOCATION_ID,
         page: 1,
-        pageLimit: 100,
-        query: `festival_city:${normalizedCity}`,
+        pageLimit: 250,
+        query: citySearchQuery,
         searchAfter: []
       })
     });
@@ -145,6 +147,7 @@ export async function getTickets(city: string = 'den_haag'): Promise<TicketItem[
  */
 export async function getStandhouders(city: string = 'den_haag'): Promise<ExhibitorItem[]> {
   const normalizedCity = city.toLowerCase().replace('-', '_');
+  const citySearchQuery = normalizedCity === 'den_haag' ? 'Den Haag' : (normalizedCity === 'gent' ? 'Gent' : (normalizedCity === 'amsterdam' ? 'Amsterdam' : normalizedCity));
   const now = Date.now();
   const cached = standsCache[normalizedCity];
 
@@ -169,8 +172,8 @@ export async function getStandhouders(city: string = 'den_haag'): Promise<Exhibi
       body: JSON.stringify({
         locationId: GHL_LOCATION_ID,
         page: 1,
-        pageLimit: 100,
-        query: `festival_city:${normalizedCity}`,
+        pageLimit: 250,
+        query: citySearchQuery,
         searchAfter: []
       })
     });
