@@ -1,0 +1,2426 @@
+---
+// src/pages/programma.astro
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface ProgramRow {
+  id: string;
+  time: string;
+  location: string;
+  title: string;
+  category: 'masterclass' | 'tram' | 'trail' | 'warehouse' | 'workshop' | 'botteling';
+  categoryLabel: string;
+  host: string;
+  description: string;
+  price: number;
+}
+
+interface SessionData {
+  id: string;
+  name: string;
+  dayLabel: string;
+  timeLabel: string;
+  items: ProgramRow[];
+}
+
+export const GUIDE_COLUMNS = [
+  { key: 'Ernst', name: 'Ernst', specialty: 'Speyside & Sherry' },
+  { key: 'Klaas', name: 'Klaas', specialty: 'Islay & Peat' },
+  { key: 'Marlie', name: 'Marlie', specialty: 'Fruitig & Wereld' },
+  { key: 'Sebastiaan', name: 'Sebastiaan', specialty: 'Craft & Dutch' },
+  { key: 'Stanley', name: 'Stanley', specialty: 'Klassiek Schots' }
+];
+
+export interface TrailMatrixRow {
+  time: string;
+  slots: Record<string, { ticketId: string } | undefined>;
+}
+
+export interface TrailMatrixSession {
+  id: string;
+  title: string;
+  dayLabel: string;
+  timeLabel: string;
+  rows: TrailMatrixRow[];
+}
+
+export const MATRIX_SESSIONS: TrailMatrixSession[] = [
+  {
+    id: 'trail-fri-evening',
+    title: 'Vrijdagavond',
+    dayLabel: 'Vrijdag 13 Nov',
+    timeLabel: '19:00 - 23:00 uur',
+    rows: [
+      {
+        time: '20:00 - 20:30',
+        slots: {
+          Klaas: { ticketId: 'dh-trail-65-whisky-trail-gids-klaas' },
+          Stanley: { ticketId: 'dh-trail-66-whisky-trail-gids-stanley' }
+        }
+      },
+      {
+        time: '20:30 - 21:00',
+        slots: {
+          Ernst: { ticketId: 'dh-trail-67-whisky-trail-gids-ernst' },
+          Marlie: { ticketId: 'dh-trail-68-whisky-trail-gids-marly' },
+          Sebastiaan: { ticketId: 'dh-trail-69-whisky-trail-gids-sebastiaan' }
+        }
+      },
+      {
+        time: '21:00 - 21:30',
+        slots: {
+          Klaas: { ticketId: 'dh-trail-70-whisky-trail-gids-klaas' },
+          Stanley: { ticketId: 'dh-trail-71-whisky-trail-gids-stanley' }
+        }
+      },
+      {
+        time: '21:30 - 22:00',
+        slots: {
+          Ernst: { ticketId: 'dh-trail-72-whisky-trail-gids-ernst' },
+          Marlie: { ticketId: 'dh-trail-73-whisky-trail-gids-marly' },
+          Sebastiaan: { ticketId: 'dh-trail-74-whisky-trail-gids-sebastiaan' }
+        }
+      }
+    ]
+  },
+  {
+    id: 'trail-sat-afternoon',
+    title: 'Zaterdagmiddag',
+    dayLabel: 'Zaterdag 14 Nov',
+    timeLabel: '13:00 - 17:00 uur',
+    rows: [
+      {
+        time: '14:00 - 14:30',
+        slots: {
+          Ernst: { ticketId: 'dh-trail-75-whisky-trail-gids-ernst' },
+          Marlie: { ticketId: 'dh-trail-76-whisky-trail-gids-marly' },
+          Sebastiaan: { ticketId: 'dh-trail-77-whisky-trail-gids-sebastiaan' }
+        }
+      },
+      {
+        time: '14:30 - 15:00',
+        slots: {
+          Stanley: { ticketId: 'dh-trail-78-whisky-trail-gids-stanley' },
+          Klaas: { ticketId: 'dh-trail-79-whisky-trail-gids-klaas' }
+        }
+      },
+      {
+        time: '15:00 - 15:30',
+        slots: {
+          Ernst: { ticketId: 'dh-trail-80-whisky-trail-gids-ernst' },
+          Marlie: { ticketId: 'dh-trail-81-whisky-trail-gids-marly' },
+          Sebastiaan: { ticketId: 'dh-trail-82-whisky-trail-gids-sebastiaan' }
+        }
+      },
+      {
+        time: '15:30 - 16:00',
+        slots: {
+          Stanley: { ticketId: 'dh-trail-83-whisky-trail-gids-stanley' },
+          Klaas: { ticketId: 'dh-trail-84-whisky-trail-gids-klaas' }
+        }
+      }
+    ]
+  },
+  {
+    id: 'trail-sat-evening',
+    title: 'Zaterdagavond',
+    dayLabel: 'Zaterdag 14 Nov',
+    timeLabel: '19:00 - 23:00 uur',
+    rows: [
+      {
+        time: '20:00 - 20:30',
+        slots: {
+          Klaas: { ticketId: 'dh-trail-85-whisky-trail-gids-klaas' },
+          Stanley: { ticketId: 'dh-trail-86-whisky-trail-gids-stanley' }
+        }
+      },
+      {
+        time: '20:30 - 21:00',
+        slots: {
+          Ernst: { ticketId: 'dh-trail-87-whisky-trail-gids-ernst' },
+          Marlie: { ticketId: 'dh-trail-88-whisky-trail-gids-marly' },
+          Sebastiaan: { ticketId: 'dh-trail-89-whisky-trail-gids-sebastiaan' }
+        }
+      },
+      {
+        time: '21:00 - 21:30',
+        slots: {
+          Klaas: { ticketId: 'dh-trail-90-whisky-trail-gids-klaas' },
+          Stanley: { ticketId: 'dh-trail-91-whisky-trail-gids-stanley' }
+        }
+      },
+      {
+        time: '21:30 - 22:00',
+        slots: {
+          Ernst: { ticketId: 'dh-trail-92-whisky-trail-gids-ernst' },
+          Marlie: { ticketId: 'dh-trail-93-whisky-trail-gids-marly' },
+          Sebastiaan: { ticketId: 'dh-trail-94-whisky-trail-gids-sebastiaan' }
+        }
+      }
+    ]
+  },
+  {
+    id: 'trail-sun-afternoon',
+    title: 'Zondagmiddag',
+    dayLabel: 'Zondag 15 Nov',
+    timeLabel: '13:00 - 17:00 uur',
+    rows: [
+      {
+        time: '14:00 - 14:30',
+        slots: {
+          Ernst: { ticketId: 'dh-trail-95-whisky-trail-gids-ernst' },
+          Marlie: { ticketId: 'dh-trail-96-whisky-trail-gids-marly' },
+          Sebastiaan: { ticketId: 'dh-trail-97-whisky-trail-gids-sebastiaan' }
+        }
+      },
+      {
+        time: '14:30 - 15:00',
+        slots: {
+          Klaas: { ticketId: 'dh-trail-98-whisky-trail-gids-klaas' },
+          Stanley: { ticketId: 'dh-trail-99-whisky-trail-gids-stanley' }
+        }
+      },
+      {
+        time: '15:00 - 15:30',
+        slots: {
+          Ernst: { ticketId: 'dh-trail-100-whisky-trail-gids-ernst' },
+          Marlie: { ticketId: 'dh-trail-101-whisky-trail-gids-marly' },
+          Sebastiaan: { ticketId: 'dh-trail-102-whisky-trail-gids-sebastiaan' }
+        }
+      },
+      {
+        time: '15:30 - 16:00',
+        slots: {
+          Klaas: { ticketId: 'dh-trail-103-whisky-trail-gids-klaas' },
+          Stanley: { ticketId: 'dh-trail-104-whisky-trail-gids-stanley' }
+        }
+      }
+    ]
+  }
+];
+
+// Map session ID to matrix session
+const SESSION_TRAIL_MAP: Record<string, TrailMatrixSession | undefined> = {
+  'vrijdag-avond': MATRIX_SESSIONS[0],
+  'zaterdag-middag': MATRIX_SESSIONS[1],
+  'zaterdag-avond': MATRIX_SESSIONS[2],
+  'zondag-middag': MATRIX_SESSIONS[3]
+};
+
+const SESSIONS: SessionData[] = [
+  {
+    id: 'vrijdag-middag',
+    name: 'Vrijdag VIP',
+    dayLabel: 'Vrijdag 13 Nov',
+    timeLabel: '13:00 - 17:00 uur',
+    items: [
+      {
+        id: 'dh-masterclass-29-macallan-torentasting-inc-bekl',
+        time: '11:15 – 12:00',
+        location: 'Haagsche Toren',
+        title: 'Macallan Exclusive (Inc. Torenklim)',
+        category: 'masterclass',
+        categoryLabel: 'Torenbeleving',
+        host: 'Gerard Spaans (Master of Malt)',
+        description: 'Exclusieve Macallan sherry-cask proeverij inclusief adembenemende beklimming van de toren vóór de beursvloer opent.',
+        price: 77.50
+      },
+      {
+        id: 'dh-masterclass-30-macallan-torentasting-zonder-b',
+        time: '12:00 – 12:45',
+        location: 'Haagsche Toren • Zolder',
+        title: 'Macallan Exclusive (Zonder Klim)',
+        category: 'masterclass',
+        categoryLabel: 'Torenbeleving',
+        host: 'Gerard Spaans (Master of Malt)',
+        description: 'Zeldzame Macallan single malts proeven in de intieme historische torenzolder.',
+        price: 70.00
+      },
+      {
+        id: 'dh-masterclass-31-teeling-whiskey-masterclass',
+        time: '12:15 – 13:00',
+        location: 'Nutshuis • Spaarkamer',
+        title: 'Teeling Whiskey Masterclass',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Chris Hayes (Brand Ambassador)',
+        description: '6 expressies van Dublin’s craft pioneer inclusief Small Batch en Renaissance series.',
+        price: 20.00
+      },
+      {
+        id: 'dh-masterclass-32-whisky-bites-dennis-mulder',
+        time: '12:15 – 13:00',
+        location: 'Nutshuis • Telkamer',
+        title: 'Whisky & Food Pairing',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Dennis Mulder (Whisky Chef)',
+        description: 'Verfijnde gastronomische whisky & hapjes combinaties.',
+        price: 27.50
+      },
+      {
+        id: 'dh-masterclass-33-smws-single-cask-masterclass',
+        time: '12:15 – 13:00',
+        location: 'Nutshuis • Foyer',
+        title: 'SMWS Single Cask Tasting',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Richard Wayland (Society Specialist)',
+        description: '4 onverdunde cask-strength single casks van de Scotch Malt Whisky Society.',
+        price: 25.00
+      },
+      {
+        id: 'dh-warehouse-14-warehouse-tasting-cley-distill',
+        time: '14:00 – 14:45',
+        location: 'Grote Kerk • Stand 14 (Cley)',
+        title: 'Cley Warehouse Tasting (Ronde 1)',
+        category: 'warehouse',
+        categoryLabel: 'Warehouse Tasting',
+        host: 'Cley Meesterstoker',
+        description: 'Intieme proeverij van speciale vatmonsters direct aan de stand.',
+        price: 20.00
+      },
+      {
+        id: 'dh-masterclass-35-glengoyne-tamdhu-masterclass',
+        time: '14:00 – 14:45',
+        location: 'Nutshuis • Telkamer',
+        title: 'Glengoyne & Tamdhu Sherry Tasting',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Carlos Perez & Gordon Dallas',
+        description: 'Vergelijkende sherry-cask masterclass tussen Glengoyne en 100% Oloroso Tamdhu.',
+        price: 17.50
+      },
+      {
+        id: 'dh-masterclass-34-glenfiddich-old-timers-tony-va',
+        time: '14:00 – 14:45',
+        location: 'Nutshuis • Foyer',
+        title: 'Glenfiddich Old Timers (Vintage Vaten)',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Tony van Rooijen (Brand Ambassador)',
+        description: 'Zeer zeldzame vintage vaten van Glenfiddich (18, 21, 23 YO Grand Cru & archief).',
+        price: 55.00
+      },
+      {
+        id: 'dh-warehouse-15-warehouse-tasting-cley-distill',
+        time: '15:00 – 15:45',
+        location: 'Grote Kerk • Stand 14 (Cley)',
+        title: 'Cley Warehouse Tasting (Ronde 2)',
+        category: 'warehouse',
+        categoryLabel: 'Warehouse Tasting',
+        host: 'Cley Meesterstoker',
+        description: 'Vatmonsters en New Make proeven direct aan de stand.',
+        price: 20.00
+      },
+      {
+        id: 'dh-masterclass-36-stokerij-sculte-masterclass',
+        time: '15:30 – 16:15',
+        location: 'Nutshuis • Telkamer',
+        title: 'Stokerij Sculte: Taste of Oak',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Gerard Velthuis (Meesterstoker)',
+        description: 'Top van Nederlandse whisky gerijpt op eeuwenoud Twents eikenhout.',
+        price: 49.50
+      },
+      {
+        id: 'dh-masterclass-37-house-of-suntory-japanese-port',
+        time: '15:30 – 16:15',
+        location: 'Nutshuis • Foyer',
+        title: 'House of Suntory Japanese Portfolio',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Kenji Sato (Japanese Specialist)',
+        description: 'Zintuiglijke reis langs Yamazaki, Hakushu, Hibiki en Chita.',
+        price: 20.00
+      },
+      {
+        id: 'whiskytram-fri-1715',
+        time: '17:15 – 18:15',
+        location: 'Kerkplein • Tramhalte',
+        title: 'Haagsche Whiskytram (Middagrit)',
+        category: 'tram',
+        categoryLabel: 'Whiskytram',
+        host: 'HTM Historische Tram • 4 drams',
+        description: 'Sluit uw VIP-middag af met een rit door Den Haag onder het genot van 4 geselecteerde topdrams.',
+        price: 39.50
+      }
+    ]
+  },
+  {
+    id: 'vrijdag-avond',
+    name: 'Vrijdagavond',
+    dayLabel: 'Vrijdag 13 Nov',
+    timeLabel: '19:00 - 23:00 uur',
+    items: [
+      {
+        id: 'dh-masterclass-38-whisky-introductie-masterclass',
+        time: '18:30 – 19:15',
+        location: 'Nutshuis • Spaarkamer',
+        title: 'Whisky Introductie Masterclass',
+        category: 'masterclass',
+        categoryLabel: 'Introductie',
+        host: 'Valentijn Klop (Educator)',
+        description: 'Ideaal voor beginners: leer nosing & tasting technieken vóór u de beursvloer opstapt.',
+        price: 7.50
+      },
+      {
+        id: 'dh-masterclass-39-the-balvenie-old-timers-tony-v',
+        time: '18:30 – 19:15',
+        location: 'Nutshuis • Foyer',
+        title: 'The Balvenie Old Timers (Exclusief)',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Tony van Rooijen (Brand Ambassador)',
+        description: 'Handcrafted Speyside iconen inclusief 14YO Caribbean Cask, 21YO PortWood en Tun 1509.',
+        price: 65.00
+      },
+      {
+        id: 'whiskytram-fri-1845',
+        time: '18:45 – 19:45',
+        location: 'Kerkplein • Tramhalte',
+        title: 'Haagsche Whiskytram (Avondrit 1)',
+        category: 'tram',
+        categoryLabel: 'Whiskytram',
+        host: 'HTM Historische Tram • 4 drams',
+        description: 'Sfeervolle avondrit door de verlichte residentie met 4 bijzondere drams.',
+        price: 39.50
+      },
+      {
+        id: 'dh-masterclass-40-de-bronckhorst-the-rise-of-gra',
+        time: '20:00 – 20:45',
+        location: 'Nutshuis • Spaarkamer',
+        title: 'De Bronckhorst: The Rise of Grain',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Distillery Team Bronckhorst',
+        description: 'Nederlandse innovatie met zeldzame granen en ambachtelijke vatrijping.',
+        price: 17.50
+      },
+      {
+        id: 'dh-masterclass-41-ncnean-organic-single-malt',
+        time: '20:00 – 20:45',
+        location: 'Nutshuis • Telkamer',
+        title: "Nc'nean Organic Single Malt",
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: "Nc'nean Brand Ambassador",
+        description: 'Duurzame biologische Schotse whisky met innovatieve giststammen en STR-vaten.',
+        price: 25.00
+      },
+      {
+        id: 'vatenmaken-tickets',
+        time: '20:00 – 20:45',
+        location: 'Grote Kerk • Kuiperij',
+        title: 'Workshop Vatenmaken & Kuiperij',
+        category: 'workshop',
+        categoryLabel: 'Workshop',
+        host: 'Meesterkuiper',
+        description: 'Leer zelf de kunst van het vatenmaken, inclusief het toasten van duigen en proeverij.',
+        price: 27.50
+      },
+      {
+        id: 'dh-warehouse-17-warehouse-tasting-cley-distill',
+        time: '20:00 – 20:45',
+        location: 'Grote Kerk • Stand 14 (Cley)',
+        title: 'Cley Warehouse Tasting (Vatmonsters)',
+        category: 'warehouse',
+        categoryLabel: 'Warehouse Tasting',
+        host: 'Cley Meesterstoker',
+        description: 'Intieme proeverij van speciale vatmonsters direct aan de stand.',
+        price: 20.00
+      },
+      {
+        id: 'whiskytram-fri-2015',
+        time: '20:15',
+        location: 'Kerkplein • Tramhalte',
+        title: 'Haagsche Whiskytram (Avondrit 2)',
+        category: 'tram',
+        categoryLabel: 'Whiskytram',
+        host: 'HTM Historische Tram • 4 drams',
+        description: 'Laatste avondrit door Den Haag met 4 drams aan boord.',
+        price: 39.50
+      },
+      {
+        id: 'dh-masterclass-42-filliers-single-rye-malt',
+        time: '21:30',
+        location: 'Nutshuis • Telkamer',
+        title: 'Filliers Single Rye & Malt',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Filliers Master Blender',
+        description: 'Belgisch vakmanschap en graandistillatie van het allerhoogste niveau.',
+        price: 17.50
+      }
+    ]
+  },
+  {
+    id: 'zaterdag-middag',
+    name: 'Zaterdagmiddag',
+    dayLabel: 'Zaterdag 14 Nov',
+    timeLabel: '13:00 - 17:00 uur',
+    items: [
+      {
+        id: 'dh-masterclass-44-bowmore-torentasting-inc-bekli',
+        time: '11:15 – 12:00',
+        location: 'Haagsche Toren',
+        title: 'Bowmore Torentasting (Inc. Beklimming)',
+        category: 'masterclass',
+        categoryLabel: 'Torenbeleving',
+        host: 'Beam Suntory Ambassador',
+        description: 'Islay turf en sherryrijping op grote hoogte inclusief beklimming van de toren.',
+        price: 35.00
+      },
+      {
+        id: 'dh-masterclass-45-bowmore-torentasting-zonder-be',
+        time: '12:00 – 12:45',
+        location: 'Haagsche Toren • Zolder',
+        title: 'Bowmore Torentasting (Zonder Klim)',
+        category: 'masterclass',
+        categoryLabel: 'Torenbeleving',
+        host: 'Beam Suntory Ambassador',
+        description: 'Proeverij van klassieke Bowmore expressies in de intieme torenzolder.',
+        price: 35.00
+      },
+      {
+        id: 'dh-masterclass-46-whisky-introductie-masterclass',
+        time: '12:30 – 13:15',
+        location: 'Nutshuis • Spaarkamer',
+        title: 'Whisky Introductie Masterclass',
+        category: 'masterclass',
+        categoryLabel: 'Introductie',
+        host: 'Valentijn Klop (Educator)',
+        description: 'Toegankelijke introductie proeven voor beginners.',
+        price: 7.50
+      },
+      {
+        id: 'dh-masterclass-47-unieke-old-timers-port-ellen-g',
+        time: '12:30 – 13:15',
+        location: 'Nutshuis • Telkamer',
+        title: 'Unieke Old Timers (Port Ellen & Glen Grant)',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Specialist Vintage Vaten',
+        description: 'Ultra-zeldzame legendarische bottelingen uit gesloten distilleerderijen.',
+        price: 85.00
+      },
+      {
+        id: 'dh-masterclass-48-the-ultimate-historische-botte',
+        time: '12:30 – 13:15',
+        location: 'Nutshuis • Foyer',
+        title: 'The Ultimate: Historische Single Casks',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Van Wees Tasting Team',
+        description: 'Beroemde single cask selecties van The Ultimate.',
+        price: 35.00
+      },
+      {
+        id: 'whiskytram-sat-1330',
+        time: '13:30 – 14:30',
+        location: 'Kerkplein • Tramhalte',
+        title: 'Haagsche Whiskytram (Middagrit 1)',
+        category: 'tram',
+        categoryLabel: 'Whiskytram',
+        host: 'HTM Historische Tram • 4 drams',
+        description: '4 drams aan boord van de historische tram door Den Haag.',
+        price: 39.50
+      },
+      {
+        id: 'dh-masterclass-49-teeling-whiskey-masterclass',
+        time: '14:00 – 14:45',
+        location: 'Nutshuis • Spaarkamer',
+        title: 'Teeling Whiskey Masterclass',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Chris Hayes (Teeling)',
+        description: 'Dublin’s beste expressies en limited editions.',
+        price: 20.00
+      },
+      {
+        id: 'dh-masterclass-50-brugs-heilig-water-masterclass',
+        time: '14:00 – 14:45',
+        location: 'Nutshuis • Foyer',
+        title: 'Brugs Heilig Water Masterclass',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Belgian Craft Distillers',
+        description: 'Ambachtelijke Belgische distillatie en vatrijping.',
+        price: 25.00
+      },
+      {
+        id: 'dh-warehouse-20-warehouse-tasting-cley-distill',
+        time: '14:00 – 14:45',
+        location: 'Grote Kerk • Stand 14 (Cley)',
+        title: 'Cley Warehouse Tasting (Vatmonsters)',
+        category: 'warehouse',
+        categoryLabel: 'Warehouse Tasting',
+        host: 'Cley Meesterstoker',
+        description: 'Exclusieve vatmonsters direct aan de stand.',
+        price: 20.00
+      },
+      {
+        id: 'dh-masterclass-52-sakurao-japanese-whisky',
+        time: '15:30 – 16:15',
+        location: 'Nutshuis • Foyer',
+        title: 'Sakurao Japanese Single Malt',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Japanese Specialist',
+        description: 'De nieuwe generatie Japanse whisky uit Hiroshima.',
+        price: 20.00
+      },
+      {
+        id: 'whiskytram-sat-1715',
+        time: '17:15 – 18:15',
+        location: 'Kerkplein • Tramhalte',
+        title: 'Haagsche Whiskytram (Namiddagrit)',
+        category: 'tram',
+        categoryLabel: 'Whiskytram',
+        host: 'HTM Historische Tram • 4 drams',
+        description: 'Middagafsluiting met 4 drams aan boord van de tram.',
+        price: 39.50
+      }
+    ]
+  },
+  {
+    id: 'zaterdag-avond',
+    name: 'Zaterdagavond',
+    dayLabel: 'Zaterdag 14 Nov',
+    timeLabel: '19:00 - 23:00 uur',
+    items: [
+      {
+        id: 'dh-masterclass-53-whisky-introductie-masterclass',
+        time: '18:30 – 19:15',
+        location: 'Nutshuis • Spaarkamer',
+        title: 'Whisky Introductie Masterclass',
+        category: 'masterclass',
+        categoryLabel: 'Introductie',
+        host: 'Valentijn Klop (Educator)',
+        description: 'Basis nosing & tasting voor beginners.',
+        price: 7.50
+      },
+      {
+        id: 'dh-masterclass-54-unieke-old-timers-macallan-bal',
+        time: '18:30 – 19:15',
+        location: 'Nutshuis • Telkamer',
+        title: 'Unieke Old Timers (Macallan & Balvenie)',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Tony van Rooijen',
+        description: 'Exclusieve proeverij van Speyside honingzachte zeldzaamheden en vintage vaten.',
+        price: 65.00
+      },
+      {
+        id: 'dh-masterclass-55-teeling-whiskey-masterclass',
+        time: '18:30 – 19:15',
+        location: 'Nutshuis • Foyer',
+        title: 'Teeling Whiskey Masterclass',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Chris Hayes (Teeling)',
+        description: 'Dublin’s beste expressies en limited editions.',
+        price: 20.00
+      },
+      {
+        id: 'whiskytram-sat-1845',
+        time: '18:45 – 19:45',
+        location: 'Kerkplein • Tramhalte',
+        title: 'Haagsche Whiskytram (Avondrit 1)',
+        category: 'tram',
+        categoryLabel: 'Whiskytram',
+        host: 'HTM Historische Tram • 4 drams',
+        description: '4 topdrams aan boord door historisch Den Haag.',
+        price: 39.50
+      },
+      {
+        id: 'dh-masterclass-56-glenfarclas-family-casks-maste',
+        time: '20:00 – 20:45',
+        location: 'Nutshuis • Telkamer',
+        title: 'Glenfarclas Family Casks Masterclass',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Glenfarclas Ambassador',
+        description: 'Legendarische 100% Oloroso sherry cask single malts uit Ballindalloch.',
+        price: 25.00
+      },
+      {
+        id: 'dh-masterclass-57-amrut-indian-single-malt-maste',
+        time: '20:00 – 20:45',
+        location: 'Nutshuis • Spaarkamer',
+        title: 'Amrut Indian Single Malt Masterclass',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Amrut Ambassador',
+        description: 'Tropische vatrijping en intense smaken uit Bangalore.',
+        price: 17.50
+      },
+      {
+        id: 'vatenmaken-sat-2000',
+        time: '20:00 – 20:45',
+        location: 'Grote Kerk • Kuiperij',
+        title: 'Workshop Vatenmaken & Kuiperij',
+        category: 'workshop',
+        categoryLabel: 'Workshop',
+        host: 'Meesterkuiper',
+        description: 'Ambachtelijke vatenbouw en mini-tasting.',
+        price: 27.50
+      },
+      {
+        id: 'dh-warehouse-23-warehouse-tasting-cley-distill',
+        time: '20:00 – 20:45',
+        location: 'Grote Kerk • Stand 14 (Cley)',
+        title: 'Cley Warehouse Tasting (Vatmonsters)',
+        category: 'warehouse',
+        categoryLabel: 'Warehouse Tasting',
+        host: 'Cley Meesterstoker',
+        description: 'Vatmonsters direct aan de stand.',
+        price: 20.00
+      },
+      {
+        id: 'whiskytram-sat-2015',
+        time: '20:15',
+        location: 'Kerkplein • Tramhalte',
+        title: 'Haagsche Whiskytram (Avondrit 2)',
+        category: 'tram',
+        categoryLabel: 'Whiskytram',
+        host: 'HTM Historische Tram • 4 drams',
+        description: '4 drams in de sfeervol verlichte tram.',
+        price: 39.50
+      },
+      {
+        id: 'dh-masterclass-58-arran-cask-samples-masterclass',
+        time: '21:30',
+        location: 'Nutshuis • Foyer',
+        title: 'Arran Cask Samples Masterclass',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Arran Specialist',
+        description: 'Eilandwhisky met exclusieve vatmonsters.',
+        price: 25.00
+      }
+    ]
+  },
+  {
+    id: 'zondag-middag',
+    name: 'Zondagmiddag',
+    dayLabel: 'Zondag 15 Nov',
+    timeLabel: '13:00 - 17:00 uur',
+    items: [
+      {
+        id: 'whiskytram-sun-1100',
+        time: '11:00',
+        location: 'Kerkplein • Tramhalte',
+        title: 'Haagsche Whiskytram (Ochtendrit)',
+        category: 'tram',
+        categoryLabel: 'Whiskytram',
+        host: 'HTM Historische Tram • 4 drams',
+        description: 'Ontspannen zondagochtendrit met 4 drams aan boord.',
+        price: 39.50
+      },
+      {
+        id: 'dh-masterclass-59-the-glenturret-torentasting-in',
+        time: '11:15 – 12:00',
+        location: 'Haagsche Toren',
+        title: 'The Glenturret Torentasting (Inc. Klim)',
+        category: 'masterclass',
+        categoryLabel: 'Torenbeleving',
+        host: 'Glenturret Ambassador',
+        description: "Schotland's oudste distilleerderij proeven met panoramisch uitzicht.",
+        price: 37.50
+      },
+      {
+        id: 'dh-masterclass-60-the-glenturret-torentasting-zo',
+        time: '12:00 – 12:45',
+        location: 'Haagsche Toren • Zolder',
+        title: 'The Glenturret Torentasting (Zonder Klim)',
+        category: 'masterclass',
+        categoryLabel: 'Torenbeleving',
+        host: 'Glenturret Ambassador',
+        description: 'Exclusieve Glenturret proeverij in de intieme torenzolder.',
+        price: 37.50
+      },
+      {
+        id: 'dh-masterclass-62-lagg-peated-single-malt-master',
+        time: '12:15 – 13:00',
+        location: 'Nutshuis • Telkamer',
+        title: 'Lagg Peated Single Malt Masterclass',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Arran & Lagg Ambassador',
+        description: 'Zware turf en moderne distillatie van het eiland Arran.',
+        price: 25.00
+      },
+      {
+        id: 'dh-masterclass-63-smws-single-cask-masterclass',
+        time: '12:15 – 13:00',
+        location: 'Nutshuis • Foyer',
+        title: 'SMWS Single Cask Masterclass',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Richard Wayland',
+        description: '4 onverdunde cask-strength single casks van de Society.',
+        price: 25.00
+      },
+      {
+        id: 'dh-masterclass-61-whisky-introductie-masterclass',
+        time: '12:30 – 13:15',
+        location: 'Nutshuis • Spaarkamer',
+        title: 'Whisky Introductie Masterclass',
+        category: 'masterclass',
+        categoryLabel: 'Introductie',
+        host: 'Valentijn Klop (Educator)',
+        description: 'Basis nosing & tasting voor beginners.',
+        price: 7.50
+      },
+      {
+        id: 'dh-warehouse-26-warehouse-tasting-cley-distill',
+        time: '14:00 – 14:45',
+        location: 'Grote Kerk • Stand 14 (Cley)',
+        title: 'Cley Warehouse Tasting (Ronde 1)',
+        category: 'warehouse',
+        categoryLabel: 'Warehouse Tasting',
+        host: 'Cley Meesterstoker',
+        description: 'Vatmonsters direct aan de stand.',
+        price: 20.00
+      },
+      {
+        id: 'whiskytram-sun-1400',
+        time: '14:00 – 14:45',
+        location: 'Kerkplein • Tramhalte',
+        title: 'Haagsche Whiskytram (Middagrit)',
+        category: 'tram',
+        categoryLabel: 'Whiskytram',
+        host: 'HTM Historische Tram • 4 drams',
+        description: 'Middagrit door Den Haag met 4 drams.',
+        price: 39.50
+      },
+      {
+        id: 'dh-masterclass-64-angus-dundee-single-malt-maste',
+        time: '14:00 – 14:45',
+        location: 'Nutshuis • Foyer',
+        title: 'Angus Dundee Single Malt Masterclass',
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: 'Tomintoul & Glencadam Team',
+        description: 'De zachte Speyside stijl van Tomintoul & de nobele Glencadam.',
+        price: 17.50
+      },
+      {
+        id: 'dh-warehouse-27-warehouse-tasting-cley-distill',
+        time: '15:00 – 15:45',
+        location: 'Grote Kerk • Stand 14 (Cley)',
+        title: 'Cley Warehouse Tasting (Ronde 2)',
+        category: 'warehouse',
+        categoryLabel: 'Warehouse Tasting',
+        host: 'Cley Meesterstoker',
+        description: 'Tweede zondagronde aan de stand.',
+        price: 20.00
+      },
+      {
+        id: 'dh-warehouse-28-warehouse-tasting-cley-distill',
+        time: '16:00 – 16:45',
+        location: 'Grote Kerk • Stand 14 (Cley)',
+        title: 'Cley Warehouse Tasting (Finale)',
+        category: 'warehouse',
+        categoryLabel: 'Warehouse Tasting',
+        host: 'Cley Meesterstoker',
+        description: 'Laatste vatenproeverij van het festivalweekend.',
+        price: 20.00
+      }
+    ]
+  }
+];
+
+const BOTTELLINGS = [
+  {
+    id: 'dh-botteling-8-festival-botteling-amrut-single-c',
+    title: 'Amrut Single Cask #9318 (Vat A)',
+    spec: 'Single Cask Edition • 57.1% ABV • Oloroso Cask',
+    description: 'Exclusief geselecteerd vat voor Whisky Fest Den Haag. Gelimiteerde genummerde oplage.',
+    price: 85.00
+  },
+  {
+    id: 'dh-botteling-9-festival-botteling-amrut-single-c',
+    title: 'Amrut Single Cask #3464 (Vat B)',
+    spec: 'Single Cask Edition • 56.5% ABV • Bourbon Cask',
+    description: 'Tweede zuster-vat van Amrut distillery, speciaal gebotteld voor het festival.',
+    price: 85.00
+  },
+  {
+    id: 'dh-botteling-10-festival-botteling-cley-distiller',
+    title: 'Cley Distillery Cask Strength Festival Edition',
+    spec: 'Nederlandse Single Cask • Vatsterkte • 58.2% ABV',
+    description: 'Exclusieve Nederlandse craft whisky gebotteld op volle vatsterkte.',
+    price: 79.50
+  },
+  {
+    id: 'dh-botteling-11-festival-botteling-kilchoman-18yo',
+    title: 'Kilchoman 18YO Single Cask (Ultra Zeldzaam)',
+    spec: 'Islay Single Malt • 18 Jaar Oud • Zeer Zeldzaam',
+    description: 'Een van de allereerste 18 jaar oude Kilchoman vaten ter wereld. Slechts enkele flessen beschikbaar.',
+    price: 385.00
+  }
+];
+
+function formatSpeaker(host: string) {
+  if (!host) return { name: '—', role: '' };
+  
+  const match = host.match(/^(.*?)\s*\((.*?)\)$/);
+  if (match) {
+    return { name: match[1].trim(), role: match[2].trim() };
+  }
+  
+  if (host.includes('•')) {
+    const parts = host.split('•');
+    return { name: parts[0].trim(), role: parts.slice(1).join(' • ').trim() };
+  }
+
+  return { name: host, role: '' };
+}
+---
+
+<Layout 
+  title="Programma & Tijdschema 2026 - Whisky Fest Den Haag" 
+  description="Volledig tijdschema van alle masterclasses, tramritten en tastings tijdens Whisky Fest Den Haag."
+>
+  <Header />
+
+  <main class="programma-page-main">
+    
+    <!-- 1. FULL-WIDTH AUTHENTIC FESTIVAL HERO (100% SCHOON & RUSTIG) -->
+    <header class="programma-full-hero">
+      <div class="hero-photo-layer" aria-hidden="true"></div>
+      <div class="hero-tint-overlay" aria-hidden="true"></div>
+      
+      <div class="hero-barrel-art" aria-hidden="true">
+        <img src="/barrels line.svg" alt="" width="360" height="420" loading="eager" />
+      </div>
+
+      <div class="hero-content-wrapper animate-fade-in">
+        <h1 class="hero-main-title">
+          Festival Programma &amp; Tijdschema
+        </h1>
+        <div class="hero-gold-line"></div>
+        <p class="hero-lead-paragraph">
+          Stel uw persoonlijke festivalbezoek samen. Bekijk alle masterclasses in het Nutshuis, historische tramritten, tastings en rondleidingen met onze gidsen.
+        </p>
+      </div>
+    </header>
+
+    <!-- 2. MAIN CONTAINER ON PARCHMENT BACKGROUND -->
+    <div class="agenda-parchment-container">
+      
+      <!-- 7-CARD SESSION SELECTOR STRIP -->
+      <nav class="session-selector-strip" aria-label="Kies een festival sessie of activiteit">
+        {SESSIONS.map((s, idx) => (
+          <button 
+            type="button" 
+            class={`session-btn-card ${idx === 0 ? 'active' : ''}`}
+            data-target-tab={s.id}
+          >
+            <span class="btn-card-day">{s.dayLabel}</span>
+            <span class="btn-card-name">{s.name}</span>
+            <span class="btn-card-time">{s.timeLabel}</span>
+          </button>
+        ))}
+        
+        <button 
+          type="button" 
+          class="session-btn-card"
+          data-target-tab="bottelingen"
+        >
+          <span class="btn-card-day">Exclusief</span>
+          <span class="btn-card-name">Festival Bottelingen</span>
+          <span class="btn-card-time">Afhalen Slijterij</span>
+        </button>
+
+        <button 
+          type="button" 
+          class="session-btn-card btn-gidsen-special"
+          data-target-tab="gidsen"
+        >
+          <span class="btn-card-day">Rondleiding</span>
+          <span class="btn-card-name">Whisky Gidsen</span>
+          <span class="btn-card-time">Planning &amp; Trails</span>
+        </button>
+      </nav>
+
+      <!-- PANES LIST -->
+      <div class="agenda-panes-list">
+        
+        <!-- 1-5: The 5 Day Sessions -->
+        {SESSIONS.map((s, idx) => (
+          <section 
+            class={`session-agenda-pane ${idx === 0 ? 'active' : ''}`}
+            id={`pane-${s.id}`}
+          >
+            <!-- Pane Header -->
+            <div class="pane-header-bar">
+              <h2 class="pane-title">{s.name}</h2>
+              <span class="pane-badge-time">{s.dayLabel} &bull; {s.timeLabel}</span>
+            </div>
+
+            <!-- Masterclasses & Tastings Rows -->
+            <div class="pane-rows-list">
+              <!-- Column Titles Header -->
+              <div class="agenda-table-head">
+                <span class="th-cell th-time">Tijd</span>
+                <span class="th-cell th-title">Programma</span>
+                <span class="th-cell th-type-loc">Type &amp; Locatie</span>
+                <span class="th-cell th-speaker">Spreker / Gids</span>
+                <span class="th-cell th-action">Prijs &amp; Bestellen</span>
+              </div>
+
+              <!-- Rows in 5 Clean Columns -->
+              {s.items.map((item) => (
+                <article class="agenda-row-item">
+                  <!-- 1. Tijd (Begin- en Eindtijd) -->
+                  <div class="col-time">
+                    <span class="item-time-val">{item.time}</span>
+                  </div>
+
+                  <!-- 2. Programma Titel (1 regel) -->
+                  <div class="col-title">
+                    <h3 class="item-name">{item.title}</h3>
+                  </div>
+
+                  <!-- 3. Type & Locatie -->
+                  <div class="col-type-loc">
+                    <span class={`cat-pill cat-${item.category}`}>{item.categoryLabel}</span>
+                    <span class="item-loc-tag">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                      {item.location}
+                    </span>
+                  </div>
+
+                  <!-- 4. Spreker / Gids (Naam bovenaan, rol/titel eronder) -->
+                  <div class="col-speaker">
+                    {(() => {
+                      const spk = formatSpeaker(item.host);
+                      return (
+                        <div class="speaker-block">
+                          <strong class="speaker-name">{spk.name}</strong>
+                          {spk.role && <span class="speaker-role">{spk.role}</span>}
+                        </div>
+                      );
+                    })()}
+                  </div>
+
+                  <!-- 5. Prijs & Details / Bestelknop -->
+                  <div class="col-action">
+                    <strong class="item-price">€ {item.price.toFixed(2).replace('.', ',')}</strong>
+                    <div class="action-buttons-group">
+                      <button 
+                        type="button" 
+                        class="btn-trigger-details"
+                        data-title={item.title}
+                        data-loc={item.location}
+                        data-time={item.time}
+                        data-host={item.host}
+                        data-desc={item.description}
+                        data-price={`€ ${item.price.toFixed(2).replace('.', ',')}`}
+                      >
+                        Details
+                      </button>
+                      <button 
+                        type="button" 
+                        class="btn btn-gold btn-table-buy"
+                        data-ticket-id={item.id}
+                        data-title={item.title}
+                      >
+                        + Bestel
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <!-- DIRECT IN-PANE TRAIL MATRIX (Als er trails zijn in deze sessie) -->
+            {SESSION_TRAIL_MAP[s.id] && (
+              <div class="session-trail-matrix-box">
+                <div class="stmb-header">
+                  <div class="stmb-title-box">
+                    <span class="stmb-kicker">30 MIN RONDLEIDING &bull; € 5,00 INCL. 5 PROEFDRAMS</span>
+                    <h3 class="stmb-title">Whisky Gidsen Planning &bull; {s.name}</h3>
+                  </div>
+                  <span class="stmb-badge">Start bij Infostand Grote Kerk</span>
+                </div>
+
+                <div class="matrix-table-container">
+                  <table class="whisky-matrix-table">
+                    <thead>
+                      <tr>
+                        <th class="col-time-head">Tijdslot</th>
+                        {GUIDE_COLUMNS.map((g) => (
+                          <th class="col-guide-head">
+                            <div class="gh-box">
+                              <strong class="gh-name">{g.name}</strong>
+                              <span class="gh-spec">{g.specialty}</span>
+                            </div>
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {SESSION_TRAIL_MAP[s.id]!.rows.map((row) => (
+                        <tr>
+                          <td class="td-time-cell">
+                            <span class="matrix-time-val">{row.time}</span>
+                            <span class="matrix-time-sub">Start Infostand</span>
+                          </td>
+                          {GUIDE_COLUMNS.map((g) => {
+                            const slot = row.slots[g.key];
+                            return (
+                              <td class={`td-guide-cell ${slot ? 'cell-active' : 'cell-empty'}`}>
+                                {slot ? (
+                                  <div class="slot-book-cell">
+                                    <span class="avail-indicator">6 plekken vrij</span>
+                                    <button 
+                                      type="button" 
+                                      class="btn-matrix-action"
+                                      data-ticket-id={slot.ticketId}
+                                      data-title={`Whisky Trail (Gids ${g.name} - ${row.time} uur)`}
+                                    >
+                                      + Boek € 5,-
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <span class="dash-empty">—</span>
+                                )}
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+          </section>
+        ))}
+
+        <!-- 6: Bottelingen Pane -->
+        <section class="session-agenda-pane" id="pane-bottelingen">
+          <div class="pane-header-bar">
+            <h2 class="pane-title">Exclusieve Festival Bottelingen 2026</h2>
+            <span class="pane-badge-time">Afhalen bij Festivalslijterij (Grote Kerk)</span>
+          </div>
+
+          <div class="pane-rows-list">
+            {BOTTELLINGS.map((b) => (
+              <article class="agenda-row-item">
+                <!-- Left: Status & Location -->
+                <div class="col-time-loc">
+                  <span class="item-time-val">Single Cask</span>
+                  <span class="item-loc-tag">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    Festivalslijterij
+                  </span>
+                </div>
+
+                <!-- Center: Title & Specs -->
+                <div class="col-info">
+                  <div class="info-line-top">
+                    <h3 class="item-name">{b.title}</h3>
+                    <span class="cat-pill cat-warehouse">Gelimiteerd</span>
+                  </div>
+                  <div class="info-line-sub">
+                    <span class="speaker-name">{b.spec}</span>
+                  </div>
+                </div>
+
+                <!-- Right: Price & Actions -->
+                <div class="col-action">
+                  <strong class="item-price">€ {b.price.toFixed(2).replace('.', ',')}</strong>
+                  <div class="action-buttons-group">
+                    <button 
+                      type="button" 
+                      class="btn-trigger-details"
+                      data-title={b.title}
+                      data-loc="Festivalslijterij (Grote Kerk)"
+                      data-time="Tijdens festival afhalen"
+                      data-host={b.spec}
+                      data-desc={b.description}
+                      data-price={`€ ${b.price.toFixed(2).replace('.', ',')}`}
+                    >
+                      Details
+                    </button>
+                    <button 
+                      type="button" 
+                      class="btn btn-gold btn-table-buy"
+                      data-ticket-id={b.id}
+                      data-title={b.title}
+                    >
+                      + Reserveer
+                    </button>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <!-- 7: Whisky Gidsen Planning Matrix Pane -->
+        <section class="session-agenda-pane" id="pane-gidsen">
+          
+          <div class="pane-header-bar">
+            <div class="phb-left">
+              <h2 class="pane-title">Whisky Gidsen &amp; Trail Planning</h2>
+              <p class="phb-subtitle">Persoonlijke rondleiding van 30 min langs bijzondere stands in de Grote Kerk &bull; <strong>€ 5,00 inclusief 5 gratis proefdrams</strong></p>
+            </div>
+            <span class="pane-badge-time">Kies een Sessie Hieronder</span>
+          </div>
+
+          <!-- Sessie Schakelaar voor Trails -->
+          <div class="trail-inner-session-strip">
+            {MATRIX_SESSIONS.map((ms, idx) => (
+              <button 
+                type="button" 
+                class={`trail-inner-btn ${idx === 0 ? 'active' : ''}`}
+                data-target-trail-matrix={ms.id}
+              >
+                <span class="tib-day">{ms.dayLabel}</span>
+                <span class="tib-name">{ms.title}</span>
+                <span class="tib-time">{ms.timeLabel}</span>
+              </button>
+            ))}
+          </div>
+
+          <!-- De 4 Matrix Tabellen -->
+          <div class="trail-matrix-panes-wrap">
+            {MATRIX_SESSIONS.map((ms, idx) => (
+              <div 
+                class={`trail-matrix-subpane ${idx === 0 ? 'active' : ''}`}
+                id={`tmatrix-${ms.id}`}
+              >
+                <div class="matrix-table-container">
+                  <table class="whisky-matrix-table">
+                    <thead>
+                      <tr>
+                        <th class="col-time-head">Tijdslot</th>
+                        {GUIDE_COLUMNS.map((g) => (
+                          <th class="col-guide-head">
+                            <div class="gh-box">
+                              <strong class="gh-name">{g.name}</strong>
+                              <span class="gh-spec">{g.specialty}</span>
+                            </div>
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {ms.rows.map((row) => (
+                        <tr>
+                          <!-- Time Cell -->
+                          <td class="td-time-cell">
+                            <span class="matrix-time-val">{row.time}</span>
+                            <span class="matrix-time-sub">Start Infostand</span>
+                          </td>
+
+                          <!-- Guide Cells (1 oogopslag) -->
+                          {GUIDE_COLUMNS.map((g) => {
+                            const slot = row.slots[g.key];
+                            return (
+                              <td class={`td-guide-cell ${slot ? 'cell-active' : 'cell-empty'}`}>
+                                {slot ? (
+                                  <div class="slot-book-cell">
+                                    <span class="avail-indicator">6 plekken vrij</span>
+                                    <button 
+                                      type="button" 
+                                      class="btn-matrix-action"
+                                      data-ticket-id={slot.ticketId}
+                                      data-title={`Whisky Trail (Gids ${g.name} - ${row.time} uur)`}
+                                    >
+                                      + Boek € 5,-
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <span class="dash-empty">—</span>
+                                )}
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <Footer />
+
+  <!-- DETAIL MODAL -->
+  <div id="spacious-modal" class="modal-overlay-layer" style="display: none;">
+    <div class="modal-card-box vintage-frame">
+      <div class="vintage-frame-inner modal-box-padding">
+        <button type="button" id="modal-close-trigger" class="modal-close-button" aria-label="Sluiten">&times;</button>
+        
+        <span class="modal-kicker-tag">Activiteit Details</span>
+        <h2 id="m-title" class="m-heading-text">Titel</h2>
+        <div class="m-meta-line">
+          <span id="m-loc">Nutshuis</span> &bull; <span id="m-time">14:00 uur</span>
+        </div>
+
+        <p id="m-desc" class="m-desc-paragraph"></p>
+        
+        <div class="m-speaker-card">
+          <strong id="m-host">Spreker</strong>
+          <p>Officiële masterclass / activiteit tijdens Whisky Fest Den Haag.</p>
+        </div>
+
+        <div class="m-footer-actions">
+          <strong id="m-price" class="m-price-bold">€ 0,00</strong>
+          <button type="button" id="m-buy" class="btn btn-gold modal-submit-btn">+ Voeg toe aan bestelling</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="spacious-toast" class="spacious-toast" style="display: none;"></div>
+</Layout>
+
+<style>
+  /* ============================================================
+     1. FULL-WIDTH EDGE-TO-EDGE HERO WITH BACKGROUND PHOTO & TORN EDGE
+     ============================================================ */
+  .programma-page-main {
+    background-color: var(--bg-parchment, #FDFBF7);
+    min-height: 100vh;
+  }
+
+  .programma-full-hero {
+    position: relative;
+    width: 100%;
+    min-height: 60vh;
+    background-color: #082114;
+    padding: 16rem 2.5rem 8.5rem;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #FFFFFF;
+    border-bottom: 2px solid var(--text-charcoal, #171614);
+  }
+
+  /* Full Background Image - Atmospheric Festival View */
+  .hero-photo-layer {
+    position: absolute;
+    inset: 0;
+    background-image: url('/Afbeeldingen/2025/IWF2025-MilouvanderWillPhotography-265.jpg');
+    background-size: cover;
+    background-position: center 35%;
+    opacity: 0.45;
+    z-index: 1;
+  }
+
+  /* Rich Cinematic Gradient */
+  .hero-tint-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(6, 26, 16, 0.94) 0%, rgba(14, 56, 35, 0.82) 50%, rgba(23, 22, 20, 0.94) 100%);
+    z-index: 2;
+  }
+
+  /* Barrel Line Art */
+  .hero-barrel-art {
+    position: absolute;
+    right: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .hero-content-wrapper {
+    position: relative;
+    z-index: 4;
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-main-title {
+    font-family: var(--font-display, serif);
+    font-size: 3.75rem;
+    color: #FFFFFF;
+    margin: 0 0 0.5rem;
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: 0.03em;
+    font-style: normal;
+    text-shadow: 0 4px 25px rgba(0,0,0,0.65);
+  }
+
+  .hero-gold-line {
+    width: 60px;
+    height: 2.5px;
+    background-color: var(--whisky-gold, #c58b39);
+    margin: 0.75rem auto 1.25rem;
+  }
+
+  .hero-lead-paragraph {
+    font-family: var(--font-serif, Georgia, serif);
+    font-size: 1.18rem;
+    color: #E6DDD0;
+    margin: 0;
+    line-height: 1.6;
+    max-width: 680px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.55);
+  }
+
+  /* ============================================================
+     2. MAIN PARCHMENT CONTAINER & 7-CARD SESSION STRIP
+     ============================================================ */
+  .agenda-parchment-container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 1.5rem 6rem;
+  }
+
+  .session-selector-strip {
+    position: relative;
+    z-index: 10;
+    margin-top: -2.85rem;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    max-width: 1240px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 3.5rem;
+    padding: 0;
+  }
+
+  .session-btn-card {
+    min-width: 0;
+    width: 100%;
+    background: #FFFFFF;
+    border: 2px solid var(--text-charcoal, #171614);
+    box-shadow: 4px 4px 0px var(--text-charcoal, #171614);
+    padding: 0.8rem 0.35rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-radius: 4px;
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .btn-card-day {
+    font-family: var(--font-sans);
+    font-size: 0.64rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--whisky-gold-dark, #8b5a1b);
+    margin-bottom: 0.15rem;
+    white-space: nowrap;
+  }
+
+  .btn-card-name {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--text-charcoal, #171614);
+    margin-bottom: 0.15rem;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .btn-card-time {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    color: var(--text-muted, #8C827A);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .session-btn-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 6px 6px 0px var(--text-charcoal, #171614);
+    background: #FAF7F2;
+  }
+
+  .session-btn-card.active {
+    background: var(--whisky-gold, #C58B39);
+    border-color: var(--text-charcoal, #171614);
+    box-shadow: 5px 5px 0px var(--text-charcoal, #171614);
+    transform: translateY(-2px);
+  }
+  .session-btn-card.active .btn-card-day,
+  .session-btn-card.active .btn-card-name,
+  .session-btn-card.active .btn-card-time {
+    color: #171614;
+  }
+
+  /* Panes List */
+  .agenda-panes-list {
+    position: relative;
+  }
+
+  .session-agenda-pane {
+    display: none;
+    background: var(--bg-paper-card, #FFFFFF);
+    border: 2px solid var(--text-charcoal, #171614);
+    box-shadow: 6px 6px 0px var(--text-charcoal, #171614);
+    border-radius: 4px;
+    padding: 2.25rem 2.5rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .session-agenda-pane.active {
+    display: block;
+    animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Pane Header */
+  .pane-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.25rem;
+    border-bottom: 2px solid var(--text-charcoal, #171614);
+    margin-bottom: 1.5rem;
+  }
+
+  .phb-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .phb-subtitle {
+    font-family: var(--font-serif);
+    font-size: 0.94rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .pane-title {
+    font-family: var(--font-display, serif);
+    font-size: 1.85rem;
+    color: var(--text-charcoal, #171614);
+    margin: 0;
+  }
+
+  .pane-badge-time {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--whisky-gold-dark, #8b5a1b);
+    background: rgba(197, 139, 57, 0.12);
+    padding: 0.35rem 0.85rem;
+    border-radius: 3px;
+    border: 1px solid rgba(197, 139, 57, 0.3);
+    white-space: nowrap;
+  }
+
+  /* 3. Spacious Balanced Row Layout */
+  .pane-rows-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .agenda-table-head {
+    display: grid;
+    grid-template-columns: 115px 2.1fr 180px 1.4fr auto;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0.85rem 0.5rem;
+    border-bottom: 2px solid var(--text-charcoal, #171614);
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted, #7A7268);
+  }
+
+  .th-action {
+    text-align: right;
+  }
+
+  .agenda-row-item {
+    display: grid;
+    grid-template-columns: 115px 2.1fr 180px 1.4fr auto;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.15rem 0.5rem;
+    border-bottom: 1px solid var(--border-color, #E2D9CC);
+    transition: background 0.15s ease;
+  }
+
+  .agenda-row-item:hover {
+    background-color: rgba(255, 255, 255, 0.45);
+  }
+
+  .agenda-row-item:last-child {
+    border-bottom: none;
+  }
+
+  /* 1. Tijd */
+  .col-time {
+    display: flex;
+    align-items: center;
+  }
+
+  .item-time-val {
+    font-family: var(--font-sans);
+    font-size: 1.02rem;
+    font-weight: 800;
+    color: var(--text-charcoal, #171614);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  /* 2. Programma Titel */
+  .col-title {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .item-name {
+    font-family: var(--font-sans);
+    font-size: 0.98rem;
+    font-weight: 800;
+    color: var(--text-charcoal, #171614);
+    margin: 0;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  /* 3. Type & Locatie */
+  .col-type-loc {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .cat-pill {
+    font-family: var(--font-sans);
+    font-size: 0.66rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    background: rgba(140, 110, 70, 0.1);
+    color: var(--whisky-gold-dark, #8b5a1b);
+    white-space: nowrap;
+    border: 1px solid currentColor;
+  }
+  .cat-pill.cat-masterclass { background: rgba(0, 100, 72, 0.08); color: #006448; border-color: rgba(0, 100, 72, 0.25); }
+  .cat-pill.cat-tram { background: rgba(184, 60, 40, 0.08); color: #B83C28; border-color: rgba(184, 60, 40, 0.25); }
+  .cat-pill.cat-trail { background: rgba(40, 90, 160, 0.08); color: #1E4F90; border-color: rgba(40, 90, 160, 0.25); }
+  .cat-pill.cat-warehouse { background: rgba(197, 139, 57, 0.12); color: #8B5A1B; border-color: rgba(197, 139, 57, 0.3); }
+
+  .item-loc-tag {
+    font-family: var(--font-sans);
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--text-muted, #7A7268);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    line-height: 1.25;
+  }
+
+  /* 4. Spreker / Gids (Naam bovenaan, rol eronder) */
+  .col-speaker {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .speaker-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.12rem;
+    min-width: 0;
+  }
+
+  .speaker-name {
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--text-charcoal, #171614);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .speaker-role {
+    font-family: var(--font-sans);
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--whisky-gold-dark, #8b5a1b);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  /* 5. Prijs & Acties */
+  .col-action {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0.4rem;
+  }
+
+  .item-price {
+    font-family: var(--font-sans);
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--success-green, #006448);
+    line-height: 1.1;
+  }
+
+  .action-buttons-group {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .btn-trigger-details {
+    background: transparent;
+    border: none;
+    color: var(--whisky-gold-dark);
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    padding: 0.25rem;
+  }
+
+  .btn-trigger-details:hover {
+    color: var(--text-charcoal);
+  }
+
+  .btn-table-buy {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    padding: 0.42rem 0.95rem;
+    border-radius: 3px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 1100px) {
+    .agenda-table-head {
+      display: none;
+    }
+    .agenda-row-item {
+      grid-template-columns: 110px 1fr auto;
+      gap: 1rem;
+    }
+    .col-type-loc {
+      grid-column: 2 / 3;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .col-speaker {
+      grid-column: 2 / 3;
+    }
+    .col-action {
+      grid-column: 3 / 4;
+      grid-row: 1 / 3;
+    }
+  }
+
+  .item-price {
+    font-family: var(--font-sans);
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--success-green, #006448);
+  }
+
+  .action-buttons-group {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .btn-trigger-details {
+    background: transparent;
+    border: none;
+    color: var(--whisky-gold-dark);
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    padding: 0.25rem;
+  }
+
+  .btn-trigger-details:hover {
+    color: var(--text-charcoal);
+  }
+
+  .btn-table-buy {
+    font-size: 0.78rem;
+    font-weight: 800;
+    padding: 0.42rem 0.95rem;
+    border-radius: 3px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  /* ============================================================
+     4. IN-PANE & DEDICATED TRAIL MATRIX (1 OOGOPSLAG)
+     ============================================================ */
+  .session-trail-matrix-box {
+    margin-top: 2.75rem;
+    padding-top: 2rem;
+    border-top: 2px dashed rgba(140, 110, 70, 0.35);
+  }
+
+  .stmb-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+  }
+
+  .stmb-kicker {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--whisky-gold-dark);
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  .stmb-title {
+    font-family: var(--font-display, serif);
+    font-size: 1.55rem;
+    color: var(--text-charcoal);
+    margin: 0;
+  }
+
+  .stmb-badge {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--whisky-gold-dark);
+    background: rgba(197, 139, 57, 0.12);
+    padding: 0.3rem 0.75rem;
+    border-radius: 3px;
+    border: 1px solid rgba(197, 139, 57, 0.3);
+  }
+
+  .trail-inner-session-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .trail-inner-btn {
+    background: #FAF7F2;
+    border: 1.5px solid var(--text-charcoal);
+    box-shadow: 3px 3px 0px var(--text-charcoal);
+    border-radius: 4px;
+    padding: 0.75rem 0.5rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .trail-inner-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 5px 5px 0px var(--text-charcoal);
+    background: #FFFFFF;
+  }
+
+  .trail-inner-btn.active {
+    background: var(--whisky-gold, #C58B39);
+    transform: translateY(-2px);
+    box-shadow: 4px 4px 0px var(--text-charcoal);
+  }
+
+  .tib-day {
+    font-family: var(--font-sans);
+    font-size: 0.66rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--whisky-gold-dark);
+    margin-bottom: 0.1rem;
+  }
+  .trail-inner-btn.active .tib-day { color: #171614; }
+
+  .tib-name {
+    font-family: var(--font-sans);
+    font-size: 0.96rem;
+    font-weight: 800;
+    color: var(--text-charcoal);
+    margin-bottom: 0.1rem;
+  }
+
+  .tib-time {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+  .trail-inner-btn.active .tib-time { color: #171614; }
+
+  /* Subpane switcher */
+  .trail-matrix-subpane {
+    display: none;
+  }
+  .trail-matrix-subpane.active {
+    display: block;
+    animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Matrix Table */
+  .matrix-table-container {
+    width: 100%;
+    overflow-x: auto;
+    background: #FFFFFF;
+    border-radius: 4px;
+  }
+
+  .whisky-matrix-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1.5px solid var(--text-charcoal);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .whisky-matrix-table thead tr {
+    background: var(--whisky-forest-dark, #082114);
+    color: #FFFFFF;
+  }
+
+  .whisky-matrix-table th {
+    padding: 1rem 0.75rem;
+    text-align: center;
+    border-bottom: 2px solid var(--text-charcoal);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .whisky-matrix-table th:last-child { border-right: none; }
+
+  .col-time-head {
+    width: 140px;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--whisky-gold, #C58B39);
+    vertical-align: middle;
+  }
+
+  .col-guide-head {
+    min-width: 140px;
+  }
+
+  .gh-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+  }
+
+  .gh-name {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: 0.02em;
+  }
+
+  .gh-spec {
+    font-family: var(--font-sans);
+    font-size: 0.66rem;
+    font-weight: 700;
+    color: #E6DDD0;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.85;
+  }
+
+  /* Table Body */
+  .whisky-matrix-table tbody tr {
+    background: #FFFFFF;
+    transition: background 0.15s ease;
+  }
+
+  .whisky-matrix-table tbody tr:nth-child(even) {
+    background: #FAF7F2;
+  }
+
+  .whisky-matrix-table td {
+    padding: 1.1rem 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    vertical-align: middle;
+  }
+  .whisky-matrix-table td:last-child { border-right: none; }
+  .whisky-matrix-table tbody tr:last-child td { border-bottom: none; }
+
+  .td-time-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    background: rgba(140, 110, 70, 0.05);
+  }
+
+  .matrix-time-val {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-charcoal);
+    white-space: nowrap;
+  }
+
+  .matrix-time-sub {
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .slot-book-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .avail-indicator {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--success-green);
+    background: rgba(0, 100, 72, 0.1);
+    padding: 0.12rem 0.45rem;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .btn-matrix-action {
+    font-family: var(--font-sans);
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: var(--whisky-gold, #C58B39);
+    color: #171614;
+    border: 1.5px solid var(--text-charcoal);
+    box-shadow: 2px 2px 0px var(--text-charcoal);
+    padding: 0.38rem 0.75rem;
+    border-radius: 3px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+
+  .btn-matrix-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 3px 3px 0px var(--text-charcoal);
+    background: #D49D4F;
+  }
+
+  .dash-empty {
+    font-family: var(--font-sans);
+    font-size: 1.25rem;
+    color: #D4C9BD;
+    font-weight: 700;
+    user-select: none;
+  }
+
+  /* Modal */
+  .modal-overlay-layer {
+    position: fixed;
+    inset: 0;
+    background: rgba(23, 22, 20, 0.75);
+    backdrop-filter: blur(4px);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  .modal-card-box {
+    background: var(--bg-paper-card);
+    width: 100%;
+    max-width: 520px;
+    border-radius: 4px;
+    box-shadow: 8px 8px 0px var(--text-charcoal);
+  }
+
+  .modal-box-padding {
+    padding: 2rem;
+    position: relative;
+  }
+
+  .modal-close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    background: transparent;
+    border: none;
+    font-size: 1.75rem;
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+
+  .modal-kicker-tag {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--whisky-gold-dark);
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  .m-heading-text {
+    font-family: var(--font-display);
+    font-size: 1.65rem;
+    color: var(--text-charcoal);
+    margin: 0 0 0.35rem;
+    line-height: 1.2;
+  }
+
+  .m-meta-line {
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .m-desc-paragraph {
+    font-family: var(--font-serif);
+    font-size: 0.92rem;
+    color: var(--text-charcoal);
+    line-height: 1.55;
+    margin-bottom: 1rem;
+  }
+
+  .m-speaker-card {
+    background: var(--bg-sand);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.85rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .m-speaker-card strong {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--text-charcoal);
+  }
+
+  .m-speaker-card p {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0.2rem 0 0;
+  }
+
+  .m-footer-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1.5px solid var(--border-color);
+  }
+
+  .m-price-bold {
+    font-family: var(--font-sans);
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--success-green, #006448);
+  }
+
+  .modal-submit-btn {
+    font-size: 0.85rem;
+    font-weight: 800;
+    padding: 0.65rem 1.35rem;
+    cursor: pointer;
+  }
+
+  /* Toast */
+  .spacious-toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: #0E3823;
+    color: #FFFFFF;
+    padding: 0.85rem 1.35rem;
+    border-radius: 4px;
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 700;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    border: 1.5px solid #C58B39;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+    pointer-events: none;
+  }
+
+  /* Mobile */
+  @media (max-width: 900px) {
+    .programma-full-hero {
+      padding: 10rem 1.25rem 4.5rem;
+    }
+    .hero-main-title {
+      font-size: 2.5rem;
+    }
+    .session-selector-strip {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-top: -1.75rem;
+    }
+    .agenda-parchment-container {
+      padding: 2rem 1.25rem 4rem;
+    }
+    .pane-header-bar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.35rem;
+    }
+    .agenda-row-item {
+      grid-template-columns: 1fr;
+      gap: 0.65rem;
+      padding: 1.25rem 0;
+    }
+    .col-action {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.5rem;
+      border-top: 1px dashed rgba(140, 110, 70, 0.2);
+    }
+    .trail-inner-session-strip {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .session-agenda-pane {
+      padding: 1.5rem 1rem;
+    }
+    .stmb-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.4rem;
+    }
+  }
+</style>
+
+<script>
+  // 1. Session Tab Switching (All 7 Cards)
+  const navTabs = document.querySelectorAll('.session-btn-card');
+  const panes = document.querySelectorAll('.session-agenda-pane');
+
+  navTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      navTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      const targetId = tab.getAttribute('data-target-tab');
+      panes.forEach(p => {
+        if (p.id === `pane-${targetId}`) {
+          p.classList.add('active');
+        } else {
+          p.classList.remove('active');
+        }
+      });
+    });
+  });
+
+  // 2. Trail Inner Matrix Session Switcher
+  const trailTabs = document.querySelectorAll('.trail-inner-btn');
+  const trailPanes = document.querySelectorAll('.trail-matrix-subpane');
+
+  trailTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      trailTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      const targetId = tab.getAttribute('data-target-trail-matrix');
+      trailPanes.forEach(p => {
+        if (p.id === `tmatrix-${targetId}`) {
+          p.classList.add('active');
+        } else {
+          p.classList.remove('active');
+        }
+      });
+    });
+  });
+
+  // 3. Toast Helper
+  function showToast(message: string) {
+    const toast = document.getElementById('spacious-toast');
+    if (!toast) return;
+    toast.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F8E3B6" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span>${message}</span>`;
+    toast.style.display = 'flex';
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateY(0)';
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(20px)';
+      setTimeout(() => { toast.style.display = 'none'; }, 300);
+    }, 3200);
+  }
+
+  // 4. Add to Cart (Standard Items)
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('.btn-table-buy');
+    if (!btn) return;
+
+    e.preventDefault();
+    const ticketId = btn.getAttribute('data-ticket-id') || '';
+    const title = btn.getAttribute('data-title') || 'Ticket';
+
+    try {
+      const stored = localStorage.getItem('whiskyfest_cart');
+      const cart = stored ? JSON.parse(stored) : {};
+      cart[ticketId] = (cart[ticketId] || 0) + 1;
+      localStorage.setItem('whiskyfest_cart', JSON.stringify(cart));
+      window.dispatchEvent(new Event('storage'));
+      showToast(`Toegevoegd aan winkelwagen: ${title}`);
+    } catch (err) {
+      showToast(`Toegevoegd: ${title}`);
+    }
+  });
+
+  // 5. Book Matrix Slot (Trail Schedule)
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('.btn-matrix-action');
+    if (!btn) return;
+
+    e.preventDefault();
+    const ticketId = btn.getAttribute('data-ticket-id') || '';
+    const title = btn.getAttribute('data-title') || 'Whisky Trail';
+
+    try {
+      const stored = localStorage.getItem('whiskyfest_cart');
+      const cart = stored ? JSON.parse(stored) : {};
+      cart[ticketId] = (cart[ticketId] || 0) + 1;
+      localStorage.setItem('whiskyfest_cart', JSON.stringify(cart));
+      window.dispatchEvent(new Event('storage'));
+      showToast(`Toegevoegd aan winkelwagen: ${title}`);
+    } catch (err) {
+      showToast(`Toegevoegd: ${title}`);
+    }
+  });
+
+  // 6. Modal
+  const modal = document.getElementById('spacious-modal');
+  const modalClose = document.getElementById('modal-close-trigger');
+
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('.btn-trigger-details');
+    if (!btn) return;
+
+    e.preventDefault();
+    const title = btn.getAttribute('data-title') || '';
+    const loc = btn.getAttribute('data-loc') || 'Nutshuis';
+    const time = btn.getAttribute('data-time') || '';
+    const host = btn.getAttribute('data-host') || '';
+    const desc = btn.getAttribute('data-desc') || '';
+    const price = btn.getAttribute('data-price') || '';
+
+    const titleEl = document.getElementById('m-title');
+    const locEl = document.getElementById('m-loc');
+    const timeEl = document.getElementById('m-time');
+    const descEl = document.getElementById('m-desc');
+    const hostEl = document.getElementById('m-host');
+    const priceEl = document.getElementById('m-price');
+
+    if (titleEl) titleEl.textContent = title;
+    if (locEl) locEl.textContent = loc;
+    if (timeEl) timeEl.textContent = `${time} uur`;
+    if (descEl) descEl.textContent = desc;
+    if (hostEl) hostEl.textContent = host ? `Spreker: ${host}` : 'Officiële Masterclass';
+    if (priceEl) priceEl.textContent = price;
+
+    if (modal) {
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+  });
+
+  if (modalClose) {
+    modalClose.addEventListener('click', () => {
+      if (modal) modal.style.display = 'none';
+      document.body.style.overflow = '';
+    });
+  }
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    });
+  }
+
+  // Buy from Modal
+  const mBuy = document.getElementById('m-buy');
+  if (mBuy) {
+    mBuy.addEventListener('click', () => {
+      const titleEl = document.getElementById('m-title');
+      showToast(`Toegevoegd aan winkelwagen: ${titleEl?.textContent || 'Ticket'}`);
+      if (modal) modal.style.display = 'none';
+      document.body.style.overflow = '';
+    });
+  }
+</script>

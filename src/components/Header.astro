@@ -4,6 +4,7 @@ import LogoSvg from '../assets/Logo/Logo.svg?raw';
 
 const pathname = Astro.url.pathname;
 const isStandhouders = pathname.startsWith("/standhouders");
+const isProgramma = pathname.startsWith("/programma");
 const isAccount = pathname.startsWith("/account");
 ---
 
@@ -17,12 +18,66 @@ const isAccount = pathname.startsWith("/account");
       <Fragment set:html={LogoSvg} />
     </a>
 
-    <!-- Navigation links (Home removed: clicking logo goes home) -->
+    <!-- Navigation links -->
     <nav class="nav-menu">
-      <a href="/standhouders" class={`nav-link ${isStandhouders ? 'active' : ''}`}>Plattegrond & Stands</a>
-      <a href="/#sessies" class="nav-link">Sessies & Tickets</a>
-      <a href="/#ervaring" class="nav-link">De Ervaring</a>
-      <a href="/#historie" class="nav-link">Historie</a>
+      <!-- 1. TICKETS DROPDOWN -->
+      <div class="header-nav-dropdown-wrapper" id="header-tickets-wrapper">
+        <a href="/#sessies" class="nav-link nav-dropdown-trigger" id="nav-tickets-trigger">
+          <span>Tickets</span>
+          <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </a>
+        <div class="header-nav-dropdown" id="header-tickets-dropdown">
+          <a href="/?cat=all#sessies" class="nav-dropdown-item">
+            <span class="nav-drop-title">Alle Tickets</span>
+            <span class="nav-drop-sub">Overzicht van alle beschikbare festivaltickets</span>
+          </a>
+          <a href="/?cat=entree#sessies" class="nav-dropdown-item">
+            <span class="nav-drop-title">Sessie Entreetickets</span>
+            <span class="nav-drop-sub">VIP, vrijdag-, zaterdag- &amp; zondagsessies</span>
+          </a>
+          <a href="/?cat=masterclass#sessies" class="nav-dropdown-item">
+            <span class="nav-drop-title">Masterclasses</span>
+            <span class="nav-drop-sub">Exclusieve proeverijen in Nutshuis &amp; Toren</span>
+          </a>
+          <a href="/?cat=tram#sessies" class="nav-dropdown-item">
+            <span class="nav-drop-title">Haagsche Whiskytram</span>
+            <span class="nav-drop-sub">4 drams tijdens een historische tramrit</span>
+          </a>
+          <a href="/?cat=trail#sessies" class="nav-dropdown-item">
+            <span class="nav-drop-title">Whisky Trails (Gidsen)</span>
+            <span class="nav-drop-sub">Rondleidingen met onze 5 gidsen</span>
+          </a>
+          <a href="/?cat=warehouse#sessies" class="nav-dropdown-item">
+            <span class="nav-drop-title">Warehouse Tastings</span>
+            <span class="nav-drop-sub">Intieme proeverijen direct aan de stands</span>
+          </a>
+          <a href="/?cat=botteling#sessies" class="nav-dropdown-item">
+            <span class="nav-drop-title">Festival Bottelingen</span>
+            <span class="nav-drop-sub">Gelimiteerde single cask flessen</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 2. PLATTEGROND & STANDS -->
+      <a href="/standhouders" class={`nav-link ${isStandhouders ? 'active' : ''}`}>Plattegrond &amp; Stands</a>
+
+      <!-- 3. PROGRAMMA DROPDOWN -->
+      <div class="header-nav-dropdown-wrapper" id="header-programma-wrapper">
+        <a href="/programma" class={`nav-link nav-dropdown-trigger ${isProgramma ? 'active' : ''}`} id="nav-programma-trigger">
+          <span>Programma</span>
+          <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </a>
+        <div class="header-nav-dropdown" id="header-programma-dropdown">
+          <a href="/programma" class="nav-dropdown-item">
+            <span class="nav-drop-title">Festival Programma</span>
+            <span class="nav-drop-sub">Masterclasses, tram &amp; proeverijen</span>
+          </a>
+          <a href="/programma?view=gidsen" class="nav-dropdown-item">
+            <span class="nav-drop-title">Gidsen Planning</span>
+            <span class="nav-drop-sub">Whisky trails &amp; tijdsloten</span>
+          </a>
+        </div>
+      </div>
     </nav>
 
     <!-- Header Actions: 1. Cart Icon > 2. Bestel Tickets > 3. Mijn Account (Text link) -->
@@ -66,10 +121,51 @@ const isAccount = pathname.startsWith("/account");
       <!-- 2. Bestel Tickets Button -->
       <a href="/#sessies" class="btn btn-gold btn-header">Bestel Tickets</a>
 
-      <!-- 3. Mijn Account (Clean Text Link) -->
-      <a href="/account" class={`header-account-link ${isAccount ? 'active' : ''}`} id="header-my-account-link">
-        Mijn Account
-      </a>
+      <!-- 3. Mijn Account (Dropdown Menu) -->
+      <div class="header-account-wrapper" id="header-account-wrapper">
+        <button type="button" class={`header-account-btn ${isAccount ? 'active' : ''}`} id="header-account-btn" aria-label="Mijn Account menu openen">
+          <span>Mijn Account</span>
+          <svg class="account-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+
+        <div class="header-account-dropdown" id="header-account-dropdown">
+          <div id="header-account-logged-in">
+            <div class="account-dropdown-user">
+              <span class="user-greeting">Bezoekers Portaal</span>
+              <strong class="user-name" id="header-account-user-name">Mijn Account</strong>
+            </div>
+
+            <div class="account-dropdown-menu">
+              <a href="/account" class="account-drop-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span>Mijn Tickets</span>
+              </a>
+              <a href="/account?tab=tab-profile" class="account-drop-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span>Persoonsgegevens</span>
+              </a>
+              <a href="/account?tab=tab-info" class="account-drop-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+                <span>Plattegrond &amp; Info</span>
+              </a>
+            </div>
+
+            <div class="account-dropdown-divider"></div>
+
+            <button type="button" class="account-drop-item logout-btn" id="header-nav-logout-btn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              <span>Uitloggen</span>
+            </button>
+          </div>
+
+          <div id="header-account-logged-out" style="display: none;">
+            <p class="account-drop-intro">Bekijk uw festivaltickets en beheer uw bestelling.</p>
+            <a href="/account" class="btn btn-gold btn-drop-login">
+              Inloggen bij Portaal →
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </header>
@@ -140,23 +236,25 @@ const isAccount = pathname.startsWith("/account");
     filter: drop-shadow(0 6px 20px rgba(197, 139, 57, 0.3));
   }
 
-  /* Nav Links styling */
+  /* Nav Links styling (Shifted to the right near cart & actions) */
   .nav-menu {
     display: flex;
-    gap: 2rem;
+    gap: 2.25rem;
     align-items: center;
+    margin-left: auto;
+    margin-right: 3rem;
   }
   .nav-link {
     font-family: var(--font-sans);
-    font-size: 0.85rem;
-    font-weight: 600;
+    font-size: 0.88rem;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text-charcoal);
     text-decoration: none;
     position: relative;
     padding: 0.5rem 0;
-    transition: color 0.3s;
+    transition: color 0.3s ease;
     white-space: nowrap;
   }
   .nav-link:hover {
@@ -199,6 +297,100 @@ const isAccount = pathname.startsWith("/account");
     box-sizing: border-box;
   }
 
+  
+  
+  /* Navigation Dropdowns with Rock-Solid Hover Bridge */
+  .header-nav-dropdown-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 0;
+  }
+
+  /* Invisible hover bridge connecting trigger to menu */
+  .header-nav-dropdown-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: -10px;
+    right: -10px;
+    height: 14px;
+    background: transparent;
+    z-index: 999;
+  }
+
+  .nav-dropdown-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+  }
+
+  .nav-chevron {
+    transition: transform 0.2s ease;
+  }
+
+  .header-nav-dropdown-wrapper:hover .nav-chevron,
+  .header-nav-dropdown-wrapper.open .nav-chevron {
+    transform: rotate(180deg);
+  }
+
+  .header-nav-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    width: 290px;
+    background-color: #FFFFFF;
+    border: 2px solid var(--text-charcoal);
+    border-radius: 4px;
+    box-shadow: 5px 5px 0px var(--text-charcoal);
+    padding: 0.5rem;
+    display: none;
+    flex-direction: column;
+    gap: 0.25rem;
+    z-index: 1000;
+    animation: dropdownFade 0.15s ease-out;
+  }
+
+  .header-nav-dropdown-wrapper:hover .header-nav-dropdown,
+  .header-nav-dropdown-wrapper.open .header-nav-dropdown {
+    display: flex;
+  }
+
+  .nav-dropdown-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: 3px;
+    text-decoration: none;
+    transition: all 0.15s ease;
+    border-bottom: 1px dashed rgba(226, 217, 204, 0.6);
+  }
+
+  .nav-dropdown-item:last-child {
+    border-bottom: none;
+  }
+
+  .nav-dropdown-item:hover {
+    background: rgba(197, 139, 57, 0.12);
+    transform: translateX(2px);
+  }
+
+  .nav-drop-title {
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--text-charcoal);
+  }
+
+  .nav-drop-sub {
+    font-family: var(--font-serif);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.25;
+  }
+
   /* Mijn Account Clean Text Link */
   .header-account-link {
     font-family: var(--font-sans);
@@ -237,6 +429,171 @@ const isAccount = pathname.startsWith("/account");
 
   .header-account-link.active {
     color: var(--whisky-gold-dark);
+  }
+
+  
+  /* Account Dropdown Styling */
+  .header-account-wrapper {
+    position: relative;
+  }
+
+  .header-account-btn {
+    background: transparent;
+    border: none;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-charcoal);
+    padding: 0.5rem 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+    position: relative;
+  }
+
+  .header-account-btn:hover,
+  .header-account-btn.active {
+    color: var(--whisky-gold-dark);
+  }
+
+  .header-account-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--whisky-gold-dark);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
+
+  .header-account-btn:hover::after,
+  .header-account-btn.active::after {
+    width: 100%;
+  }
+
+  .account-chevron {
+    transition: transform 0.2s ease;
+  }
+
+  .header-account-dropdown.active ~ .header-account-btn .account-chevron,
+  .header-account-wrapper.open .account-chevron {
+    transform: rotate(180deg);
+  }
+
+  .header-account-dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    width: 250px;
+    background-color: var(--bg-paper-card, #FAF7F2);
+    border: 2px solid var(--text-charcoal);
+    border-radius: 4px;
+    box-shadow: 6px 6px 0px var(--text-charcoal);
+    padding: 1.15rem 1rem;
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    gap: 0.65rem;
+    animation: dropdownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .header-account-dropdown.active {
+    display: flex;
+  }
+
+  .account-dropdown-user {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    border-bottom: 1px solid var(--border-color, #E2D9CC);
+    padding-bottom: 0.65rem;
+  }
+
+  .user-greeting {
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 800;
+    color: var(--whisky-gold-dark);
+  }
+
+  .user-name {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-charcoal);
+  }
+
+  .account-dropdown-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .account-drop-item {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.5rem 0.65rem;
+    font-family: var(--font-sans);
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: var(--text-charcoal);
+    text-decoration: none;
+    border-radius: 3px;
+    transition: all 0.15s ease;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .account-drop-item:hover {
+    background: rgba(197, 139, 57, 0.12);
+    color: var(--whisky-gold-dark);
+  }
+
+  .account-dropdown-divider {
+    height: 1px;
+    background: var(--border-color, #E2D9CC);
+    margin: 0.2rem 0;
+  }
+
+  .account-drop-item.logout-btn {
+    color: var(--brand-red, #E30613);
+  }
+
+  .account-drop-item.logout-btn:hover {
+    background: rgba(227, 6, 19, 0.08);
+    color: #A8040E;
+  }
+
+  .account-drop-intro {
+    font-family: var(--font-serif);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .btn-drop-login {
+    width: 100%;
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 800;
+    padding: 0.6rem 0.85rem;
+    text-decoration: none;
+    display: block;
+    border-radius: 3px;
   }
 
   /* Cart Wrapper & Button */
@@ -606,4 +963,79 @@ const isAccount = pathname.startsWith("/account");
   window.addEventListener('cart-updated', updateHeaderCartUI);
   document.addEventListener('DOMContentLoaded', updateHeaderCartUI);
   updateHeaderCartUI();
+
+  // Header Account Dropdown Logic
+  const accountBtn = document.getElementById('header-account-btn');
+  const accountDropdown = document.getElementById('header-account-dropdown');
+  const accountUserName = document.getElementById('header-account-user-name');
+  const loggedInView = document.getElementById('header-account-logged-in');
+  const loggedOutView = document.getElementById('header-account-logged-out');
+  const navLogoutBtn = document.getElementById('header-nav-logout-btn');
+
+  function updateHeaderAccountState() {
+    const stored = sessionStorage.getItem('wf_auth_session') || localStorage.getItem('wf_auth_session');
+    let session = null;
+    if (stored) {
+      try { session = JSON.parse(stored); } catch(e) {}
+    }
+
+    if (session) {
+      if (loggedInView) loggedInView.style.display = 'block';
+      if (loggedOutView) loggedOutView.style.display = 'none';
+      if (accountUserName) {
+        const lastOrder = localStorage.getItem('wf_last_order');
+        if (lastOrder) {
+          try {
+            const p = JSON.parse(lastOrder);
+            if (p.name) { accountUserName.textContent = p.name; return; }
+          } catch(e) {}
+        }
+        if (session.resNumber === '#WF-2026-84387' || session.resNumber === 'WF-2026-84387') {
+          accountUserName.textContent = 'Deon Draijer';
+        } else if (session.email) {
+          accountUserName.textContent = session.email.split('@')[0];
+        }
+      }
+    } else {
+      if (loggedInView) loggedInView.style.display = 'none';
+      if (loggedOutView) loggedOutView.style.display = 'block';
+    }
+  }
+
+  if (accountBtn && accountDropdown) {
+    accountBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      // Close cart if open
+      if (cartDropdown) cartDropdown.classList.remove('active');
+      accountDropdown.classList.toggle('active');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!accountDropdown.contains(e.target as Node) && e.target !== accountBtn) {
+        accountDropdown.classList.remove('active');
+      }
+    });
+  }
+
+  if (navLogoutBtn) {
+    navLogoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      sessionStorage.removeItem('wf_auth_session');
+      localStorage.removeItem('wf_auth_session');
+      if (accountDropdown) accountDropdown.classList.remove('active');
+      updateHeaderAccountState();
+      
+      // If on account page, reload or notify
+      if (window.location.pathname.startsWith('/account')) {
+        window.location.href = '/account';
+      } else {
+        window.location.reload();
+      }
+    });
+  }
+
+  window.addEventListener('storage', updateHeaderAccountState);
+  document.addEventListener('DOMContentLoaded', updateHeaderAccountState);
+  updateHeaderAccountState();
+
 </script>
