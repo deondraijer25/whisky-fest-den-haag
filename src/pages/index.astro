@@ -5190,9 +5190,15 @@ const tickets = await getTickets('den_haag');
     }
 
     // Dynamic overrides from GHL or dataset if provided
-    if (item?.ambassadorName) ambName = item.ambassadorName;
-    if (item?.ambassadorTitle) ambTitle = item.ambassadorTitle;
-    if (item?.ambassadorBio) ambBio = item.ambassadorBio;
+    if (item?.description && item.description.trim() !== '') {
+      description = item.description;
+    }
+    if (item?.price !== undefined && item.price !== null && item.price > 0) {
+      numericPrice = typeof item.price === 'number' ? item.price : (parseFloat(item.price) || numericPrice);
+    }
+    if (item?.ambassadorName && item.ambassadorName.trim() !== '') ambName = item.ambassadorName;
+    if (item?.ambassadorTitle && item.ambassadorTitle.trim() !== '') ambTitle = item.ambassadorTitle;
+    if (item?.ambassadorBio && item.ambassadorBio.trim() !== '') ambBio = item.ambassadorBio;
     if (item?.tastingLineup && Array.isArray(item.tastingLineup) && item.tastingLineup.length > 0) {
       lineup = item.tastingLineup;
     }
