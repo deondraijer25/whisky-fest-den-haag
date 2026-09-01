@@ -1633,6 +1633,39 @@ function formatSpeaker(host: string) {
     transition: background 0.15s ease;
   }
 
+  #pane-bottelingen .agenda-row-item {
+    grid-template-columns: 140px 1fr auto;
+    align-items: center;
+  }
+
+  .col-time-loc {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .col-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+
+  .info-line-top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .info-line-sub {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--text-muted, #7A7268);
+  }
+
   .agenda-row-item:hover {
     background-color: rgba(255, 255, 255, 0.45);
   }
