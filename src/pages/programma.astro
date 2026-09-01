@@ -3,6 +3,34 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { getTickets } from '../lib/ghl';
+
+const liveTickets = await getTickets('den_haag');
+
+function getSlotTicketInfo(slotTicketId: string, guideKey: string, timeStr: string, sessionDay: string) {
+  const t = liveTickets.find(ticket => ticket.id === slotTicketId) ||
+            liveTickets.find(ticket => {
+              if (ticket.category !== 'trail') return false;
+              const matchesGuide = ticket.title?.toLowerCase().includes(guideKey.toLowerCase()) ||
+                                   ticket.ambassadorName?.toLowerCase().includes(guideKey.toLowerCase());
+              const matchesTime = ticket.time?.includes(timeStr.split(' - ')[0]) || ticket.time === timeStr;
+              return matchesGuide && matchesTime;
+            });
+
+  const capacity = t?.capacity || 6;
+  const sold = t?.sold || 0;
+  const freeSpots = Math.max(0, capacity - sold);
+  const isSoldOut = Boolean(t?.isSoldOut || (capacity > 0 && sold >= capacity) || freeSpots === 0);
+
+  return {
+    ticketId: t?.id || slotTicketId,
+    capacity,
+    sold,
+    freeSpots,
+    isSoldOut,
+    price: t?.price || 5
+  };
+}
 
 interface ProgramRow {
   id: string;
@@ -1076,19 +1104,33 @@ function formatSpeaker(host: string) {
                             const slot = row.slots[g.key];
                             return (
                               <td class={`td-guide-cell ${slot ? 'cell-active' : 'cell-empty'}`}>
-                                {slot ? (
-                                  <div class="slot-book-cell">
-                                    <span class="avail-indicator">6 plekken vrij</span>
-                                    <button 
-                                      type="button" 
-                                      class="btn-matrix-action"
-                                      data-ticket-id={slot.ticketId}
-                                      data-title={`Whisky Trail (Gids ${g.name} - ${row.time} uur)`}
-                                    >
-                                      + Boek € 5,-
-                                    </button>
-                                  </div>
-                                ) : (
+                                {slot ? (() => {
+                                  const slotInfo = getSlotTicketInfo(slot.ticketId, g.key, row.time, s.id);
+                                  return (
+                                    <div class="slot-book-cell">
+                                      {slotInfo.isSoldOut ? (
+                                        <span class="avail-indicator sold-out">Volgeboekt (0 plekken)</span>
+                                        <button 
+                                          type="button" 
+                                          class="btn-matrix-action sold-out"
+                                          disabled
+                                        >
+                                          Uitverkocht
+                                        </button>
+                                      ) : (
+                                        <span class="avail-indicator">{slotInfo.freeSpots} {slotInfo.freeSpots === 1 ? 'plek' : 'plekken'} vrij</span>
+                                        <button 
+                                          type="button" 
+                                          class="btn-matrix-action"
+                                          data-ticket-id={slotInfo.ticketId}
+                                          data-title={`Whisky Trail (Gids ${g.name} - ${row.time} uur)`}
+                                        >
+                                          + Boek € {slotInfo.price},-
+                                        </button>
+                                      )}
+                                    </div>
+                                  );
+                                })() : (
                                   <span class="dash-empty">—</span>
                                 )}
                               </td>
@@ -1228,19 +1270,33 @@ function formatSpeaker(host: string) {
                             const slot = row.slots[g.key];
                             return (
                               <td class={`td-guide-cell ${slot ? 'cell-active' : 'cell-empty'}`}>
-                                {slot ? (
-                                  <div class="slot-book-cell">
-                                    <span class="avail-indicator">6 plekken vrij</span>
-                                    <button 
-                                      type="button" 
-                                      class="btn-matrix-action"
-                                      data-ticket-id={slot.ticketId}
-                                      data-title={`Whisky Trail (Gids ${g.name} - ${row.time} uur)`}
-                                    >
-                                      + Boek € 5,-
-                                    </button>
-                                  </div>
-                                ) : (
+                                {slot ? (() => {
+                                  const slotInfo = getSlotTicketInfo(slot.ticketId, g.key, row.time, ms.id);
+                                  return (
+                                    <div class="slot-book-cell">
+                                      {slotInfo.isSoldOut ? (
+                                        <span class="avail-indicator sold-out">Volgeboekt (0 plekken)</span>
+                                        <button 
+                                          type="button" 
+                                          class="btn-matrix-action sold-out"
+                                          disabled
+                                        >
+                                          Uitverkocht
+                                        </button>
+                                      ) : (
+                                        <span class="avail-indicator">{slotInfo.freeSpots} {slotInfo.freeSpots === 1 ? 'plek' : 'plekken'} vrij</span>
+                                        <button 
+                                          type="button" 
+                                          class="btn-matrix-action"
+                                          data-ticket-id={slotInfo.ticketId}
+                                          data-title={`Whisky Trail (Gids ${g.name} - ${row.time} uur)`}
+                                        >
+                                          + Boek € {slotInfo.price},-
+                                        </button>
+                                      )}
+                                    </div>
+                                  );
+                                })() : (
                                   <span class="dash-empty">—</span>
                                 )}
                               </td>
@@ -2045,6 +2101,10 @@ function formatSpeaker(host: string) {
     border-radius: 3px;
     white-space: nowrap;
   }
+  .avail-indicator.sold-out {
+    color: #A32020;
+    background: rgba(163, 32, 32, 0.1);
+  }
 
   .btn-matrix-action {
     font-family: var(--font-sans);
@@ -2062,8 +2122,17 @@ function formatSpeaker(host: string) {
     white-space: nowrap;
     transition: all 0.15s ease;
   }
+  .btn-matrix-action.sold-out {
+    background: #E5E0D8;
+    color: #8C827A;
+    border-color: #C2B8AD;
+    box-shadow: none;
+    cursor: not-allowed;
+    pointer-events: none;
+    transform: none;
+  }
 
-  .btn-matrix-action:hover {
+  .btn-matrix-action:hover:not(.sold-out) {
     transform: translateY(-2px);
     box-shadow: 3px 3px 0px var(--text-charcoal);
     background: #D49D4F;
