@@ -11,7 +11,7 @@ Bij het klonen, synchroniseren of aanpassen van festivalwebsites (Den Haag, Gent
 - Vertrouw NOOIT alleen op `global.css`; Astro componenten bevatten scoped `<style>` blokken en inline styling.
 - Voer bij elke stadsmigratie een geautomatiseerde scan uit over álle `.astro`, `.css` en `.ts` bestanden.
 - Controleer en borg dat er **0 hardcoded kleurcodes** van een andere stad achterblijven:
-  - Den Haag Groen: `#006448`, `#004D37`, `#0E3823`, `rgba(0, 100, 72)`
+  - Den Haag Groen: `#006448`, `#004D37`, `#0E3823`, `#061A10`, `rgba(0, 100, 72)`, `rgba(6, 26, 16)`, `rgba(14, 56, 35)`
   - Gent Royal Blue: `#1E3A8A`, `#172554`, `rgba(30, 58, 138)`
   - Gent Oranje: `#FF6500`, `#FF8A00`
   - Amsterdam: Specifieke Amsterdamse hex-waarden
