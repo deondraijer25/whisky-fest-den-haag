@@ -772,19 +772,61 @@ const isAccount = pathname.startsWith("/account");
     border-bottom: none !important;
   }
 
-  :global(.cart-row-qty) {
+  :global(.hdr-cart-stepper) {
+    display: inline-flex !important;
+    align-items: center !important;
+    background: rgba(0, 100, 72, 0.08) !important;
+    border: 1px solid rgba(0, 100, 72, 0.22) !important;
+    border-radius: 4px !important;
+    padding: 1px !important;
+    gap: 1px !important;
+    flex-shrink: 0 !important;
+    user-select: none !important;
+  }
+
+  :global(.hdr-cart-btn-qty) {
+    width: 22px !important;
+    height: 22px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 3px !important;
+    color: var(--brand-green, #006448) !important;
+    font-family: var(--font-sans) !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    transition: all 0.15s ease !important;
+    user-select: none !important;
+  }
+
+  :global(.hdr-cart-btn-qty:hover) {
+    background: rgba(0, 100, 72, 0.22) !important;
+    color: #004D37 !important;
+  }
+
+  :global(.hdr-cart-btn-qty.hdr-minus:hover) {
+    background: rgba(227, 6, 19, 0.14) !important;
+    color: var(--brand-red, #E30613) !important;
+  }
+
+  :global(.hdr-cart-btn-qty:active) {
+    transform: scale(0.92) !important;
+  }
+
+  :global(.hdr-cart-qty-text) {
     font-family: var(--font-sans) !important;
     font-weight: 800 !important;
-    font-size: 0.85rem !important;
+    font-size: 0.82rem !important;
     color: var(--brand-green, #006448) !important;
-    background: rgba(0, 100, 72, 0.08) !important;
-    padding: 0.2rem 0.45rem !important;
-    border-radius: 4px !important;
-    border: 1px solid rgba(0, 100, 72, 0.18) !important;
-    flex-shrink: 0 !important;
-    min-width: 28px !important;
+    padding: 0 3px !important;
+    min-width: 20px !important;
     text-align: center !important;
-    display: inline-block !important;
+    line-height: 1 !important;
   }
 
   :global(.cart-row-title) {
@@ -958,8 +1000,12 @@ const isAccount = pathname.startsWith("/account");
         items.forEach((item: any) => {
           const totalVal = (item.price * item.qty).toFixed(2).replace('.', ',');
           html += `
-            <div class="cart-dropdown-row">
-              <span class="cart-row-qty">${item.qty}&times;</span>
+            <div class="cart-dropdown-row" data-id="${item.id}">
+              <div class="hdr-cart-stepper">
+                <button type="button" class="hdr-cart-btn-qty hdr-minus" data-id="${item.id}" aria-label="Kaartje verminderen" title="${item.qty === 1 ? 'Verwijderen uit winkelwagen' : 'Kaartje verminderen'}">&minus;</button>
+                <span class="hdr-cart-qty-text">${item.qty}x</span>
+                <button type="button" class="hdr-cart-btn-qty hdr-plus" data-id="${item.id}" aria-label="Kaartje toevoegen" title="Kaartje toevoegen">+</button>
+              </div>
               <span class="cart-row-title" title="${item.title}">${item.title}</span>
               <span class="cart-row-price">&euro; ${totalVal}</span>
             </div>
@@ -969,6 +1015,90 @@ const isAccount = pathname.startsWith("/account");
         if (cartBottom) cartBottom.style.display = 'flex';
       }
     }
+  }
+
+  // Delegated click listener for direct quantity adjustments in header cart dropdown
+  if (cartList) {
+    cartList.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const btn = target.closest('.hdr-cart-btn-qty') as HTMLButtonElement;
+      if (!btn) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      const id = btn.getAttribute('data-id');
+      if (!id) return;
+      const isPlus = btn.classList.contains('hdr-plus');
+
+      try {
+        const raw = localStorage.getItem('whiskyfest_cart');
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        const cartRaw = parsed.cartRaw || {};
+        let items = parsed.items || [];
+
+        let currentItem = cartRaw[id];
+        if (!currentItem) {
+          const found = items.find((x: any) => x.id === id);
+          if (found) {
+            cartRaw[id] = { ...found };
+            currentItem = cartRaw[id];
+          }
+        }
+
+        if (!currentItem) return;
+
+        if (isPlus) {
+          currentItem.qty = Math.min(10, (currentItem.qty || 0) + 1);
+        } else {
+          currentItem.qty = (currentItem.qty || 0) - 1;
+        }
+
+        if (currentItem.qty <= 0) {
+          currentItem.qty = 0;
+          delete cartRaw[id];
+          items = items.filter((x: any) => x.id !== id);
+        } else {
+          const it = items.find((x: any) => x.id === id);
+          if (it) it.qty = currentItem.qty;
+        }
+
+        const activeItems = Object.keys(cartRaw)
+          .filter(k => cartRaw[k] && cartRaw[k].qty > 0)
+          .map(k => {
+            const it = cartRaw[k];
+            return {
+              id: k,
+              title: it.title,
+              price: it.price,
+              qty: it.qty,
+              category: it.category || 'entree',
+              date: it.date || '',
+              time: it.time || ''
+            };
+          });
+
+        const newSubtotal = activeItems.reduce((sum: number, it: any) => sum + (it.price * it.qty), 0);
+        const newTotalItems = activeItems.reduce((sum: number, it: any) => sum + it.qty, 0);
+
+        localStorage.setItem('whiskyfest_cart', JSON.stringify({
+          subtotal: newSubtotal,
+          totalItems: newTotalItems,
+          items: activeItems,
+          cartRaw
+        }));
+
+        updateHeaderCartUI();
+
+        // Dispatch cart-updated with source: 'header'
+        window.dispatchEvent(new CustomEvent('cart-updated', {
+          detail: { id, source: 'header' }
+        }));
+      } catch(err) {
+        console.error('Error modifying header cart item:', err);
+      }
+    });
   }
 
   if (cartBtn && cartDropdown) {

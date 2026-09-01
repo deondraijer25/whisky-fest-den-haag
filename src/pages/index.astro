@@ -1980,6 +1980,14 @@ const tickets = await getTickets('den_haag');
         </button>
       </div>
 
+      <!-- Day filter notice banner -->
+      <div id="upsell-day-notice" style="display: none; padding: 0.55rem 1.75rem; background: rgba(197, 139, 57, 0.14); border-bottom: 1px dashed rgba(140, 110, 70, 0.35); font-family: var(--font-sans); font-size: 0.82rem; color: #7A551E; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+        <span id="upsell-day-notice-text">📅 Getoond voor uw festivaldag: <strong>Vrijdag</strong></span>
+        <button type="button" id="upsell-toggle-days-btn" style="background: none; border: none; color: #006448; font-family: var(--font-sans); font-weight: 800; cursor: pointer; text-decoration: underline; font-size: 0.8rem; padding: 0;">
+          Toon alle festivaldagen
+        </button>
+      </div>
+
       <!-- Category Filter Pills inside Modal -->
       <div class="upsell-modal-filters" style="display: flex; gap: 0.4rem; padding: 0.75rem 1.75rem; background: var(--bg-parchment, #F3ECE0); border-bottom: 1px solid rgba(140, 110, 70, 0.2); overflow-x: auto; flex-wrap: wrap;">
         <button type="button" class="upsell-filter-btn active" data-upsell-cat="all" style="padding: 0.35rem 0.85rem; font-family: var(--font-sans); font-size: 0.76rem; font-weight: 700; border-radius: 20px; border: 1px solid #006448; background: #006448; color: #FFFFFF; cursor: pointer; transition: all 0.2s;">Alles</button>
@@ -3748,7 +3756,7 @@ const tickets = await getTickets('den_haag');
   const totalEl = document.getElementById("receipt-total");
   const checkoutBtn = document.getElementById("checkout-trigger-btn") as HTMLButtonElement;
 
-  function updateShop() {
+  function updateShop(syncSave: boolean = true) {
     let subtotal = 0;
     let totalItems = 0;
     let shippingActive = false;
@@ -3795,12 +3803,19 @@ const tickets = await getTickets('den_haag');
 
           const isLast = index === entries.length - 1;
           listHtml += `
-            <div class="cart-item-row" ${isLast ? 'style="border-bottom:none;"' : ''}>
+            <div class="cart-item-row" data-id="${id}" ${isLast ? 'style="border-bottom:none;"' : ''}>
               <div class="cart-item-info">
                 <span class="cart-item-name">${displayTitle}</span>
-                <span class="cart-item-meta">${item.qty} × €${item.price.toFixed(2)}</span>
+                <div class="cart-item-controls">
+                  <div class="cart-stepper">
+                    <button type="button" class="sidebar-qty-btn sidebar-qty-minus" data-id="${id}" title="${item.qty === 1 ? 'Verwijderen uit winkelwagen' : 'Kaartje verminderen'}" aria-label="Verminderen">&minus;</button>
+                    <span class="sidebar-qty-num">${item.qty}</span>
+                    <button type="button" class="sidebar-qty-btn sidebar-qty-plus" data-id="${id}" title="Kaartje toevoegen" aria-label="Toevoegen">+</button>
+                  </div>
+                  <span class="cart-item-unit-price">&times; &euro;${item.price.toFixed(2)}</span>
+                </div>
               </div>
-              <span class="cart-item-price">€${(item.price * item.qty).toFixed(2)}</span>
+              <span class="cart-item-price">&euro;${(item.price * item.qty).toFixed(2)}</span>
             </div>
           `;
         });
@@ -3822,7 +3837,47 @@ const tickets = await getTickets('den_haag');
     if (totalEl) totalEl.innerHTML = `&euro;${finalTotal.toFixed(2)}`;
     if (checkoutBtn) checkoutBtn.disabled = totalItems === 0;
 
-    saveCartToLocalStorage(subtotal, totalItems);
+    if (syncSave) {
+      saveCartToLocalStorage(subtotal, totalItems);
+    }
+  }
+
+  // Delegated click listener for direct quantity adjustments (+ and -) in sidebar cart
+  if (cartItemsContainer) {
+    cartItemsContainer.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const btn = target.closest('.sidebar-qty-btn') as HTMLButtonElement;
+      if (!btn) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      const id = btn.getAttribute('data-id');
+      if (!id || !cart[id]) return;
+
+      const isPlus = btn.classList.contains('sidebar-qty-plus');
+      if (isPlus) {
+        cart[id].qty = Math.min(10, (cart[id].qty || 0) + 1);
+      } else {
+        if (cart[id].qty > 1) {
+          cart[id].qty -= 1;
+        } else {
+          // If 1 and - is clicked: remove completely!
+          cart[id].qty = 0;
+        }
+      }
+
+      // Synchronize corresponding ticket-stub on the page
+      const card = document.querySelector(`.ticket-stub[data-ticket-id="${id}"]`);
+      if (card) {
+        const qtyVal = card.querySelector('.qty-val');
+        if (qtyVal) qtyVal.textContent = String(cart[id].qty);
+        if (cart[id].qty > 0) card.classList.add('selected');
+        else card.classList.remove('selected');
+      }
+
+      updateShop();
+    });
   }
 
   function saveCartToLocalStorage(subtotalVal: number, totalItemsVal: number) {
@@ -3864,7 +3919,7 @@ const tickets = await getTickets('den_haag');
       }));
 
       // Notify Header Cart and other components immediately
-      window.dispatchEvent(new Event('cart-updated'));
+      window.dispatchEvent(new CustomEvent('cart-updated', { detail: { source: 'index' } }));
     } catch(e) {}
   }
 
@@ -3874,21 +3929,42 @@ const tickets = await getTickets('den_haag');
       if (raw) {
         const parsed = JSON.parse(raw);
         if (parsed.cartRaw) {
+          for (const k in cart) delete cart[k];
           Object.assign(cart, parsed.cartRaw);
-          Object.keys(cart).forEach(id => {
-            const card = document.querySelector(`.ticket-stub[data-ticket-id="${id}"]`);
-            if (card) {
-              const qtyDisplay = card.querySelector(".qty-val");
-              if (qtyDisplay) qtyDisplay.textContent = String(cart[id].qty || 0);
-              if (cart[id].qty > 0) card.classList.add("selected");
-              else card.classList.remove("selected");
-            }
+          document.querySelectorAll('.ticket-stub').forEach(card => {
+            const id = card.getAttribute('data-ticket-id') || '';
+            const qtyVal = card.querySelector('.qty-val');
+            const itemQty = (cart[id] && cart[id].qty) ? cart[id].qty : 0;
+            if (qtyVal) qtyVal.textContent = String(itemQty);
+            if (itemQty > 0) card.classList.add('selected');
+            else card.classList.remove('selected');
           });
-          updateShop();
+          updateShop(false);
+        } else if (parsed.items) {
+          for (const k in cart) delete cart[k];
+          parsed.items.forEach((it: any) => {
+            cart[it.id] = { ...it };
+          });
+          document.querySelectorAll('.ticket-stub').forEach(card => {
+            const id = card.getAttribute('data-ticket-id') || '';
+            const qtyVal = card.querySelector('.qty-val');
+            const itemQty = (cart[id] && cart[id].qty) ? cart[id].qty : 0;
+            if (qtyVal) qtyVal.textContent = String(itemQty);
+            if (itemQty > 0) card.classList.add('selected');
+            else card.classList.remove('selected');
+          });
+          updateShop(false);
         }
       }
     } catch(e) {}
   }
+
+  // Listen for cart changes from Header or other tabs
+  window.addEventListener('cart-updated', (e: any) => {
+    if (e.detail && e.detail.source === 'index') return;
+    restoreCartFromLocalStorage();
+  });
+  window.addEventListener('storage', restoreCartFromLocalStorage);
 
   // 5. Ticket Filtering Logic
   const dayButtons = document.querySelectorAll('#day-filter-buttons .filter-tab-btn');
@@ -4846,9 +4922,13 @@ const tickets = await getTickets('den_haag');
   }
 
   let activeUpsellCategory = 'all';
+  let ignoreUpsellDayFilter = false;
 
   function renderAddonUpsellList() {
     const listContainer = document.getElementById('addon-upsell-list');
+    const dayNotice = document.getElementById('upsell-day-notice');
+    const dayNoticeText = document.getElementById('upsell-day-notice-text');
+    const toggleDaysBtn = document.getElementById('upsell-toggle-days-btn');
     if (!listContainer) return;
 
     // Detect if user selected a specific day for an entree ticket in cart
@@ -4862,11 +4942,48 @@ const tickets = await getTickets('den_haag');
       }
     });
 
+    if (dayNotice && dayNoticeText && toggleDaysBtn) {
+      if (cartDays.size > 0) {
+        dayNotice.style.display = 'flex';
+        const formattedDays = [...cartDays].map((d: any) => d.charAt(0).toUpperCase() + d.slice(1)).join(', ');
+        if (ignoreUpsellDayFilter) {
+          dayNoticeText.innerHTML = `📅 U bekijkt momenteel <strong>alle festivaldagen</strong>`;
+          toggleDaysBtn.textContent = `Filter alleen op uw festivaldag (${formattedDays})`;
+        } else {
+          dayNoticeText.innerHTML = `📅 Getoond voor uw festivaldag: <strong>${formattedDays}</strong>`;
+          toggleDaysBtn.textContent = `Toon alle festivaldagen`;
+        }
+      } else {
+        dayNotice.style.display = 'none';
+      }
+    }
+
     const filtered = allAddonsList.filter(item => {
       const matchCat = activeUpsellCategory === 'all' || item.category === activeUpsellCategory;
-      const matchDay = cartDays.size === 0 || item.day === 'all' || cartDays.has(item.day);
+      const matchDay = ignoreUpsellDayFilter || cartDays.size === 0 || item.day === 'all' || cartDays.has(item.day);
       return matchCat && matchDay;
     });
+
+    // Update total on proceed button
+    let subtotal = 0;
+    let totalItems = 0;
+    let shippingActive = false;
+    Object.keys(cart).forEach(id => {
+      const it = cart[id];
+      if (it && it.qty > 0) {
+        subtotal += it.price * it.qty;
+        totalItems += it.qty;
+        if (it.category === "botteling" && it.delivery === "shipping") {
+          shippingActive = true;
+        }
+      }
+    });
+    const activeShipping = shippingActive ? 12.50 : 0;
+    const activeFee = totalItems > 0 ? serviceFee : 0;
+    const finalTotal = subtotal + activeFee + activeShipping;
+    if (upsellModalProceed) {
+      upsellModalProceed.innerHTML = `Naar Afrekenen (€ ${finalTotal.toFixed(2).replace('.', ',')}) &rarr;`;
+    }
 
     if (filtered.length === 0) {
       listContainer.innerHTML = '<p style="color:#777; font-size:0.9rem; text-align:center; padding: 2rem 0;">Geen add-ons gevonden voor deze categorie/dagselectie.</p>';
@@ -4881,13 +4998,13 @@ const tickets = await getTickets('den_haag');
 
       return `
         <div style="background: #FFFFFF; border: 1px solid #E6DDD0; border-radius: 8px; padding: 0.9rem 1.15rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03); ${isSoldOut ? 'opacity: 0.65;' : ''}">
-          <div style="flex: 1;">
+          <div style="flex: 1; min-width: 0;">
             <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.2rem; flex-wrap: wrap;">
               <span style="font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.15rem 0.45rem; border-radius: 3px; background: rgba(140, 110, 70, 0.12); color: #8A6831;">${catLabel}</span>
               <strong style="font-size: 0.95rem; color: #171614; line-height: 1.25;">${item.title}</strong>
             </div>
             <span style="font-size: 0.8rem; color: #665C54; display: block;">
-              ${item.date ? item.date + ' • ' : ''}${item.time ? item.time + ' • ' : ''}${item.location}
+              ${item.date ? item.date + ' • ' : ''}${item.time ? item.time + ' • ' : ''}${item.location || 'Grote Kerk Den Haag'}
             </span>
           </div>
           <div style="display: flex; align-items: center; gap: 0.85rem; flex-shrink: 0;">
@@ -4896,14 +5013,37 @@ const tickets = await getTickets('den_haag');
             </strong>
             ${isSoldOut ? `
               <span style="font-size: 0.75rem; font-weight: 800; color: #b91c1c; padding: 0.45rem 0.75rem; background: rgba(185, 28, 28, 0.1); border-radius: 4px; border: 1px dashed #b91c1c;">UITVERKOCHT</span>
+            ` : isAdded ? `
+              <div class="upsell-stepper" style="display: inline-flex; align-items: center; background: rgba(0, 100, 72, 0.08); border: 1.5px solid #006448; border-radius: 6px; padding: 2px; gap: 2px; user-select: none;">
+                <button 
+                  type="button" 
+                  class="btn-upsell-qty-action btn-upsell-minus" 
+                  data-upsell-mc-id="${item.id}" 
+                  data-upsell-action="minus"
+                  title="${currentQty === 1 ? 'Verwijderen uit winkelwagen' : 'Kaartje verminderen'}"
+                  aria-label="Verminderen"
+                  style="width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: 4px; color: #006448; font-size: 15px; font-weight: 800; cursor: pointer; transition: all 0.15s;"
+                >&minus;</button>
+                <span style="font-family: var(--font-sans); font-weight: 800; font-size: 0.85rem; color: #006448; padding: 0 6px; min-width: 18px; text-align: center;">${currentQty}</span>
+                <button 
+                  type="button" 
+                  class="btn-upsell-qty-action btn-upsell-plus" 
+                  data-upsell-mc-id="${item.id}" 
+                  data-upsell-action="plus"
+                  title="Kaartje toevoegen"
+                  aria-label="Toevoegen"
+                  style="width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: 4px; color: #006448; font-size: 15px; font-weight: 800; cursor: pointer; transition: all 0.15s;"
+                >+</button>
+              </div>
             ` : `
               <button 
                 type="button" 
-                class="btn-upsell-add-item" 
+                class="btn-upsell-qty-action" 
                 data-upsell-mc-id="${item.id}"
-                style="display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.45rem 0.9rem; font-size: 0.8rem; font-weight: 800; border: 1.5px solid ${isAdded ? '#006448' : '#C58B39'}; color: ${isAdded ? '#FFFFFF' : '#006448'}; background: ${isAdded ? '#006448' : '#FAF7F2'}; cursor: pointer; border-radius: 6px; transition: all 0.2s;"
+                data-upsell-action="plus"
+                style="display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.45rem 0.9rem; font-size: 0.8rem; font-weight: 800; border: 1.5px solid #C58B39; color: #006448; background: #FAF7F2; cursor: pointer; border-radius: 6px; transition: all 0.2s;"
               >
-                ${isAdded ? '✓ Toegevoegd (' + currentQty + ')' : '+ In Winkelmand'}
+                + In Winkelmand
               </button>
             `}
           </div>
@@ -4911,6 +5051,15 @@ const tickets = await getTickets('den_haag');
       `;
     }).join('');
   }
+
+  // Handle Day Filter toggle inside Upsell Modal
+  document.addEventListener('click', function(e) {
+    const toggleBtn = (e.target as HTMLElement).closest('#upsell-toggle-days-btn');
+    if (!toggleBtn) return;
+    e.preventDefault();
+    ignoreUpsellDayFilter = !ignoreUpsellDayFilter;
+    renderAddonUpsellList();
+  });
 
   // Handle Category Filter clicks inside Upsell Modal
   document.addEventListener('click', function(e) {
@@ -4933,28 +5082,55 @@ const tickets = await getTickets('den_haag');
     renderAddonUpsellList();
   });
 
-  // Handle Upsell Add-to-cart clicks
+  // Handle Upsell Stepper & Add-to-cart clicks (+ and -)
   document.addEventListener('click', function(e) {
-    const btn = (e.target as HTMLElement).closest('.btn-upsell-add-item');
+    const btn = (e.target as HTMLElement).closest('.btn-upsell-qty-action');
     if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+
     const mcId = btn.getAttribute('data-upsell-mc-id');
+    const action = btn.getAttribute('data-upsell-action') || 'plus';
     if (!mcId) return;
 
     const item = allAddonsList.find(m => m.id === mcId);
     if (!item) return;
 
     if (!cart[mcId]) {
+      let defaultDelivery: string | undefined = undefined;
+      if (item.category === 'botteling') defaultDelivery = 'pickup';
+
       cart[mcId] = {
         title: item.title,
         price: item.price,
         qty: 0,
-        category: item.category
+        category: item.category,
+        timeslot: item.time || undefined,
+        delivery: defaultDelivery,
+        date: item.date || '',
+        time: item.time || ''
       };
     }
-    cart[mcId].qty += 1;
 
-    const qtyEl = document.getElementById('qty-' + mcId);
-    if (qtyEl) qtyEl.textContent = String(cart[mcId].qty);
+    if (action === 'plus') {
+      cart[mcId].qty = Math.min(10, (cart[mcId].qty || 0) + 1);
+    } else if (action === 'minus') {
+      if (cart[mcId].qty > 1) {
+        cart[mcId].qty -= 1;
+      } else {
+        // If 1 and minus clicked: remove completely!
+        cart[mcId].qty = 0;
+      }
+    }
+
+    // Synchronize ticket-stub card on the page if it exists
+    const card = document.querySelector(`.ticket-stub[data-ticket-id="${mcId}"]`);
+    if (card) {
+      const qtyVal = card.querySelector('.qty-val');
+      if (qtyVal) qtyVal.textContent = String(cart[mcId].qty);
+      if (cart[mcId].qty > 0) card.classList.add('selected');
+      else card.classList.remove('selected');
+    }
 
     updateShop();
     renderAddonUpsellList();
