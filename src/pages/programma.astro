@@ -2266,24 +2266,59 @@ function formatSpeaker(host: string) {
 
 <script>
   // 1. Session Tab Switching (All 7 Cards)
-  const navTabs = document.querySelectorAll('.session-btn-card');
-  const panes = document.querySelectorAll('.session-agenda-pane');
+  const navTabs = document.querySelectorAll<HTMLElement>('.session-btn-card');
+  const panes = document.querySelectorAll<HTMLElement>('.session-agenda-pane');
+
+  function switchTab(targetId: string, shouldScroll = false) {
+    if (!targetId) return;
+    const cleanId = targetId.replace('pane-', '').toLowerCase();
+    const targetTab = Array.from(navTabs).find(t => t.getAttribute('data-target-tab')?.toLowerCase() === cleanId);
+    if (!targetTab) return;
+
+    navTabs.forEach(t => t.classList.remove('active'));
+    targetTab.classList.add('active');
+
+    panes.forEach(p => {
+      if (p.id === `pane-${cleanId}`) {
+        p.classList.add('active');
+        if (shouldScroll) {
+          setTimeout(() => {
+            const yOffset = -90;
+            const y = p.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+          }, 150);
+        }
+      } else {
+        p.classList.remove('active');
+      }
+    });
+  }
 
   navTabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      navTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-
       const targetId = tab.getAttribute('data-target-tab');
-      panes.forEach(p => {
-        if (p.id === `pane-${targetId}`) {
-          p.classList.add('active');
-        } else {
-          p.classList.remove('active');
-        }
-      });
+      if (targetId) switchTab(targetId, false);
     });
   });
+
+  // Handle URL query parameters and hash on load (e.g. ?view=gidsen or #pane-gidsen)
+  function handleUrlTarget(shouldScroll = true) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const viewParam = urlParams.get('view') || urlParams.get('tab');
+    const hashParam = window.location.hash.replace('#pane-', '').replace('#', '');
+    const target = viewParam || hashParam;
+    if (target) {
+      switchTab(target, shouldScroll);
+    }
+  }
+
+  // Run on initial load
+  handleUrlTarget(true);
+
+  // Run on hash changes or popstate navigation
+  window.addEventListener('hashchange', () => handleUrlTarget(true));
+  window.addEventListener('popstate', () => handleUrlTarget(false));
+
 
   // 2. Trail Inner Matrix Session Switcher
   const trailTabs = document.querySelectorAll('.trail-inner-btn');
