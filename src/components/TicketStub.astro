@@ -541,28 +541,269 @@ const titleSizeClass =
     text-align: center !important;
   }
 
-  /* Mobile only media query (< 520px) */
-  @media (max-width: 520px) {
+  /* Mobile Ticket Pass Layout (< 990px) — Authentic Vertical Vintage Ticket */
+  @media (max-width: 990px) {
     .ticket-stub {
+      display: flex !important;
       flex-direction: column !important;
+      width: 100% !important;
+      max-width: 100% !important;
       min-height: auto !important;
-      -webkit-mask: none !important;
-      mask: none !important;
+      background-color: #E2EAE6 !important;
+      color: #171614 !important;
+      border: 2px solid var(--text-charcoal, #171614) !important;
+      box-shadow: 3px 3px 0px var(--text-charcoal, #171614) !important;
+      border-radius: 12px !important;
+      position: relative !important;
+      margin-bottom: 0 !important;
+      box-sizing: border-box !important;
+
+      /* Authentic Left & Right Semicircle Stans-Notches at the Divider */
+      --notch: 12px;
+      --stub-h: 68px;
+      -webkit-mask:
+        radial-gradient(circle var(--notch) at 0 calc(100% - var(--stub-h)),    transparent 98%, #000) left / 51% 100% no-repeat,
+        radial-gradient(circle var(--notch) at 100% calc(100% - var(--stub-h)), transparent 98%, #000) right / 51% 100% no-repeat !important;
+      mask:
+        radial-gradient(circle var(--notch) at 0 calc(100% - var(--stub-h)),    transparent 98%, #000) left / 51% 100% no-repeat,
+        radial-gradient(circle var(--notch) at 100% calc(100% - var(--stub-h)), transparent 98%, #000) right / 51% 100% no-repeat !important;
     }
+
+    .ticket-inner-border {
+      display: block !important;
+      position: absolute !important;
+      top: 6px !important;
+      bottom: 6px !important;
+      left: 6px !important;
+      right: 6px !important;
+      border: 1.5px solid rgba(160, 140, 110, 0.45) !important;
+      border-radius: 8px !important;
+      pointer-events: none !important;
+      z-index: 1 !important;
+    }
+
     .ticket-serial {
       display: none !important;
     }
+
+    .ticket-body {
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: flex-start !important;
+      padding: 1.25rem 1.15rem 0.95rem !important;
+      width: 100% !important;
+      position: relative !important;
+      z-index: 2 !important;
+      box-sizing: border-box !important;
+    }
+
+    .ticket-top-meta {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      margin-bottom: 0.35rem !important;
+    }
+
+    .ticket-fest-subtitle {
+      font-size: 0.65rem !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.06em !important;
+      color: #8C7853 !important;
+    }
+
+    .status-badge {
+      font-size: 0.62rem !important;
+      padding: 0.15rem 0.45rem !important;
+      border-radius: 4px !important;
+    }
+
+    .ticket-title {
+      font-size: 1.25rem !important;
+      line-height: 1.25 !important;
+      font-weight: 800 !important;
+      margin: 0 0 0.75rem 0 !important;
+      white-space: normal !important;
+      overflow: visible !important;
+      text-overflow: unset !important;
+      color: #171614 !important;
+    }
+
+    .ticket-meta-grid {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 0.5rem 0.75rem !important;
+      background: rgba(0, 0, 0, 0.03) !important;
+      padding: 0.65rem 0.85rem !important;
+      border-radius: 6px !important;
+      border: 1px solid rgba(160, 140, 110, 0.25) !important;
+      margin-bottom: 0.75rem !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    .meta-col {
+      display: flex !important;
+      flex-direction: column !important;
+    }
+
+    .meta-col-label {
+      font-size: 0.6rem !important;
+      font-weight: 800 !important;
+      color: #8C7853 !important;
+      margin-bottom: 0.15rem !important;
+    }
+
+    .meta-col-val {
+      font-size: 0.82rem !important;
+      font-weight: 700 !important;
+      color: #171614 !important;
+      white-space: nowrap !important;
+    }
+
+    .ticket-info-row {
+      margin-top: 0.25rem !important;
+    }
+
+    .btn-mc-info-trigger {
+      font-size: 0.75rem !important;
+      font-weight: 700 !important;
+      color: #006448 !important;
+      padding: 0 !important;
+    }
+
     .ticket-divider {
+      display: block !important;
+      position: static !important;
       width: 100% !important;
       height: 0 !important;
       border-left: none !important;
-      border-top: 1px dashed rgba(160, 140, 110, 0.4) !important;
+      border-top: 2px dashed rgba(160, 140, 110, 0.55) !important;
+      margin: 0 !important;
+      position: relative !important;
+      z-index: 2 !important;
     }
+
     .ticket-stub-end {
-      width: 100% !important;
+      display: flex !important;
       flex-direction: row !important;
       justify-content: space-between !important;
-      padding: 1rem 1.5rem !important;
+      align-items: center !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      height: 68px !important;
+      padding: 0 1.25rem !important;
+      background-color: rgba(0, 0, 0, 0.035) !important;
+      position: relative !important;
+      z-index: 2 !important;
+      box-sizing: border-box !important;
+    }
+
+    .stub-label {
+      display: none !important;
+    }
+
+    .ticket-price-block {
+      display: flex !important;
+      align-items: baseline !important;
+      gap: 0.15rem !important;
+      line-height: 1 !important;
+      margin-bottom: 0 !important;
+    }
+
+    .price-currency {
+      font-size: 1.1rem !important;
+      font-weight: 800 !important;
+      color: #006448 !important;
+      line-height: 1 !important;
+    }
+
+    .price-val {
+      font-size: 1.75rem !important;
+      font-weight: 800 !important;
+      color: #006448 !important;
+      line-height: 1 !important;
+      letter-spacing: -0.02em !important;
+    }
+
+    .price-cents {
+      font-size: 1.1rem !important;
+      font-weight: 800 !important;
+      color: #006448 !important;
+      line-height: 1 !important;
+    }
+
+    .sold-out-box {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      height: 42px !important;
+      padding: 0 1.15rem !important;
+      border: 1.5px dashed #A33A3A !important;
+      border-radius: 6px !important;
+      background: rgba(163, 58, 58, 0.08) !important;
+      min-width: 120px !important;
+      box-sizing: border-box !important;
+      flex-shrink: 0 !important;
+    }
+
+    .sold-out-text {
+      font-size: 0.78rem !important;
+      font-weight: 800 !important;
+      color: #A33A3A !important;
+      letter-spacing: 0.08em !important;
+      white-space: nowrap !important;
+      text-align: center !important;
+      line-height: 1 !important;
+    }
+
+    .qty-selector {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      background: #FAF7F2 !important;
+      border: 2px solid #1D1C1A !important;
+      border-radius: 8px !important;
+      box-shadow: 2px 2px 0px #1D1C1A !important;
+      padding: 3px !important;
+      height: 42px !important;
+      box-sizing: border-box !important;
+      flex-shrink: 0 !important;
+    }
+
+    .qty-btn {
+      width: 34px !important;
+      height: 34px !important;
+      background: #FFFFFF !important;
+      border: 1px solid rgba(0, 0, 0, 0.15) !important;
+      border-radius: 5px !important;
+      font-size: 1.25rem !important;
+      font-weight: 800 !important;
+      color: #171614 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+      transition: all 0.15s ease !important;
+      user-select: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      line-height: 1 !important;
+    }
+
+    .qty-btn:active {
+      background: #006448 !important;
+      color: #FFFFFF !important;
+      transform: scale(0.92) !important;
+    }
+
+    .qty-val {
+      font-family: var(--font-sans) !important;
+      font-size: 1.05rem !important;
+      font-weight: 800 !important;
+      color: #171614 !important;
+      min-width: 32px !important;
+      text-align: center !important;
+      line-height: 1 !important;
     }
   }
 </style>

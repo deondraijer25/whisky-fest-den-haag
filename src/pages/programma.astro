@@ -2319,245 +2319,546 @@ function formatSpeaker(host: string) {
     pointer-events: none;
   }
 
-  /* Mobile */
+  /* Mobile Responsive Polish for Programma & Timetable */
   @media (max-width: 900px) {
     .programma-full-hero {
-      padding: 10rem 1.25rem 4.5rem;
+      padding: 7.5rem 1.25rem 4rem !important;
+      min-height: auto !important;
     }
     .hero-main-title {
-      font-size: 2.5rem;
+      font-size: 2.25rem !important;
+      line-height: 1.15 !important;
     }
-    .session-selector-strip {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.5rem;
-      margin-top: -1.75rem;
+    .hero-lead-paragraph {
+      font-size: 0.95rem !important;
     }
     .agenda-parchment-container {
-      padding: 2rem 1.25rem 4rem;
+      padding: 0 1rem 4rem !important;
     }
-    .pane-header-bar {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.35rem;
+    .session-selector-strip {
+      display: flex !important;
+      overflow-x: auto !important;
+      scroll-snap-type: x mandatory !important;
+      -webkit-overflow-scrolling: touch !important;
+      scrollbar-width: none !important;
+      gap: 0.5rem !important;
+      padding: 0.25rem 0.5rem 0.75rem !important;
+      margin-top: -2.25rem !important;
+      margin-bottom: 2rem !important;
     }
-    .agenda-row-item {
-      grid-template-columns: 1fr;
-      gap: 0.65rem;
-      padding: 1.25rem 0;
-    }
-    .col-action {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 0.5rem;
-      border-top: 1px dashed rgba(140, 110, 70, 0.2);
-    }
-    .trail-inner-session-strip {
-      grid-template-columns: repeat(2, 1fr);
+    .session-btn-card {
+      flex: 0 0 150px !important;
+      min-width: 150px !important;
+      scroll-snap-align: start !important;
+      padding: 0.75rem 0.5rem !important;
     }
     .session-agenda-pane {
-      padding: 1.5rem 1rem;
+      padding: 1.25rem 1rem !important;
+    }
+    .pane-header-bar {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 0.35rem !important;
+      margin-bottom: 1.25rem !important;
+    }
+    .pane-title {
+      font-size: 1.6rem !important;
+    }
+
+    /* Timetable Cards Transformation */
+    .agenda-table-head {
+      display: none !important;
+    }
+    .agenda-row-item {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 0.75rem !important;
+      padding: 1.15rem 1rem !important;
+      background: #FFFFFF !important;
+      border: 1.5px solid var(--text-charcoal, #171614) !important;
+      box-shadow: 3px 3px 0px var(--text-charcoal, #171614) !important;
+      border-radius: 6px !important;
+      margin-bottom: 0.85rem !important;
+    }
+    .agenda-row-item:hover {
+      background-color: #FFFFFF !important;
+    }
+    .col-time {
+      display: flex !important;
+      flex-direction: row !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      width: 100% !important;
+      border-bottom: 1px dashed var(--border-color, #E2D9CC) !important;
+      padding-bottom: 0.5rem !important;
+    }
+    .item-time {
+      font-size: 1.05rem !important;
+      font-weight: 800 !important;
+      color: #006448 !important;
+    }
+    .col-title {
+      width: 100% !important;
+    }
+    .item-name {
+      font-size: 1.15rem !important;
+      font-weight: 800 !important;
+      line-height: 1.25 !important;
+      color: var(--text-charcoal, #171614) !important;
+    }
+    .col-type-loc {
+      width: 100% !important;
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: wrap !important;
+      align-items: center !important;
+      gap: 0.5rem !important;
+    }
+    .col-speaker {
+      width: 100% !important;
+      background: var(--bg-parchment, #FAF7F2) !important;
+      padding: 0.5rem 0.75rem !important;
+      border-radius: 4px !important;
+      border: 1px solid var(--border-color, #E2D9CC) !important;
+    }
+    .col-action {
+      width: 100% !important;
+      display: flex !important;
+      flex-direction: row !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      border-top: 1px dashed var(--border-color, #E2D9CC) !important;
+      padding-top: 0.65rem !important;
+      margin-top: 0.25rem !important;
+    }
+    .item-price {
+      font-size: 1.35rem !important;
+      font-weight: 800 !important;
+      color: #006448 !important;
+    }
+    .action-buttons-group {
+      display: flex !important;
+      align-items: center !important;
+      gap: 0.65rem !important;
+    }
+    .btn-table-buy {
+      padding: 0.55rem 1.15rem !important;
+      font-size: 0.82rem !important;
+    }
+    .trail-inner-session-strip {
+      grid-template-columns: 1fr !important;
     }
     .stmb-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.4rem;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 0.4rem !important;
+    }
+    .gidsen-matrix-table-wrap {
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      border-radius: 6px !important;
+      border: 1px solid var(--border-color) !important;
     }
   }
 </style>
 
-<script>
-  // 1. Session Tab Switching (All 7 Cards)
-  const navTabs = document.querySelectorAll<HTMLElement>('.session-btn-card');
-  const panes = document.querySelectorAll<HTMLElement>('.session-agenda-pane');
+<script define:vars={{ liveTicketsData: liveTickets }}>
+  function initProgramma() {
+    // 1. Session Tab Switching (All 7 Cards)
+    const navTabs = document.querySelectorAll('.session-btn-card');
+    const panes = document.querySelectorAll('.session-agenda-pane');
 
-  function switchTab(targetId: string, shouldScroll = false) {
-    if (!targetId) return;
-    const cleanId = targetId.replace('pane-', '').toLowerCase();
-    const targetTab = Array.from(navTabs).find(t => t.getAttribute('data-target-tab')?.toLowerCase() === cleanId);
-    if (!targetTab) return;
+    function switchTab(targetId, shouldScroll) {
+      if (!targetId) return;
+      const cleanId = targetId.replace('pane-', '').toLowerCase();
+      const targetTab = Array.from(navTabs).find(t => (t.getAttribute('data-target-tab') || '').toLowerCase() === cleanId);
+      if (!targetTab) return;
 
-    navTabs.forEach(t => t.classList.remove('active'));
-    targetTab.classList.add('active');
+      navTabs.forEach(t => t.classList.remove('active'));
+      targetTab.classList.add('active');
 
-    panes.forEach(p => {
-      if (p.id === `pane-${cleanId}`) {
-        p.classList.add('active');
-        if (shouldScroll) {
-          setTimeout(() => {
-            const yOffset = -90;
-            const y = p.getBoundingClientRect().top + window.pageYOffset + yOffset;
-            window.scrollTo({ top: y, behavior: 'smooth' });
-          }, 150);
-        }
-      } else {
-        p.classList.remove('active');
-      }
-    });
-  }
-
-  navTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const targetId = tab.getAttribute('data-target-tab');
-      if (targetId) switchTab(targetId, false);
-    });
-  });
-
-  // Handle URL query parameters and hash on load (e.g. ?view=gidsen or #pane-gidsen)
-  function handleUrlTarget(shouldScroll = true) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const viewParam = urlParams.get('view') || urlParams.get('tab');
-    const hashParam = window.location.hash.replace('#pane-', '').replace('#', '');
-    const target = viewParam || hashParam;
-    if (target) {
-      switchTab(target, shouldScroll);
-    }
-  }
-
-  // Run on initial load
-  handleUrlTarget(true);
-
-  // Run on hash changes or popstate navigation
-  window.addEventListener('hashchange', () => handleUrlTarget(true));
-  window.addEventListener('popstate', () => handleUrlTarget(false));
-
-
-  // 2. Trail Inner Matrix Session Switcher
-  const trailTabs = document.querySelectorAll('.trail-inner-btn');
-  const trailPanes = document.querySelectorAll('.trail-matrix-subpane');
-
-  trailTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      trailTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-
-      const targetId = tab.getAttribute('data-target-trail-matrix');
-      trailPanes.forEach(p => {
-        if (p.id === `tmatrix-${targetId}`) {
+      panes.forEach(p => {
+        if (p.id === `pane-${cleanId}`) {
           p.classList.add('active');
+          if (shouldScroll) {
+            setTimeout(() => {
+              const yOffset = -90;
+              const y = p.getBoundingClientRect().top + window.pageYOffset + yOffset;
+              window.scrollTo({ top: y, behavior: 'smooth' });
+            }, 150);
+          }
         } else {
           p.classList.remove('active');
         }
       });
+    }
+
+    navTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const targetId = tab.getAttribute('data-target-tab');
+        if (targetId) switchTab(targetId, false);
+      });
     });
-  });
 
-  // 3. Toast Helper
-  function showToast(message: string) {
-    const toast = document.getElementById('spacious-toast');
-    if (!toast) return;
-    toast.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F8E3B6" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span>${message}</span>`;
-    toast.style.display = 'flex';
-    toast.style.opacity = '1';
-    toast.style.transform = 'translateY(0)';
-    setTimeout(() => {
-      toast.style.opacity = '0';
-      toast.style.transform = 'translateY(20px)';
-      setTimeout(() => { toast.style.display = 'none'; }, 300);
-    }, 3200);
-  }
-
-  // 4. Add to Cart (Standard Items)
-  document.addEventListener('click', (e) => {
-    const btn = (e.target as HTMLElement).closest('.btn-table-buy');
-    if (!btn) return;
-
-    e.preventDefault();
-    const ticketId = btn.getAttribute('data-ticket-id') || '';
-    const title = btn.getAttribute('data-title') || 'Ticket';
-
-    try {
-      const stored = localStorage.getItem('whiskyfest_cart');
-      const cart = stored ? JSON.parse(stored) : {};
-      cart[ticketId] = (cart[ticketId] || 0) + 1;
-      localStorage.setItem('whiskyfest_cart', JSON.stringify(cart));
-      window.dispatchEvent(new Event('storage'));
-      showToast(`Toegevoegd aan winkelwagen: ${title}`);
-    } catch (err) {
-      showToast(`Toegevoegd: ${title}`);
+    // Handle URL query parameters and hash on load (e.g. ?view=gidsen or #pane-gidsen)
+    function handleUrlTarget(shouldScroll) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const viewParam = urlParams.get('view') || urlParams.get('tab');
+      const hashParam = window.location.hash.replace('#pane-', '').replace('#', '');
+      const target = viewParam || hashParam;
+      if (target) {
+        switchTab(target, shouldScroll);
+      }
     }
-  });
 
-  // 5. Book Matrix Slot (Trail Schedule)
-  document.addEventListener('click', (e) => {
-    const btn = (e.target as HTMLElement).closest('.btn-matrix-action');
-    if (!btn) return;
+    // Run on initial load
+    handleUrlTarget(true);
 
-    e.preventDefault();
-    const ticketId = btn.getAttribute('data-ticket-id') || '';
-    const title = btn.getAttribute('data-title') || 'Whisky Trail';
+    // Run on hash changes or popstate navigation
+    window.addEventListener('hashchange', () => handleUrlTarget(true));
+    window.addEventListener('popstate', () => handleUrlTarget(false));
 
-    try {
-      const stored = localStorage.getItem('whiskyfest_cart');
-      const cart = stored ? JSON.parse(stored) : {};
-      cart[ticketId] = (cart[ticketId] || 0) + 1;
-      localStorage.setItem('whiskyfest_cart', JSON.stringify(cart));
-      window.dispatchEvent(new Event('storage'));
-      showToast(`Toegevoegd aan winkelwagen: ${title}`);
-    } catch (err) {
-      showToast(`Toegevoegd: ${title}`);
-    }
-  });
 
-  // 6. Modal
-  const modal = document.getElementById('spacious-modal');
-  const modalClose = document.getElementById('modal-close-trigger');
+    // 2. Trail Inner Matrix Session Switcher
+    const trailTabs = document.querySelectorAll('.trail-inner-btn');
+    const trailPanes = document.querySelectorAll('.trail-matrix-subpane');
 
-  document.addEventListener('click', (e) => {
-    const btn = (e.target as HTMLElement).closest('.btn-trigger-details');
-    if (!btn) return;
+    trailTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        trailTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
 
-    e.preventDefault();
-    const title = btn.getAttribute('data-title') || '';
-    const loc = btn.getAttribute('data-loc') || 'Nutshuis';
-    const time = btn.getAttribute('data-time') || '';
-    const host = btn.getAttribute('data-host') || '';
-    const desc = btn.getAttribute('data-desc') || '';
-    const price = btn.getAttribute('data-price') || '';
-
-    const titleEl = document.getElementById('m-title');
-    const locEl = document.getElementById('m-loc');
-    const timeEl = document.getElementById('m-time');
-    const descEl = document.getElementById('m-desc');
-    const hostEl = document.getElementById('m-host');
-    const priceEl = document.getElementById('m-price');
-
-    if (titleEl) titleEl.textContent = title;
-    if (locEl) locEl.textContent = loc;
-    if (timeEl) timeEl.textContent = `${time} uur`;
-    if (descEl) descEl.textContent = desc;
-    if (hostEl) hostEl.textContent = host ? `Spreker: ${host}` : 'Officiële Masterclass';
-    if (priceEl) priceEl.textContent = price;
-
-    if (modal) {
-      modal.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-    }
-  });
-
-  if (modalClose) {
-    modalClose.addEventListener('click', () => {
-      if (modal) modal.style.display = 'none';
-      document.body.style.overflow = '';
+        const targetId = tab.getAttribute('data-target-trail-matrix');
+        trailPanes.forEach(p => {
+          if (p.id === `tmatrix-${targetId}`) {
+            p.classList.add('active');
+          } else {
+            p.classList.remove('active');
+          }
+        });
+      });
     });
-  }
-  if (modal) {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.style.display = 'none';
-        document.body.style.overflow = '';
+
+    // 3. Toast Helper
+    function showToast(message) {
+      const toast = document.getElementById('spacious-toast');
+      if (!toast) return;
+      toast.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F8E3B6" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span>${message}</span>`;
+      toast.style.display = 'flex';
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateY(0)';
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(20px)';
+        setTimeout(() => { toast.style.display = 'none'; }, 300);
+      }, 3200);
+    }
+
+    function getProgrammaCart() {
+      try {
+        const stored = localStorage.getItem('whiskyfest_cart');
+        if (!stored) return {};
+        const parsed = JSON.parse(stored);
+        if (!parsed || typeof parsed !== 'object') return {};
+
+        const result = {};
+        if (parsed.cartRaw && typeof parsed.cartRaw === 'object') {
+          Object.keys(parsed.cartRaw).forEach(k => {
+            if (k === 'subtotal' || k === 'totalItems' || k === 'items' || k === 'cartRaw') return;
+            const item = parsed.cartRaw[k];
+            if (item && ((typeof item === 'number' && item > 0) || (item.qty && item.qty > 0))) {
+              result[k] = typeof item === 'object' ? { ...item, id: k } : { id: k, qty: item };
+            }
+          });
+          return result;
+        }
+
+        if (Array.isArray(parsed.items)) {
+          parsed.items.forEach(item => {
+            if (item && item.id && item.qty > 0) {
+              result[item.id] = { ...item };
+            }
+          });
+          return result;
+        }
+
+        Object.keys(parsed).forEach(k => {
+          if (k === 'subtotal' || k === 'totalItems' || k === 'items' || k === 'cartRaw') return;
+          const item = parsed[k];
+          if (item && ((typeof item === 'number' && item > 0) || (item.qty && item.qty > 0))) {
+            result[k] = typeof item === 'object' ? { ...item, id: k } : { id: k, qty: item };
+          }
+        });
+        return result;
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveProgrammaCart(cart) {
+      try {
+        const cleaned = {};
+        const itemsArr = [];
+        let totalQty = 0;
+        let subtotal = 0;
+
+        Object.keys(cart).forEach(k => {
+          if (k === 'subtotal' || k === 'totalItems' || k === 'items' || k === 'cartRaw') return;
+          const it = cart[k];
+          if (!it) return;
+          const qty = typeof it === 'number' ? it : it.qty;
+          if (qty > 0) {
+            const rawObj = (liveTicketsData || []).find(t => t.id === k);
+            const price = (typeof it === 'object' && it.price !== undefined) ? it.price : (rawObj?.price || 20);
+            const title = (typeof it === 'object' && it.title) ? it.title : (rawObj?.title || k);
+            const category = (typeof it === 'object' && it.category) ? it.category : (rawObj?.category || 'masterclass');
+            const date = (typeof it === 'object' && it.date) ? it.date : (rawObj?.date || '');
+            const time = (typeof it === 'object' && it.time) ? it.time : (rawObj?.time || '');
+
+            const cleanItem = {
+              id: k,
+              title: title,
+              price: price,
+              qty: qty,
+              category: category,
+              date: date,
+              time: time,
+              timeslot: (typeof it === 'object' && it.timeslot) ? it.timeslot : time,
+              guide: (typeof it === 'object' && it.guide) ? it.guide : '',
+              delivery: (typeof it === 'object' && it.delivery) ? it.delivery : ''
+            };
+            cleaned[k] = cleanItem;
+            itemsArr.push(cleanItem);
+            totalQty += qty;
+            subtotal += price * qty;
+          }
+        });
+
+        localStorage.setItem('whiskyfest_cart', JSON.stringify({
+          subtotal: subtotal,
+          totalItems: totalQty,
+          items: itemsArr,
+          cartRaw: cleaned
+        }));
+
+        window.dispatchEvent(new Event('storage'));
+        window.dispatchEvent(new CustomEvent('cart-updated', { detail: { count: totalQty, subtotal: subtotal } }));
+      } catch (e) {
+        console.error('saveProgrammaCart error:', e);
+      }
+    }
+
+    // 4. Add to Cart (Standard Items)
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.btn-table-buy');
+      if (!btn) return;
+
+      e.preventDefault();
+      const ticketId = btn.getAttribute('data-ticket-id') || '';
+      const title = btn.getAttribute('data-title') || 'Ticket';
+      const priceStr = btn.getAttribute('data-price') || '20';
+      const parsedPrice = parseFloat(priceStr.replace(/[^0-9.]/g, '')) || 20;
+
+      try {
+        const cart = getProgrammaCart();
+        const itemObj = (liveTicketsData || []).find(t => t.id === ticketId);
+
+        if (!cart[ticketId]) {
+          cart[ticketId] = {
+            id: ticketId,
+            title: title,
+            price: itemObj ? itemObj.price : parsedPrice,
+            qty: 1,
+            category: itemObj ? itemObj.category : 'masterclass',
+            date: itemObj ? itemObj.date : '',
+            time: itemObj ? itemObj.time : ''
+          };
+        } else {
+          const currentQty = typeof cart[ticketId] === 'number' ? cart[ticketId] : (cart[ticketId].qty || 0);
+          const currentPrice = typeof cart[ticketId] === 'object' ? cart[ticketId].price : (itemObj ? itemObj.price : parsedPrice);
+          cart[ticketId] = {
+            id: ticketId,
+            title: title,
+            price: currentPrice,
+            qty: Math.min(10, currentQty + 1),
+            category: itemObj ? itemObj.category : 'masterclass',
+            date: itemObj ? itemObj.date : '',
+            time: itemObj ? itemObj.time : ''
+          };
+        }
+        saveProgrammaCart(cart);
+        showToast(`Toegevoegd aan winkelwagen: ${title}`);
+
+        // Open mobile bottom sheet cart drawer immediately on mobile screens
+        if (window.innerWidth <= 990) {
+          window.dispatchEvent(new CustomEvent('open-mobile-cart-drawer', { detail: { view: 'cart' } }));
+        }
+      } catch (err) {
+        showToast(`Toegevoegd: ${title}`);
       }
     });
+
+    // 5. Book Matrix Slot (Trail Schedule)
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.btn-matrix-action');
+      if (!btn) return;
+
+      e.preventDefault();
+      const ticketId = btn.getAttribute('data-ticket-id') || '';
+      const title = btn.getAttribute('data-title') || 'Whisky Trail';
+
+      try {
+        const cart = getProgrammaCart();
+        const itemObj = (liveTicketsData || []).find(t => t.id === ticketId);
+
+        if (!cart[ticketId]) {
+          cart[ticketId] = {
+            id: ticketId,
+            title: title,
+            price: itemObj ? itemObj.price : 5.00,
+            qty: 1,
+            category: 'trail',
+            date: itemObj ? itemObj.date : '',
+            time: itemObj ? itemObj.time : ''
+          };
+        } else {
+          const currentQty = typeof cart[ticketId] === 'number' ? cart[ticketId] : (cart[ticketId].qty || 0);
+          const currentPrice = typeof cart[ticketId] === 'object' ? cart[ticketId].price : (itemObj ? itemObj.price : 5.00);
+          cart[ticketId] = {
+            id: ticketId,
+            title: title,
+            price: currentPrice,
+            qty: Math.min(10, currentQty + 1),
+            category: 'trail',
+            date: itemObj ? itemObj.date : '',
+            time: itemObj ? itemObj.time : ''
+          };
+        }
+        saveProgrammaCart(cart);
+        showToast(`Toegevoegd aan winkelwagen: ${title}`);
+
+        // Open mobile bottom sheet cart drawer immediately on mobile screens
+        if (window.innerWidth <= 990) {
+          window.dispatchEvent(new CustomEvent('open-mobile-cart-drawer', { detail: { view: 'cart' } }));
+        }
+      } catch (err) {
+        showToast(`Toegevoegd: ${title}`);
+      }
+    });
+
+    // 6. Modal
+    const modal = document.getElementById('spacious-modal');
+    const modalClose = document.getElementById('modal-close-trigger');
+    let currentModalTicketId = '';
+    let currentModalTitle = '';
+    let currentModalPrice = 20;
+
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.btn-trigger-details');
+      if (!btn) return;
+
+      e.preventDefault();
+      const title = btn.getAttribute('data-title') || '';
+      const loc = btn.getAttribute('data-loc') || 'Nutshuis';
+      const time = btn.getAttribute('data-time') || '';
+      const host = btn.getAttribute('data-host') || '';
+      const desc = btn.getAttribute('data-desc') || '';
+      const price = btn.getAttribute('data-price') || '';
+      const ticketId = btn.getAttribute('data-ticket-id') || '';
+
+      currentModalTicketId = ticketId;
+      currentModalTitle = title;
+      currentModalPrice = parseFloat((price || '20').replace(/[^0-9.]/g, '')) || 20;
+
+      const titleEl = document.getElementById('m-title');
+      const locEl = document.getElementById('m-loc');
+      const timeEl = document.getElementById('m-time');
+      const descEl = document.getElementById('m-desc');
+      const hostEl = document.getElementById('m-host');
+      const priceEl = document.getElementById('m-price');
+
+      if (titleEl) titleEl.textContent = title;
+      if (locEl) locEl.textContent = loc;
+      if (timeEl) timeEl.textContent = time ? `${time} uur` : '';
+      if (descEl) descEl.textContent = desc;
+      if (hostEl) hostEl.textContent = host ? `Spreker: ${host}` : 'Officiële Masterclass';
+      if (priceEl) priceEl.textContent = price || '€ 20,00';
+
+      if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+    });
+
+    if (modalClose) {
+      modalClose.addEventListener('click', () => {
+        if (modal) modal.style.display = 'none';
+        document.body.style.overflow = '';
+      });
+    }
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+          document.body.style.overflow = '';
+        }
+      });
+    }
+
+    // Buy from Modal
+    const mBuy = document.getElementById('m-buy');
+    if (mBuy) {
+      mBuy.addEventListener('click', () => {
+        const title = currentModalTitle || document.getElementById('m-title')?.textContent || 'Ticket';
+        const ticketId = currentModalTicketId || 'masterclass-item';
+
+        try {
+          const cart = getProgrammaCart();
+          const itemObj = (liveTicketsData || []).find(t => t.id === ticketId);
+
+          if (!cart[ticketId]) {
+            cart[ticketId] = {
+              id: ticketId,
+              title: title,
+              price: itemObj ? itemObj.price : currentModalPrice,
+              qty: 1,
+              category: 'masterclass',
+              date: itemObj ? itemObj.date : '',
+              time: itemObj ? itemObj.time : ''
+            };
+          } else {
+            const currentQty = typeof cart[ticketId] === 'number' ? cart[ticketId] : (cart[ticketId].qty || 0);
+            const currentPrice = typeof cart[ticketId] === 'object' ? cart[ticketId].price : (itemObj ? itemObj.price : currentModalPrice);
+            cart[ticketId] = {
+              id: ticketId,
+              title: title,
+              price: currentPrice,
+              qty: Math.min(10, currentQty + 1),
+              category: 'masterclass',
+              date: itemObj ? itemObj.date : '',
+              time: itemObj ? itemObj.time : ''
+            };
+          }
+          saveProgrammaCart(cart);
+          showToast(`Toegevoegd aan winkelwagen: ${title}`);
+
+          // Open mobile bottom sheet cart drawer immediately on mobile screens
+          if (window.innerWidth <= 990) {
+            window.dispatchEvent(new CustomEvent('open-mobile-cart-drawer', { detail: { view: 'cart' } }));
+          }
+        } catch (err) {
+          showToast(`Toegevoegd: ${title}`);
+        }
+
+        if (modal) modal.style.display = 'none';
+        document.body.style.overflow = '';
+      });
+    }
   }
 
-  // Buy from Modal
-  const mBuy = document.getElementById('m-buy');
-  if (mBuy) {
-    mBuy.addEventListener('click', () => {
-      const titleEl = document.getElementById('m-title');
-      showToast(`Toegevoegd aan winkelwagen: ${titleEl?.textContent || 'Ticket'}`);
-      if (modal) modal.style.display = 'none';
-      document.body.style.overflow = '';
-    });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProgramma);
+  } else {
+    initProgramma();
   }
 </script>

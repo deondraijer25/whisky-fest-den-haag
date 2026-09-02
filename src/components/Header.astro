@@ -166,8 +166,187 @@ const isAccount = pathname.startsWith("/account");
           </div>
         </div>
       </div>
+
+      <!-- 4. Mobile Hamburger Button -->
+      <button 
+        type="button" 
+        class="mobile-menu-toggle-btn" 
+        id="mobile-menu-toggle-btn" 
+        aria-label="Menu openen"
+        onclick="var d=document.getElementById('mobile-nav-drawer'); if(d){ d.classList.add('active'); d.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
     </div>
   </div>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="mobile-nav-drawer" id="mobile-nav-drawer" aria-hidden="true">
+    <div 
+      class="mobile-nav-backdrop" 
+      id="mobile-nav-backdrop"
+      onclick="var d=document.getElementById('mobile-nav-drawer'); if(d){ d.classList.remove('active'); d.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }"
+    ></div>
+    <div class="mobile-nav-panel">
+      <!-- Drawer Top Bar -->
+      <div class="mobile-nav-top">
+        <div class="mobile-nav-brand">
+          <span class="mn-brand-est">Est. 2000 &bull; 25e Editie</span>
+          <h3 class="mn-brand-title">Whisky Fest</h3>
+          <span class="mn-brand-city">Grote Kerk Den Haag</span>
+        </div>
+        <button 
+          type="button" 
+          class="mobile-nav-close-btn" 
+          id="mobile-nav-close-btn" 
+          aria-label="Sluit menu"
+          onclick="var d=document.getElementById('mobile-nav-drawer'); if(d){ d.classList.remove('active'); d.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Drawer Nav List -->
+      <nav class="mobile-nav-menu-list">
+        <a href="/#sessies" class="mobile-nav-item">
+          <span class="mn-item-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path>
+              <path d="M13 5v2"></path><path d="M13 17v2"></path><path d="M13 11v2"></path>
+            </svg>
+          </span>
+          <div class="mn-item-text">
+            <strong class="mn-item-title">Tickets Bestellen</strong>
+            <span class="mn-item-desc">Sessies, Masterclasses &amp; Whiskytram</span>
+          </div>
+          <span class="mn-item-arrow">&rarr;</span>
+        </a>
+        <a href="/programma" class={`mobile-nav-item ${isProgramma ? 'active' : ''}`}>
+          <span class="mn-item-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </span>
+          <div class="mn-item-text">
+            <strong class="mn-item-title">Programma</strong>
+            <span class="mn-item-desc">Timetable, Masterclasses &amp; Gidsen</span>
+          </div>
+          <span class="mn-item-arrow">&rarr;</span>
+        </a>
+        <a href="/standhouders" class={`mobile-nav-item ${isStandhouders ? 'active' : ''}`}>
+          <span class="mn-item-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+              <line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line>
+            </svg>
+          </span>
+          <div class="mn-item-text">
+            <strong class="mn-item-title">Plattegrond &amp; Stands</strong>
+            <span class="mn-item-desc">Kerkvloer &amp; Aanwezige Standhouders</span>
+          </div>
+          <span class="mn-item-arrow">&rarr;</span>
+        </a>
+        <a href="/account" class={`mobile-nav-item ${isAccount ? 'active' : ''}`}>
+          <span class="mn-item-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </span>
+          <div class="mn-item-text">
+            <strong class="mn-item-title">Mijn Account</strong>
+            <span class="mn-item-desc">Mijn tickets, badges &amp; bestellingen</span>
+          </div>
+          <span class="mn-item-arrow">&rarr;</span>
+        </a>
+      </nav>
+
+      <!-- Multi-City Navigation Switcher -->
+      <div class="mobile-nav-cities-section">
+        <span class="mn-cities-label">Andere Steden:</span>
+        <div class="mn-cities-grid">
+          <a href="http://localhost:4332" class="mn-city-card">
+            <span class="mn-city-badge">BE</span>
+            <span>Gent</span>
+            <span class="mn-city-ext">&nearr;</span>
+          </a>
+          <a href="http://localhost:4331" class="mn-city-card">
+            <span class="mn-city-badge">NL</span>
+            <span>Amsterdam</span>
+            <span class="mn-city-ext">&nearr;</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Drawer Bottom CTA -->
+      <div class="mobile-nav-bottom-cta">
+        <a href="/#sessies" class="btn btn-gold btn-mobile-drawer-cta">
+          Direct Tickets Bestellen &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inline Fast-Binding Script for Mobile Drawer -->
+  <script is:inline>
+    (function() {
+      function bindDrawer() {
+        var btn = document.getElementById('mobile-menu-toggle-btn');
+        var drawer = document.getElementById('mobile-nav-drawer');
+        var closeBtn = document.getElementById('mobile-nav-close-btn');
+        var backdrop = document.getElementById('mobile-nav-backdrop');
+
+        if (!btn || !drawer) return;
+
+        // Portal drawer to body so it takes full viewport height and cannot be clipped by header
+        if (drawer.parentNode !== document.body) {
+          document.body.appendChild(drawer);
+        }
+
+        btn.onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          drawer.classList.add('active');
+          drawer.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+        };
+
+        function closeNav(e) {
+          if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+          drawer.classList.remove('active');
+          drawer.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+        }
+
+        if (closeBtn) closeBtn.onclick = closeNav;
+        if (backdrop) backdrop.onclick = closeNav;
+
+        var navLinks = drawer.querySelectorAll('a, button:not(#mobile-nav-close-btn)');
+        for (var i = 0; i < navLinks.length; i++) {
+          navLinks[i].addEventListener('click', function() {
+            setTimeout(closeNav, 150);
+          });
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bindDrawer);
+      } else {
+        bindDrawer();
+      }
+    })();
+  </script>
 </header>
 
 <style>
@@ -902,17 +1081,380 @@ const isAccount = pathname.startsWith("/account");
     box-shadow: 0 6px 18px rgba(0, 100, 72, 0.35);
   }
 
-  /* Responsive styling */
-  @media (max-width: 990px) {
-    .nav-menu {
-      display: none;
-    }
+  /* Mobile Hamburger Button */
+  .mobile-menu-toggle-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    width: 42px;
+    height: 42px;
+    background: #FFFFFF;
+    border: 2px solid var(--text-charcoal, #1D1C1A);
+    box-shadow: 2px 2px 0px var(--text-charcoal, #1D1C1A);
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  @media (max-width: 480px) {
+  .mobile-menu-toggle-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 3px 3px 0px var(--text-charcoal);
+  }
+
+  .hamburger-line {
+    width: 20px;
+    height: 2px;
+    background-color: var(--text-charcoal, #1D1C1A);
+    border-radius: 2px;
+    transition: all 0.25s ease;
+  }
+
+  /* Mobile Nav Drawer Container */
+  .mobile-nav-drawer {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    z-index: 99999999 !important;
+    visibility: hidden;
+    pointer-events: none;
+    overflow: hidden !important;
+    transition: visibility 0.3s ease;
+  }
+
+  .mobile-nav-drawer.active {
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  .mobile-nav-backdrop {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    background: rgba(15, 14, 12, 0.65) !important;
+    backdrop-filter: blur(4px) !important;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 100000000 !important;
+  }
+
+  .mobile-nav-drawer.active .mobile-nav-backdrop {
+    opacity: 1 !important;
+  }
+
+  .mobile-nav-panel {
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 86vw !important;
+    max-width: 360px !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    background: var(--bg-paper-card, #FFFFFF) !important;
+    border-left: 2.5px solid var(--text-charcoal, #171614) !important;
+    box-shadow: -8px 0 30px rgba(0,0,0,0.3) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    transform: translateX(100%) !important;
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    z-index: 100000001 !important;
+  }
+
+  .mobile-nav-drawer.active .mobile-nav-panel {
+    transform: translateX(0) !important;
+  }
+
+  .mobile-nav-top {
+    padding: 1.5rem 1.25rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 2px solid var(--text-charcoal);
+    background: var(--bg-parchment, #FAF7F2);
+  }
+
+  .mobile-nav-brand {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mn-brand-est {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--whisky-gold-dark, #006448);
+  }
+
+  .mn-brand-title {
+    font-family: var(--font-display, serif);
+    font-size: 1.2rem;
+    color: var(--text-charcoal);
+    line-height: 1.2;
+    margin: 0.15rem 0;
+  }
+
+  .mn-brand-city {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .mobile-nav-close-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-charcoal);
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-nav-menu-list {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 0;
+    flex: 1;
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.95rem 1.25rem;
+    border-bottom: 1px solid var(--border-color, #E2D9CC);
+    text-decoration: none;
+    transition: background 0.15s ease;
+  }
+
+  .mobile-nav-item:hover, .mobile-nav-item.active {
+    background: rgba(0, 100, 72, 0.06);
+  }
+
+  .mn-item-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: var(--bg-parchment, #FAF7F2);
+    border: 1px solid var(--border-color);
+    color: var(--whisky-gold-dark, #006448);
+    flex-shrink: 0;
+  }
+
+  .mn-item-icon svg {
+    stroke: var(--whisky-gold-dark, #006448);
+  }
+
+  .mn-item-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mn-item-title {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-charcoal);
+  }
+
+  .mn-item-desc {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 0.1rem;
+  }
+
+  .mn-item-arrow {
+    font-size: 1.1rem;
+    color: var(--whisky-gold-dark);
+    font-weight: 700;
+  }
+
+  .mobile-nav-cities-section {
+    padding: 1rem 1.25rem;
+    background: #FAF7F2;
+    border-top: 1.5px solid var(--border-color);
+    border-bottom: 1.5px solid var(--border-color);
+  }
+
+  .mn-cities-label {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 0.65rem;
+  }
+
+  .mn-cities-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .mn-city-card {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.65rem;
+    background: #FFFFFF;
+    border: 1.5px solid var(--text-charcoal);
+    box-shadow: 2px 2px 0px var(--text-charcoal);
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--text-charcoal);
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .mn-city-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.1rem 0.35rem;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    background: rgba(0, 100, 72, 0.1);
+    color: #006448;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 100, 72, 0.25);
+  }
+
+  .mn-city-ext {
+    margin-left: auto;
+    font-size: 0.7rem;
+    color: var(--whisky-gold-dark);
+  }
+
+  .mobile-nav-bottom-cta {
+    padding: 1.25rem;
+  }
+
+  .btn-mobile-drawer-cta {
+    padding: 0.9rem 1.25rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    text-align: center;
+  }
+
+  /* Responsive styling */
+  @media (max-width: 990px) {
+    .main-header {
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 99999 !important;
+      background-color: var(--bg-paper-card, #FFFFFF) !important;
+      border-bottom: 2px solid var(--text-charcoal, #1D1C1A) !important;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06) !important;
+    }
+    .top-announcement-bar {
+      font-size: 0.72rem !important;
+      padding: 0.45rem 0.75rem !important;
+    }
+    .nav-menu {
+      display: none !important;
+    }
+    .btn-header {
+      display: none !important;
+    }
+    .header-account-wrapper {
+      display: none !important;
+    }
+    .header-container {
+      padding: 0.85rem 1rem !important;
+      min-height: 68px !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+    .logo-image-container {
+      position: relative !important;
+      height: 52px !important;
+      width: 90px !important;
+      display: block !important;
+    }
+    .logo-image-container svg {
+      position: absolute !important;
+      top: -24px !important;
+      left: 0 !important;
+      width: 90px !important;
+      height: auto !important;
+      z-index: 120 !important;
+    }
+    .header-actions {
+      display: flex !important;
+      align-items: center !important;
+      gap: 0.5rem !important;
+    }
+    .header-cart-btn,
+    .mobile-menu-toggle-btn {
+      width: 44px !important;
+      height: 44px !important;
+      min-width: 44px !important;
+      min-height: 44px !important;
+      max-width: 44px !important;
+      max-height: 44px !important;
+      border-radius: 6px !important;
+      border: 2px solid var(--text-charcoal, #1D1C1A) !important;
+      box-shadow: 2px 2px 0px var(--text-charcoal, #1D1C1A) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
+      cursor: pointer !important;
+      flex-shrink: 0 !important;
+    }
+    .header-cart-btn {
+      background: #006448 !important;
+      color: #FFFFFF !important;
+    }
+    .header-cart-btn svg {
+      width: 22px !important;
+      height: 22px !important;
+      stroke: #FFFFFF !important;
+      stroke-width: 2.2 !important;
+      display: block !important;
+    }
+    .mobile-menu-toggle-btn {
+      background: #FFFFFF !important;
+      color: var(--text-charcoal, #1D1C1A) !important;
+    }
+    .mobile-menu-toggle-btn svg {
+      width: 22px !important;
+      height: 22px !important;
+      stroke: var(--text-charcoal, #1D1C1A) !important;
+      stroke-width: 2.5 !important;
+      display: block !important;
     .header-cart-dropdown {
-      width: calc(100vw - 2rem);
-      right: -1rem;
+      display: none !important;
     }
   }
 </style>
@@ -943,22 +1485,57 @@ const isAccount = pathname.startsWith("/account");
   function getStoredCart() {
     try {
       const raw = localStorage.getItem('whiskyfest_cart');
-      if (!raw) return { items: [], subtotal: 0, totalItems: 0 };
+      if (!raw) return { items: [], subtotal: 0, totalItems: 0, cartRaw: {} };
       const parsed = JSON.parse(raw);
-      let items = parsed.items;
-      if (!items && parsed.cartRaw) {
-        items = Object.keys(parsed.cartRaw)
-          .filter(id => parsed.cartRaw[id] && parsed.cartRaw[id].qty > 0)
-          .map(id => parsed.cartRaw[id]);
+      if (!parsed || typeof parsed !== 'object') return { items: [], subtotal: 0, totalItems: 0, cartRaw: {} };
+
+      const cartRaw: Record<string, any> = {};
+      const itemsList: any[] = [];
+
+      if (parsed.cartRaw && typeof parsed.cartRaw === 'object') {
+        Object.keys(parsed.cartRaw).forEach(id => {
+          if (id === 'subtotal' || id === 'totalItems' || id === 'items' || id === 'cartRaw') return;
+          const it = parsed.cartRaw[id];
+          if (!it) return;
+          const qty = typeof it === 'number' ? it : it.qty;
+          if (qty > 0) {
+            const itemObj = typeof it === 'object' ? { ...it, id } : { id, title: id, price: 0, qty };
+            cartRaw[id] = itemObj;
+            itemsList.push(itemObj);
+          }
+        });
+      } else if (Array.isArray(parsed.items)) {
+        parsed.items.forEach(it => {
+          if (it && it.id && it.qty > 0) {
+            cartRaw[it.id] = { ...it };
+            itemsList.push({ ...it });
+          }
+        });
+      } else {
+        Object.keys(parsed).forEach(id => {
+          if (id === 'subtotal' || id === 'totalItems' || id === 'items' || id === 'cartRaw') return;
+          const it = parsed[id];
+          if (!it) return;
+          const qty = typeof it === 'number' ? it : it.qty;
+          if (qty > 0) {
+            const itemObj = typeof it === 'object' ? { ...it, id } : { id, title: id, price: 0, qty };
+            cartRaw[id] = itemObj;
+            itemsList.push(itemObj);
+          }
+        });
       }
-      return { 
-        items: items || [], 
-        subtotal: parsed.subtotal || (items ? items.reduce((a: number, b: any) => a + (b.price * b.qty), 0) : 0), 
-        totalItems: parsed.totalItems || (items ? items.reduce((a: number, b: any) => a + (b.qty || 0), 0) : 0),
-        cartRaw: parsed.cartRaw || {}
+
+      const totalItems = itemsList.reduce((acc: number, item: any) => acc + (item.qty || 0), 0);
+      const subtotal = itemsList.reduce((acc: number, item: any) => acc + ((item.price || 0) * (item.qty || 0)), 0);
+
+      return {
+        items: itemsList,
+        subtotal: subtotal,
+        totalItems: totalItems,
+        cartRaw: cartRaw
       };
     } catch(e) {
-      return { items: [], subtotal: 0, totalItems: 0 };
+      return { items: [], subtotal: 0, totalItems: 0, cartRaw: {} };
     }
   }
 
@@ -1101,17 +1678,26 @@ const isAccount = pathname.startsWith("/account");
     });
   }
 
-  if (cartBtn && cartDropdown) {
+  if (cartBtn) {
     cartBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      cartDropdown.classList.toggle('active');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!cartDropdown.contains(e.target as Node) && e.target !== cartBtn) {
-        cartDropdown.classList.remove('active');
+      if (window.innerWidth <= 990) {
+        if (cartDropdown) cartDropdown.classList.remove('active');
+        window.dispatchEvent(new CustomEvent('open-mobile-cart-drawer'));
+        return;
+      }
+      if (cartDropdown) {
+        cartDropdown.classList.toggle('active');
       }
     });
+
+    if (cartDropdown) {
+      document.addEventListener('click', (e) => {
+        if (!cartDropdown.contains(e.target as Node) && e.target !== cartBtn) {
+          cartDropdown.classList.remove('active');
+        }
+      });
+    }
   }
 
   // Handle Checkout Click from Dropdown
@@ -1219,4 +1805,50 @@ const isAccount = pathname.startsWith("/account");
   document.addEventListener('DOMContentLoaded', updateHeaderAccountState);
   updateHeaderAccountState();
 
+  // Mobile Nav Drawer Toggle
+  const mobileToggleBtn = document.getElementById('mobile-menu-toggle-btn');
+  const mobileNavDrawer = document.getElementById('mobile-nav-drawer');
+  const mobileCloseBtn = document.getElementById('mobile-nav-close-btn');
+  const mobileBackdrop = document.getElementById('mobile-nav-backdrop');
+
+  function openMobileNav() {
+    if (mobileNavDrawer) {
+      mobileNavDrawer.classList.add('active');
+      mobileNavDrawer.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeMobileNav() {
+    if (mobileNavDrawer) {
+      mobileNavDrawer.classList.remove('active');
+      mobileNavDrawer.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+  }
+
+  if (mobileToggleBtn) {
+    mobileToggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openMobileNav();
+    });
+  }
+
+  if (mobileCloseBtn) {
+    mobileCloseBtn.addEventListener('click', closeMobileNav);
+  }
+
+  if (mobileBackdrop) {
+    mobileBackdrop.addEventListener('click', closeMobileNav);
+  }
+
+  // Close drawer on ESC key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMobileNav();
+  });
+
+  // Close drawer on link click
+  document.querySelectorAll('.mobile-nav-item, .btn-mobile-drawer-cta').forEach(link => {
+    link.addEventListener('click', closeMobileNav);
+  });
 </script>

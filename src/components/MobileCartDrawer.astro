@@ -1,0 +1,786 @@
+---
+// src/components/MobileCartDrawer.astro
+// Reusable Mobile Slide-Up Bottom Sheet Cart & Phased Add-ons Drawer (< 990px)
+import { getTickets } from '../lib/ghl';
+
+interface Props {
+  city?: string;
+}
+
+const { city = 'den_haag' } = Astro.props;
+const allTickets = await getTickets(city);
+const addonsList = allTickets.filter(t => t.category !== 'entree');
+---
+
+<!-- ==========================================
+     MOBILE SLIDE-UP BOTTOM SHEET (< 990px)
+     Unified Cart Overview & In-Drawer Add-ons
+     ========================================== -->
+<div class="mobile-bottom-sheet-overlay" id="mobile-cart-sheet-overlay" style="display: none;">
+  <div class="mobile-bottom-sheet-backdrop" id="mobile-cart-sheet-backdrop"></div>
+  <div class="mobile-bottom-sheet" id="mobile-cart-sheet">
+    
+    <!-- Top Drag Handle -->
+    <div class="sheet-drag-handle-wrap" id="mobile-sheet-drag-handle">
+      <div class="sheet-drag-handle"></div>
+    </div>
+
+    <!-- VIEW 1: CART / TICKETS OVERVIEW -->
+    <div class="sheet-view sheet-view-cart is-active" id="sheet-view-cart">
+      <div class="sheet-head">
+        <div class="sheet-title-group">
+          <span class="sheet-badge">Winkelwagen</span>
+          <h3 class="sheet-title">Jouw Bestelling</h3>
+        </div>
+        <button type="button" class="sheet-close-btn" id="sheet-close-btn-cart" aria-label="Sluiten">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- Scrollable Cart Items List -->
+      <div class="sheet-cart-list" id="sheet-cart-list">
+        <!-- Dynamically populated via JS -->
+      </div>
+
+      <!-- Empty Cart Notice -->
+      <div class="sheet-empty-state" id="sheet-cart-empty" style="display: none;">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#8C7853" stroke-width="1.5"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+        <p style="font-weight: 800; color: #171614; margin: 0.5rem 0 0.2rem; font-family: var(--font-sans);">Uw winkelmandje is nog leeg</p>
+        <span style="font-size: 0.85rem; color: #665C54;">Kies een sessie of masterclass om te beginnen.</span>
+      </div>
+
+      <!-- Cart Summary Footer -->
+      <div class="sheet-footer" id="sheet-cart-footer">
+        <div class="sheet-calc-rows">
+          <div class="sheet-calc-row">
+            <span>Subtotaal:</span>
+            <strong id="sheet-cart-subtotal">&euro;0,00</strong>
+          </div>
+          <div class="sheet-calc-row">
+            <span>Administratiekosten:</span>
+            <strong id="sheet-cart-fee">&euro;0,00</strong>
+          </div>
+          <div class="sheet-calc-row" id="sheet-shipping-row" style="display: none;">
+            <span>Verzendkosten Fles:</span>
+            <strong id="sheet-cart-shipping">&euro;0,00</strong>
+          </div>
+          <div class="sheet-calc-row sheet-total-row">
+            <span>Totaal:</span>
+            <strong id="sheet-cart-total">&euro;0,00</strong>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-gold sheet-cta-btn" id="sheet-to-addons-btn">
+          <span>Afrekenen &rarr;</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- VIEW 2: ADD-ONS & SPECIALS (Inside the exact same slide-up drawer) -->
+    <div class="sheet-view sheet-view-addons" id="sheet-view-addons" style="display: none;">
+      <div class="sheet-head">
+        <button type="button" class="sheet-back-btn" id="sheet-back-to-cart-btn" aria-label="Terug naar tickets">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          <span>Tickets</span>
+        </button>
+        <div class="sheet-title-group" style="text-align: center; flex: 1; padding: 0 0.5rem;">
+          <span class="sheet-badge">FESTIVAL ADD-ONS &amp; SPECIALS</span>
+          <h3 class="sheet-title" style="font-size: 1.12rem;">Maak uw Beleving Compleet</h3>
+        </div>
+        <button type="button" class="sheet-close-btn" id="sheet-close-btn-addons" aria-label="Sluiten">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- Addons Day Notice -->
+      <div class="sheet-day-notice" id="sheet-day-notice" style="display: none;">
+        <span id="sheet-day-notice-text">Getoond voor: <strong>Vrijdag</strong></span>
+        <button type="button" id="sheet-toggle-days-btn">Toon alle dagen</button>
+      </div>
+
+      <!-- Addons Filter Tabs -->
+      <div class="sheet-addons-filters" id="sheet-addons-filters">
+        <button type="button" class="sheet-filter-pill active" data-sheet-cat="all">Alles</button>
+        <button type="button" class="sheet-filter-pill" data-sheet-cat="warehouse">Warehouse</button>
+        <button type="button" class="sheet-filter-pill" data-sheet-cat="masterclass">Masterclasses</button>
+        <button type="button" class="sheet-filter-pill" data-sheet-cat="tram">Whiskytram</button>
+        <button type="button" class="sheet-filter-pill" data-sheet-cat="trail">Whiskytrail</button>
+        <button type="button" class="sheet-filter-pill" data-sheet-cat="vatenmaken">Workshops</button>
+        <button type="button" class="sheet-filter-pill" data-sheet-cat="botteling">Botteling</button>
+      </div>
+
+      <!-- Addons Scrollable Card List -->
+      <div class="sheet-addons-list" id="sheet-addons-list">
+        <!-- Populated dynamically via JS -->
+      </div>
+
+      <!-- Addons Footer Action -->
+      <div class="sheet-footer">
+        <div class="sheet-addons-footer-links">
+          <button type="button" class="sheet-skip-link" id="sheet-skip-addons-btn">Nee bedankt, direct afrekenen</button>
+        </div>
+        <button type="button" class="btn btn-gold sheet-cta-btn" id="sheet-final-checkout-btn">
+          <span id="sheet-final-checkout-text">Naar Afrekenen (€ 0,00) &rarr;</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==========================================
+     GLOBAL MOBILE STICKY CHECKOUT BAR (< 990px)
+     Always visible when 1+ items in cart, hides when empty
+     ========================================== -->
+<div class="mobile-sticky-checkout-bar" id="mobile-sticky-checkout-bar">
+  <div class="mscb-inner" id="mscb-inner-tap-target">
+    <div class="mscb-left">
+      <div class="mscb-icon-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+      </div>
+      <div class="mscb-text">
+        <span class="mscb-count" id="mscb-cart-count">0 tickets</span>
+        <strong class="mscb-total" id="mscb-cart-total">€ 0,00</strong>
+      </div>
+    </div>
+    <button type="button" class="btn btn-gold btn-mscb-checkout" id="mscb-checkout-trigger-btn">
+      <span>Afrekenen &rarr;</span>
+    </button>
+  </div>
+</div>
+
+<script define:vars={{ rawTickets: allTickets, rawAddons: addonsList }}>
+  // Mobile Slide-Up Bottom Sheet & Global Sticky Bar Controller
+  window.GLOBAL_TICKETS = rawTickets || [];
+  window.GLOBAL_ADDONS = rawAddons || [];
+
+  (function initMobileDrawer() {
+    const overlay = document.getElementById('mobile-cart-sheet-overlay');
+    if (!overlay) return;
+
+    const sheetViewCart = document.getElementById('sheet-view-cart');
+    const sheetViewAddons = document.getElementById('sheet-view-addons');
+    const sheetCartList = document.getElementById('sheet-cart-list');
+    const sheetCartEmpty = document.getElementById('sheet-cart-empty');
+    const sheetCartFooter = document.getElementById('sheet-cart-footer');
+    const sheetCartSubtotal = document.getElementById('sheet-cart-subtotal');
+    const sheetCartFee = document.getElementById('sheet-cart-fee');
+    const sheetCartShipping = document.getElementById('sheet-cart-shipping');
+    const sheetShippingRow = document.getElementById('sheet-shipping-row');
+    const sheetCartTotal = document.getElementById('sheet-cart-total');
+    const sheetAddonsList = document.getElementById('sheet-addons-list');
+    const sheetDayNotice = document.getElementById('sheet-day-notice');
+    const sheetDayNoticeText = document.getElementById('sheet-day-notice-text');
+    const sheetToggleDaysBtn = document.getElementById('sheet-toggle-days-btn');
+    const sheetFinalCheckoutText = document.getElementById('sheet-final-checkout-text');
+
+    let activeSheetAddonCategory = 'all';
+    let ignoreSheetAddonDayFilter = false;
+
+    const stickyBar = document.getElementById('mobile-sticky-checkout-bar');
+    const stickyCount = document.getElementById('mscb-cart-count');
+    const stickyTotal = document.getElementById('mscb-cart-total');
+
+    function updateStickyBar() {
+      if (!stickyBar) return;
+      const cart = getLocalCart();
+      let totalQty = 0;
+      let subtotal = 0;
+      let shippingActive = false;
+
+      Object.keys(cart).forEach(id => {
+        const storedVal = cart[id];
+        const qty = typeof storedVal === 'number' ? storedVal : storedVal?.qty || 0;
+        const rawItem = (window.GLOBAL_TICKETS || []).find(t => t.id === id);
+        const price = (typeof storedVal === 'object' && storedVal.price) ? storedVal.price : (rawItem?.price || 0);
+
+        if (qty > 0) {
+          totalQty += qty;
+          subtotal += price * qty;
+          if (rawItem?.category === 'botteling' || storedVal?.category === 'botteling') {
+            if (storedVal?.delivery === 'shipping') shippingActive = true;
+          }
+        }
+      });
+
+      if (totalQty > 0) {
+        const fee = 1.50;
+        const shipping = shippingActive ? 12.50 : 0;
+        const grandTotal = subtotal + fee + shipping;
+
+        if (stickyCount) {
+          stickyCount.textContent = `${totalQty} ${totalQty === 1 ? 'ticket' : 'tickets'}`;
+        }
+        if (stickyTotal) {
+          stickyTotal.textContent = `€ ${grandTotal.toFixed(2).replace('.', ',')}`;
+        }
+        stickyBar.classList.add('active');
+      } else {
+        stickyBar.classList.remove('active');
+      }
+    }
+
+    function getLocalCart() {
+      try {
+        const stored = localStorage.getItem('whiskyfest_cart');
+        if (!stored) return {};
+        const parsed = JSON.parse(stored);
+        if (!parsed || typeof parsed !== 'object') return {};
+
+        const result = {};
+        // 1. If wrapped in cartRaw
+        if (parsed.cartRaw && typeof parsed.cartRaw === 'object') {
+          Object.keys(parsed.cartRaw).forEach(k => {
+            if (k === 'subtotal' || k === 'totalItems' || k === 'items' || k === 'cartRaw') return;
+            const item = parsed.cartRaw[k];
+            if (item && ((typeof item === 'number' && item > 0) || (item.qty && item.qty > 0))) {
+              result[k] = typeof item === 'object' ? { ...item, id: k } : { id: k, qty: item };
+            }
+          });
+          return result;
+        }
+
+        // 2. If wrapped in items array
+        if (Array.isArray(parsed.items)) {
+          parsed.items.forEach(item => {
+            if (item && item.id && item.qty > 0) {
+              result[item.id] = { ...item };
+            }
+          });
+          return result;
+        }
+
+        // 3. If flat dictionary
+        Object.keys(parsed).forEach(k => {
+          if (k === 'subtotal' || k === 'totalItems' || k === 'items' || k === 'cartRaw') return;
+          const item = parsed[k];
+          if (item && ((typeof item === 'number' && item > 0) || (item.qty && item.qty > 0))) {
+            result[k] = typeof item === 'object' ? { ...item, id: k } : { id: k, qty: item };
+          }
+        });
+        return result;
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveLocalCart(cart) {
+      try {
+        const cleaned = {};
+        const itemsArr = [];
+        let totalQty = 0;
+        let subtotal = 0;
+
+        Object.keys(cart).forEach(k => {
+          if (k === 'subtotal' || k === 'totalItems' || k === 'items' || k === 'cartRaw') return;
+          const it = cart[k];
+          if (!it) return;
+          const qty = typeof it === 'number' ? it : it.qty;
+          if (qty > 0) {
+            const rawObj = (window.GLOBAL_TICKETS || []).find(t => t.id === k);
+            const price = (typeof it === 'object' && it.price !== undefined) ? it.price : (rawObj?.price || 0);
+            const title = (typeof it === 'object' && it.title) ? it.title : (rawObj?.title || k);
+            const category = (typeof it === 'object' && it.category) ? it.category : (rawObj?.category || 'masterclass');
+            const date = (typeof it === 'object' && it.date) ? it.date : (rawObj?.date || '');
+            const time = (typeof it === 'object' && it.time) ? it.time : (rawObj?.time || '');
+
+            const cleanItem = {
+              id: k,
+              title: title,
+              price: price,
+              qty: qty,
+              category: category,
+              date: date,
+              time: time,
+              timeslot: (typeof it === 'object' && it.timeslot) ? it.timeslot : time,
+              guide: (typeof it === 'object' && it.guide) ? it.guide : '',
+              delivery: (typeof it === 'object' && it.delivery) ? it.delivery : ''
+            };
+            cleaned[k] = cleanItem;
+            itemsArr.push(cleanItem);
+            totalQty += qty;
+            subtotal += price * qty;
+          }
+        });
+
+        localStorage.setItem('whiskyfest_cart', JSON.stringify({
+          subtotal: subtotal,
+          totalItems: totalQty,
+          items: itemsArr,
+          cartRaw: cleaned
+        }));
+
+        window.dispatchEvent(new Event('storage'));
+        window.dispatchEvent(new CustomEvent('cart-updated', { detail: { count: totalQty, subtotal: subtotal } }));
+        updateStickyBar();
+      } catch (e) {
+        console.error('saveLocalCart error:', e);
+      }
+    }
+
+    function renderSheetCart() {
+      if (!sheetCartList) return;
+      const cart = getLocalCart();
+      const activeIds = Object.keys(cart).filter(id => {
+        const val = cart[id];
+        return typeof val === 'number' ? val > 0 : val && val.qty > 0;
+      });
+
+      if (activeIds.length === 0) {
+        sheetCartList.innerHTML = '';
+        if (sheetCartEmpty) {
+          sheetCartEmpty.classList.add('is-visible');
+          sheetCartEmpty.style.display = 'flex';
+        }
+        if (sheetCartFooter) {
+          const cta = sheetCartFooter.querySelector('.sheet-cta-btn');
+          if (cta) {
+            cta.disabled = true;
+            cta.style.opacity = '0.5';
+            cta.style.pointerEvents = 'none';
+          }
+        }
+        if (sheetCartSubtotal) sheetCartSubtotal.textContent = '€ 0,00';
+        if (sheetCartFee) sheetCartFee.textContent = '€ 0,00';
+        if (sheetCartTotal) sheetCartTotal.textContent = '€ 0,00';
+        return;
+      }
+
+      if (sheetCartEmpty) {
+        sheetCartEmpty.classList.remove('is-visible');
+        sheetCartEmpty.style.display = 'none';
+      }
+      if (sheetCartFooter) {
+        const cta = sheetCartFooter.querySelector('.sheet-cta-btn');
+        if (cta) {
+          cta.disabled = false;
+          cta.style.opacity = '1';
+          cta.style.pointerEvents = 'auto';
+        }
+      }
+
+      let subtotal = 0;
+      let totalQty = 0;
+      let shippingActive = false;
+
+      sheetCartList.innerHTML = activeIds.map(id => {
+        const rawItem = window.GLOBAL_TICKETS.find(t => t.id === id);
+        const storedVal = cart[id];
+        const qty = typeof storedVal === 'number' ? storedVal : storedVal.qty;
+        const price = (typeof storedVal === 'object' && storedVal.price) ? storedVal.price : (rawItem?.price || 0);
+        const title = (typeof storedVal === 'object' && storedVal.title) ? storedVal.title : (rawItem?.title || id);
+        const date = (typeof storedVal === 'object' && storedVal.date) ? storedVal.date : (rawItem?.date || '');
+        const time = (typeof storedVal === 'object' && storedVal.time) ? storedVal.time : (rawItem?.time || '');
+        const category = (typeof storedVal === 'object' && storedVal.category) ? storedVal.category : (rawItem?.category || '');
+        const delivery = typeof storedVal === 'object' ? storedVal.delivery : undefined;
+
+        const lineTotal = price * qty;
+        subtotal += lineTotal;
+        totalQty += qty;
+        if (category === 'botteling' && delivery === 'shipping') shippingActive = true;
+
+        const metaText = [date, time].filter(Boolean).join(' • ');
+
+        return `
+          <div class="sheet-cart-card" data-sheet-item-id="${id}">
+            <div class="sheet-cart-card-info">
+              <h4 class="sheet-cart-card-title">${title}</h4>
+              <div class="sheet-cart-card-meta">${metaText || 'Internationaal Whisky Festival'}</div>
+              <div class="sheet-cart-card-price">
+                € ${lineTotal.toFixed(2).replace('.', ',')}
+              </div>
+            </div>
+            <div class="sheet-cart-card-right">
+              <div class="sheet-stepper-pill">
+                <button 
+                  type="button" 
+                  class="sheet-stepper-btn sheet-drawer-qty-btn sheet-minus" 
+                  data-id="${id}" 
+                  data-action="minus" 
+                  title="${qty === 1 ? 'Verwijderen' : 'Kaartje verminderen'}"
+                  aria-label="Kaartje verminderen"
+                >&minus;</button>
+                <span class="sheet-stepper-val">${qty}</span>
+                <button 
+                  type="button" 
+                  class="sheet-stepper-btn sheet-drawer-qty-btn sheet-plus" 
+                  data-id="${id}" 
+                  data-action="plus" 
+                  title="Kaartje toevoegen"
+                  aria-label="Kaartje vermeerderen"
+                >&plus;</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const fee = totalQty > 0 ? 1.50 : 0;
+      const shipping = shippingActive ? 12.50 : 0;
+      const finalTotal = subtotal + fee + shipping;
+
+      if (sheetCartSubtotal) sheetCartSubtotal.textContent = `€ ${subtotal.toFixed(2).replace('.', ',')}`;
+      if (sheetCartFee) sheetCartFee.textContent = `€ ${fee.toFixed(2).replace('.', ',')}`;
+      if (sheetShippingRow && sheetCartShipping) {
+        if (shippingActive) {
+          sheetShippingRow.style.display = 'flex';
+          sheetCartShipping.textContent = `€ ${shipping.toFixed(2).replace('.', ',')}`;
+        } else {
+          sheetShippingRow.style.display = 'none';
+        }
+      }
+      if (sheetCartTotal) sheetCartTotal.textContent = `€ ${finalTotal.toFixed(2).replace('.', ',')}`;
+      updateStickyBar();
+    }
+
+    function renderSheetAddons() {
+      if (!sheetAddonsList) return;
+      const cart = getLocalCart();
+
+      const cartDays = new Set();
+      Object.keys(cart).forEach(id => {
+        const matching = window.GLOBAL_TICKETS.find(t => t.id === id);
+        if (matching && matching.day && matching.day !== 'all') {
+          cartDays.add(matching.day);
+        }
+      });
+
+      if (sheetDayNotice && sheetDayNoticeText && sheetToggleDaysBtn) {
+        if (cartDays.size > 0) {
+          sheetDayNotice.style.display = 'flex';
+          const formattedDays = [...cartDays].map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(', ');
+          if (ignoreSheetAddonDayFilter) {
+            sheetDayNoticeText.innerHTML = `U bekijkt momenteel <strong>alle festivaldagen</strong>`;
+            sheetToggleDaysBtn.textContent = `Filter alleen op uw festivaldag (${formattedDays})`;
+          } else {
+            sheetDayNoticeText.innerHTML = `Getoond voor uw festivaldag: <strong>${formattedDays}</strong>`;
+            sheetToggleDaysBtn.textContent = `Toon alle festivaldagen`;
+          }
+        } else {
+          sheetDayNotice.style.display = 'none';
+        }
+      }
+
+      const filtered = window.GLOBAL_ADDONS.filter(item => {
+        const matchCat = activeSheetAddonCategory === 'all' || item.category === activeSheetAddonCategory;
+        const matchDay = ignoreSheetAddonDayFilter || cartDays.size === 0 || item.day === 'all' || cartDays.has(item.day);
+        return matchCat && matchDay;
+      });
+
+      let subtotal = 0;
+      let totalItems = 0;
+      let shippingActive = false;
+      Object.keys(cart).forEach(id => {
+        const storedVal = cart[id];
+        const qty = typeof storedVal === 'number' ? storedVal : storedVal?.qty || 0;
+        const rawItem = window.GLOBAL_TICKETS.find(t => t.id === id);
+        const price = (typeof storedVal === 'object' && storedVal.price) ? storedVal.price : (rawItem?.price || 0);
+        if (qty > 0) {
+          subtotal += price * qty;
+          totalItems += qty;
+          if (rawItem?.category === 'botteling' || storedVal?.category === 'botteling') {
+            if (storedVal?.delivery === 'shipping') shippingActive = true;
+          }
+        }
+      });
+      const fee = totalItems > 0 ? 1.50 : 0;
+      const shipping = shippingActive ? 12.50 : 0;
+      const grandTotal = subtotal + fee + shipping;
+
+      if (sheetFinalCheckoutText) {
+        sheetFinalCheckoutText.innerHTML = `Naar Afrekenen (€ ${grandTotal.toFixed(2).replace('.', ',')}) &rarr;`;
+      }
+
+      if (filtered.length === 0) {
+        sheetAddonsList.innerHTML = '<p style="color:#776B5F; font-size:0.9rem; text-align:center; padding: 2rem 0;">Geen add-ons gevonden voor deze categorie/dagselectie.</p>';
+        return;
+      }
+
+      sheetAddonsList.innerHTML = filtered.map(item => {
+        const storedVal = cart[item.id];
+        const currentQty = typeof storedVal === 'number' ? storedVal : (storedVal?.qty || 0);
+        const isAdded = currentQty > 0;
+        const isSoldOut = item.isSoldOut;
+        const catLabel = item.category === 'warehouse' ? 'Warehouse' : item.category === 'tram' ? 'Whiskytram' : item.category === 'trail' ? 'Whiskytrail' : item.category === 'vatenmaken' ? 'Workshop' : item.category === 'botteling' ? 'Botteling' : 'Masterclass';
+
+        return `
+          <div class="sheet-addon-card" style="${isSoldOut ? 'opacity: 0.6;' : ''}">
+            <div style="flex: 1 1 auto; min-width: 0;">
+              <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.25rem; flex-wrap: wrap;">
+                <span style="font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.15rem 0.45rem; border-radius: 3px; background: rgba(140, 110, 70, 0.14); color: #8A6831;">${catLabel}</span>
+                <strong style="font-size: 0.94rem; color: #171614; line-height: 1.25;">${item.title}</strong>
+              </div>
+              <span style="font-size: 0.78rem; color: #665C54; display: block;">
+                ${item.date ? item.date + ' • ' : ''}${item.time ? item.time + ' • ' : ''}${item.location || 'Grote Kerk'}
+              </span>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 0.35rem; flex-shrink: 0;">
+              <strong style="color: #006448; font-size: 1.05rem; font-family: var(--font-sans, sans-serif); font-weight: 800; white-space: nowrap;">
+                € ${item.price.toFixed(2).replace('.', ',')}
+              </strong>
+              ${isSoldOut ? `
+                <span style="font-size: 0.72rem; font-weight: 800; color: #A33A3A; padding: 0.35rem 0.6rem; background: rgba(163, 58, 58, 0.08); border-radius: 4px; border: 1px dashed #A33A3A;">UITVERKOCHT</span>
+              ` : isAdded ? `
+                <div class="sheet-stepper-pill">
+                  <button 
+                    type="button" 
+                    class="sheet-stepper-btn sheet-drawer-addon-qty-btn sheet-minus" 
+                    data-id="${item.id}" 
+                    data-action="minus" 
+                    title="${currentQty === 1 ? 'Verwijderen' : 'Aantal verminderen'}"
+                    aria-label="Verminderen"
+                  >&minus;</button>
+                  <span class="sheet-stepper-val">${currentQty}</span>
+                  <button 
+                    type="button" 
+                    class="sheet-stepper-btn sheet-drawer-addon-qty-btn sheet-plus" 
+                    data-id="${item.id}" 
+                    data-action="plus" 
+                    title="Aantal verhogen"
+                    aria-label="Toevoegen"
+                  >&plus;</button>
+                </div>
+              ` : `
+                <button 
+                  type="button" 
+                  class="sheet-addon-add-btn sheet-drawer-addon-add" 
+                  data-id="${item.id}"
+                  aria-label="Toevoegen aan winkelmand"
+                >
+                  + Toevoegen
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openMobileCartDrawer(view = 'cart') {
+      if (!overlay) return;
+
+      if (view === 'addons') {
+        if (sheetViewCart) {
+          sheetViewCart.classList.remove('is-active');
+          sheetViewCart.style.display = 'none';
+        }
+        if (sheetViewAddons) {
+          sheetViewAddons.classList.add('is-active');
+          sheetViewAddons.style.display = 'flex';
+        }
+        renderSheetAddons();
+      } else {
+        if (sheetViewAddons) {
+          sheetViewAddons.classList.remove('is-active');
+          sheetViewAddons.style.display = 'none';
+        }
+        if (sheetViewCart) {
+          sheetViewCart.classList.add('is-active');
+          sheetViewCart.style.display = 'flex';
+        }
+        renderSheetCart();
+      }
+
+      overlay.style.display = 'block';
+      requestAnimationFrame(() => {
+        overlay.classList.add('active');
+      });
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileCartDrawer() {
+      if (!overlay) return;
+      overlay.classList.remove('active');
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        document.body.style.overflow = '';
+      }, 320);
+    }
+
+    // Global Event Listener
+    window.addEventListener('open-mobile-cart-drawer', (e) => {
+      const targetView = (e && e.detail && e.detail.view) || 'cart';
+      openMobileCartDrawer(targetView);
+    });
+
+    // Close buttons & backdrop
+    document.getElementById('sheet-close-btn-cart')?.addEventListener('click', closeMobileCartDrawer);
+    document.getElementById('sheet-close-btn-addons')?.addEventListener('click', closeMobileCartDrawer);
+    document.getElementById('mobile-cart-sheet-backdrop')?.addEventListener('click', closeMobileCartDrawer);
+
+    // Switch to Addons View
+    document.getElementById('sheet-to-addons-btn')?.addEventListener('click', () => {
+      const cart = getLocalCart();
+      const activeIds = Object.keys(cart).filter(id => {
+        const val = cart[id];
+        return typeof val === 'number' ? val > 0 : val && val.qty > 0;
+      });
+
+      if (activeIds.length === 0) {
+        alert('Uw winkelwagen is leeg. Selecteer eerst een ticket.');
+        return;
+      }
+      openMobileCartDrawer('addons');
+    });
+
+    // Back to Cart View
+    document.getElementById('sheet-back-to-cart-btn')?.addEventListener('click', () => {
+      openMobileCartDrawer('cart');
+    });
+
+    // Addons Category filter tabs
+    document.getElementById('sheet-addons-filters')?.addEventListener('click', (e) => {
+      const pill = e.target.closest('.sheet-filter-pill');
+      if (!pill) return;
+      document.querySelectorAll('.sheet-filter-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      activeSheetAddonCategory = pill.getAttribute('data-sheet-cat') || 'all';
+      renderSheetAddons();
+    });
+
+    // Toggle Days
+    document.getElementById('sheet-toggle-days-btn')?.addEventListener('click', () => {
+      ignoreSheetAddonDayFilter = !ignoreSheetAddonDayFilter;
+      renderSheetAddons();
+    });
+
+    // Final Checkout
+    function handleFinalCheckout() {
+      closeMobileCartDrawer();
+      if (typeof window.openCheckoutModal === 'function') {
+        window.openCheckoutModal();
+      } else {
+        window.location.href = '/#sessies';
+      }
+    }
+
+    document.getElementById('sheet-final-checkout-btn')?.addEventListener('click', handleFinalCheckout);
+    document.getElementById('sheet-skip-addons-btn')?.addEventListener('click', handleFinalCheckout);
+
+    // Stepper in Cart List
+    document.getElementById('sheet-cart-list')?.addEventListener('click', (e) => {
+      const btn = e.target.closest('.sheet-drawer-qty-btn');
+      if (!btn) return;
+      const id = btn.getAttribute('data-id');
+      const action = btn.getAttribute('data-action');
+      if (!id) return;
+
+      const cart = getLocalCart();
+      if (!cart[id]) return;
+
+      const isObj = typeof cart[id] === 'object';
+      let currentQty = isObj ? cart[id].qty : cart[id];
+
+      if (action === 'plus') {
+        currentQty = Math.min(10, currentQty + 1);
+        if (isObj) cart[id].qty = currentQty;
+        else cart[id] = currentQty;
+      } else if (action === 'minus') {
+        currentQty = Math.max(0, currentQty - 1);
+        if (currentQty === 0) {
+          delete cart[id];
+        } else {
+          if (isObj) cart[id].qty = currentQty;
+          else cart[id] = currentQty;
+        }
+      }
+
+      saveLocalCart(cart);
+      renderSheetCart();
+    });
+
+    // Add / Stepper in Addons List
+    document.getElementById('sheet-addons-list')?.addEventListener('click', (e) => {
+      const addBtn = e.target.closest('.sheet-drawer-addon-add');
+      const qtyBtn = e.target.closest('.sheet-drawer-addon-qty-btn');
+      const cart = getLocalCart();
+
+      if (addBtn) {
+        const id = addBtn.getAttribute('data-id');
+        if (!id) return;
+        const item = window.GLOBAL_ADDONS.find(m => m.id === id);
+        if (!item) return;
+
+        if (!cart[id]) {
+          cart[id] = {
+            title: item.title,
+            price: item.price,
+            qty: 1,
+            category: item.category,
+            date: item.date || '',
+            time: item.time || ''
+          };
+        } else {
+          const isObj = typeof cart[id] === 'object';
+          const qty = isObj ? cart[id].qty : cart[id];
+          if (isObj) cart[id].qty = Math.min(10, qty + 1);
+          else cart[id] = Math.min(10, qty + 1);
+        }
+
+        saveLocalCart(cart);
+        renderSheetAddons();
+        return;
+      }
+
+      if (qtyBtn) {
+        const id = qtyBtn.getAttribute('data-id');
+        const action = qtyBtn.getAttribute('data-action');
+        if (!id || !cart[id]) return;
+
+        const isObj = typeof cart[id] === 'object';
+        let qty = isObj ? cart[id].qty : cart[id];
+
+        if (action === 'plus') {
+          qty = Math.min(10, qty + 1);
+          if (isObj) cart[id].qty = qty;
+          else cart[id] = qty;
+        } else if (action === 'minus') {
+          qty = Math.max(0, qty - 1);
+          if (qty === 0) {
+            delete cart[id];
+          } else {
+            if (isObj) cart[id].qty = qty;
+            else cart[id] = qty;
+          }
+        }
+
+        saveLocalCart(cart);
+        renderSheetAddons();
+      }
+    });
+
+    // Click Sticky Checkout Bar to open drawer
+    if (stickyBar) {
+      stickyBar.addEventListener('click', (e) => {
+        e.preventDefault();
+        openMobileCartDrawer('cart');
+      });
+    }
+
+    // Listen to external cart storage changes and custom events
+    window.addEventListener('storage', () => {
+      updateStickyBar();
+      if (overlay.classList.contains('active')) {
+        renderSheetCart();
+        renderSheetAddons();
+      }
+    });
+
+    window.addEventListener('cart-updated', () => {
+      updateStickyBar();
+      if (overlay.classList.contains('active')) {
+        renderSheetCart();
+        renderSheetAddons();
+      }
+    });
+
+    // Expose helpers globally
+    window.openMobileCartDrawer = openMobileCartDrawer;
+    window.closeMobileCartDrawer = closeMobileCartDrawer;
+    window.updateMobileStickyBar = updateStickyBar;
+
+    // Run on initial load and DOM ready
+    updateStickyBar();
+    document.addEventListener('DOMContentLoaded', updateStickyBar);
+  })();
+</script>

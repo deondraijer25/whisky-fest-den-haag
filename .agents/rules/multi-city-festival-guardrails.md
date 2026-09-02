@@ -41,3 +41,27 @@ Voordat een stadswebsite als voltooid wordt gemarkeerd:
 - **Den Haag is de master-blauwdruk:**
   - De tabellen, timetable-rijen, tabbladen, ticket-cards en pop-ups behouden exact dezelfde markup en styling.
   - Alleen de **data** (titels, sprekers, tijden, data, prijzen) en de **stadskleuren / media** worden dynamisch geladen.
+
+## 6. Strikt Verbod op Emojis en AI-gegenereerde Iconen
+- Het gebruik van Unicode emojis (bijv. `🎟️`, `📅`, `🗺️`, `👤`, `🛒`, `💡`, `🇧🇪`, `🇳🇱`, etc.) of generieke AI-iconen is **strikt VERBODEN** door de gehele codebase (componenten, navigatie-drawers, cards, knoppen, alerts en checkout flows).
+- **Verplichte Iconografie Standaard:**
+  - Gebruik uitsluitend op maat gemaakte, minimalistische monochrome inline `<svg>` vector line-art met expliciete strokes (`stroke-width: 2` of `2.5`, `stroke: currentColor` of merkkleur).
+  - Voor land- en stadsaanduidingen (zoals Gent / Amsterdam) worden strakke typografische badges (bijv. `BE`, `NL`) of officiële vectoren gebruikt.
+  - Voer bij elke release een geautomatiseerde regex-scan uit om te borgen dat de Unicode emoji-telling exact **0** is.
+
+## 7. Mobiele Bottom Sheet & Bestelflow Invarianten
+- **Gefaseerde Bestelervaring:**
+  - Bij het openen van de winkelwagen op mobiel (`<= 990px`) via de navbar of sticky bar wordt ALTIJD eerst de **Winkelwagen (Jouw Bestelling)** getoond.
+  - De Add-ons (*"Maak uw Beleving Compleet"*) worden **uitsluitend** getoond nadat de gebruiker in de winkelwagen op **`Afrekenen →`** heeft geklikt.
+- **View Isolatie & Class Toggling:**
+  - Gebruik altijd actieve CSS-klassen (`.sheet-view.is-active`, `.sheet-empty-state.is-visible`) in plaats van pure inline `display: flex !important` om te voorkomen dat views over elkaar heen renderen.
+- **Segmented Stepper Pill (`.sheet-stepper-pill`):**
+  - Gebruik een compacte stepper met `height: 38px`, witte actieknoppen `32x34px`, en `min-width: 28px` gecentreerd aantal zodat knoppen nooit worden afgesneden aan de schermrand.
+
+## 8. Horizontale Filters & Responsive Grids
+- **Touch-Scroll Filters:**
+  - Horizontale filterbalken (bijv. categorieën, sessies, standhouders) moeten voorzien zijn van `-webkit-overflow-scrolling: touch; scrollbar-width: none;` en `::-webkit-scrollbar { display: none; }` om native scrollbars te elimineren.
+- **Compacte 3-in-a-rij Grids op Mobiel:**
+  - Heritage USPs en Footer festival-logos worden op mobiele schermen altijd als 3-in-a-rij gerenderd (`grid-template-columns: repeat(3, 1fr) !important;`).
+- **Paginakoppen & Header Spacing op Mobiel:**
+  - Alle subpagina's (`/programma`, `/standhouders`, `/kaart`, `/account`, etc.) hebben een minimale bovenmarge van `padding-top: 7rem` tot `7.5rem` op mobiel om overlap met de fixed header te voorkomen.

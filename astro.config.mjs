@@ -7,6 +7,9 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://www.whiskyfestival.nl',
   integrations: [sitemap()],
+  devToolbar: {
+    enabled: false
+  },
   server: {
     port: 4330
   }

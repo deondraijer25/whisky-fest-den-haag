@@ -1186,23 +1186,58 @@ const exhibitors = await getStandhouders('den_haag');
     }
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 990px) {
     .standhouders-page-wrapper {
-      padding: 7rem 1rem 4rem;
-      gap: 2.5rem;
+      padding: 7.5rem 1.25rem 4rem !important;
+      gap: 2rem !important;
     }
 
     .page-title {
-      font-size: 2.75rem;
+      font-size: 2.25rem !important;
+      line-height: 1.15 !important;
     }
 
-    .directory-grid {
-      grid-template-columns: 1fr;
+    .page-subtitle {
+      font-size: 0.95rem !important;
+    }
+
+    .map-view-card {
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      padding: 1rem 0.75rem !important;
+    }
+
+    .church-map-svg {
+      min-width: 650px !important;
+      height: auto !important;
+    }
+
+    .horizontal-bar-inner {
+      padding: 1.25rem 1rem !important;
+      gap: 1rem !important;
     }
 
     .filter-buttons-row {
-      justify-content: center;
-      gap: 6px;
+      display: flex !important;
+      overflow-x: auto !important;
+      width: 100% !important;
+      justify-content: flex-start !important;
+      padding-bottom: 0.35rem !important;
+      -webkit-overflow-scrolling: touch !important;
+      scrollbar-width: none !important;
+      gap: 0.4rem !important;
+    }
+
+    .filter-tab {
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+      padding: 0.45rem 0.85rem !important;
+      font-size: 0.75rem !important;
+    }
+
+    .directory-grid {
+      grid-template-columns: 1fr !important;
+      gap: 1rem !important;
     }
   }
 </style>
