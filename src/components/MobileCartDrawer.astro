@@ -28,13 +28,14 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
     <!-- VIEW 1: CART / TICKETS OVERVIEW -->
     <div class="sheet-view sheet-view-cart is-active" id="sheet-view-cart">
       <div class="sheet-head">
-        <div class="sheet-title-group">
+        <div class="sheet-head-top">
+          <div class="sheet-step-indicator">Stap 1 van 2</div>
           <span class="sheet-badge">Winkelwagen</span>
-          <h3 class="sheet-title">Jouw Bestelling</h3>
+          <button type="button" class="sheet-close-btn" id="sheet-close-btn-cart" aria-label="Sluiten">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
         </div>
-        <button type="button" class="sheet-close-btn" id="sheet-close-btn-cart" aria-label="Sluiten">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
+        <h3 class="sheet-title">Jouw Bestelling</h3>
       </div>
 
       <!-- Scrollable Cart Items List -->
@@ -79,30 +80,33 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
     <!-- VIEW 2: ADD-ONS & SPECIALS (Inside the exact same slide-up drawer) -->
     <div class="sheet-view sheet-view-addons" id="sheet-view-addons" style="display: none;">
       <div class="sheet-head">
-        <button type="button" class="sheet-back-btn" id="sheet-back-to-cart-btn" aria-label="Terug naar tickets">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-          <span>Tickets</span>
-        </button>
-        <div class="sheet-title-group" style="text-align: center; flex: 1; padding: 0 0.5rem;">
-          <span class="sheet-badge">FESTIVAL ADD-ONS &amp; SPECIALS</span>
-          <h3 class="sheet-title" style="font-size: 1.12rem;">Maak uw Beleving Compleet</h3>
+        <div class="sheet-head-top">
+          <button type="button" class="sheet-back-btn" id="sheet-back-to-cart-btn" aria-label="Terug naar overzicht">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            <span>Terug</span>
+          </button>
+          <span class="sheet-badge">FESTIVAL SPECIALS</span>
+          <button type="button" class="sheet-close-btn" id="sheet-close-btn-addons" aria-label="Sluiten">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
         </div>
-        <button type="button" class="sheet-close-btn" id="sheet-close-btn-addons" aria-label="Sluiten">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
+        <h3 class="sheet-title">Maak uw Beleving Compleet</h3>
       </div>
 
       <!-- Addons Day Notice -->
       <div class="sheet-day-notice" id="sheet-day-notice" style="display: none;">
-        <span id="sheet-day-notice-text">Getoond voor: <strong>Vrijdag</strong></span>
-        <button type="button" id="sheet-toggle-days-btn">Toon alle dagen</button>
+        <div class="sheet-day-notice-left">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          <span id="sheet-day-notice-text">Gefilterd op: <strong>Vrijdag</strong></span>
+        </div>
+        <button type="button" id="sheet-toggle-days-btn" class="sheet-day-notice-btn">Toon alles</button>
       </div>
 
       <!-- Addons Filter Tabs -->
       <div class="sheet-addons-filters" id="sheet-addons-filters">
         <button type="button" class="sheet-filter-pill active" data-sheet-cat="all">Alles</button>
-        <button type="button" class="sheet-filter-pill" data-sheet-cat="warehouse">Warehouse</button>
         <button type="button" class="sheet-filter-pill" data-sheet-cat="masterclass">Masterclasses</button>
+        <button type="button" class="sheet-filter-pill" data-sheet-cat="warehouse">Warehouse</button>
         <button type="button" class="sheet-filter-pill" data-sheet-cat="tram">Whiskytram</button>
         <button type="button" class="sheet-filter-pill" data-sheet-cat="trail">Whiskytrail</button>
         <button type="button" class="sheet-filter-pill" data-sheet-cat="vatenmaken">Workshops</button>
@@ -117,7 +121,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
       <!-- Addons Footer Action -->
       <div class="sheet-footer">
         <div class="sheet-addons-footer-links">
-          <button type="button" class="sheet-skip-link" id="sheet-skip-addons-btn">Nee bedankt, direct afrekenen</button>
+          <button type="button" class="sheet-skip-link" id="sheet-skip-addons-btn">Nee bedankt, direct doorgaan &rarr;</button>
         </div>
         <button type="button" class="btn btn-gold sheet-cta-btn" id="sheet-final-checkout-btn">
           <span id="sheet-final-checkout-text">Naar Afrekenen (€ 0,00) &rarr;</span>
@@ -503,23 +507,23 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
         const isSoldOut = item.isSoldOut;
         const catLabel = item.category === 'warehouse' ? 'Warehouse' : item.category === 'tram' ? 'Whiskytram' : item.category === 'trail' ? 'Whiskytrail' : item.category === 'vatenmaken' ? 'Workshop' : item.category === 'botteling' ? 'Botteling' : 'Masterclass';
 
+        const dateStr = item.date ? item.date.replace(/ 2026/g, '') : '';
+        const metaParts = [dateStr, item.time, item.location || 'Grote Kerk'].filter(Boolean);
+        const metaLine = metaParts.join(' • ');
+
         return `
           <div class="sheet-addon-card" style="${isSoldOut ? 'opacity: 0.6;' : ''}">
-            <div style="flex: 1 1 auto; min-width: 0;">
-              <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.25rem; flex-wrap: wrap;">
-                <span style="font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.15rem 0.45rem; border-radius: 3px; background: rgba(140, 110, 70, 0.14); color: #8A6831;">${catLabel}</span>
-                <strong style="font-size: 0.94rem; color: #171614; line-height: 1.25;">${item.title}</strong>
+            <div class="sheet-addon-info">
+              <div class="sheet-addon-badge-row">
+                <span class="sheet-addon-tag">${catLabel}</span>
               </div>
-              <span style="font-size: 0.78rem; color: #665C54; display: block;">
-                ${item.date ? item.date + ' • ' : ''}${item.time ? item.time + ' • ' : ''}${item.location || 'Grote Kerk'}
-              </span>
+              <h4 class="sheet-addon-title">${item.title}</h4>
+              <span class="sheet-addon-meta">${metaLine}</span>
             </div>
-            <div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 0.35rem; flex-shrink: 0;">
-              <strong style="color: #006448; font-size: 1.05rem; font-family: var(--font-sans, sans-serif); font-weight: 800; white-space: nowrap;">
-                € ${item.price.toFixed(2).replace('.', ',')}
-              </strong>
+            <div class="sheet-addon-action">
+              <strong class="sheet-addon-price">€ ${item.price.toFixed(2).replace('.', ',')}</strong>
               ${isSoldOut ? `
-                <span style="font-size: 0.72rem; font-weight: 800; color: #A33A3A; padding: 0.35rem 0.6rem; background: rgba(163, 58, 58, 0.08); border-radius: 4px; border: 1px dashed #A33A3A;">UITVERKOCHT</span>
+                <span class="sheet-addon-soldout">UITVERKOCHT</span>
               ` : isAdded ? `
                 <div class="sheet-stepper-pill">
                   <button 
