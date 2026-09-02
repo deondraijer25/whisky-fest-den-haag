@@ -529,7 +529,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
           activeSheetAddonCategory = 'all';
         }
 
-        renderSheetAddons();
+      renderSheetAddons();
       } else {
         if (sheetViewAddons) {
           sheetViewAddons.classList.remove('is-active');
@@ -542,11 +542,26 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
         renderSheetCart();
       }
 
+      syncVisualViewport();
       overlay.style.display = 'block';
       requestAnimationFrame(() => {
         overlay.classList.add('active');
+        syncVisualViewport();
       });
       document.body.style.overflow = 'hidden';
+    }
+
+    const sheetElement = document.getElementById('mobile-cart-sheet');
+    function syncVisualViewport() {
+      if (window.visualViewport && sheetElement) {
+        const bottomInset = Math.max(0, window.innerHeight - window.visualViewport.height - (window.visualViewport.offsetTop || 0));
+        sheetElement.style.bottom = `${bottomInset}px`;
+      }
+    }
+
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', syncVisualViewport);
+      window.visualViewport.addEventListener('scroll', syncVisualViewport);
     }
 
     function closeMobileCartDrawer() {
