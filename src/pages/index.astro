@@ -37,7 +37,7 @@ const tickets = await getTickets('den_haag');
     </div>
   </div>
 
-  <!-- Bulletproof Immediate Inline Preloader Dismiss (Never hangs) -->
+  <!-- Preloader Safety Fallback (Guarantees complete 2.4s coin flip experience) -->
   <script is:inline>
     (function() {
       function dismissPreloader() {
@@ -49,15 +49,8 @@ const tickets = await getTickets('den_haag');
           }, 400);
         }
       }
-      // Guarantee dismiss even if scripts fail
-      setTimeout(dismissPreloader, 1000);
-      if (document.readyState === 'complete') {
-        setTimeout(dismissPreloader, 400);
-      } else {
-        window.addEventListener('load', function() {
-          setTimeout(dismissPreloader, 400);
-        });
-      }
+      // Safety fallback timer to guarantee dismiss after full coin toss animation finishes
+      setTimeout(dismissPreloader, 2500);
     })();
   </script>
 
@@ -2928,7 +2921,7 @@ const tickets = await getTickets('den_haag');
     align-items: center;
     overflow: hidden;
     transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s ease, filter 0.35s ease;
-    animation: autoDismissPreloader 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
+    animation: autoDismissPreloader 0.5s cubic-bezier(0.16, 1, 0.3, 1) 2.4s forwards;
   }
 
   .hp-preloader-overlay.fade-out {
@@ -4489,8 +4482,8 @@ const tickets = await getTickets('den_haag');
   .timeline-scroll-section {
     position: relative;
     background-color: var(--bg-parchment);
-    /* On desktop, we want a taller section to map vertical scroll to horizontal scroll */
-    height: 300vh;
+    /* Calibrated height for smooth horizontal card scroll without dead scroll space */
+    height: 185vh;
   }
 
   .timeline-sticky-viewport {
@@ -5077,10 +5070,10 @@ const tickets = await getTickets('den_haag');
       setTimeout(() => {
         pl.classList.add('fade-out');
         document.body.style.overflow = '';
-      }, 1800);
+      }, 2200);
       setTimeout(() => {
         pl.style.display = 'none';
-      }, 2300);
+      }, 2650);
     }
   })();
 
