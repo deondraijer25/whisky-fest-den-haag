@@ -11,8 +11,8 @@
   --text-muted: #4c5752;       /* Soft dark sage for secondary text */
   
   /* Whisky Gold & Cooper Tones */
-  --whisky-gold: #d5c28a;      /* Champagne gold from logo (#d5c28a) */
-  --whisky-gold-light: #e9dfb7;  /* Lighter gold tint for hovers */
+  --whisky-gold: #caac8e;      /* Champagne gold from logo (#caac8e) */
+  --whisky-gold-light: #e4d5c4;  /* Lighter gold tint for hovers */
   --whisky-gold-dark: #006448;   /* Brand dark green from logo (#006448) */
   --whisky-gold-trans: rgba(0, 100, 72, 0.08); /* Translucent dark green */
   
@@ -236,7 +236,7 @@ strong {
 
 /* Warm Champagne Beige Button (Exact match with date-line highlight) */
 .btn-beige {
-  background-color: var(--whisky-gold-light, #E9DFB7);
+  background-color: var(--whisky-gold-light, #e4d5c4);
   color: var(--text-charcoal, #1D1C1A);
   border: 2px solid var(--text-charcoal, #1D1C1A);
   box-shadow: 4px 4px 0px rgba(29, 28, 26, 0.9);
@@ -244,7 +244,7 @@ strong {
   overflow: hidden;
 }
 .btn-beige:hover {
-  background-color: var(--whisky-gold, #D5C28A);
+  background-color: var(--whisky-gold, #caac8e);
   color: var(--text-charcoal, #1D1C1A);
   transform: translate(-2px, -2px);
   box-shadow: 6px 6px 0px rgba(29, 28, 26, 0.9);

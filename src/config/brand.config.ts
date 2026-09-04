@@ -66,8 +66,8 @@ export const BRAND: BrandConfig = {
   colors: {
     primary: '#006448',         // Festival Pine Green
     primaryHover: '#004d37',
-    accent: '#d5c28a',          // Champagne Gold
-    accentLight: '#e9dfb7',
+    accent: '#caac8e',          // Champagne Gold
+    accentLight: '#e4d5c4',
     bgParchment: '#FAF7F2',     // Warm vintage cotton paper
     bgSand: '#F4EFE6',          // Warm sand paper
     bgPaperCard: '#FCFAF7',
