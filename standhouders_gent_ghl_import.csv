@@ -1,0 +1,13 @@
+stand_id,name,category,brands,stand_description,is_not_on_map,festival_city,festival_slug
+"1","Dada Chapel Distillery","belgian","Dada Chapel Rye, Gentse Single Cask, Vodka & Gin","Lokale Gentse biologische distilleerderij met innovatieve vatrijpingen.","Nee","gent","gent"
+"2","The Nectar","independent","The Daily Dram, Signatory Vintage, Edradour, Kilchoman","Grootste onafhankelijke importeur en bottelaar van premium whisky's in België.","Nee","gent","gent"
+"3","Campari Belgium","scotch","Glen Grant, Wild Turkey, Russell's Reserve, Bowmore","Prestigieuze Schotse single malts en authentieke Amerikaanse bourbons.","Nee","gent","gent"
+"4","Moët Hennessy Belux","scotch","Glenmorangie, Ardbeg, Woodinville","Iconische Highland elegantie van Glenmorangie en ongetemde Islay rook van Ardbeg.","Nee","gent","gent"
+"5","Bacardi-Martini Belux","scotch","Aberfeldy, Aultmore, Craigellachie, Royal Brackla, Dewar's","The Last Great Malts of Scotland en uitzonderlijke single cask expressies.","Nee","gent","gent"
+"6","Pernod Ricard Belgium","scotch","The Glenlivet, Aberlour, Redbreast, Midleton","Toonaangevende Speyside klassiekers en Ierse Single Pot Still meesterwerken.","Nee","gent","gent"
+"7","Beam Suntory Belux","world","Laphroaig, Bowmore, Yamazaki, Hakushu, Hibiki, Maker's Mark","Schotse Islay iconen gecombineerd met verfijnde Japanse kunst van The House of Suntory.","Nee","gent","gent"
+"8","De Molenberg / Gouden Carolus","belgian","Gouden Carolus Single Malt, Molenberg Specials","Gerenommeerde Belgische whisky gestookt uit het moutbeslag van Gouden Carolus Tripel.","Nee","gent","gent"
+"9","Filliers Distillery","belgian","Filliers Single Malt 10Y, Filliers Barrel Aged","Historische Belgische meesterdistilleerders met decennialange traditie in graandistillaten.","Nee","gent","gent"
+"10","Bresser & Timmer","independent","Gordon & MacPhail, Benromach, Cadenhead","Zeldzame en historische single casks van 's werelds oudste onafhankelijke bottelaars.","Nee","gent","gent"
+"NP1","Gentse Chocolaterie & Patisserie","catering","Artisanale Chocolade, Whisky Truffels","Ambachtelijke Belgische chocolade en exclusieve whiskybonbons.","Ja","gent","gent"
+"NP2","Gentse Kaasmakers","catering","Gentse Oudenaarde Kaas, Proefplateaus","Luxe kaasplateaus speciaal samengesteld voor whisky food pairings.","Ja","gent","gent"

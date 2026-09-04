@@ -22,6 +22,8 @@ Bij het klonen, synchroniseren of aanpassen van festivalwebsites (Den Haag, Gent
   - Nooit monochrome witte logo's op lichte achtergronden plaatsen.
 - **Donkere achtergronden** (bijv. Hero video overlay, donkere banners):
   - Gebruik het witte monochrome stempel-logo (`src/assets/LogosAll/logo-wit-<city>.svg`).
+- **Strikte SVG Vector Onschendbaarheid:**
+  - Officiële logo-bestanden (in `src/assets/Logo/` en `src/assets/LogosAll/`) mogen **NOOIT programmatisch worden bewerkt** of voorzien van geautomatiseerde color/text replaces. Ze worden 1-op-1 als onaantastbare bronbestanden behandeld. CSS kleuren worden ontleend aan de logo's, nooit andersom.
 
 ## 3. Data Integriteit & Single Source of Truth
 - Data (data, locatie, sessies, masterclasses, prijzen) wordt ALTIJD direct ontleend aan:
