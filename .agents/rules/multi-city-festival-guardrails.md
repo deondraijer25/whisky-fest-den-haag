@@ -67,3 +67,16 @@ Voordat een stadswebsite als voltooid wordt gemarkeerd:
   - Heritage USPs en Footer festival-logos worden op mobiele schermen altijd als 3-in-a-rij gerenderd (`grid-template-columns: repeat(3, 1fr) !important;`).
 - **Paginakoppen & Header Spacing op Mobiel:**
   - Alle subpagina's (`/programma`, `/standhouders`, `/kaart`, `/account`, etc.) hebben een minimale bovenmarge van `padding-top: 7rem` tot `7.5rem` op mobiel om overlap met de fixed header te voorkomen.
+
+## 9. Desktop Sticky Cart & Scroll Invarianten
+- **Verplicht `overflow-x: clip`:**
+  - Gebruik op `html` en `body` ALTIJD `overflow-x: clip;` in plaats van `overflow-x: hidden;`. `overflow-x: hidden` breekt browser `position: sticky` op child elementen zoals `.ticket-receipt-card`.
+- **Top Offset & Alignment:**
+  - `.ticket-receipt-card` heeft altijd `position: -webkit-sticky; position: sticky; top: 90px; align-self: start;` om soepel mee te glijden onder de vaste navigatiebalk.
+
+## 10. Horizontale Tijdlijn & Preloader Invarianten
+- **Tijdlijn Sectiehoogte:**
+  - `.timeline-scroll-section` gebruikt een strak gekalibreerde hoogte van `185vh` op desktop. Vermijd `300vh` om dode witte scrollruimte na de laatste kaart te voorkomen.
+- **Preloader Duur & Jaartal:**
+  - De coin-flip preloader draait altijd exact 2.4s met zachte fade-out.
+  - Het oprichtingsjaartal (`EST. <jaar>`) moet strikt overeenkomen met het stadslogo (Amsterdam: 2025, Den Haag: 2000, Gent: 2004).
