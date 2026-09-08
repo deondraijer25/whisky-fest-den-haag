@@ -12,7 +12,7 @@ import Layout from '../layouts/Layout.astro';
       
       <!-- Top Action Buttons (Under each other on mobile, side-by-side on desktop) -->
       <div class="ticket-top-actions-bar">
-        <button type="button" class="btn btn-gold btn-ticket-action" onclick="window.print()">
+        <button type="button" class="btn btn-gold btn-ticket-action" id="btn-download-pdf-ticket">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
             <polyline points="7 10 12 15 17 10"/>
@@ -466,5 +466,14 @@ import Layout from '../layouts/Layout.astro';
     if (tvDay) tvDay.textContent = '15';
   } else {
     if (tvDay) tvDay.textContent = '14';
+  }
+
+  const pdfDownloadUrl = `https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(code.replace(/^#/, ''))}/pdf?city=denhaag&name=${encodeURIComponent(name)}&title=${encodeURIComponent(title)}&time=${encodeURIComponent(time)}`;
+
+  const dlBtn = document.getElementById('btn-download-pdf-ticket');
+  if (dlBtn) {
+    dlBtn.addEventListener('click', () => {
+      window.open(pdfDownloadUrl, '_blank');
+    });
   }
 </script>

@@ -165,7 +165,7 @@ import Footer from '../components/Footer.astro';
 
                 <!-- 3. Bottom Row: Action Buttons -->
                 <div class="ticket-actions-row">
-                  <button type="button" class="btn-ticket-download-gold" onclick="window.open('/ticket?id=WF-2026-84387-1&title=VIP%20Sessie%20-%20Vrijdag&name=Deon%20Draijer&time=13:00%20-%2017:00%20UUR', '_blank')">
+                  <button type="button" class="btn-ticket-download-gold" onclick="window.open('https://whiskytix-r1qq.vercel.app/api/tickets/WF-2026-84387-1/pdf?city=denhaag&name=Deon%20Draijer&title=VIP%20Sessie%20-%20Vrijdag&time=13:00%20-%2017:00%20UUR&orderNumber=WF-2026-84387', '_blank')">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                     <span>Download E-Ticket (PDF)</span>
                   </button>
@@ -2709,7 +2709,7 @@ import Footer from '../components/Footer.astro';
 
                     <!-- 3. Bottom Row: Action Buttons -->
                     <div class="ticket-actions-row">
-                      <button type="button" class="btn-ticket-download-gold" onclick="window.open('/ticket?id=${cleanCode}&title=${encodeURIComponent(item.title)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}', '_blank')">
+                      <button type="button" class="btn-ticket-download-gold" onclick="window.open('https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/pdf?city=denhaag&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(item.title)}&time=${encodeURIComponent(displayTime)}&orderNumber=${encodeURIComponent(orderData.resNumber || '')}', '_blank')">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                         <span>Download E-Ticket (PDF)</span>
                       </button>
