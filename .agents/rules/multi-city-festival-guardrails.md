@@ -93,3 +93,33 @@ Voordat een stadswebsite als voltooid wordt gemarkeerd:
   - Dit voorkomt dat buttons visueel buiten proportie groeien en naastgelegen elementen overlappen.
 - **Dropdown Breedte Proportionaliteit:**
   - Winkelwagen-dropdowns gebruiken `width: 420px; max-width: min(420px, calc(100vw - 2rem));` met `right: 0; left: auto;` voor rechts-uitgelijnde positionering onder het trigger-icoon.
+
+## 12. Eenduidige Servicekosten Staffel & Cart-Calculatie
+- **Vastgestelde Staffel:**
+  - **1 ticket**: € 1,75
+  - **2 t/m 5 tickets**: € 3,50
+  - **Meer dan 5 tickets (> 5)**: € 4,50
+- **Strikte Synchronisatie:**
+  - Gebruik NOOIT statische of hardcoded servicekosten in modals, alerts of checkout payloads.
+  - Zowel de desktop sticky cart, de mobiele bottom sheet, als de checkout modal recap MOETEN exact dezelfde rekenregel toepassen:
+    ```javascript
+    function getServiceFee(totalTickets) {
+      if (totalTickets <= 0) return 0;
+      if (totalTickets === 1) return 1.75;
+      if (totalTickets <= 5) return 3.50;
+      return 4.50;
+    }
+    ```
+  - Dit voorkomt dat ticketprijzen verspringen tussen winkelwagen, modal en het uiteindelijke betaalbedrag.
+
+## 13. Vercel Deploy & Multi-Repo Release Beheersing
+- **Lokale Pre-Flight Verificatie:**
+  - Test wijzigingen in de festivalwebsites ALTIJD eerst lokaal op de respectievelijke poorten:
+    - Den Haag: `http://localhost:4330`
+    - Amsterdam: `http://localhost:4331`
+    - Gent: `http://localhost:4332`
+    - Whiskytix API: `http://localhost:4000`
+- **Voorkomen Vercel Rate Limits:**
+  - Push NOOIT repetitieve incrementele testcommits direct naar deployment branches (`main`). Vercel hanteert op Hobby accounts een harde limiet van 100 deployments per dag (*"Deployment rate limited — retry in 24 hours"*).
+  - Bundel alle wijzigingen en push pas nadat lokale validatie en `npm run build` 100% succesvol zijn.
+
