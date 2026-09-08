@@ -2570,7 +2570,7 @@ import Footer from '../components/Footer.astro';
         orderData.items.forEach((item: any) => {
           let displayDay = "13";
           let displayMonth = "NOV";
-          let displayTime = item.timeslot || "13:00 - 17:00 UUR";
+          let displayTime = item.time || item.timeslot || "13:00 - 17:00 UUR";
           let watermark = "WF";
           
           const titleLower = item.title.toLowerCase();
@@ -2585,7 +2585,9 @@ import Footer from '../components/Footer.astro';
               displayTime = "13:00 - 17:00 UUR";
             } else {
               displayDay = "14";
-              displayTime = "13:00 - 17:00 UUR";
+              displayTime = (titleLower.includes("avond") || (item.time && item.time.includes("19:00")) || (item.timeslot && item.timeslot.includes("19:00")))
+                ? "19:00 - 23:00 UUR"
+                : "13:00 - 17:00 UUR";
             }
           } else if (item.category === "tram") {
             watermark = "WT";
@@ -2608,14 +2610,17 @@ import Footer from '../components/Footer.astro';
             const cleanCode = `${rawCode}-${globalTicketIndex}`;
             const displayCode = `#${cleanCode}`;
             
+            // Clean title: remove redundant time suffix if present so title stays concise and uniform
+            const cleanTitle = item.title.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
+
             // Clean public HTTPS URL that WhatsApp always recognizes as a blue clickable link
             const baseUrl = window.location.origin;
             
-            const ticketLink = `${baseUrl}/ticket?id=${cleanCode}&title=${encodeURIComponent(item.title)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}`;
+            const ticketLink = `${baseUrl}/ticket?id=${cleanCode}&title=${encodeURIComponent(cleanTitle)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}`;
             
             const shareText = encodeURIComponent(
               `*${'International Whisky Festival 2026'}*\n` +
-              `E-ticket: ${item.title}\n\n` +
+              `E-ticket: ${cleanTitle}\n\n` +
               `Kaarthouder: ${userName}\n` +
               `Tijdslot: ${displayTime}\n` +
               `Ticket Code: ${displayCode}\n` +
@@ -2624,11 +2629,11 @@ import Footer from '../components/Footer.astro';
               `${ticketLink}`
             );
             
-            const mailSubject = encodeURIComponent(`E-ticket voor International Whisky Festival: ${item.title}`);
+            const mailSubject = encodeURIComponent(`E-ticket voor International Whisky Festival: ${cleanTitle}`);
             const mailBody = encodeURIComponent(
               `Beste ${userName},\n\n` +
               `Hierbij ontvang je jouw toegangsbewijs voor International Whisky Festival 2026.\n\n` +
-              `Ticket: ${item.title}\n` +
+              `Ticket: ${cleanTitle}\n` +
               `Tijdslot: ${displayTime}\n` +
               `Ticket Code: ${displayCode}\n` +
               `Locatie: Grote Kerk, Den Haag\n\n` +
@@ -2679,7 +2684,7 @@ import Footer from '../components/Footer.astro';
                     <!-- 1. Header Row -->
                     <div class="ticket-header-row">
                       <div class="ticket-title-block">
-                        <h2 class="ticket-session-title">${item.title}</h2>
+                        <h2 class="ticket-session-title">${cleanTitle}</h2>
                         <p class="ticket-schedule-text">${formattedSchedule}</p>
                       </div>
                       <div class="ticket-badges-block">
@@ -2709,7 +2714,7 @@ import Footer from '../components/Footer.astro';
 
                     <!-- 3. Bottom Row: Action Buttons -->
                     <div class="ticket-actions-row">
-                      <button type="button" class="btn-ticket-download-gold" onclick="window.open('https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/pdf?city=denhaag&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(item.title)}&time=${encodeURIComponent(displayTime)}&orderNumber=${encodeURIComponent(orderData.resNumber || '')}', '_blank')">
+                      <button type="button" class="btn-ticket-download-gold" onclick="window.open('https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/pdf?city=denhaag&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(cleanTitle)}&time=${encodeURIComponent(displayTime)}&orderNumber=${encodeURIComponent(orderData.resNumber || '')}', '_blank')">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                         <span>Download E-Ticket (PDF)</span>
                       </button>
