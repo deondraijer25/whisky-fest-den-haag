@@ -5886,7 +5886,7 @@ const tickets = await getTickets('den_haag');
 
       // Real Whiskytix Backend Call (End-to-End Loop)
       try {
-        const response = await fetch("http://localhost:4000/api/checkout/create-order", {
+        const response = await fetch("https://whiskytix-r1qq.vercel.app/api/checkout/create-order", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -5917,7 +5917,7 @@ const tickets = await getTickets('den_haag');
             localStorage.setItem('wf_last_order', JSON.stringify(pendingOrderData));
             
             // Redirect to Mollie checkout or local Mollie sandbox simulator!
-            const targetUrl = data.checkoutUrl.startsWith('/') ? `http://localhost:4000${data.checkoutUrl}` : data.checkoutUrl;
+            const targetUrl = data.checkoutUrl.startsWith('/') ? `https://whiskytix-r1qq.vercel.app${data.checkoutUrl}` : data.checkoutUrl;
             window.location.href = targetUrl;
             return;
           }
@@ -7493,7 +7493,7 @@ const tickets = await getTickets('den_haag');
     // Try fetching live order details from Whiskytix backend
     let orderData: any = null;
     try {
-      const res = await fetch(`http://localhost:4000/api/checkout/order/${encodeURIComponent(orderNumber)}`);
+      const res = await fetch(`https://whiskytix-r1qq.vercel.app/api/checkout/order/${encodeURIComponent(orderNumber)}`);
       if (res.ok) {
         const json = await res.json();
         if (json.order) orderData = json.order;
