@@ -93,26 +93,38 @@ const isAccount = pathname.startsWith("/account");
           <span class="header-cart-badge" id="header-cart-badge" style="display: none;">0</span>
         </button>
 
-        <!-- Dropdown Menu (Generous width & clean structured table) -->
+        <!-- Dropdown Menu (1-on-1 visual and layout match with Ticket Receipt Card) -->
         <div class="header-cart-dropdown" id="header-cart-dropdown">
-          <div class="cart-dropdown-head">
-            <div class="cart-dropdown-title-wrap">
-              <h4 class="cart-dropdown-title">Uw Winkelwagen</h4>
-            </div>
-            <span class="cart-dropdown-badge-count" id="header-cart-count">0 items</span>
-          </div>
+          <span class="receipt-header">Winkelwagen</span>
 
-          <div class="cart-dropdown-list" id="header-cart-list">
-            <p class="empty-dropdown-msg">Uw winkelwagen is leeg.</p>
+          <div class="cart-items-list" id="header-cart-list">
+            <p class="empty-cart-msg">Selecteer hiernaast uw ticket(s) om de bestelling te starten.</p>
           </div>
 
           <div class="cart-dropdown-bottom" id="header-cart-bottom" style="display: none;">
-            <div class="cart-dropdown-subtotal-row">
-              <span class="subtotal-label">Subtotaal:</span>
-              <strong class="subtotal-val" id="header-cart-subtotal">€ 0,00</strong>
+            <div class="receipt-perforation"></div>
+
+            <div class="receipt-calculation" style="margin-bottom: 1.25rem;">
+              <div class="calc-row">
+                <span class="calc-label">Subtotaal:</span>
+                <span class="calc-val" id="header-cart-subtotal">&euro;0,00</span>
+              </div>
+              <div class="calc-row">
+                <span class="calc-label">Administratiekosten:</span>
+                <span class="calc-val" id="header-cart-fee">&euro;0,00</span>
+              </div>
+              <div class="calc-row" id="header-shipping-row" style="display: none;">
+                <span class="calc-label">Verzendkosten Fles:</span>
+                <span class="calc-val" id="header-cart-shipping">&euro;0,00</span>
+              </div>
+              <div class="calc-row total-row">
+                <span class="calc-label">Totaal:</span>
+                <span class="calc-val" id="header-cart-total">&euro;0,00</span>
+              </div>
             </div>
-            <a href="/#sessies" class="btn btn-gold btn-dropdown-checkout" id="header-dropdown-checkout-btn">
-              Naar Kassa & Afrekenen →
+
+            <a href="/#sessies" class="btn btn-gold btn-checkout" id="header-dropdown-checkout-btn">
+              Afrekenen &rarr;
             </a>
           </div>
         </div>
@@ -121,48 +133,41 @@ const isAccount = pathname.startsWith("/account");
       <!-- 2. Bestel Tickets Button -->
       <a href="/#sessies" class="btn btn-gold btn-header">Bestel Tickets</a>
 
-      <!-- 3. Mijn Account (Dropdown Menu) -->
-      <div class="header-account-wrapper" id="header-account-wrapper">
-        <button type="button" class={`header-account-btn ${isAccount ? 'active' : ''}`} id="header-account-btn" aria-label="Mijn Account menu openen">
+      <!-- 3a. Mijn Account (Direct Link - Logged Out) -->
+      <a href="/account" class={`header-account-link ${isAccount ? 'active' : ''}`} id="header-account-link">
+        Mijn Account
+      </a>
+
+      <!-- 3b. Mijn Account (Dropdown Wrapper - Logged In) -->
+      <div class="header-account-wrapper" id="header-account-wrapper" style="display: none;">
+        <button type="button" class={`header-account-btn ${isAccount ? 'active' : ''}`} id="header-account-btn" aria-label="Mijn Account Menu">
           <span>Mijn Account</span>
-          <svg class="account-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          <svg class="account-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
 
         <div class="header-account-dropdown" id="header-account-dropdown">
-          <div id="header-account-logged-in">
-            <div class="account-dropdown-user">
-              <span class="user-greeting">Bezoekers Portaal</span>
-              <strong class="user-name" id="header-account-user-name">Mijn Account</strong>
-            </div>
-
-            <div class="account-dropdown-menu">
-              <a href="/account" class="account-drop-item">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                <span>Mijn Tickets</span>
-              </a>
-              <a href="/account?tab=tab-profile" class="account-drop-item">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                <span>Persoonsgegevens</span>
-              </a>
-              <a href="/account?tab=tab-info" class="account-drop-item">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
-                <span>Plattegrond &amp; Info</span>
-              </a>
-            </div>
-
+          <div class="account-dropdown-user">
+            <span class="user-greeting">Welkom terug,</span>
+            <span class="user-name" id="header-account-user-name">Deon Draijer</span>
+          </div>
+          <div class="account-dropdown-menu">
+            <a href="/account" class="account-drop-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path></svg>
+              <span>Mijn Tickets</span>
+            </a>
+            <a href="/account" class="account-drop-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span>Persoonsgegevens</span>
+            </a>
+            <a href="/standhouders" class="account-drop-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon></svg>
+              <span>Plattegrond &amp; Info</span>
+            </a>
             <div class="account-dropdown-divider"></div>
-
             <button type="button" class="account-drop-item logout-btn" id="header-nav-logout-btn">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
               <span>Uitloggen</span>
             </button>
-          </div>
-
-          <div id="header-account-logged-out" style="display: none;">
-            <p class="account-drop-intro">Bekijk uw festivaltickets en beheer uw bestelling.</p>
-            <a href="/account" class="btn btn-gold btn-drop-login">
-              Inloggen bij Portaal →
-            </a>
           </div>
         </div>
       </div>
@@ -181,6 +186,48 @@ const isAccount = pathname.startsWith("/account");
           <line x1="3" y1="18" x2="21" y2="18"></line>
         </svg>
       </button>
+
+      <script is:inline>
+        (function() {
+          function syncHeaderAccount() {
+            var isLoggedOut = localStorage.getItem('wf_user_logged_out') === 'true';
+            var link = document.getElementById('header-account-link');
+            var wrapper = document.getElementById('header-account-wrapper');
+            var userNameEl = document.getElementById('header-account-user-name');
+
+            if (isLoggedOut) {
+              if (link) link.style.display = 'inline-flex';
+              if (wrapper) wrapper.style.display = 'none';
+            } else {
+              if (link) link.style.display = 'none';
+              if (wrapper) wrapper.style.display = 'inline-flex';
+
+              if (userNameEl) {
+                var name = 'Deon Draijer';
+                try {
+                  var auth = localStorage.getItem('wf_auth_session') || sessionStorage.getItem('wf_auth_session');
+                  if (auth) {
+                    var p = JSON.parse(auth);
+                    if (p.name) name = p.name;
+                    else if (p.email) name = p.email.split('@')[0];
+                  } else {
+                    var last = localStorage.getItem('wf_last_order');
+                    if (last) {
+                      var lp = JSON.parse(last);
+                      if (lp.name) name = lp.name;
+                    }
+                  }
+                } catch(e) {}
+                userNameEl.textContent = name;
+              }
+            }
+          }
+
+          syncHeaderAccount();
+          window.addEventListener('storage', syncHeaderAccount);
+          document.addEventListener('DOMContentLoaded', syncHeaderAccount);
+        })();
+      </script>
     </div>
   </div>
 
@@ -614,6 +661,21 @@ const isAccount = pathname.startsWith("/account");
   /* Account Dropdown Styling */
   .header-account-wrapper {
     position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 0;
+  }
+
+  /* Hover bridge so mouse can travel smoothly to dropdown */
+  .header-account-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: -10px;
+    right: -10px;
+    height: 14px;
+    background: transparent;
+    z-index: 999;
   }
 
   .header-account-btn {
@@ -625,7 +687,7 @@ const isAccount = pathname.startsWith("/account");
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text-charcoal);
-    padding: 0.5rem 0;
+    padding: 0;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -636,14 +698,15 @@ const isAccount = pathname.startsWith("/account");
   }
 
   .header-account-btn:hover,
-  .header-account-btn.active {
+  .header-account-btn.active,
+  .header-account-wrapper:hover .header-account-btn {
     color: var(--whisky-gold-dark);
   }
 
   .header-account-btn::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: -6px;
     left: 50%;
     width: 0;
     height: 2px;
@@ -653,7 +716,8 @@ const isAccount = pathname.startsWith("/account");
   }
 
   .header-account-btn:hover::after,
-  .header-account-btn.active::after {
+  .header-account-btn.active::after,
+  .header-account-wrapper:hover .header-account-btn::after {
     width: 100%;
   }
 
@@ -662,13 +726,14 @@ const isAccount = pathname.startsWith("/account");
   }
 
   .header-account-dropdown.active ~ .header-account-btn .account-chevron,
+  .header-account-wrapper:hover .account-chevron,
   .header-account-wrapper.open .account-chevron {
     transform: rotate(180deg);
   }
 
   .header-account-dropdown {
     position: absolute;
-    top: calc(100% + 12px);
+    top: calc(100% + 8px);
     right: 0;
     width: 250px;
     background-color: var(--bg-paper-card, #FAF7F2);
@@ -683,6 +748,7 @@ const isAccount = pathname.startsWith("/account");
     animation: dropdownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
+  .header-account-wrapper:hover .header-account-dropdown,
   .header-account-dropdown.active {
     display: flex;
   }
@@ -842,23 +908,24 @@ const isAccount = pathname.startsWith("/account");
     z-index: 10;
   }
 
-  /* Dropdown Menu (Centered under cart icon with caret pointer) */
+  /* Header Cart Dropdown (1-on-1 identical to Ticket Receipt Card) */
   .header-cart-dropdown {
     position: absolute;
-    top: calc(100% + 14px);
-    left: 50%;
-    transform: translateX(-50%);
-    width: 440px;
-    max-width: min(440px, calc(100vw - 2rem));
-    background-color: var(--bg-paper-card, #FAF7F2);
+    top: calc(100% + 12px);
+    right: 0;
+    left: auto;
+    transform: none;
+    width: 420px;
+    max-width: min(420px, calc(100vw - 2rem));
+    background-color: #FFFFFF;
     border: 1.5px solid var(--border-color, #E2D9CC);
-    border-radius: 10px;
-    box-shadow: 0 16px 45px rgba(29, 28, 26, 0.14);
+    border-radius: 12px;
+    box-shadow: 0 16px 40px rgba(29, 28, 26, 0.16);
     padding: 1.35rem 1.35rem 1.15rem 1.35rem;
     z-index: 1000;
     display: none;
     flex-direction: column;
-    gap: 0.95rem;
+    gap: 0;
     animation: dropdownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     box-sizing: border-box;
   }
@@ -867,11 +934,12 @@ const isAccount = pathname.startsWith("/account");
     content: '';
     position: absolute;
     top: -7px;
-    left: 50%;
-    transform: translateX(-50%) rotate(45deg);
+    right: 17px;
+    left: auto;
+    transform: rotate(45deg);
     width: 12px;
     height: 12px;
-    background-color: var(--bg-paper-card, #FAF7F2);
+    background-color: #FFFFFF;
     border-top: 1.5px solid var(--border-color, #E2D9CC);
     border-left: 1.5px solid var(--border-color, #E2D9CC);
     z-index: 1;
@@ -882,203 +950,97 @@ const isAccount = pathname.startsWith("/account");
   }
 
   @keyframes dropdownFade {
-    from { opacity: 0; transform: translate(-50%, -8px); }
-    to { opacity: 1; transform: translate(-50%, 0); }
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
-  .cart-dropdown-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1.5px solid var(--border-color, #E2D9CC);
-    padding-bottom: 0.75rem;
-  }
-
-  .cart-dropdown-title {
-    font-family: var(--font-display);
-    font-size: 1.3rem;
-    color: var(--text-charcoal, #1D1C1A);
-    margin: 0;
-    letter-spacing: 0.04em;
-    line-height: 1;
-    text-transform: uppercase;
-  }
-
-  .cart-dropdown-badge-count {
-    font-family: var(--font-sans);
-    font-size: 0.75rem;
-    font-weight: 800;
-    color: var(--brand-green, #006448);
-    text-transform: uppercase;
-    background: rgba(0, 100, 72, 0.08);
-    padding: 0.25rem 0.65rem;
-    border-radius: 4px;
-    border: 1px solid rgba(0, 100, 72, 0.2);
+  .header-cart-dropdown .receipt-header {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.65rem;
+    font-size: 1.1rem;
     letter-spacing: 0.06em;
   }
 
-  .cart-dropdown-list {
-    max-height: 290px;
+  .header-cart-dropdown .cart-items-list {
+    max-height: 250px;
     overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
     padding-right: 0.25rem;
   }
 
-  .empty-dropdown-msg {
-    font-family: var(--font-sans);
-    font-size: 0.92rem;
-    color: var(--text-muted);
-    text-align: center;
-    padding: 1.5rem 0;
-    margin: 0;
+  .header-cart-dropdown .receipt-perforation {
+    margin: 0.85rem 0;
   }
 
-  /* Single-line item row with horizontal divider */
-  :global(.cart-dropdown-row) {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 0.75rem !important;
-    padding: 0.7rem 0 !important;
-    border-bottom: 1px solid #E5DFD5 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  :global(.cart-dropdown-row:last-child) {
-    border-bottom: none !important;
-  }
-
-  :global(.hdr-cart-stepper) {
-    display: inline-flex !important;
-    align-items: center !important;
-    background: rgba(0, 100, 72, 0.08) !important;
-    border: 1px solid rgba(0, 100, 72, 0.22) !important;
-    border-radius: 4px !important;
-    padding: 1px !important;
-    gap: 1px !important;
-    flex-shrink: 0 !important;
-    user-select: none !important;
-  }
-
-  :global(.hdr-cart-btn-qty) {
-    width: 22px !important;
-    height: 22px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    background: transparent !important;
-    border: none !important;
-    border-radius: 3px !important;
-    color: var(--brand-green, #006448) !important;
-    font-family: var(--font-sans) !important;
-    font-size: 14px !important;
-    font-weight: 800 !important;
-    line-height: 1 !important;
-    cursor: pointer !important;
-    padding: 0 !important;
-    transition: all 0.15s ease !important;
-    user-select: none !important;
-  }
-
-  :global(.hdr-cart-btn-qty:hover) {
-    background: rgba(0, 100, 72, 0.22) !important;
-    color: #004D37 !important;
-  }
-
-  :global(.hdr-cart-btn-qty.hdr-minus:hover) {
-    background: rgba(227, 6, 19, 0.14) !important;
-    color: var(--brand-red, #E30613) !important;
-  }
-
-  :global(.hdr-cart-btn-qty:active) {
-    transform: scale(0.92) !important;
-  }
-
-  :global(.hdr-cart-qty-text) {
-    font-family: var(--font-sans) !important;
-    font-weight: 800 !important;
-    font-size: 0.82rem !important;
-    color: var(--brand-green, #006448) !important;
-    padding: 0 3px !important;
-    min-width: 20px !important;
-    text-align: center !important;
-    line-height: 1 !important;
-  }
-
-  :global(.cart-row-title) {
-    font-family: var(--font-sans) !important;
-    font-weight: 700 !important;
-    font-size: 0.88rem !important;
-    color: var(--text-charcoal, #1D1C1A) !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    flex: 1 !important;
-    min-width: 0 !important;
-    text-align: left !important;
-  }
-
-  :global(.cart-row-price) {
-    font-family: var(--font-sans) !important;
-    font-weight: 800 !important;
-    font-size: 0.95rem !important;
-    color: var(--text-charcoal, #1D1C1A) !important;
-    white-space: nowrap !important;
-    flex-shrink: 0 !important;
-    text-align: right !important;
-  }
-
-  .cart-dropdown-bottom {
-    border-top: 1.5px solid var(--border-color, #E2D9CC);
-    padding-top: 0.95rem;
+  .header-cart-dropdown .cart-dropdown-bottom {
     display: flex;
     flex-direction: column;
-    gap: 0.85rem;
+    gap: 0;
+    width: 100%;
   }
 
-  .cart-dropdown-subtotal-row {
+  .header-cart-dropdown .receipt-calculation {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin-bottom: 1rem !important;
+  }
+
+  .header-cart-dropdown .calc-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-family: var(--font-sans);
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--text-muted, #555);
+    font-size: 0.84rem;
+    color: var(--text-muted, #665C54);
   }
 
-  .subtotal-val {
-    font-family: var(--font-sans);
-    font-size: 1.25rem;
-    font-weight: 800;
+  .header-cart-dropdown .calc-val {
+    font-weight: 700;
     color: var(--text-charcoal, #1D1C1A);
   }
 
-  .btn-dropdown-checkout {
-    width: 100%;
-    text-align: center;
-    font-family: var(--font-sans);
-    font-size: 0.88rem;
+  .header-cart-dropdown .calc-row.total-row {
+    font-size: 1.15rem;
     font-weight: 800;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 0.85rem 1.25rem;
-    text-decoration: none;
-    display: block;
-    border-radius: 4px;
-    background-color: var(--brand-green, #006448);
-    color: #FFFFFF;
-    border: none;
-    box-shadow: 0 4px 14px rgba(0, 100, 72, 0.25);
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    color: var(--text-charcoal, #1D1C1A);
+    border-top: 2px solid rgba(140, 110, 70, 0.25);
+    padding-top: 0.65rem;
+    margin-top: 0.25rem;
   }
 
-  .btn-dropdown-checkout:hover {
-    background-color: #004D37;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(0, 100, 72, 0.35);
+  .header-cart-dropdown .calc-row.total-row .calc-val {
+    color: var(--whisky-gold-dark, #006448);
+    font-size: 1.3rem;
+    font-weight: 800;
+  }
+
+  .header-cart-dropdown .btn-checkout {
+    width: 100%;
+    padding: 0.65rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-radius: 6px;
+    border: none;
+    box-shadow: none;
+    margin-top: 0.25rem;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .header-cart-dropdown .btn-checkout:hover {
+    transform: none;
+    box-shadow: none;
+    opacity: 0.9;
+  }
+  .header-cart-dropdown .btn-checkout:active {
+    transform: none;
+    box-shadow: none;
   }
 
   /* Mobile Hamburger Button */
@@ -1496,7 +1458,14 @@ const isAccount = pathname.startsWith("/account");
       const cartRaw: Record<string, any> = {};
       const itemsList: any[] = [];
 
-      if (parsed.cartRaw && typeof parsed.cartRaw === 'object') {
+      if (Array.isArray(parsed.items) && parsed.items.length > 0) {
+        parsed.items.forEach((it: any) => {
+          if (it && it.id && it.qty > 0) {
+            cartRaw[it.id] = { ...it };
+            itemsList.push({ ...it });
+          }
+        });
+      } else if (parsed.cartRaw && typeof parsed.cartRaw === 'object') {
         Object.keys(parsed.cartRaw).forEach(id => {
           if (id === 'subtotal' || id === 'totalItems' || id === 'items' || id === 'cartRaw') return;
           const it = parsed.cartRaw[id];
@@ -1506,13 +1475,6 @@ const isAccount = pathname.startsWith("/account");
             const itemObj = typeof it === 'object' ? { ...it, id } : { id, title: id, price: 0, qty };
             cartRaw[id] = itemObj;
             itemsList.push(itemObj);
-          }
-        });
-      } else if (Array.isArray(parsed.items)) {
-        parsed.items.forEach(it => {
-          if (it && it.id && it.qty > 0) {
-            cartRaw[it.id] = { ...it };
-            itemsList.push({ ...it });
           }
         });
       } else {
@@ -1547,7 +1509,11 @@ const isAccount = pathname.startsWith("/account");
     const cart = getStoredCart();
     const items = cart.items || [];
     const totalCount = items.reduce((acc: number, item: any) => acc + (item.qty || 0), 0);
-    const subtotal = items.reduce((acc: number, item: any) => acc + (item.price * item.qty), 0);
+    const subtotal = items.reduce((acc: number, item: any) => acc + ((item.price || 0) * (item.qty || 0)), 0);
+    const serviceFee = totalCount > 0 ? 4.50 : 0;
+    const hasShipping = items.some((item: any) => item.category === 'botteling' && item.delivery === 'shipping');
+    const shippingFee = hasShipping ? 12.50 : 0;
+    const total = subtotal + serviceFee + shippingFee;
 
     if (cartBadge) {
       if (totalCount > 0) {
@@ -1571,24 +1537,48 @@ const isAccount = pathname.startsWith("/account");
     if (cartSubtotal) {
       cartSubtotal.innerHTML = `&euro; ${subtotal.toFixed(2).replace('.', ',')}`;
     }
+    const cartFee = document.getElementById('header-cart-fee');
+    if (cartFee) {
+      cartFee.innerHTML = `&euro; ${serviceFee.toFixed(2).replace('.', ',')}`;
+    }
+    const cartShippingRow = document.getElementById('header-shipping-row');
+    const cartShipping = document.getElementById('header-cart-shipping');
+    if (cartShippingRow && cartShipping) {
+      if (hasShipping) {
+        cartShippingRow.style.display = 'flex';
+        cartShipping.innerHTML = `&euro; ${shippingFee.toFixed(2).replace('.', ',')}`;
+      } else {
+        cartShippingRow.style.display = 'none';
+      }
+    }
+    const cartTotal = document.getElementById('header-cart-total');
+    if (cartTotal) {
+      cartTotal.innerHTML = `&euro; ${total.toFixed(2).replace('.', ',')}`;
+    }
 
     if (cartList) {
       if (items.length === 0) {
-        cartList.innerHTML = '<p class="empty-dropdown-msg">Uw winkelwagen is leeg.</p>';
+        cartList.innerHTML = '<p class="empty-cart-msg">Selecteer hiernaast uw ticket(s) om de bestelling te starten.</p>';
         if (cartBottom) cartBottom.style.display = 'none';
       } else {
         let html = '';
         items.forEach((item: any) => {
-          const totalVal = (item.price * item.qty).toFixed(2).replace('.', ',');
+          const totalVal = ((item.price || 0) * (item.qty || 0)).toFixed(2).replace('.', ',');
+          const unitVal = (item.price || 0).toFixed(2).replace('.', ',');
           html += `
-            <div class="cart-dropdown-row" data-id="${item.id}">
-              <div class="hdr-cart-stepper">
-                <button type="button" class="hdr-cart-btn-qty hdr-minus" data-id="${item.id}" aria-label="Kaartje verminderen" title="${item.qty === 1 ? 'Verwijderen uit winkelwagen' : 'Kaartje verminderen'}">&minus;</button>
-                <span class="hdr-cart-qty-text">${item.qty}x</span>
-                <button type="button" class="hdr-cart-btn-qty hdr-plus" data-id="${item.id}" aria-label="Kaartje toevoegen" title="Kaartje toevoegen">+</button>
+            <div class="cart-item-row" data-id="${item.id}">
+              <div class="cart-item-info">
+                <span class="cart-item-name">${item.title}</span>
+                <div class="cart-item-controls">
+                  <div class="cart-stepper">
+                    <button type="button" class="sidebar-qty-btn sidebar-qty-minus" data-id="${item.id}" aria-label="Kaartje verminderen" title="${item.qty === 1 ? 'Verwijderen uit winkelwagen' : 'Kaartje verminderen'}">&minus;</button>
+                    <span class="sidebar-qty-num">${item.qty}</span>
+                    <button type="button" class="sidebar-qty-btn sidebar-qty-plus" data-id="${item.id}" aria-label="Kaartje toevoegen" title="Kaartje toevoegen">+</button>
+                  </div>
+                  <span class="cart-item-unit-price">&times; &euro; ${unitVal}</span>
+                </div>
               </div>
-              <span class="cart-row-title" title="${item.title}">${item.title}</span>
-              <span class="cart-row-price">&euro; ${totalVal}</span>
+              <span class="cart-item-price">&euro; ${totalVal}</span>
             </div>
           `;
         });
@@ -1602,7 +1592,7 @@ const isAccount = pathname.startsWith("/account");
   if (cartList) {
     cartList.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
-      const btn = target.closest('.hdr-cart-btn-qty') as HTMLButtonElement;
+      const btn = target.closest('.sidebar-qty-btn, .hdr-cart-btn-qty') as HTMLButtonElement;
       if (!btn) return;
 
       e.preventDefault();
@@ -1610,7 +1600,7 @@ const isAccount = pathname.startsWith("/account");
 
       const id = btn.getAttribute('data-id');
       if (!id) return;
-      const isPlus = btn.classList.contains('hdr-plus');
+      const isPlus = btn.classList.contains('sidebar-qty-plus') || btn.classList.contains('hdr-plus');
 
       try {
         const raw = localStorage.getItem('whiskyfest_cart');
@@ -1656,18 +1646,20 @@ const isAccount = pathname.startsWith("/account");
               qty: it.qty,
               category: it.category || 'entree',
               date: it.date || '',
-              time: it.time || ''
+              time: it.time || '',
+              delivery: it.delivery || ''
             };
           });
 
-        const newSubtotal = activeItems.reduce((sum: number, it: any) => sum + (it.price * it.qty), 0);
-        const newTotalItems = activeItems.reduce((sum: number, it: any) => sum + it.qty, 0);
+        const newSubtotal = activeItems.reduce((sum: number, it: any) => sum + ((it.price || 0) * (it.qty || 0)), 0);
+        const newTotalItems = activeItems.reduce((sum: number, it: any) => sum + (it.qty || 0), 0);
 
         localStorage.setItem('whiskyfest_cart', JSON.stringify({
           subtotal: newSubtotal,
           totalItems: newTotalItems,
           items: activeItems,
-          cartRaw
+          cartRaw,
+          updatedAt: Date.now()
         }));
 
         updateHeaderCartUI();
@@ -1687,9 +1679,10 @@ const isAccount = pathname.startsWith("/account");
       e.stopPropagation();
       if (window.innerWidth <= 990) {
         if (cartDropdown) cartDropdown.classList.remove('active');
-        window.dispatchEvent(new CustomEvent('open-mobile-cart-drawer'));
+        window.dispatchEvent(new CustomEvent('open-mobile-cart-drawer', { detail: { view: 'cart' } }));
         return;
       }
+      updateHeaderCartUI();
       if (cartDropdown) {
         cartDropdown.classList.toggle('active');
       }
@@ -1726,88 +1719,7 @@ const isAccount = pathname.startsWith("/account");
   document.addEventListener('DOMContentLoaded', updateHeaderCartUI);
   updateHeaderCartUI();
 
-  // Header Account Dropdown Logic
-  const accountBtn = document.getElementById('header-account-btn');
-  const accountDropdown = document.getElementById('header-account-dropdown');
-  const accountUserName = document.getElementById('header-account-user-name');
-  const loggedInView = document.getElementById('header-account-logged-in');
-  const loggedOutView = document.getElementById('header-account-logged-out');
-  const navLogoutBtn = document.getElementById('header-nav-logout-btn');
-  const navLoginBtn = document.querySelector('.btn-drop-login');
 
-  function updateHeaderAccountState() {
-    const isLoggedOut = localStorage.getItem('wf_user_logged_out') === 'true';
-    const storedOrder = localStorage.getItem('wf_last_order');
-    const storedAuth = sessionStorage.getItem('wf_auth_session') || localStorage.getItem('wf_auth_session');
-
-    let userName = 'Deon Draijer';
-
-    if (storedOrder) {
-      try {
-        const p = JSON.parse(storedOrder);
-        if (p.name) userName = p.name;
-      } catch(e) {}
-    } else if (storedAuth) {
-      try {
-        const s = JSON.parse(storedAuth);
-        if (s.name) userName = s.name;
-        else if (s.email) userName = s.email.split('@')[0];
-      } catch(e) {}
-    }
-
-    if (accountUserName) {
-      accountUserName.textContent = userName;
-    }
-
-    if (isLoggedOut) {
-      if (loggedInView) loggedInView.style.display = 'none';
-      if (loggedOutView) loggedOutView.style.display = 'block';
-    } else {
-      if (loggedInView) loggedInView.style.display = 'block';
-      if (loggedOutView) loggedOutView.style.display = 'none';
-    }
-  }
-
-  if (accountBtn && accountDropdown) {
-    accountBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      // Close cart if open
-      if (cartDropdown) cartDropdown.classList.remove('active');
-      accountDropdown.classList.toggle('active');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!accountDropdown.contains(e.target as Node) && e.target !== accountBtn) {
-        accountDropdown.classList.remove('active');
-      }
-    });
-  }
-
-  if (navLogoutBtn) {
-    navLogoutBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      localStorage.setItem('wf_user_logged_out', 'true');
-      sessionStorage.removeItem('wf_auth_session');
-      localStorage.removeItem('wf_auth_session');
-      if (accountDropdown) accountDropdown.classList.remove('active');
-      updateHeaderAccountState();
-      
-      // If on account page, reload or redirect
-      if (window.location.pathname.startsWith('/account')) {
-        window.location.href = '/account';
-      }
-    });
-  }
-
-  if (navLoginBtn) {
-    navLoginBtn.addEventListener('click', () => {
-      localStorage.removeItem('wf_user_logged_out');
-    });
-  }
-
-  window.addEventListener('storage', updateHeaderAccountState);
-  document.addEventListener('DOMContentLoaded', updateHeaderAccountState);
-  updateHeaderAccountState();
 
   // Mobile Nav Drawer Toggle
   const mobileToggleBtn = document.getElementById('mobile-menu-toggle-btn');
@@ -1855,4 +1767,81 @@ const isAccount = pathname.startsWith("/account");
   document.querySelectorAll('.mobile-nav-item, .btn-mobile-drawer-cta').forEach(link => {
     link.addEventListener('click', closeMobileNav);
   });
+
+  // Header Account Toggle (Button vs Dropdown) Logic
+  const headerAccountLink = document.getElementById('header-account-link');
+  const headerAccountWrapper = document.getElementById('header-account-wrapper');
+  const headerAccountBtn = document.getElementById('header-account-btn');
+  const headerAccountDropdown = document.getElementById('header-account-dropdown');
+  const headerAccountUserName = document.getElementById('header-account-user-name');
+  const headerNavLogoutBtn = document.getElementById('header-nav-logout-btn');
+
+  function updateHeaderAccountState() {
+    const isLoggedOut = localStorage.getItem('wf_user_logged_out') === 'true';
+    const isLoggedIn = !isLoggedOut;
+
+    if (isLoggedIn) {
+      if (headerAccountLink) headerAccountLink.style.display = 'none';
+      if (headerAccountWrapper) headerAccountWrapper.style.display = 'inline-flex';
+
+      if (headerAccountUserName) {
+        let userName = 'Deon Draijer';
+        try {
+          const authSession = localStorage.getItem('wf_auth_session') || sessionStorage.getItem('wf_auth_session');
+          if (authSession) {
+            const parsed = JSON.parse(authSession);
+            if (parsed.name) userName = parsed.name;
+            else if (parsed.email) userName = parsed.email.split('@')[0];
+          } else {
+            const lastOrder = localStorage.getItem('wf_last_order');
+            if (lastOrder) {
+              const p = JSON.parse(lastOrder);
+              if (p.name) userName = p.name;
+            }
+          }
+        } catch(e) {}
+        headerAccountUserName.textContent = userName;
+      }
+    } else {
+      if (headerAccountLink) headerAccountLink.style.display = 'inline-flex';
+      if (headerAccountWrapper) headerAccountWrapper.style.display = 'none';
+      if (headerAccountDropdown) headerAccountDropdown.classList.remove('active');
+    }
+  }
+
+  if (headerAccountBtn && headerAccountDropdown) {
+    headerAccountBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const cartDropdown = document.getElementById('header-cart-dropdown');
+      if (cartDropdown) cartDropdown.classList.remove('active');
+      headerAccountDropdown.classList.toggle('active');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!headerAccountDropdown.contains(e.target as Node) && e.target !== headerAccountBtn) {
+        headerAccountDropdown.classList.remove('active');
+      }
+    });
+  }
+
+  if (headerNavLogoutBtn) {
+    headerNavLogoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.setItem('wf_user_logged_out', 'true');
+      sessionStorage.removeItem('wf_auth_session');
+      localStorage.removeItem('wf_auth_session');
+      if (headerAccountDropdown) headerAccountDropdown.classList.remove('active');
+      updateHeaderAccountState();
+
+      if (window.location.pathname.startsWith('/account')) {
+        window.location.href = '/account';
+      } else {
+        window.location.reload();
+      }
+    });
+  }
+
+  window.addEventListener('storage', updateHeaderAccountState);
+  document.addEventListener('DOMContentLoaded', updateHeaderAccountState);
+  updateHeaderAccountState();
 </script>

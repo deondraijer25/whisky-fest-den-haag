@@ -80,3 +80,16 @@ Voordat een stadswebsite als voltooid wordt gemarkeerd:
 - **Preloader Duur & Jaartal:**
   - De coin-flip preloader draait altijd exact 2.4s met zachte fade-out.
   - Het oprichtingsjaartal (`EST. <jaar>`) moet strikt overeenkomen met het stadslogo (Amsterdam: 2025, Den Haag: 2000, Gent: 2004).
+
+## 11. Dropdown & Popup Container Layout Invarianten
+- **Verplichte Verticale Stacking in Dropdowns & Popups:**
+  - Elke wrapper/container binnen een dropdown of popup (bijv. `.cart-dropdown-bottom`, `.account-dropdown-menu`) MOET expliciete `display: flex; flex-direction: column; width: 100%;` hebben. Vertrouw NOOIT op impliciete block-flow wanneer kinderen globale klassen erven die `inline-flex` of `inline-block` bevatten.
+- **Globale `.btn` / `.btn-gold` Neutralisatie in Dropdowns:**
+  - Buttons die de globale `.btn` en/of `.btn-gold` klassen gebruiken binnen dropdown-contexten MOETEN altijd scoped overrides krijgen die de zware letterpress-stijlen neutraliseren:
+    - `border: none; box-shadow: none;` (verwijder dikke rand + zware schaduw)
+    - `padding: 0.65rem 1rem;` (compact, proportioneel aan dropdown)
+    - `border-radius: 6px;` (subtiel afgerond)
+    - `:hover` en `:active` states: `transform: none; box-shadow: none;` (geen translate-shifts)
+  - Dit voorkomt dat buttons visueel buiten proportie groeien en naastgelegen elementen overlappen.
+- **Dropdown Breedte Proportionaliteit:**
+  - Winkelwagen-dropdowns gebruiken `width: 420px; max-width: min(420px, calc(100vw - 2rem));` met `right: 0; left: auto;` voor rechts-uitgelijnde positionering onder het trigger-icoon.
