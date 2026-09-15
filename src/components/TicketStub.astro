@@ -644,6 +644,8 @@ const titleSizeClass =
     .meta-col {
       display: flex !important;
       flex-direction: column !important;
+      min-width: 0 !important;
+      overflow: hidden !important;
     }
 
     .meta-col-label {
@@ -657,7 +659,9 @@ const titleSizeClass =
       font-size: 0.82rem !important;
       font-weight: 700 !important;
       color: #171614 !important;
-      white-space: nowrap !important;
+      white-space: normal !important;
+      word-break: break-word !important;
+      line-height: 1.25 !important;
     }
 
     .ticket-info-row {

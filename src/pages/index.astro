@@ -2889,7 +2889,7 @@ const tickets = await getTickets('den_haag');
   .hp-preloader-overlay {
     position: fixed;
     inset: 0;
-    z-index: 99999;
+    z-index: 99999999;
     background-color: var(--bg-parchment);
     display: flex;
     justify-content: center;
@@ -5038,6 +5038,13 @@ const tickets = await getTickets('den_haag');
     window.addEventListener('load', tryPlay);
   }
 
+  // Auto-open checkout modal if requested via URL param or hash
+  if (window.location.search.includes('checkout=open') || window.location.hash === '#checkout') {
+    setTimeout(() => {
+      if (typeof openCheckoutModal === 'function') openCheckoutModal();
+    }, 400);
+  }
+
   // 2. Safe Preloader Dismiss
   (function() {
     const pl = document.getElementById('hp-preloader');
@@ -6422,6 +6429,7 @@ const tickets = await getTickets('den_haag');
   const upsellModalCancel = document.getElementById('addon-upsell-cancel');
   const upsellModalProceed = document.getElementById('addon-upsell-proceed-btn');
 
+  window.openCheckoutModal = openCheckoutModal;
   function openCheckoutModal() {
     promoDiscount = 0;
     activePromoCode = "";

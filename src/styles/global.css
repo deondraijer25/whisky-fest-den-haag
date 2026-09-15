@@ -1095,9 +1095,8 @@ strong {
     left: 0 !important;
     right: 0 !important;
     width: 100% !important;
-    max-height: 80svh !important;
-    max-height: 80dvh !important;
-    height: auto !important;
+    height: 90dvh !important;
+    max-height: 90dvh !important;
     background-color: #FAF7F2 !important;
     border-top: 3.5px solid #006448 !important;
     border-radius: 18px 18px 0 0 !important;
@@ -1628,4 +1627,21 @@ strong {
   background-color: #DFC598;
   transform: translate(-1px, -1px);
   box-shadow: 3px 3px 0px #171614;
+}
+@media (max-width: 990px) {
+  .mobile-bottom-sheet {
+    height: 90dvh !important;
+    max-height: 90dvh !important;
+  }
+  .sheet-view.is-active {
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+  }
+  .sheet-addons-list, .sheet-cart-list {
+    flex: 1 1 auto !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    min-height: 0 !important;
+  }
 }

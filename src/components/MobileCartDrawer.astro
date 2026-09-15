@@ -621,6 +621,9 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
       if (typeof window.openCheckoutModal === 'function') {
         window.openCheckoutModal();
       } else {
+        window.location.href = '/?checkout=open#checkout';
+      }
+    } else {
         window.location.href = '/#sessies';
       }
     }
