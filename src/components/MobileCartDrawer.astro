@@ -553,9 +553,14 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
 
     const sheetElement = document.getElementById('mobile-cart-sheet');
     function syncVisualViewport() {
-      if (window.visualViewport && sheetElement) {
-        const bottomInset = Math.max(0, window.innerHeight - window.visualViewport.height - (window.visualViewport.offsetTop || 0));
-        sheetElement.style.bottom = `${bottomInset}px`;
+      if (sheetElement) {
+        const activeTag = document.activeElement ? document.activeElement.tagName : '';
+        if (window.visualViewport && (activeTag === 'INPUT' || activeTag === 'TEXTAREA')) {
+          const bottomInset = Math.max(0, window.innerHeight - window.visualViewport.height - (window.visualViewport.offsetTop || 0));
+          sheetElement.style.bottom = `${bottomInset}px`;
+        } else {
+          sheetElement.style.bottom = '0px';
+        }
       }
     }
 
