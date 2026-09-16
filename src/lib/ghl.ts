@@ -163,7 +163,7 @@ export async function getTickets(city: string = 'den_haag'): Promise<TicketItem[
       return {
         id: r.id || `ghl-ticket-${idx}`,
         row: idx + 1,
-        title: p.title || 'Ticket',
+        title: (p.title || 'Ticket').replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim(),
         price: typeof p.price === 'number' ? p.price : (parseFloat(p.price) || parseFloat(p.ticket_price) || 0),
         date: p.date_label || 'Datum volgt',
         time: p.time_label || 'Tijd volgt',
