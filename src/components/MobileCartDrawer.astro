@@ -623,9 +623,6 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
       } else {
         window.location.href = '/?checkout=open#checkout';
       }
-    } else {
-        window.location.href = '/#sessies';
-      }
     }
 
     document.getElementById('sheet-final-checkout-btn')?.addEventListener('click', handleFinalCheckout);
