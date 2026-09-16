@@ -123,3 +123,17 @@ Voordat een stadswebsite als voltooid wordt gemarkeerd:
   - Push NOOIT repetitieve incrementele testcommits direct naar deployment branches (`main`). Vercel hanteert op Hobby accounts een harde limiet van 100 deployments per dag (*"Deployment rate limited — retry in 24 hours"*).
   - Bundel alle wijzigingen en push pas nadat lokale validatie en `npm run build` 100% succesvol zijn.
 
+## 14. Typografische Uniformiteit & Sanitisering van Ticket Titels
+- **Geen Redundante Tijdstippen in Titels:**
+  - Ticket- en sessietitels mogen NOOIT tijdstippen bevatten (bijv. `"13:00 – 17:00"`, `"19:00 - 23:00 uur"`). Tijdstippen horen uitsluitend thuis in de specifieke metadata-rij (`TIJD`), nooit in de `<h1>`/`<h3>` kop.
+- **Geautomatiseerde Sanitizer:**
+  - Zowel in `src/lib/ghl.ts` als in `src/components/TicketStub.astro` moet de titel altijd programmatisch geschoond worden met:
+    ```typescript
+    const displayTitle = title
+      .replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '')
+      .trim();
+    ```
+- **Gelijke Typografische Schaal:**
+  - Titels van dezelfde categorie (bijv. alle reguliere Entreetickets) moeten binnen hetzelfde formaat vallen (standaard `title-lg`), zodat alle kaarten in het grid een 100% identieke lettergrootte en visuele rust uitstralen.
+
+
