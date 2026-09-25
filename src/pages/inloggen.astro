@@ -1,0 +1,7 @@
+---
+// src/pages/inloggen.astro
+// Directe route voor inloggen op het bezoekersportaal
+const searchParams = Astro.url.searchParams;
+searchParams.set('view', 'login');
+return Astro.redirect(`/account?${searchParams.toString()}`);
+---

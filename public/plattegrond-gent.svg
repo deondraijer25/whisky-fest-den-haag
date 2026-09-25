@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 864 456" width="100%" height="100%" style="background-color: #faf7f2;">
+  <defs>
+    <style>
+      .bg-canvas { fill: #faf7f2; }
+      .water-body { fill: #E5F0F8; }
+      .water-wave { stroke: #A8CEE8; stroke-width: 1.2; fill: none; stroke-linecap: round; }
+      .water-border { stroke: #7DA8D8; stroke-width: 1.2; stroke-dasharray: 4 3; fill: none; }
+      .hall-floor { fill: #F4EFE6; stroke: #1C1917; stroke-width: 1.6; stroke-linejoin: round; }
+      .courtyard-floor { fill: #EFE8DC; stroke: #1C1917; stroke-width: 1.6; stroke-linejoin: round; }
+      .balkon-floor { fill: #E8DFCE; stroke: #998B77; stroke-width: 1.3; stroke-dasharray: 4 3; }
+      .alcove-floor { fill: #F4EFE6; stroke: #1C1917; stroke-width: 1.6; }
+      .grid-dashed { stroke: #D8CEBF; stroke-width: 1; stroke-dasharray: 4 4; fill: none; }
+      .pillar { fill: #BAA88C; }
+      
+      .booth-rect { fill: #FFFFFF; stroke: #1C1917; stroke-width: 1.5; rx: 3px; ry: 3px; }
+      .booth-text { font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; font-size: 11px; font-weight: 700; fill: #1C1917; text-anchor: middle; dominant-baseline: central; }
+      
+      .facility-bar { fill: #EBF3FA; stroke: #1E3A8A; stroke-width: 1.5; rx: 3px; ry: 3px; }
+      .facility-mc { fill: #FFFFFF; stroke: #1E3A8A; stroke-width: 1.5; rx: 3px; ry: 3px; }
+      .facility-org { fill: #FAF7F2; stroke: #1E3A8A; stroke-width: 1.5; rx: 3px; ry: 3px; }
+      .facility-inkom { fill: #EBE5DC; stroke: #1E3A8A; stroke-width: 1.8; rx: 5px; ry: 5px; }
+      .foodtruck-box { fill: #FAF6ED; stroke: #8A6D1B; stroke-width: 1.5; rx: 3px; ry: 3px; }
+      
+      .label-text { font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; font-size: 11px; font-weight: 700; fill: #1C1917; }
+      .blue-text-title { font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; font-weight: 800; fill: #1E3A8A; text-anchor: middle; }
+      .blue-text-sub { font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; font-weight: 600; fill: #1E3A8A; text-anchor: middle; }
+      .gold-text-title { font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; font-weight: 800; fill: #8A6D1B; text-anchor: middle; }
+      .gold-text-sub { font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; font-weight: 600; fill: #8A6D1B; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <!-- 0. Background Canvas -->
+  <rect width="864" height="456" class="bg-canvas" />
+
+  <!-- 1. Water Top Features -->
+  <!-- Rivier De Leie (curving waterway top-left) -->
+  <g id="water-leie">
+    <path d="M 215 35 A 175 175 0 0 0 38 136 L 75 146 A 140 140 0 0 1 215 70 Z" class="water-body" />
+    <path d="M 215 35 A 175 175 0 0 0 38 136" class="water-border" />
+    
+    <!-- Curved ripples in Leie -->
+    <path d="M 195 44 A 155 155 0 0 0 55 130" class="water-wave" stroke-dasharray="14 10" />
+    <path d="M 205 52 A 148 148 0 0 0 65 138" class="water-wave" stroke-dasharray="16 12" />
+    <path d="M 210 61 A 140 140 0 0 0 75 144" class="water-wave" stroke-dasharray="12 14" />
+  </g>
+
+  <!-- Pier divider between Leie and Lieve -->
+  <rect x="213" y="32" width="6" height="40" fill="#EAE3D7" stroke="#1C1917" stroke-width="1.2" rx="1" />
+
+  <!-- Kanaal De Lieve (horizontal canal) -->
+  <g id="water-lieve">
+    <rect x="219" y="35" width="525" height="35" class="water-body" />
+    <line x1="219" y1="35" x2="744" y2="35" class="water-border" />
+    <line x1="219" y1="70" x2="744" y2="70" stroke="#B0D0E8" stroke-width="1" />
+    
+    <!-- Wavy ripples across Kanaal De Lieve -->
+    <path d="M 225 43 Q 235 39 245 43 T 265 43 T 285 43 T 305 43 T 325 43 T 345 43 T 365 43 T 385 43 T 405 43 T 425 43 T 445 43 T 465 43 T 485 43 T 505 43 T 525 43 T 545 43 T 565 43 T 585 43 T 605 43 T 625 43 T 645 43 T 665 43 T 685 43 T 705 43 T 725 43 T 740 43" class="water-wave" />
+    <path d="M 235 52 Q 245 48 255 52 T 275 52 T 295 52 T 315 52 T 335 52 T 355 52 T 375 52 T 395 52 T 415 52 T 435 52 T 455 52 T 475 52 T 495 52 T 515 52 T 535 52 T 555 52 T 575 52 T 595 52 T 615 52 T 635 52 T 655 52 T 675 52 T 695 52 T 715 52 T 735 52" class="water-wave" />
+    <path d="M 225 61 Q 235 57 245 61 T 265 61 T 285 61 T 305 61 T 325 61 T 345 61 T 365 61 T 385 61 T 405 61 T 425 61 T 445 61 T 465 61 T 485 61 T 505 61 T 525 61 T 545 61 T 565 61 T 585 61 T 605 61 T 625 61 T 645 61 T 665 61 T 685 61 T 705 61 T 725 61 T 740 61" class="water-wave" />
+  </g>
+
+  <!-- Water Labels -->
+  <text x="175" y="32" class="label-text" text-anchor="middle">Rivier De Leie ↗</text>
+  <text x="475" y="25" class="label-text" text-anchor="middle">Kanaal De Lieve →</text>
+
+  <!-- 2. Venue Architectural Footprint (De Oude Vismijn) -->
+  <!-- Foodtrucks Courtyard (Left-bottom wing) -->
+  <polygon points="63,312 138,312 138,390 63,390" class="courtyard-floor" />
+  
+  <!-- Inkom under-extension -->
+  <polygon points="138,381 375,381 375,416 138,416" class="hall-floor" />
+  
+  <!-- Bottom-Right Alcove Notch -->
+  <polygon points="653,381 726,381 726,416 653,416" class="alcove-floor" />
+
+  <!-- Main Hall Footprint -->
+  <path d="
+    M 98 170
+    A 85 85 0 0 1 183 79
+    L 744 79
+    L 744 381
+    L 726 381
+    L 726 416
+    L 653 416
+    L 653 381
+    L 375 381
+    L 375 416
+    L 138 416
+    L 138 390
+    L 63 390
+    L 63 312
+    L 98 312
+    L 98 170
+    Z
+  " class="hall-floor" />
+
+  <!-- Balkon Annex on the Right -->
+  <rect x="725" y="199" width="67" height="182" class="balkon-floor" />
+  <text x="758" y="290" font-family="'Plus Jakarta Sans', -apple-system, sans-serif" font-size="14" font-weight="600" fill="#9C8E7B" transform="rotate(90, 758, 290)" text-anchor="middle" letter-spacing="2">Balkon</text>
+
+  <!-- Sint-Veerleplein Entrance Gap & Arrow -->
+  <line x1="98" y1="298" x2="98" y2="312" stroke="#F4EFE6" stroke-width="2.5" />
+  <text x="63" y="298" class="label-text" text-anchor="end">Sint-Veerleplein →</text>
+
+  <!-- Rekelingestraat label on the right -->
+  <text x="815" y="290" class="label-text" transform="rotate(90, 815, 290)" text-anchor="middle">Rekelingestraat →</text>
+
+  <!-- 3. Interior Structural Grid & Bays -->
+  <!-- Horizontal bay separator -->
+  <line x1="98" y1="180" x2="744" y2="180" class="grid-dashed" />
+  <!-- Vertical bay separators -->
+  <line x1="212" y1="79" x2="212" y2="381" class="grid-dashed" />
+  <line x1="300" y1="79" x2="300" y2="381" class="grid-dashed" />
+  <line x1="388" y1="79" x2="388" y2="381" class="grid-dashed" />
+  <line x1="460" y1="79" x2="460" y2="381" class="grid-dashed" />
+  <line x1="535" y1="79" x2="535" y2="381" class="grid-dashed" />
+  <line x1="608" y1="79" x2="608" y2="381" class="grid-dashed" />
+  <line x1="672" y1="79" x2="672" y2="381" class="grid-dashed" />
+
+  <!-- Architectural Pillars / Kolommen -->
+  <!-- Row 1 (y=185) -->
+  <circle cx="395" cy="185" r="4.5" class="pillar" />
+  <circle cx="501" cy="185" r="4.5" class="pillar" />
+  <circle cx="558" cy="185" r="4.5" class="pillar" />
+  <circle cx="610" cy="185" r="4.5" class="pillar" />
+  <circle cx="671" cy="185" r="4.5" class="pillar" />
+  <!-- Row 2 (y=298) -->
+  <circle cx="395" cy="298" r="4.5" class="pillar" />
+  <circle cx="610" cy="298" r="4.5" class="pillar" />
+  <circle cx="671" cy="298" r="4.5" class="pillar" />
+  <!-- Row 3 (y=369) -->
+  <circle cx="445" cy="369" r="4.5" class="pillar" />
+  <circle cx="501" cy="369" r="4.5" class="pillar" />
+  <circle cx="550" cy="369" r="4.5" class="pillar" />
+  <circle cx="611" cy="369" r="4.5" class="pillar" />
+  <circle cx="672" cy="369" r="4.5" class="pillar" />
+
+  <!-- "De Markt" label in open nave area -->
+  <text x="640" y="337" font-family="'Plus Jakarta Sans', Georgia, serif" font-style="italic" font-size="14" fill="#B0A696" text-anchor="middle">De Markt</text>
+
+  <!-- 4. Facilities & Service Areas -->
+  <!-- BAR (Drinks & Food) -->
+  <g id="facility-bar">
+    <rect x="166" y="190" width="83" height="34" class="facility-bar" />
+    <text x="207.5" y="202" font-size="12" class="blue-text-title">BAR</text>
+    <text x="207.5" y="215" font-size="7.5" class="blue-text-sub">Drinks &amp; Food</text>
+  </g>
+
+  <!-- Masterclasses check-in point -->
+  <g id="facility-masterclasses">
+    <rect x="166" y="230" width="83" height="34" class="facility-mc" />
+    <text x="207.5" y="241" font-size="7" class="blue-text-sub">Hier melden voor</text>
+    <text x="207.5" y="253" font-size="11" class="blue-text-title">Masterclasses</text>
+  </g>
+
+  <!-- Organisatie & Info Desk -->
+  <g id="facility-organisatie">
+    <rect x="281" y="190" width="33" height="100" class="facility-org" />
+    <!-- Info circle icon -->
+    <circle cx="297.5" cy="204" r="7" fill="#1E3A8A" />
+    <text x="297.5" y="204" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="800" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">i</text>
+    <!-- Vertical label -->
+    <text x="297.5" y="248" transform="rotate(90, 297.5, 248)" font-family="'Plus Jakarta Sans', -apple-system, sans-serif" font-size="8.5" font-weight="800" fill="#1E3A8A" text-anchor="middle" dominant-baseline="central" letter-spacing="2">ORGANISATIE</text>
+  </g>
+
+  <!-- Inkom & Vestiaire with Entree direction -->
+  <g id="facility-inkom">
+    <rect x="258" y="314" width="108" height="96" class="facility-inkom" />
+    <!-- Blue circle with up-arrow -->
+    <circle cx="312" cy="336" r="10.5" fill="#1E3A8A" />
+    <path d="M 312 330 L 307 335 M 312 330 L 317 335 M 312 330 L 312 342" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <text x="312" y="358" font-size="10.5" class="blue-text-title">INKOM</text>
+    <text x="312" y="371" font-size="8" class="blue-text-title">&amp; VESTIAIRE</text>
+    <text x="312" y="388" font-size="8" class="blue-text-sub">➔ ENTREE</text>
+  </g>
+
+  <!-- Foodtruck F1 (Meat the Grill) -->
+  <g id="foodtruck-f1">
+    <rect x="155" y="315" width="76" height="31" class="foodtruck-box" />
+    <text x="193" y="326" font-size="9.5" class="gold-text-title">Foodtruck F1</text>
+    <text x="193" y="338" font-size="7.5" class="gold-text-sub">Meat the Grill</text>
+  </g>
+
+  <!-- Foodtruck F2 (Mixed Worlds) -->
+  <g id="foodtruck-f2">
+    <rect x="137" y="352" width="75" height="31" class="foodtruck-box" />
+    <text x="174.5" y="363" font-size="9.5" class="gold-text-title">Foodtruck F2</text>
+    <text x="174.5" y="375" font-size="7.5" class="gold-text-sub">Mixed Worlds</text>
+  </g>
+
+  <!-- 5. Stand Booths (Genummerde Beursstands) -->
+  <!-- Top aisle: Stands 1, 2, 3 -->
+  <g id="stand-1"><rect x="170" y="95" width="31" height="23" class="booth-rect" /><text x="185.5" y="106.5" class="booth-text">1</text></g>
+  <g id="stand-2"><rect x="215" y="95" width="31" height="23" class="booth-rect" /><text x="230.5" y="106.5" class="booth-text">2</text></g>
+  <g id="stand-3"><rect x="260" y="95" width="31" height="23" class="booth-rect" /><text x="275.5" y="106.5" class="booth-text">3</text></g>
+
+  <!-- Top aisle: Stands 4, 5, 6, 8 -->
+  <g id="stand-4"><rect x="170" y="138" width="31" height="23" class="booth-rect" /><text x="185.5" y="149.5" class="booth-text">4</text></g>
+  <g id="stand-5"><rect x="215" y="138" width="31" height="23" class="booth-rect" /><text x="230.5" y="149.5" class="booth-text">5</text></g>
+  <g id="stand-6"><rect x="260" y="138" width="31" height="23" class="booth-rect" /><text x="275.5" y="149.5" class="booth-text">6</text></g>
+  <g id="stand-8"><rect x="305" y="138" width="31" height="23" class="booth-rect" /><text x="320.5" y="149.5" class="booth-text">8</text></g>
+
+  <!-- Stands 11 & 12 (Top aisle middle) -->
+  <g id="stand-11"><rect x="357" y="99" width="46" height="23" class="booth-rect" /><text x="380" y="110.5" class="booth-text">11</text></g>
+  <g id="stand-12"><rect x="427" y="99" width="44" height="23" class="booth-rect" /><text x="449" y="110.5" class="booth-text">12</text></g>
+
+  <!-- Stands 9, 10, 15 (Directly below 11 & 12) -->
+  <g id="stand-9"><rect x="357" y="134" width="31" height="23" class="booth-rect" /><text x="372.5" y="145.5" class="booth-text">9</text></g>
+  <g id="stand-10"><rect x="395" y="134" width="31" height="23" class="booth-rect" /><text x="410.5" y="145.5" class="booth-text">10</text></g>
+  <g id="stand-15"><rect x="433" y="134" width="31" height="23" class="booth-rect" /><text x="448.5" y="145.5" class="booth-text">15</text></g>
+
+  <!-- Large Stands 13 & 14 (Top aisle right) -->
+  <g id="stand-13"><rect x="496" y="101" width="76" height="28" class="booth-rect" /><text x="534" y="115" class="booth-text">13</text></g>
+  <g id="stand-14"><rect x="496" y="139" width="76" height="28" class="booth-rect" /><text x="534" y="153" class="booth-text">14</text></g>
+
+  <!-- Left wall: Stands 37, 36, 35 -->
+  <g id="stand-37"><rect x="104" y="193" width="31" height="23" class="booth-rect" /><text x="119.5" y="204.5" class="booth-text">37</text></g>
+  <g id="stand-36"><rect x="104" y="225" width="31" height="23" class="booth-rect" /><text x="119.5" y="236.5" class="booth-text">36</text></g>
+  <g id="stand-35"><rect x="104" y="256" width="31" height="23" class="booth-rect" /><text x="119.5" y="267.5" class="booth-text">35</text></g>
+
+  <!-- Center Aisle Stands: 21, 20, 18 -->
+  <g id="stand-21"><rect x="331" y="195" width="34" height="23" class="booth-rect" /><text x="348" y="206.5" class="booth-text">21</text></g>
+  <g id="stand-20"><rect x="392" y="195" width="119" height="23" class="booth-rect" /><text x="451.5" y="206.5" class="booth-text">20</text></g>
+  <g id="stand-18"><rect x="537" y="195" width="48" height="23" class="booth-rect" /><text x="561" y="206.5" class="booth-text">18</text></g>
+
+  <!-- Center Island Cluster: Stands 29, 28, 31, 32, 30, 33 -->
+  <g id="stand-29"><rect x="379" y="234" width="48" height="18" class="booth-rect" /><text x="403" y="243" class="booth-text">29</text></g>
+  <g id="stand-28"><rect x="379" y="256" width="48" height="18" class="booth-rect" /><text x="403" y="265" class="booth-text">28</text></g>
+  <g id="stand-31"><rect x="456" y="234" width="31" height="18" class="booth-rect" /><text x="471.5" y="243" class="booth-text">31</text></g>
+  <g id="stand-32"><rect x="492" y="234" width="31" height="18" class="booth-rect" /><text x="507.5" y="243" class="booth-text">32</text></g>
+  <g id="stand-30"><rect x="456" y="256" width="31" height="18" class="booth-rect" /><text x="471.5" y="265" class="booth-text">30</text></g>
+  <g id="stand-33"><rect x="492" y="256" width="31" height="18" class="booth-rect" /><text x="507.5" y="265" class="booth-text">33</text></g>
+
+  <!-- East Aisle Stands: 27 & 26 -->
+  <g id="stand-27"><rect x="611" y="213" width="32" height="24" class="booth-rect" /><text x="627" y="225" class="booth-text">27</text></g>
+  <g id="stand-26"><rect x="611" y="247" width="32" height="24" class="booth-rect" /><text x="627" y="259" class="booth-text">26</text></g>
+
+  <!-- Bottom Row: Stands 23, 24, 25 -->
+  <g id="stand-23"><rect x="398" y="295" width="33" height="23" class="booth-rect" /><text x="414.5" y="306.5" class="booth-text">23</text></g>
+  <g id="stand-24"><rect x="438" y="295" width="33" height="23" class="booth-rect" /><text x="454.5" y="306.5" class="booth-text">24</text></g>
+  <g id="stand-25"><rect x="485" y="295" width="100" height="23" class="booth-rect" /><text x="535" y="306.5" class="booth-text">25</text></g>
+
+</svg>

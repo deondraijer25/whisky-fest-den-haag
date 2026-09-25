@@ -6,6 +6,30 @@ import Footer from '../components/Footer.astro';
 ---
 
 <Layout title="Mijn Account Portaal" description="Beheer uw tickets, bestellingen en gegevens voor International Whisky Festival.">
+  <!-- Fast Inline Script to set initial UI class and prevent flash -->
+  <script is:inline>
+    (function() {
+      var isAuth = false;
+      try {
+        var raw = localStorage.getItem('wf_auth_session') || sessionStorage.getItem('wf_auth_session');
+        if (raw) {
+          var p = JSON.parse(raw);
+          if (p && p.email && p.expiresAt && Date.now() <= p.expiresAt) {
+            isAuth = true;
+          } else if (p && p.expiresAt && Date.now() > p.expiresAt) {
+            localStorage.removeItem('wf_auth_session');
+            sessionStorage.removeItem('wf_auth_session');
+          }
+        }
+      } catch(e) {}
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('view') === 'login') {
+        isAuth = false;
+      }
+      document.documentElement.classList.add(isAuth ? 'wf-authenticated' : 'wf-unauthenticated');
+    })();
+  </script>
+
   <!-- 1. Global Navigation Header -->
   <Header />
 
@@ -48,8 +72,8 @@ import Footer from '../components/Footer.astro';
             <span class="form-subtext">U vindt uw ordernummer in de bevestigingsmail.</span>
           </div>
 
-          <button type="submit" class="btn btn-gold btn-login-submit">
-            Toegang tot Mijn Portaal &rarr;
+          <button type="submit" id="btn-login-submit" class="btn btn-gold btn-login-submit">
+            <span>Toegang tot Mijn Portaal &rarr;</span>
           </button>
         </form>
 
@@ -792,6 +816,21 @@ import Footer from '../components/Footer.astro';
 </Layout>
 
 <style is:global>
+  /* --- Anti-Flicker View Isolation --- */
+  html.wf-unauthenticated #portal-authenticated-area,
+  html.wf-unauthenticated .portal-authenticated-block {
+    display: none !important;
+  }
+  html.wf-unauthenticated #portal-login-area {
+    display: flex !important;
+  }
+  html.wf-authenticated #portal-login-area {
+    display: none !important;
+  }
+  html.wf-authenticated #portal-authenticated-area {
+    display: block !important;
+  }
+
   /* --- Global Reset & Page Wrapper --- */
   .account-page-wrapper {
     background-color: var(--bg-parchment);
@@ -2755,70 +2794,325 @@ import Footer from '../components/Footer.astro';
     const loginForm = document.getElementById('portal-login-form');
     const loginEmailInput = document.getElementById('login-email') as HTMLInputElement;
     const loginResInput = document.getElementById('login-res-no') as HTMLInputElement;
+    const loginSubmitBtn = document.getElementById('btn-login-submit') as HTMLButtonElement;
     const demoLoginBtn = document.getElementById('btn-quick-demo-login');
     const portalPageLogoutBtn = document.getElementById('portal-page-logout-btn');
+    const authErrorBox = document.getElementById('auth-error-box');
+    const authErrorText = document.getElementById('auth-error-text');
+
+    const SESSION_TTL = 7 * 24 * 60 * 60 * 1000; // 7 dagen in ms
+
+    function showError(msg: string) {
+      if (authErrorBox && authErrorText) {
+        authErrorText.textContent = msg;
+        authErrorBox.style.display = 'flex';
+      }
+    }
+
+    function hideError() {
+      if (authErrorBox) {
+        authErrorBox.style.display = 'none';
+      }
+    }
+
+    function getValidSession() {
+      try {
+        const raw = localStorage.getItem('wf_auth_session') || sessionStorage.getItem('wf_auth_session');
+        if (!raw) return null;
+        const s = JSON.parse(raw);
+        if (s && s.email && s.expiresAt && Date.now() <= s.expiresAt) {
+          return s;
+        } else if (s && s.expiresAt && Date.now() > s.expiresAt) {
+          localStorage.removeItem('wf_auth_session');
+          sessionStorage.removeItem('wf_auth_session');
+        }
+      } catch (e) {}
+      return null;
+    }
+
+    // Populate input fields if query params are provided
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramEmail = urlParams.get('email');
+    const paramOrder = urlParams.get('order') || urlParams.get('orderNumber');
+    if (paramEmail && loginEmailInput && !loginEmailInput.value) {
+      loginEmailInput.value = paramEmail.trim();
+    }
+    if (paramOrder && loginResInput && !loginResInput.value) {
+      loginResInput.value = paramOrder.trim();
+    }
 
     function checkAuthAndRender() {
-      const isLoggedOut = localStorage.getItem('wf_user_logged_out') === 'true';
+      const session = getValidSession();
+      const currentParams = new URLSearchParams(window.location.search);
+      const isExplicitLoginView = currentParams.get('view') === 'login';
 
-      if (isLoggedOut) {
+      if (!session || isExplicitLoginView) {
         if (authArea) authArea.style.display = 'none';
         if (loginArea) loginArea.style.display = 'flex';
+        document.documentElement.classList.remove('wf-authenticated');
+        document.documentElement.classList.add('wf-unauthenticated');
       } else {
         if (authArea) authArea.style.display = 'block';
         if (loginArea) loginArea.style.display = 'none';
+        document.documentElement.classList.remove('wf-unauthenticated');
+        document.documentElement.classList.add('wf-authenticated');
+
+        // Verify orderData matches session user
+        if (!orderData || (session.email && orderData.email && orderData.email.toLowerCase() !== session.email.toLowerCase())) {
+          try {
+            const rawStored = localStorage.getItem('wf_last_order');
+            if (rawStored) {
+              const p = JSON.parse(rawStored);
+              if (p && p.email && p.email.toLowerCase() === session.email.toLowerCase()) {
+                orderData = p;
+              }
+            }
+          } catch(e) {}
+
+          if (!orderData || (orderData.email && orderData.email.toLowerCase() !== session.email.toLowerCase())) {
+            orderData = {
+              name: session.name || (session.email ? session.email.split('@')[0] : 'Bezoeker'),
+              email: session.email,
+              resNumber: session.resNumber || '#WF-2026-84387',
+              phone: '+31 6 12345678',
+              whiskyStyle: 'Single Malt Scotch',
+              items: [
+                {
+                  id: 'vip-session',
+                  title: 'VIP Sessie - Vrijdag',
+                  qty: 1,
+                  price: 79.50,
+                  category: 'entree'
+                }
+              ],
+              isMember: (session.resNumber || '').includes('WS'),
+              totalPrice: 79.50
+            };
+          }
+        }
+
         updatePortalUI();
       }
     }
 
     if (loginForm) {
-      loginForm.addEventListener('submit', (e) => {
+      loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const email = loginEmailInput ? loginEmailInput.value.trim() : '';
-        const resNo = loginResInput ? loginResInput.value.trim() : '';
-        
-        localStorage.removeItem('wf_user_logged_out');
-        
-        const sessionData = {
-          email: email || 'deondraijer@gmail.com',
-          resNumber: resNo || '#WF-2026-84387',
-          name: email ? (email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1)) : 'Deon Draijer'
-        };
-        
-        localStorage.setItem('wf_auth_session', JSON.stringify(sessionData));
-        
-        if (orderData) {
-          orderData.email = sessionData.email;
-          if (resNo) orderData.resNumber = sessionData.resNumber;
-          localStorage.setItem('wf_last_order', JSON.stringify(orderData));
+        hideError();
+
+        const email = loginEmailInput ? loginEmailInput.value.trim().toLowerCase() : '';
+        const rawResNo = loginResInput ? loginResInput.value.trim() : '';
+
+        if (!email) {
+          showError('Vul een geldig e-mailadres in.');
+          return;
         }
-        
-        checkAuthAndRender();
-        window.dispatchEvent(new Event('storage'));
+
+        const originalBtnText = loginSubmitBtn ? loginSubmitBtn.innerHTML : '';
+        if (loginSubmitBtn) {
+          loginSubmitBtn.disabled = true;
+          loginSubmitBtn.innerHTML = '<span>Gegevens verifiëren...</span>';
+        }
+
+        try {
+          let verifiedOrder: any = null;
+
+          // 1. If order number entered, check Whiskytix API
+          if (rawResNo) {
+            const cleanCode = rawResNo.replace(/^#/, '').trim();
+            try {
+              const res = await fetch(`https://whiskytix-r1qq.vercel.app/api/checkout/order/${encodeURIComponent(cleanCode)}`);
+              if (res.ok) {
+                const data = await res.json();
+                if (data && data.order) {
+                  verifiedOrder = data.order;
+                }
+              }
+            } catch (err) {
+              console.warn('Whiskytix lookup niet bereikbaar, controleer lokale opslag:', err);
+            }
+          }
+
+          // 2. Check local order storage fallback
+          if (!verifiedOrder) {
+            try {
+              const localRaw = localStorage.getItem('wf_last_order');
+              if (localRaw) {
+                const localData = JSON.parse(localRaw);
+                const localOrderNum = (localData.resNumber || '').replace(/^#/, '').trim().toLowerCase();
+                const searchOrderNum = rawResNo.replace(/^#/, '').trim().toLowerCase();
+                const localEmail = (localData.email || '').trim().toLowerCase();
+
+                if (searchOrderNum && (localOrderNum === searchOrderNum || localOrderNum.endsWith(searchOrderNum))) {
+                  verifiedOrder = localData;
+                } else if (!searchOrderNum && localEmail === email) {
+                  verifiedOrder = localData;
+                }
+              }
+            } catch (e) {}
+          }
+
+          // 3. Validation Logic
+          if (verifiedOrder) {
+            const orderEmail = (verifiedOrder.customerEmail || verifiedOrder.email || '').trim().toLowerCase();
+            if (orderEmail && orderEmail !== email) {
+              showError(`Het e-mailadres komt niet overeen met ordernummer ${rawResNo}.`);
+              if (loginSubmitBtn) {
+                loginSubmitBtn.disabled = false;
+                loginSubmitBtn.innerHTML = originalBtnText;
+              }
+              return;
+            }
+
+            // Successfully matched order!
+            const custName = verifiedOrder.customerName || verifiedOrder.name || (email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1));
+            const finalOrderNum = verifiedOrder.orderNumber || verifiedOrder.resNumber || rawResNo;
+            const fullResNumber = finalOrderNum.startsWith('#') ? finalOrderNum : `#${finalOrderNum}`;
+
+            const sessionData = {
+              email: email,
+              resNumber: fullResNumber,
+              name: custName,
+              timestamp: Date.now(),
+              expiresAt: Date.now() + SESSION_TTL
+            };
+
+            localStorage.setItem('wf_auth_session', JSON.stringify(sessionData));
+            localStorage.removeItem('wf_user_logged_out');
+
+            // Format orderData for portal
+            const items = (verifiedOrder.items || []).map((it: any) => ({
+              id: it.id || it.ticketId || 'ticket',
+              title: it.title || it.name || 'Entreeticket',
+              qty: it.quantity || it.qty || 1,
+              price: it.unitPriceCents ? (it.unitPriceCents / 100) : (it.price || 0),
+              category: it.category || 'entree',
+              timeslot: it.timeslot || it.time || '',
+              delivery: it.delivery || ''
+            }));
+
+            orderData = {
+              name: custName,
+              email: email,
+              phone: verifiedOrder.customerPhone || verifiedOrder.phone || '+31 6 12345678',
+              whiskyStyle: verifiedOrder.whiskyStyle || 'Single Malt Scotch',
+              items: items.length > 0 ? items : [
+                {
+                  id: 'vip-session',
+                  title: 'VIP Sessie - Vrijdag',
+                  qty: 1,
+                  price: 79.50,
+                  category: 'entree'
+                }
+              ],
+              resNumber: fullResNumber,
+              isMember: fullResNumber.includes('WS'),
+              totalPrice: verifiedOrder.totalCents ? (verifiedOrder.totalCents / 100) : (verifiedOrder.totalPrice || 79.50)
+            };
+
+            localStorage.setItem('wf_last_order', JSON.stringify(orderData));
+
+            // Clean URL query (remove ?view=login)
+            const cleanUrl = window.location.pathname;
+            window.history.replaceState({}, '', cleanUrl);
+
+            checkAuthAndRender();
+            window.dispatchEvent(new Event('storage'));
+            return;
+          }
+
+          // If no order was verified:
+          // Check if demo email was used
+          if (email === 'deondraijer@gmail.com') {
+            const sessionData = {
+              email: 'deondraijer@gmail.com',
+              resNumber: rawResNo || '#WF-2026-84387',
+              name: 'Deon Draijer',
+              timestamp: Date.now(),
+              expiresAt: Date.now() + SESSION_TTL
+            };
+            localStorage.setItem('wf_auth_session', JSON.stringify(sessionData));
+            localStorage.removeItem('wf_user_logged_out');
+
+            const cleanUrl = window.location.pathname;
+            window.history.replaceState({}, '', cleanUrl);
+            checkAuthAndRender();
+            window.dispatchEvent(new Event('storage'));
+            return;
+          }
+
+          if (rawResNo) {
+            showError(`Geen bestelling gevonden voor ordernummer "${rawResNo}". Controleer uw e-mailadres en ordernummer.`);
+          } else {
+            showError(`Geen actieve bestellingen gevonden voor "${email}". Vul ook uw ordernummer in.`);
+          }
+        } catch (submitErr) {
+          console.error('Inloggen fout:', submitErr);
+          showError('Er is een onverwachte fout opgetreden bij het inloggen. Probeer het opnieuw.');
+        } finally {
+          if (loginSubmitBtn) {
+            loginSubmitBtn.disabled = false;
+            loginSubmitBtn.innerHTML = originalBtnText;
+          }
+        }
       });
     }
 
     if (demoLoginBtn) {
       demoLoginBtn.addEventListener('click', () => {
+        hideError();
         localStorage.removeItem('wf_user_logged_out');
-        localStorage.setItem('wf_auth_session', JSON.stringify({
+        const demoSession = {
           email: 'deondraijer@gmail.com',
           resNumber: '#WF-2026-84387',
-          name: 'Deon Draijer'
-        }));
+          name: 'Deon Draijer',
+          timestamp: Date.now(),
+          expiresAt: Date.now() + SESSION_TTL
+        };
+        localStorage.setItem('wf_auth_session', JSON.stringify(demoSession));
+
+        orderData = {
+          name: 'Deon Draijer',
+          email: 'deondraijer@gmail.com',
+          phone: '+31 6 12345678',
+          whiskyStyle: 'Single Malt Scotch',
+          items: [
+            {
+              id: 'vip-session',
+              title: 'VIP Sessie - Vrijdag',
+              qty: 1,
+              price: 79.50,
+              category: 'entree'
+            }
+          ],
+          resNumber: '#WF-2026-84387',
+          isMember: true,
+          totalPrice: 79.50
+        };
+        localStorage.setItem('wf_last_order', JSON.stringify(orderData));
+
+        const cleanUrl = window.location.pathname;
+        window.history.replaceState({}, '', cleanUrl);
+
         checkAuthAndRender();
         window.dispatchEvent(new Event('storage'));
       });
     }
 
+    function performLogout() {
+      localStorage.setItem('wf_user_logged_out', 'true');
+      sessionStorage.removeItem('wf_auth_session');
+      localStorage.removeItem('wf_auth_session');
+      
+      const newUrl = window.location.pathname + '?view=login';
+      window.history.replaceState({}, '', newUrl);
+
+      checkAuthAndRender();
+      window.dispatchEvent(new Event('storage'));
+    }
+
     if (portalPageLogoutBtn) {
-      portalPageLogoutBtn.addEventListener('click', () => {
-        localStorage.setItem('wf_user_logged_out', 'true');
-        sessionStorage.removeItem('wf_auth_session');
-        localStorage.removeItem('wf_auth_session');
-        checkAuthAndRender();
-        window.dispatchEvent(new Event('storage'));
-      });
+      portalPageLogoutBtn.addEventListener('click', performLogout);
     }
 
     checkAuthAndRender();

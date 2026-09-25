@@ -133,9 +133,10 @@ const isAccount = pathname.startsWith("/account");
       <!-- 2. Bestel Tickets Button -->
       <a href="/#sessies" class="btn btn-gold btn-header">Bestel Tickets</a>
 
-      <!-- 3a. Mijn Account (Direct Link - Logged Out) -->
-      <a href="/account" class={`header-account-link ${isAccount ? 'active' : ''}`} id="header-account-link">
-        Mijn Account
+      <!-- 3a. Inloggen (Direct Link - Logged Out) -->
+      <a href="/account?view=login" class={`header-account-link ${isAccount ? 'active' : ''}`} id="header-account-link">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 4px;"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+        <span>Inloggen</span>
       </a>
 
       <!-- 3b. Mijn Account (Dropdown Wrapper - Logged In) -->
@@ -190,36 +191,33 @@ const isAccount = pathname.startsWith("/account");
       <script is:inline>
         (function() {
           function syncHeaderAccount() {
-            var isLoggedOut = localStorage.getItem('wf_user_logged_out') === 'true';
             var link = document.getElementById('header-account-link');
             var wrapper = document.getElementById('header-account-wrapper');
             var userNameEl = document.getElementById('header-account-user-name');
+            var session = null;
 
-            if (isLoggedOut) {
-              if (link) link.style.display = 'inline-flex';
-              if (wrapper) wrapper.style.display = 'none';
-            } else {
+            try {
+              var raw = localStorage.getItem('wf_auth_session') || sessionStorage.getItem('wf_auth_session');
+              if (raw) {
+                var parsed = JSON.parse(raw);
+                if (parsed && parsed.email && parsed.expiresAt && Date.now() <= parsed.expiresAt) {
+                  session = parsed;
+                } else if (parsed && parsed.expiresAt && Date.now() > parsed.expiresAt) {
+                  localStorage.removeItem('wf_auth_session');
+                  sessionStorage.removeItem('wf_auth_session');
+                }
+              }
+            } catch(e) {}
+
+            if (session) {
               if (link) link.style.display = 'none';
               if (wrapper) wrapper.style.display = 'inline-flex';
-
               if (userNameEl) {
-                var name = 'Deon Draijer';
-                try {
-                  var auth = localStorage.getItem('wf_auth_session') || sessionStorage.getItem('wf_auth_session');
-                  if (auth) {
-                    var p = JSON.parse(auth);
-                    if (p.name) name = p.name;
-                    else if (p.email) name = p.email.split('@')[0];
-                  } else {
-                    var last = localStorage.getItem('wf_last_order');
-                    if (last) {
-                      var lp = JSON.parse(last);
-                      if (lp.name) name = lp.name;
-                    }
-                  }
-                } catch(e) {}
-                userNameEl.textContent = name;
+                userNameEl.textContent = session.name || session.email.split('@')[0];
               }
+            } else {
+              if (link) link.style.display = 'inline-flex';
+              if (wrapper) wrapper.style.display = 'none';
             }
           }
 
@@ -301,7 +299,7 @@ const isAccount = pathname.startsWith("/account");
           </div>
           <span class="mn-item-arrow">&rarr;</span>
         </a>
-        <a href="/account" class={`mobile-nav-item ${isAccount ? 'active' : ''}`}>
+        <a href="/account" class={`mobile-nav-item ${isAccount ? 'active' : ''}`} id="mobile-nav-account-item">
           <span class="mn-item-icon">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
@@ -309,8 +307,8 @@ const isAccount = pathname.startsWith("/account");
             </svg>
           </span>
           <div class="mn-item-text">
-            <strong class="mn-item-title">Mijn Account</strong>
-            <span class="mn-item-desc">Mijn tickets, badges &amp; bestellingen</span>
+            <strong class="mn-item-title" id="mobile-nav-account-title">Mijn Account</strong>
+            <span class="mn-item-desc" id="mobile-nav-account-desc">Mijn tickets, badges &amp; bestellingen</span>
           </div>
           <span class="mn-item-arrow">&rarr;</span>
         </a>
@@ -1850,35 +1848,40 @@ const isAccount = pathname.startsWith("/account");
   const headerNavLogoutBtn = document.getElementById('header-nav-logout-btn');
 
   function updateHeaderAccountState() {
-    const isLoggedOut = localStorage.getItem('wf_user_logged_out') === 'true';
-    const isLoggedIn = !isLoggedOut;
+    let session = null;
+    try {
+      const raw = localStorage.getItem('wf_auth_session') || sessionStorage.getItem('wf_auth_session');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && parsed.email && parsed.expiresAt && Date.now() <= parsed.expiresAt) {
+          session = parsed;
+        } else if (parsed && parsed.expiresAt && Date.now() > parsed.expiresAt) {
+          localStorage.removeItem('wf_auth_session');
+          sessionStorage.removeItem('wf_auth_session');
+        }
+      }
+    } catch(e) {}
 
-    if (isLoggedIn) {
+    const mobileAccountTitle = document.getElementById('mobile-nav-account-title');
+    const mobileAccountDesc = document.getElementById('mobile-nav-account-desc');
+    const mobileAccountItem = document.getElementById('mobile-nav-account-item');
+
+    if (session) {
       if (headerAccountLink) headerAccountLink.style.display = 'none';
       if (headerAccountWrapper) headerAccountWrapper.style.display = 'inline-flex';
-
       if (headerAccountUserName) {
-        let userName = 'Deon Draijer';
-        try {
-          const authSession = localStorage.getItem('wf_auth_session') || sessionStorage.getItem('wf_auth_session');
-          if (authSession) {
-            const parsed = JSON.parse(authSession);
-            if (parsed.name) userName = parsed.name;
-            else if (parsed.email) userName = parsed.email.split('@')[0];
-          } else {
-            const lastOrder = localStorage.getItem('wf_last_order');
-            if (lastOrder) {
-              const p = JSON.parse(lastOrder);
-              if (p.name) userName = p.name;
-            }
-          }
-        } catch(e) {}
-        headerAccountUserName.textContent = userName;
+        headerAccountUserName.textContent = session.name || session.email.split('@')[0];
       }
+      if (mobileAccountTitle) mobileAccountTitle.textContent = 'Mijn Account (' + (session.name ? session.name.split(' ')[0] : 'Ingelogd') + ')';
+      if (mobileAccountDesc) mobileAccountDesc.textContent = 'Bekijk uw tickets en reserveringen';
+      if (mobileAccountItem) mobileAccountItem.setAttribute('href', '/account');
     } else {
       if (headerAccountLink) headerAccountLink.style.display = 'inline-flex';
       if (headerAccountWrapper) headerAccountWrapper.style.display = 'none';
       if (headerAccountDropdown) headerAccountDropdown.classList.remove('active');
+      if (mobileAccountTitle) mobileAccountTitle.textContent = 'Inloggen Portaal';
+      if (mobileAccountDesc) mobileAccountDesc.textContent = 'Toegang tot uw tickets en bestellingen';
+      if (mobileAccountItem) mobileAccountItem.setAttribute('href', '/account?view=login');
     }
   }
 
@@ -1907,7 +1910,7 @@ const isAccount = pathname.startsWith("/account");
       updateHeaderAccountState();
 
       if (window.location.pathname.startsWith('/account')) {
-        window.location.href = '/account';
+        window.location.href = '/account?view=login';
       } else {
         window.location.reload();
       }
