@@ -4,7 +4,7 @@ import { TICKETS_DEN_HAAG, type TicketItem } from '../data/ticketsDenHaag';
 import { EXHIBITORS_DEN_HAAG, type ExhibitorItem } from '../data/standhouders';
 
 const GHL_API_BASE = 'https://services.leadconnectorhq.com';
-const GHL_API_KEY = process.env.GHL_API_KEY || import.meta.env?.GHL_API_KEY || '';
+const GHL_API_KEY = process.env.GHL_API_KEY || import.meta.env?.GHL_API_KEY || 'pit-150d6114-ac2c-4cf7-9d5c-ffc20499c790';
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID || import.meta.env?.GHL_LOCATION_ID || '1OZ9uxIBFoxwbheVC5iN';
 
 // Custom Object Schema Keys as registered in GHL
