@@ -2598,94 +2598,85 @@ import Footer from '../components/Footer.astro';
 
       // Render Dynamic Tickets in Tab 1 (Each ticket contains an individual Download Button)
       const ticketsContainer = document.getElementById("tickets-container");
-      if (ticketsContainer && orderData.items) {
+      if (ticketsContainer && (orderData.items || orderData.tickets || orderData.activeTickets)) {
         ticketsContainer.innerHTML = "";
-        
-        let globalTicketIndex = 1;
-        orderData.items.forEach((item: any) => {
-          let displayDay = "13";
-          let displayMonth = "NOV";
-          let displayTime = item.time || item.timeslot || "13:00 - 17:00 UUR";
-          let watermark = "WF";
-          
-          const titleLower = item.title.toLowerCase();
-          
-          if (item.category === "entree") {
-            watermark = orderData.isMember ? "WS" : "WF";
-            if (titleLower.includes("vrijdag")) {
-              displayDay = "13";
-              displayTime = titleLower.includes("vip") ? "13:00 - 17:00 UUR" : "19:00 - 23:00 UUR";
-            } else if (titleLower.includes("zondag")) {
-              displayDay = "15";
-              displayTime = "13:00 - 17:00 UUR";
-            } else {
-              displayDay = "14";
-              displayTime = (titleLower.includes("avond") || (item.time && item.time.includes("19:00")) || (item.timeslot && item.timeslot.includes("19:00")))
-                ? "19:00 - 23:00 UUR"
-                : "13:00 - 17:00 UUR";
-            }
-          } else if (item.category === "tram") {
-            watermark = "WT";
-            displayDay = "14";
-            displayTime = item.timeslot || "14:00 UUR";
-          } else if (item.category === "botteling") {
-            watermark = "FB";
-            displayDay = "13-15";
-            displayTime = item.delivery === "shipping" ? "VERZENDING PER POST" : "AFHALEN (STAND 48)";
-          } else if (item.category === "masterclass") {
-            watermark = "MC";
-            displayDay = "14";
-            displayTime = item.timeslot || "14:00 - 14:45 UUR";
-          }
 
-          // Expand multiple quantities into individual separate ticket cards
-          const qty = item.qty || 1;
-          for (let t = 0; t < qty; t++) {
-            const rawCode = (orderData.resNumber || "WF-2026-84387").replace('#', '');
-            const cleanCode = `${rawCode}-${globalTicketIndex}`;
+        // Prefer authoritative active tickets from Whiskytix (omits cancelled & swapped tickets!)
+        const authoritativeTickets = (orderData.activeTickets && Array.isArray(orderData.activeTickets) && orderData.activeTickets.length > 0)
+          ? orderData.activeTickets
+          : ((orderData.tickets && Array.isArray(orderData.tickets) && orderData.tickets.length > 0)
+              ? orderData.tickets.filter((t: any) => t.status !== 'cancelled' && t.status !== 'swapped')
+              : null);
+
+        if (authoritativeTickets && authoritativeTickets.length > 0) {
+          authoritativeTickets.forEach((ticket: any, tIdx: number) => {
+            const rawCode = (ticket.ticketCode || `${orderData.resNumber || 'WF-2026-84387'}-${tIdx + 1}`).replace(/^#/, '');
+            const cleanCode = rawCode.trim();
             const displayCode = `#${cleanCode}`;
-            
-            // Clean title: remove redundant time suffix if present so title stays concise and uniform
-            const cleanTitle = item.title.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
+            const attendeeName = ticket.attendeeName || userName;
+            const ticketTitle = ticket.sessionTitle || ticket.title || 'Festival Entreeticket';
+            const cleanTitle = ticketTitle.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
+            const displayTime = ticket.timeStr || ticket.time || ticket.timeslot || '13:00 - 17:00 UUR';
+            const formattedDate = ticket.dateStr || ticket.date || 'Vrijdag 13 november 2026';
+            const formattedSchedule = `${formattedDate} • ${displayTime}`;
 
-            // Clean public HTTPS URL that WhatsApp always recognizes as a blue clickable link
+            const titleLower = ticketTitle.toLowerCase();
+            let watermark = orderData.isMember ? "WS" : "WF";
+            let locationName = "Grote Kerk, Den Haag";
+            let scanInstruction = "SCAN BIJ DE DEUR";
+
+            if (titleLower.includes("masterclass")) {
+              watermark = "MC";
+              locationName = "Nutshuis, Den Haag";
+              scanInstruction = "TOON BIJ DE MASTERCLASS ZAAL";
+            } else if (titleLower.includes("botteling") || titleLower.includes("fles")) {
+              watermark = "FB";
+              locationName = (ticket.delivery === "shipping" || displayTime.toLowerCase().includes("verzending"))
+                ? "Verzending per Post (NL & BE)"
+                : "Grote Kerk (Stand 48)";
+              scanInstruction = (ticket.delivery === "shipping" || displayTime.toLowerCase().includes("verzending"))
+                ? "VERZONDEN"
+                : "AFHALEN BIJ STAND 48";
+            } else if (titleLower.includes("tram")) {
+              watermark = "WT";
+              locationName = "Historische Whisky Tram Den Haag";
+              scanInstruction = "TOON BIJ INSCHEPEN";
+            } else if (titleLower.includes("vip")) {
+              watermark = "VIP";
+            }
+
+            const isCheckedIn = ticket.status === 'checked_in';
+            const isReplacement = !!ticket.replacedTicketCode || cleanCode.includes('-R');
+            const isComp = !!ticket.swapReason && (ticket.swapReason.toLowerCase().includes('cadeau') || ticket.swapReason.toLowerCase().includes('handmatig') || ticket.swapReason.toLowerCase().includes('toegevoegd'));
+
             const baseUrl = window.location.origin;
-            
-            const ticketLink = `${baseUrl}/ticket?id=${cleanCode}&title=${encodeURIComponent(cleanTitle)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}`;
-            
+            const ticketLink = `${baseUrl}/ticket?id=${cleanCode}&title=${encodeURIComponent(cleanTitle)}&name=${encodeURIComponent(attendeeName)}&time=${encodeURIComponent(displayTime)}&date=${encodeURIComponent(formattedDate)}&orderNumber=${encodeURIComponent(orderData.resNumber || '')}`;
+
             const shareText = encodeURIComponent(
-              `*${'International Whisky Festival 2026'}*\n` +
+              `*International Whisky Festival 2026*\n` +
               `E-ticket: ${cleanTitle}\n\n` +
-              `Kaarthouder: ${userName}\n` +
+              `Kaarthouder: ${attendeeName}\n` +
+              `Datum: ${formattedDate}\n` +
               `Tijdslot: ${displayTime}\n` +
               `Ticket Code: ${displayCode}\n` +
-              `Locatie: Grote Kerk, Den Haag\n\n` +
+              `Locatie: ${locationName}\n\n` +
               `Bekijk en download je officiële E-ticket:\n` +
               `${ticketLink}`
             );
-            
+
             const mailSubject = encodeURIComponent(`E-ticket voor International Whisky Festival: ${cleanTitle}`);
             const mailBody = encodeURIComponent(
-              `Beste ${userName},\n\n` +
+              `Beste ${attendeeName},\n\n` +
               `Hierbij ontvang je jouw toegangsbewijs voor International Whisky Festival 2026.\n\n` +
               `Ticket: ${cleanTitle}\n` +
+              `Datum: ${formattedDate}\n` +
               `Tijdslot: ${displayTime}\n` +
               `Ticket Code: ${displayCode}\n` +
-              `Locatie: Grote Kerk, Den Haag\n\n` +
+              `Locatie: ${locationName}\n\n` +
               `Bekijk en download je digitale ticket direct via onderstaande link:\n` +
               `${ticketLink}\n\n` +
               `Graag tot ziens op het festival!`
             );
-
-            // Natural schedule string
-            let formattedSchedule = "Vrijdag 13 november 2026 • " + displayTime;
-            if (titleLower.includes("zaterdag")) {
-              formattedSchedule = "Zaterdag 14 november 2026 • " + displayTime;
-            } else if (titleLower.includes("zondag")) {
-              formattedSchedule = "Zondag 15 november 2026 • " + displayTime;
-            } else if (item.category === 'masterclass') {
-              formattedSchedule = "Zaterdag 14 november 2026 • " + displayTime;
-            }
 
             const ticketHTML = `
               <div class="ticket-envelope">
@@ -2695,7 +2686,7 @@ import Footer from '../components/Footer.astro';
                     <span class="scan-label">CONTROLE STUB</span>
                     <div class="qr-code-holder">
                       <img 
-                        src="https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/qr.svg?city=denhaag&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(cleanTitle)}" 
+                        src="https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/qr.svg?city=denhaag&name=${encodeURIComponent(attendeeName)}&title=${encodeURIComponent(cleanTitle)}" 
                         alt="Controle QR-Code ${displayCode}" 
                         width="105" 
                         height="105" 
@@ -2704,7 +2695,7 @@ import Footer from '../components/Footer.astro';
                         loading="lazy"
                       />
                     </div>
-                    <span class="scan-instructions">${item.category === 'botteling' && item.delivery === 'shipping' ? 'VERZONDEN' : 'SCAN BIJ DE DEUR'}</span>
+                    <span class="scan-instructions">${scanInstruction}</span>
                     <span class="scan-res-hash">${displayCode}</span>
                   </div>
 
@@ -2717,13 +2708,15 @@ import Footer from '../components/Footer.astro';
                       <div class="ticket-title-block">
                         <h2 class="ticket-session-title">${cleanTitle}</h2>
                         <p class="ticket-schedule-text">${formattedSchedule}</p>
+                        ${isReplacement ? `<span style="display:inline-block;margin-top:4px;font-size:0.72rem;font-weight:700;background:#FEF3C7;color:#92400E;padding:2px 8px;border-radius:4px;border:1px solid #FCD34D;">Vervangt ticket ${ticket.replacedTicketCode || 'vorig ticket'}</span>` : ''}
+                        ${isComp ? `<span style="display:inline-block;margin-top:4px;font-size:0.72rem;font-weight:700;background:#E0E9FF;color:#006448;padding:2px 8px;border-radius:4px;border:1px solid #A8DAB5;">Cadeau / Toegevoegd ticket</span>` : ''}
                       </div>
                       <div class="ticket-badges-block">
-                        <span class="ticket-status-tag">
+                        <span class="ticket-status-tag" style="${isCheckedIn ? 'background:#DCFCE7;color:#166534;border-color:#86EFAC;' : ''}">
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                          Geldig Toegangsbewijs
+                          ${isCheckedIn ? 'Ingecheckt aan de Deur' : (titleLower.includes('botteling') ? ((ticket.delivery === 'shipping' || displayTime.toLowerCase().includes('verzending')) ? 'Verzending Bevestigd' : 'Geldig Ophaalbewijs') : 'Geldig Toegangsbewijs')}
                         </span>
-                        ${qty > 1 ? `<span class="ticket-qty-tag">Ticket ${t + 1} van ${qty}</span>` : ''}
+                        ${authoritativeTickets.length > 1 ? `<span class="ticket-qty-tag">Ticket ${tIdx + 1} van ${authoritativeTickets.length}</span>` : ''}
                       </div>
                     </div>
 
@@ -2731,11 +2724,11 @@ import Footer from '../components/Footer.astro';
                     <div class="ticket-meta-trio">
                       <div class="meta-col">
                         <span class="meta-col-label">Kaarthouder</span>
-                        <strong class="meta-col-val">${userName}</strong>
+                        <strong class="meta-col-val">${attendeeName}</strong>
                       </div>
                       <div class="meta-col">
                         <span class="meta-col-label">Locatie</span>
-                        <strong class="meta-col-val">${item.category === 'masterclass' ? 'Nutshuis, Den Haag' : 'Grote Kerk, Den Haag'}</strong>
+                        <strong class="meta-col-val">${locationName}</strong>
                       </div>
                       <div class="meta-col">
                         <span class="meta-col-label">Ticket Code</span>
@@ -2745,7 +2738,7 @@ import Footer from '../components/Footer.astro';
 
                     <!-- 3. Bottom Row: Action Buttons -->
                     <div class="ticket-actions-row">
-                      <button type="button" class="btn-ticket-download-gold" onclick="window.open('https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/pdf?city=denhaag&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(cleanTitle)}&time=${encodeURIComponent(displayTime)}&orderNumber=${encodeURIComponent(orderData.resNumber || '')}', '_blank')">
+                      <button type="button" class="btn-ticket-download-gold" onclick="window.open('https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/pdf?city=denhaag&name=${encodeURIComponent(attendeeName)}&title=${encodeURIComponent(cleanTitle)}&time=${encodeURIComponent(displayTime)}&date=${encodeURIComponent(formattedDate)}&orderNumber=${encodeURIComponent(orderData.resNumber || '')}', '_blank')">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                         <span>Download E-Ticket (PDF)</span>
                       </button>
@@ -2772,11 +2765,187 @@ import Footer from '../components/Footer.astro';
                 </div>
               </div>
             `;
-
             ticketsContainer.innerHTML += ticketHTML;
-            globalTicketIndex++;
-          }
-        });
+          });
+        } else if (orderData.items) {
+          // Fallback to orderData.items if authoritative tickets not yet loaded
+          let globalTicketIndex = 1;
+          orderData.items.forEach((item: any) => {
+            let displayDay = "13";
+            let displayMonth = "NOV";
+            let displayTime = item.time || item.timeslot || "13:00 - 17:00 UUR";
+            let watermark = "WF";
+            
+            const titleLower = item.title.toLowerCase();
+            
+            if (item.category === "entree") {
+              watermark = orderData.isMember ? "WS" : "WF";
+              if (titleLower.includes("vrijdag")) {
+                displayDay = "13";
+                displayTime = titleLower.includes("vip") ? "13:00 - 17:00 UUR" : "19:00 - 23:00 UUR";
+              } else if (titleLower.includes("zondag")) {
+                displayDay = "15";
+                displayTime = "13:00 - 17:00 UUR";
+              } else {
+                displayDay = "14";
+                displayTime = (titleLower.includes("avond") || (item.time && item.time.includes("19:00")) || (item.timeslot && item.timeslot.includes("19:00")))
+                  ? "19:00 - 23:00 UUR"
+                  : "13:00 - 17:00 UUR";
+              }
+            } else if (item.category === "tram") {
+              watermark = "WT";
+              displayDay = "14";
+              displayTime = item.timeslot || "14:00 UUR";
+            } else if (item.category === "botteling") {
+              watermark = "FB";
+              displayDay = "13-15";
+              displayTime = item.delivery === "shipping" ? "VERZENDING PER POST" : "AFHALEN (STAND 48)";
+            } else if (item.category === "masterclass") {
+              watermark = "MC";
+              displayDay = "14";
+              displayTime = item.timeslot || "14:00 - 14:45 UUR";
+            }
+
+            // Expand multiple quantities into individual separate ticket cards
+            const qty = item.qty || 1;
+            for (let t = 0; t < qty; t++) {
+              const rawCode = (orderData.resNumber || "WF-2026-84387").replace('#', '');
+              const cleanCode = `${rawCode}-${globalTicketIndex}`;
+              const displayCode = `#${cleanCode}`;
+              
+              // Clean title: remove redundant time suffix if present so title stays concise and uniform
+              const cleanTitle = item.title.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
+
+              // Clean public HTTPS URL that WhatsApp always recognizes as a blue clickable link
+              const baseUrl = window.location.origin;
+              
+              const ticketLink = `${baseUrl}/ticket?id=${cleanCode}&title=${encodeURIComponent(cleanTitle)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}`;
+              
+              const shareText = encodeURIComponent(
+                `*${'International Whisky Festival 2026'}*\n` +
+                `E-ticket: ${cleanTitle}\n\n` +
+                `Kaarthouder: ${userName}\n` +
+                `Tijdslot: ${displayTime}\n` +
+                `Ticket Code: ${displayCode}\n` +
+                `Locatie: Grote Kerk, Den Haag\n\n` +
+                `Bekijk en download je officiële E-ticket:\n` +
+                `${ticketLink}`
+              );
+              
+              const mailSubject = encodeURIComponent(`E-ticket voor International Whisky Festival: ${cleanTitle}`);
+              const mailBody = encodeURIComponent(
+                `Beste ${userName},\n\n` +
+                `Hierbij ontvang je jouw toegangsbewijs voor International Whisky Festival 2026.\n\n` +
+                `Ticket: ${cleanTitle}\n` +
+                `Tijdslot: ${displayTime}\n` +
+                `Ticket Code: ${displayCode}\n` +
+                `Locatie: Grote Kerk, Den Haag\n\n` +
+                `Bekijk en download je digitale ticket direct via onderstaande link:\n` +
+                `${ticketLink}\n\n` +
+                `Graag tot ziens op het festival!`
+              );
+
+              // Natural schedule string
+              let formattedSchedule = "Vrijdag 13 november 2026 • " + displayTime;
+              if (titleLower.includes("zaterdag")) {
+                formattedSchedule = "Zaterdag 14 november 2026 • " + displayTime;
+              } else if (titleLower.includes("zondag")) {
+                formattedSchedule = "Zondag 15 november 2026 • " + displayTime;
+              } else if (item.category === 'masterclass') {
+                formattedSchedule = "Zaterdag 14 november 2026 • " + displayTime;
+              }
+
+              const ticketHTML = `
+                <div class="ticket-envelope">
+                  <div class="ticket-stub-large">
+                    <!-- Scanner Stub -->
+                    <div class="ticket-right-stub">
+                      <span class="scan-label">CONTROLE STUB</span>
+                      <div class="qr-code-holder">
+                        <img 
+                          src="https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/qr.svg?city=denhaag&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(cleanTitle)}" 
+                          alt="Controle QR-Code ${displayCode}" 
+                          width="105" 
+                          height="105" 
+                          class="qr-code-img"
+                          style="display:block; width:105px; height:105px; object-fit:contain; image-rendering:pixelated;"
+                          loading="lazy"
+                        />
+                      </div>
+                      <span class="scan-instructions">${item.category === 'botteling' && item.delivery === 'shipping' ? 'VERZONDEN' : 'SCAN BIJ DE DEUR'}</span>
+                      <span class="scan-res-hash">${displayCode}</span>
+                    </div>
+
+                    <!-- Clean Main Body -->
+                    <div class="ticket-left-stub">
+                      <div class="ticket-watermark">${watermark}</div>
+                      
+                      <!-- 1. Header Row -->
+                      <div class="ticket-header-row">
+                        <div class="ticket-title-block">
+                          <h2 class="ticket-session-title">${cleanTitle}</h2>
+                          <p class="ticket-schedule-text">${formattedSchedule}</p>
+                        </div>
+                        <div class="ticket-badges-block">
+                          <span class="ticket-status-tag">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Geldig Toegangsbewijs
+                          </span>
+                          ${qty > 1 ? `<span class="ticket-qty-tag">Ticket ${t + 1} van ${qty}</span>` : ''}
+                        </div>
+                      </div>
+
+                      <!-- 2. Middle Row: 3-Column Meta Grid -->
+                      <div class="ticket-meta-trio">
+                        <div class="meta-col">
+                          <span class="meta-col-label">Kaarthouder</span>
+                          <strong class="meta-col-val">${userName}</strong>
+                        </div>
+                        <div class="meta-col">
+                          <span class="meta-col-label">Locatie</span>
+                          <strong class="meta-col-val">${item.category === 'masterclass' ? 'Nutshuis, Den Haag' : 'Grote Kerk, Den Haag'}</strong>
+                        </div>
+                        <div class="meta-col">
+                          <span class="meta-col-label">Ticket Code</span>
+                          <strong class="meta-col-val font-mono">${displayCode}</strong>
+                        </div>
+                      </div>
+
+                      <!-- 3. Bottom Row: Action Buttons -->
+                      <div class="ticket-actions-row">
+                        <button type="button" class="btn-ticket-download-gold" onclick="window.open('https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/pdf?city=denhaag&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(cleanTitle)}&time=${encodeURIComponent(displayTime)}&orderNumber=${encodeURIComponent(orderData.resNumber || '')}', '_blank')">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                          <span>Download E-Ticket (PDF)</span>
+                        </button>
+
+                        <div class="ticket-share-wrapper">
+                          <button type="button" class="btn-ticket-share-white btn-share-trigger">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                            <span>Deel Ticket</span>
+                          </button>
+                          <div class="ticket-share-menu">
+                            <a href="https://api.whatsapp.com/send?text=${shareText}" target="_blank" rel="noopener noreferrer" class="share-option-link">
+                              <span>Deel via WhatsApp</span>
+                            </a>
+                            <a href="mailto:?subject=${mailSubject}&body=${mailBody}" class="share-option-link">
+                              <span>Deel via E-mail</span>
+                            </a>
+                            <button type="button" class="share-option-link" onclick="navigator.clipboard.writeText('${ticketLink}'); alert('✓ Directe ticket link gekopieerd!');">
+                              <span>Kopieer Ticket Link</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `;
+
+              ticketsContainer.innerHTML += ticketHTML;
+              globalTicketIndex++;
+            }
+          });
+        }
       }
     }
 
@@ -2884,6 +3053,47 @@ import Footer from '../components/Footer.astro';
         }
 
         updatePortalUI();
+
+        // 3. LIVE WHISKYTIX SYNC: Always re-fetch latest order & tickets from Whiskytix
+        const activeResNo = session.resNumber || (orderData && orderData.resNumber);
+        if (activeResNo) {
+          const cleanCode = activeResNo.replace(/^#/, '').trim();
+          fetch(`https://whiskytix-r1qq.vercel.app/api/checkout/order/${encodeURIComponent(cleanCode)}`)
+            .then((res) => (res.ok ? res.json() : null))
+            .then((data) => {
+              if (data && data.order) {
+                const vOrder = data.order;
+                const items = (vOrder.items || []).map((it: any) => ({
+                  id: it.id || it.ticketId || 'ticket',
+                  title: it.title || it.name || 'Entreeticket',
+                  qty: it.quantity || it.qty || 1,
+                  price: it.unitPriceCents ? it.unitPriceCents / 100 : it.price || 0,
+                  category: it.category || 'entree',
+                  timeslot: it.timeslot || it.time || '',
+                  delivery: it.delivery || '',
+                }));
+                orderData = {
+                  ...orderData,
+                  name: vOrder.customerName || orderData.name,
+                  email: vOrder.customerEmail || orderData.email,
+                  phone: vOrder.customerPhone || orderData.phone,
+                  resNumber: vOrder.orderNumber || orderData.resNumber,
+                  items: items.length > 0 ? items : orderData.items,
+                  tickets: vOrder.tickets || orderData.tickets || [],
+                  activeTickets: vOrder.activeTickets || orderData.activeTickets || [],
+                  cancelledTickets: vOrder.cancelledTickets || orderData.cancelledTickets || [],
+                  swappedTickets: vOrder.swappedTickets || orderData.swappedTickets || [],
+                  itemsSummary: vOrder.itemsSummary || orderData.itemsSummary || '',
+                  totalPrice: vOrder.totalCents ? (vOrder.totalCents / 100) : orderData.totalPrice,
+                };
+                localStorage.setItem('wf_last_order', JSON.stringify(orderData));
+                updatePortalUI();
+              }
+            })
+            .catch((err) => {
+              console.warn('Whiskytix achtergrond sync:', err);
+            });
+        }
       }
     }
 
@@ -2997,6 +3207,11 @@ import Footer from '../components/Footer.astro';
                   category: 'entree'
                 }
               ],
+              tickets: verifiedOrder.tickets || [],
+              activeTickets: verifiedOrder.activeTickets || [],
+              cancelledTickets: verifiedOrder.cancelledTickets || [],
+              swappedTickets: verifiedOrder.swappedTickets || [],
+              itemsSummary: verifiedOrder.itemsSummary || '',
               resNumber: fullResNumber,
               isMember: fullResNumber.includes('WS'),
               totalPrice: verifiedOrder.totalCents ? (verifiedOrder.totalCents / 100) : (verifiedOrder.totalPrice || 79.50)

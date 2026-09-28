@@ -489,4 +489,57 @@ import Layout from '../layouts/Layout.astro';
       window.open(pdfDownloadUrl, '_blank');
     });
   }
+
+  // Live status verification against Whiskytix
+  const cleanCodeLookup = code.replace(/^#/, '').trim();
+  if (cleanCodeLookup) {
+    const tvStatus = document.getElementById('tv-status');
+    const tvScanInst = document.getElementById('tv-scan-inst');
+    fetch(`https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCodeLookup)}/status`)
+      .then(res => res.ok ? res.json() : null)
+      .then(statusData => {
+        if (statusData && statusData.found) {
+          if (statusData.isCancelled) {
+            if (tvStatus) {
+              tvStatus.textContent = 'GEANNULEERD (NIET GELDIG)';
+              tvStatus.style.color = '#DC2626';
+            }
+            if (tvScanInst) {
+              tvScanInst.textContent = 'ONGELDIG TICKET';
+              tvScanInst.style.color = '#DC2626';
+            }
+            const topActions = document.querySelector('.ticket-top-actions-bar');
+            if (topActions && !document.getElementById('ticket-status-alert-box')) {
+              const alertDiv = document.createElement('div');
+              alertDiv.id = 'ticket-status-alert-box';
+              alertDiv.style.cssText = 'background:#FEE2E2;border:2px solid #EF4444;color:#991B1B;padding:0.75rem 1.25rem;border-radius:8px;font-weight:700;font-size:0.9rem;width:100%;margin-bottom:1rem;display:flex;align-items:center;gap:0.75rem;box-shadow:2px 2px 0px rgba(153,27,27,0.4);';
+              alertDiv.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><span><strong>Let op:</strong> Dit ticket is geannuleerd en niet langer geldig voor toegang tot het festival.</span>';
+              topActions.parentNode?.insertBefore(alertDiv, topActions);
+            }
+            if (dlBtn) {
+              dlBtn.style.opacity = '0.5';
+              dlBtn.title = 'Dit ticket is geannuleerd';
+            }
+          } else if (statusData.isSwapped) {
+            if (tvStatus) {
+              tvStatus.textContent = 'VERVALLEN (OMGERUILD)';
+              tvStatus.style.color = '#D97706';
+            }
+            if (tvScanInst) {
+              tvScanInst.textContent = 'OMGERUILD TICKET';
+              tvScanInst.style.color = '#D97706';
+            }
+            const topActions = document.querySelector('.ticket-top-actions-bar');
+            if (topActions && !document.getElementById('ticket-status-alert-box')) {
+              const alertDiv = document.createElement('div');
+              alertDiv.id = 'ticket-status-alert-box';
+              alertDiv.style.cssText = 'background:#FEF3C7;border:2px solid #F59E0B;color:#92400E;padding:0.75rem 1.25rem;border-radius:8px;font-weight:700;font-size:0.9rem;width:100%;margin-bottom:1rem;display:flex;align-items:center;gap:0.75rem;box-shadow:2px 2px 0px rgba(146,64,14,0.4);';
+              alertDiv.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span><strong>Let op:</strong> Dit ticket is omgeruild naar een andere sessie. Ga naar uw account voor uw nieuwe, geldige ticket.</span>';
+              topActions.parentNode?.insertBefore(alertDiv, topActions);
+            }
+          }
+        }
+      })
+      .catch(() => {});
+  }
 </script>
