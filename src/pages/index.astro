@@ -2613,6 +2613,102 @@ const tickets = await getTickets('den_haag');
                 </div>
                 <span id="promo-status-msg" style="display: none; font-size: 0.75rem; margin-top: 4px; font-weight: 600;"></span>
               </div>
+
+              <!-- Botteling Delivery Method Selector (Shown only when a festival bottling is in the cart) -->
+              <div id="modal-bottling-delivery-section" style="display: none; margin-top: 0.75rem; padding: 0.85rem; background: rgba(0, 100, 72, 0.04); border: 1.5px solid rgba(0, 100, 72, 0.2); border-radius: 8px;">
+                <span class="payment-method-title" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; color: #006448; font-weight: 800;">
+                  <span>Levering Festival Botteling</span>
+                  <span style="font-size: 0.68rem; font-weight: 700; text-transform: uppercase; background: #006448; color: #FFF; padding: 0.15rem 0.45rem; border-radius: 3px;">Haagsche Special</span>
+                </span>
+                
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                  <label class="modal-delivery-option" id="opt-delivery-pickup" style="display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0.8rem; background: #FFFFFF; border: 1.5px solid #006448; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+                    <div style="display: flex; align-items: center; gap: 0.6rem;">
+                      <input type="radio" name="modal-bottling-delivery" value="pickup" checked style="accent-color: #006448; width: 16px; height: 16px;" />
+                      <div>
+                        <strong style="display: block; font-size: 0.85rem; color: #171614;">Lokaal afhalen op festival</strong>
+                        <span style="font-size: 0.72rem; color: #665C54;">Afhalen bij de Infodesk • Digitaal ophaalbewijs</span>
+                      </div>
+                    </div>
+                    <span style="font-size: 0.75rem; font-weight: 800; color: #166534; background: rgba(22, 101, 52, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px;">GRATIS</span>
+                  </label>
+
+                  <label class="modal-delivery-option" id="opt-delivery-shipping" style="display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0.8rem; background: #FFFFFF; border: 1.5px solid #E6DDD0; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+                    <div style="display: flex; align-items: center; gap: 0.6rem;">
+                      <input type="radio" name="modal-bottling-delivery" value="shipping" style="accent-color: #006448; width: 16px; height: 16px;" />
+                      <div>
+                        <strong style="display: block; font-size: 0.85rem; color: #171614;">Verzending per post (NL & BE)</strong>
+                        <span style="font-size: 0.72rem; color: #665C54;">Verzekerde pakketpost direct na het festival</span>
+                      </div>
+                    </div>
+                    <span style="font-size: 0.78rem; font-weight: 800; color: #006448; font-family: var(--font-sans); background: rgba(0, 100, 72, 0.08); padding: 0.2rem 0.5rem; border-radius: 4px;">+ €12,50</span>
+                  </label>
+                </div>
+
+                <!-- Collapsible Shipping Address Fields -->
+                <div id="modal-shipping-address-fields" style="display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed rgba(0, 100, 72, 0.2); animation: fadeIn 0.2s ease;">
+                  <span style="display: block; font-family: var(--font-sans); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #006448; margin-bottom: 0.5rem;">
+                    Bezorgadres voor Fles
+                  </span>
+                  <div class="form-group" style="margin-bottom: 0.45rem;">
+                    <label for="ship-street" class="form-label" style="font-size: 0.7rem;">Straatnaam en Huisnummer</label>
+                    <input type="text" id="ship-street" placeholder="Bijv. Lange Voorhout 10" class="form-control" style="padding: 0.5rem 0.75rem; font-size: 0.85rem;" />
+                  </div>
+                  <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 0.5rem; margin-bottom: 0.45rem;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                      <label for="ship-zip" class="form-label" style="font-size: 0.7rem;">Postcode</label>
+                      <input type="text" id="ship-zip" placeholder="2514 EA" class="form-control" style="padding: 0.5rem 0.75rem; font-size: 0.85rem;" />
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                      <label for="ship-city" class="form-label" style="font-size: 0.7rem;">Woonplaats</label>
+                      <input type="text" id="ship-city" placeholder="Den Haag" class="form-control" style="padding: 0.5rem 0.75rem; font-size: 0.85rem;" />
+                    </div>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0.65rem;">
+                    <label for="ship-country" class="form-label" style="font-size: 0.7rem;">Land</label>
+                    <select id="ship-country" class="form-control" style="padding: 0.5rem 0.75rem; font-size: 0.85rem;">
+                      <option value="NL" selected>Nederland</option>
+                      <option value="BE">België</option>
+                    </select>
+                  </div>
+
+                  <!-- 18+ Leeftijdscontrole (Alcoholwetgeving) -->
+                  <div id="modal-bottling-age-section" style="margin-top: 0.75rem; padding: 0.85rem; background: rgba(0, 100, 72, 0.05); border: 1.5px solid rgba(0, 100, 72, 0.25); border-radius: 6px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem;">
+                      <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: #006448; color: #FFF; font-size: 0.65rem; font-weight: 800;">18+</span>
+                        <strong style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: #006448;">Leeftijdscontrole (Alcoholwetgeving)</strong>
+                      </div>
+                      <span style="font-size: 0.68rem; font-weight: 700; color: #665C54;">Verplicht bij verzending</span>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.65rem;">
+                      <label for="ship-birthdate" class="form-label" style="font-size: 0.72rem; font-weight: 700; color: #171614;">
+                        Geboortedatum koper (minimaal 18 jaar) <span style="color: #dc2626;">*</span>
+                      </label>
+                      <input 
+                        type="date" 
+                        id="ship-birthdate" 
+                        class="form-control" 
+                        style="padding: 0.5rem 0.75rem; font-size: 0.85rem; background: #FFFFFF;" 
+                      />
+                      <span id="birthdate-error-msg" style="display: none; color: #dc2626; font-size: 0.72rem; font-weight: 600; margin-top: 3px;"></span>
+                    </div>
+
+                    <label id="label-ship-age-consent" style="display: flex; align-items: flex-start; gap: 0.65rem; cursor: pointer; user-select: none; margin-bottom: 0; padding: 0.35rem 0; transition: background 0.2s;">
+                      <input 
+                        type="checkbox" 
+                        id="ship-age-consent" 
+                        style="accent-color: #006448; width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; cursor: pointer;" 
+                      />
+                      <span style="font-size: 0.75rem; color: #171614; line-height: 1.35;">
+                        Bij aankoop van een festival botteling ben ik ervan op de hoogte dat, bij verzending, mijn leeftijd geverifieerd kan worden aan de hand van een geldig legitimatiebewijs. <span style="color: #dc2626;">*</span>
+                      </span>
+                    </label>
+                    <span id="consent-error-msg" style="display: none; color: #dc2626; font-size: 0.72rem; font-weight: 600; margin-top: 3px;"></span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <!-- Right Column: Summary & Submit -->
@@ -5690,17 +5786,51 @@ const tickets = await getTickets('den_haag');
     let subtotal = 0;
     let totalItems = 0;
     let shippingActive = false;
+    let hasBotteling = false;
 
     Object.keys(cart).forEach(id => {
       const item = cart[id];
       if (item && item.qty > 0) {
         subtotal += item.price * item.qty;
         totalItems += item.qty;
-        if (item.category === "botteling" && item.delivery === "shipping") {
-          shippingActive = true;
+        if (item.category === "botteling") {
+          hasBotteling = true;
+          if (item.delivery === "shipping") {
+            shippingActive = true;
+          }
         }
       }
     });
+
+    // Update modal delivery section visibility and state
+    const bottlingDeliverySection = document.getElementById("modal-bottling-delivery-section");
+    const shippingAddressFields = document.getElementById("modal-shipping-address-fields");
+    const optPickup = document.getElementById("opt-delivery-pickup");
+    const optShipping = document.getElementById("opt-delivery-shipping");
+    const radioPickup = document.querySelector('input[name="modal-bottling-delivery"][value="pickup"]') as HTMLInputElement;
+    const radioShipping = document.querySelector('input[name="modal-bottling-delivery"][value="shipping"]') as HTMLInputElement;
+
+    if (bottlingDeliverySection) {
+      if (hasBotteling) {
+        bottlingDeliverySection.style.display = "block";
+        if (radioPickup && radioShipping) {
+          if (shippingActive) {
+            radioShipping.checked = true;
+            if (optShipping) { optShipping.style.borderColor = "#006448"; optShipping.style.background = "rgba(0, 100, 72, 0.04)"; }
+            if (optPickup) { optPickup.style.borderColor = "#E6DDD0"; optPickup.style.background = "#FFFFFF"; }
+            if (shippingAddressFields) shippingAddressFields.style.display = "block";
+          } else {
+            radioPickup.checked = true;
+            if (optPickup) { optPickup.style.borderColor = "#006448"; optPickup.style.background = "rgba(0, 100, 72, 0.04)"; }
+            if (optShipping) { optShipping.style.borderColor = "#E6DDD0"; optShipping.style.background = "#FFFFFF"; }
+            if (shippingAddressFields) shippingAddressFields.style.display = "none";
+          }
+        }
+      } else {
+        bottlingDeliverySection.style.display = "none";
+        if (shippingAddressFields) shippingAddressFields.style.display = "none";
+      }
+    }
 
     const activeShipping = shippingActive ? 12.50 : 0;
     const activeFee = getServiceFee(totalItems);
@@ -5812,6 +5942,20 @@ const tickets = await getTickets('den_haag');
     });
   }
 
+  // Delivery radio event listeners in modal
+  document.querySelectorAll('input[name="modal-bottling-delivery"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      const targetVal = (e.target as HTMLInputElement).value;
+      Object.keys(cart).forEach(id => {
+        if (cart[id] && cart[id].category === "botteling") {
+          cart[id].delivery = targetVal;
+        }
+      });
+      updateShop();
+      recalcModalTotal();
+    });
+  });
+
   if (checkoutBtn) {
     checkoutBtn.addEventListener("click", (e) => {
       e.preventDefault();
@@ -5852,6 +5996,14 @@ const tickets = await getTickets('den_haag');
 
 
   if (mockPaymentForm) {
+    // Set max birthdate to 18 years ago today
+    const bDateInput = document.getElementById("ship-birthdate") as HTMLInputElement;
+    if (bDateInput) {
+      const maxD = new Date();
+      maxD.setFullYear(maxD.getFullYear() - 18);
+      bDateInput.max = maxD.toISOString().split("T")[0];
+    }
+
     mockPaymentForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       const emailInput = document.getElementById("cust-email") as HTMLInputElement;
@@ -5860,9 +6012,6 @@ const tickets = await getTickets('den_haag');
       const name = nameInput ? nameInput.value : "Deon Draijer";
       const phoneInput = document.getElementById("cust-phone") as HTMLInputElement;
       const phone = phoneInput ? phoneInput.value : "+31 6 12345678";
-      
-      if (modalStep1) modalStep1.style.display = "none";
-      if (modalStep2) modalStep2.style.display = "block";
 
       let orderList: string[] = [];
       let itemsOrdered: any[] = [];
@@ -5891,10 +6040,104 @@ const tickets = await getTickets('den_haag');
             price: item.price,
             category: item.category,
             timeslot: item.timeslot || "",
-            delivery: item.delivery || ""
+            delivery: item.delivery || "",
+            date: item.date || "",
+            time: item.time || ""
           });
         }
       });
+
+      const hasBottlingShipping = itemsOrdered.some(it => it.category === "botteling" && it.delivery === "shipping");
+      const shipStreetEl = document.getElementById("ship-street") as HTMLInputElement;
+      const shipZipEl = document.getElementById("ship-zip") as HTMLInputElement;
+      const shipCityEl = document.getElementById("ship-city") as HTMLInputElement;
+      const shipCountryEl = document.getElementById("ship-country") as HTMLSelectElement;
+      const shipBirthdateEl = document.getElementById("ship-birthdate") as HTMLInputElement;
+      const shipAgeConsentEl = document.getElementById("ship-age-consent") as HTMLInputElement;
+      const birthdateErrorMsg = document.getElementById("birthdate-error-msg");
+      const consentErrorMsg = document.getElementById("consent-error-msg");
+
+      if (hasBottlingShipping) {
+        if (birthdateErrorMsg) birthdateErrorMsg.style.display = "none";
+        if (consentErrorMsg) consentErrorMsg.style.display = "none";
+
+        if (!shipStreetEl || !shipStreetEl.value.trim()) {
+          if (shipStreetEl) shipStreetEl.focus();
+          alert("Vul alstublieft een geldig bezorgadres (straat en huisnummer) in voor de verzending van uw fles.");
+          return;
+        }
+        if (!shipZipEl || !shipZipEl.value.trim()) {
+          if (shipZipEl) shipZipEl.focus();
+          alert("Vul alstublieft een postcode in.");
+          return;
+        }
+        if (!shipCityEl || !shipCityEl.value.trim()) {
+          if (shipCityEl) shipCityEl.focus();
+          alert("Vul alstublieft een woonplaats in.");
+          return;
+        }
+
+        // Validate birthdate (must be 18+)
+        if (!shipBirthdateEl || !shipBirthdateEl.value) {
+          if (birthdateErrorMsg) {
+            birthdateErrorMsg.textContent = "Geboortedatum is verplicht om te verifiëren dat u 18 jaar of ouder bent.";
+            birthdateErrorMsg.style.display = "block";
+          }
+          if (shipBirthdateEl) shipBirthdateEl.focus();
+          return;
+        }
+
+        const bDate = new Date(shipBirthdateEl.value);
+        if (isNaN(bDate.getTime())) {
+          if (birthdateErrorMsg) {
+            birthdateErrorMsg.textContent = "Voer een geldige geboortedatum in.";
+            birthdateErrorMsg.style.display = "block";
+          }
+          if (shipBirthdateEl) shipBirthdateEl.focus();
+          return;
+        }
+
+        const today = new Date();
+        let age = today.getFullYear() - bDate.getFullYear();
+        const m = today.getMonth() - bDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < bDate.getDate())) {
+          age--;
+        }
+        if (age < 18) {
+          if (birthdateErrorMsg) {
+            birthdateErrorMsg.textContent = "U dient minimaal 18 jaar oud te zijn om alcoholische festivalbottelingen te bestellen en laten bezorgen.";
+            birthdateErrorMsg.style.display = "block";
+          }
+          if (shipBirthdateEl) shipBirthdateEl.focus();
+          return;
+        }
+
+        // Validate age consent checkbox
+        if (!shipAgeConsentEl || !shipAgeConsentEl.checked) {
+          if (consentErrorMsg) {
+            consentErrorMsg.textContent = "U dient akkoord te gaan met de verificatie van uw leeftijd aan de hand van een geldig legitimatiebewijs.";
+            consentErrorMsg.style.display = "block";
+          }
+          if (shipAgeConsentEl) shipAgeConsentEl.focus();
+          return;
+        }
+      }
+
+      if (modalStep1) modalStep1.style.display = "none";
+      if (modalStep2) modalStep2.style.display = "block";
+
+      const shippingAddress = hasBottlingShipping ? {
+        street: shipStreetEl ? shipStreetEl.value.trim() : "",
+        zip: shipZipEl ? shipZipEl.value.trim() : "",
+        city: shipCityEl ? shipCityEl.value.trim() : "",
+        country: shipCountryEl ? shipCountryEl.value : "NL"
+      } : undefined;
+
+      const ageVerification = hasBottlingShipping ? {
+        birthDate: shipBirthdateEl ? shipBirthdateEl.value : "",
+        idCheckAcknowledged: shipAgeConsentEl ? shipAgeConsentEl.checked : false,
+        verifiedAt: new Date().toISOString()
+      } : undefined;
 
       // Real Whiskytix Backend Call (End-to-End Loop)
       try {
@@ -5907,6 +6150,8 @@ const tickets = await getTickets('den_haag');
             customerEmail: email,
             customerPhone: phone,
             items: itemsOrdered,
+            shippingAddress: shippingAddress,
+            ageVerification: ageVerification,
             discountCents: Math.round(promoDiscount * 100),
             returnUrl: window.location.origin + window.location.pathname
           })
@@ -5921,6 +6166,8 @@ const tickets = await getTickets('den_haag');
               email: email,
               phone: phone,
               items: itemsOrdered,
+              shippingAddress: shippingAddress,
+              ageVerification: ageVerification,
               isMember: resPrefix === "WS",
               resNumber: data.orderNumber || `#${resPrefix}-2026-PENDING`,
               discountApplied: promoDiscount,
@@ -5981,6 +6228,8 @@ const tickets = await getTickets('den_haag');
             email: email,
             phone: phone,
             items: itemsOrdered,
+            shippingAddress: shippingAddress,
+            ageVerification: ageVerification,
             isMember: resPrefix === "WS",
             resNumber: finalResNumber,
             discountApplied: promoDiscount,
