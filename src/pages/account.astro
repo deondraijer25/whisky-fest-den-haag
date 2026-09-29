@@ -219,16 +219,16 @@ import Footer from '../components/Footer.astro';
               <div class="vintage-line" style="margin: 0;"></div>
               
               <div class="sidebar-actions-list">
-                <button class="btn btn-gold btn-sidebar-action" onclick="window.print()">
+                <button class="btn btn-gold btn-sidebar-action" id="btn-download-all-tickets" type="button">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right: 6px;">
-                    <polyline points="6 9 6 2 18 2 18 9"/>
-                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
-                    <rect x="6" y="14" width="12" height="8"/>
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
                   </svg>
-                  Print Alle E-Tickets (PDF)
+                  Download Alle E-Tickets (1 PDF)
                 </button>
                 <p class="action-note-text">
-                  Tip: U kunt uw e-ticket ook digitaal op uw smartphone laten scannen bij de ingang van Grote Kerk, Den Haag.
+                  Alle tickets gebundeld in één A4 PDF (1 pagina per ticket) om eenvoudig te bewaren of af te drukken.
                 </p>
               </div>
             </div>
@@ -2082,7 +2082,7 @@ import Footer from '../components/Footer.astro';
       padding: 0 !important;
     }
 
-    /* Compacte horizontale ticket envelope (meerdere per A4 pagina) */
+    /* Volledige A4 ticket envelope (1 ticket per A4 pagina) */
     .ticket-envelope {
       display: block !important;
       width: 100% !important;
@@ -2090,13 +2090,18 @@ import Footer from '../components/Footer.astro';
       border: 1.5px solid #1D1C1A !important;
       border-radius: 6px !important;
       box-shadow: none !important;
-      margin: 0 0 14px 0 !important;
+      margin: 0 0 20px 0 !important;
       padding: 0 !important;
       page-break-inside: avoid !important;
       break-inside: avoid !important;
+      page-break-after: always !important;
+      break-after: page !important;
+      overflow: hidden !important;
+    }
+
+    .ticket-envelope:last-child {
       page-break-after: auto !important;
       break-after: auto !important;
-      overflow: hidden !important;
     }
 
     /* Forceer horizontale 2-koloms layout */
@@ -2827,6 +2832,41 @@ import Footer from '../components/Footer.astro';
       if (profileInputEmail) profileInputEmail.value = userEmail;
       if (profileInputPhone) profileInputPhone.value = orderData.phone || "+31 6 12345678";
       if (profileInputWhisky) profileInputWhisky.value = orderData.whiskyStyle || "Single Malt Scotch";
+
+      // Configure Bundled PDF Download button (all tickets in 1 multi-page vector A4 PDF)
+      const btnBundle = document.getElementById('btn-download-all-tickets');
+      if (btnBundle) {
+        btnBundle.onclick = (e) => {
+          e.preventDefault();
+          const cleanOrderNum = (orderData?.resNumber || '').replace(/^#+/, '').trim() || 'WF-2027-19302';
+          const citySlug = 'denhaag';
+          
+          let bundleUrl = `https://whiskytix-r1qq.vercel.app/api/orders/${encodeURIComponent(cleanOrderNum)}/pdf?city=${encodeURIComponent(citySlug)}`;
+
+          const ticketsList = (orderData?.tickets && Array.isArray(orderData.tickets) && orderData.tickets.length > 0)
+            ? orderData.tickets
+            : ((orderData?.activeTickets && Array.isArray(orderData.activeTickets) && orderData.activeTickets.length > 0)
+              ? orderData.activeTickets
+              : []);
+
+          if (ticketsList.length > 0) {
+            const payload = ticketsList.map((t: any, idx: number) => ({
+              ticketCode: t.ticketCode ? (t.ticketCode.startsWith('#') ? t.ticketCode : `#${t.ticketCode}`) : `#${cleanOrderNum}-${idx + 1}`,
+              orderNumber: cleanOrderNum,
+              attendeeName: t.attendeeName || orderData.name || 'Bezoeker',
+              cityName: citySlug,
+              sessionTitle: t.sessionTitle || t.title || 'Festival Entreeticket',
+              dateStr: t.dateStr || t.date || '',
+              timeStr: t.timeStr || t.time || t.timeslot || '',
+              itemNumber: `${idx + 1}/${ticketsList.length}`,
+              ticketStatus: t.status || 'valid'
+            }));
+            bundleUrl += `&tickets=${encodeURIComponent(JSON.stringify(payload))}`;
+          }
+
+          window.open(bundleUrl, '_blank');
+        };
+      }
 
       // Render Dynamic Tickets in Tab 1 (Each ticket contains an individual Download Button)
       const ticketsContainer = document.getElementById("tickets-container");
