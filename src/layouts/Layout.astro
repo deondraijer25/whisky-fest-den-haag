@@ -542,6 +542,11 @@ const orgSchema = {
               }
 
               // 2. Programma timetable rows
+              // Non-agenda items (entree tickets, bottelings, standhouders) NEVER belong in the timetable
+              if (category === 'entree' || category === 'standhouders' || category === 'standhouder' || category === 'botteling') {
+                return;
+              }
+
               var rowFound = false;
               var allRows = document.querySelectorAll('.agenda-row-item');
               allRows.forEach(function(row) {
@@ -550,7 +555,22 @@ const orgSchema = {
                 var rowId = row.getAttribute('data-ticket-id') || (btn ? btn.getAttribute('data-ticket-id') : '');
                 var rowTitle = (row.querySelector('.item-name')?.textContent || '').toLowerCase().replace(/[^a-z0-9]/g, '');
                 var matchKey = cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '');
-                var isMatch = (rowId && rowId === r.id) || (rowTitle && matchKey && (rowTitle.indexOf(matchKey) !== -1 || matchKey.indexOf(rowTitle) !== -1));
+
+                var rowPane = row.closest('.session-agenda-pane');
+                var rowPaneId = rowPane ? rowPane.id : '';
+                var rowTimeVal = (row.querySelector('.item-time-val')?.textContent || '').trim();
+                var rowDaySub = (row.querySelector('.item-day-sub')?.textContent || '').toLowerCase();
+
+                var dayMatches = !day || day === 'all' || rowPaneId.indexOf(day) !== -1 || (rowPaneId === 'pane-belevingen' && (!rowDaySub || rowDaySub.indexOf(day) !== -1));
+
+                var cleanTimeStart = cleanTime ? cleanTime.split(/[-–]/)[0].replace(/[^0-9:]/g, '').trim() : '';
+                var rowTimeStart = rowTimeVal ? rowTimeVal.split(/[-–]/)[0].replace(/[^0-9:]/g, '').trim() : '';
+                var timeMatches = !cleanTimeStart || !rowTimeStart || cleanTimeStart === rowTimeStart || cleanTime.indexOf(rowTimeStart) !== -1 || rowTimeVal.indexOf(cleanTimeStart) !== -1;
+
+                var isIdMatch = Boolean(rowId && rowId === r.id);
+                var isTitleMatch = Boolean(rowTitle && matchKey && (rowTitle === matchKey || rowTitle.indexOf(matchKey) !== -1 || matchKey.indexOf(rowTitle) !== -1));
+
+                var isMatch = isIdMatch || (isTitleMatch && dayMatches && timeMatches);
 
                 if (isMatch) {
                   rowFound = true;
@@ -560,7 +580,9 @@ const orgSchema = {
                   if (nameEl) nameEl.textContent = cleanTitle;
 
                   var timeEl = row.querySelector('.item-time-val');
-                  if (timeEl && cleanTime) timeEl.textContent = cleanTime;
+                  if (timeEl && cleanTime && (isIdMatch || (dayMatches && timeMatches))) {
+                    timeEl.textContent = cleanTime;
+                  }
 
                   var priceEl = row.querySelector('.item-price');
                   if (priceEl) priceEl.textContent = '€ ' + priceNum.toFixed(2).replace('.', ',');
@@ -592,23 +614,12 @@ const orgSchema = {
                     }
                   }
 
-                  // Move row to correct session agenda pane if day/daypart changed
-                  if (day && day !== 'all' && daypart && daypart !== 'all') {
-                    var targetPaneId = 'pane-' + day + '-' + daypart;
-                    var targetPane = document.getElementById(targetPaneId);
-                    var currentPane = row.closest('.session-agenda-pane');
-                    if (targetPane && currentPane && currentPane !== targetPane) {
-                      var targetList = targetPane.querySelector('.pane-rows-list');
-                      if (targetList) {
-                        targetList.appendChild(row);
-                      }
-                    }
-                  }
+                  // NEVER move rows between panes on the client side!
                 }
               });
 
-              // Dynamically inject brand-new agenda row if not present on /programma
-              if (!rowFound && category !== 'standhouders' && day && day !== 'all' && daypart && daypart !== 'all') {
+              // Dynamically inject brand-new agenda row ONLY if it is an actual masterclass or workshop
+              if (!rowFound && (category === 'masterclass' || category === 'workshop') && day && day !== 'all' && daypart && daypart !== 'all') {
                 var targetPaneId = 'pane-' + day + '-' + daypart;
                 var targetPane = document.getElementById(targetPaneId);
                 if (targetPane) {
@@ -678,7 +689,9 @@ const orgSchema = {
             // DELETION SYNC: Prune timetable rows deleted from GHL
             var allDomRows = document.querySelectorAll('.agenda-row-item');
             allDomRows.forEach(function(row) {
-              if (!matchedRows.has(row)) {
+              var rowId = row.getAttribute('data-ticket-id') || '';
+              var isGhlTicket = rowId && (rowId.length > 15 || rowId.startsWith('ghl-'));
+              if (!matchedRows.has(row) && isGhlTicket) {
                 row.remove();
               }
             });
