@@ -7584,193 +7584,110 @@ const tickets = await getTickets('den_haag');
     activeMcId = mcId;
 
     const item = (denHaagTicketsData || []).find((t: any) => t.id === mcId);
-    const ticketStubEl = document.querySelector(`.ticket-stub[data-ticket-id="${mcId}"]`);
-    const domCategory = (item && item.category) || (ticketStubEl && ticketStubEl.getAttribute('data-category')) || '';
-    const domTitle = (item && item.title) || (ticketStubEl && ticketStubEl.getAttribute('data-title')) || 'Festival Onderdeel';
-    let numericPrice = item ? item.price : ((ticketStubEl && parseFloat(ticketStubEl.getAttribute('data-price') || '0')) || 0);
+    const liveRec = ((window as any).__LIVE_GHL_TICKETS__ || []).find((r: any) => r.id === mcId);
+    const lp = liveRec ? (liveRec.properties || liveRec) : null;
 
+    const ticketStubEl = document.querySelector(`.ticket-stub[data-ticket-id="${mcId}"]`);
+    const domCategory = (lp && lp.category) || (item && item.category) || (ticketStubEl && ticketStubEl.getAttribute('data-category')) || '';
+    const domTitle = (lp && lp.title) || (item && item.title) || (ticketStubEl && ticketStubEl.getAttribute('data-title')) || 'Festival Onderdeel';
+    
+    let numericPrice = item ? item.price : ((ticketStubEl && parseFloat(ticketStubEl.getAttribute('data-price') || '0')) || 0);
+    if (lp && lp.price !== undefined && lp.price !== null) {
+      numericPrice = typeof lp.price === 'number' ? lp.price : (parseFloat(lp.price) || parseFloat(lp.ticket_price) || numericPrice);
+    }
+
+    let title = domTitle.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
+
+    const dateStr = (lp && lp.date_label) || (item && item.date) || (ticketStubEl && ticketStubEl.getAttribute('data-date')) || '';
+    const timeStr = (lp && lp.time_label) || (item && item.time) || (ticketStubEl && ticketStubEl.getAttribute('data-time')) || '';
+    let subtitle = (dateStr && timeStr) ? `${dateStr} • ${timeStr}` : (dateStr || timeStr || 'Exclusieve festivalbeleving');
+
+    let location = (lp && lp.location) || (item && item.location) || 'Grote Kerk Den Haag';
+    let duration = (lp && (lp.duration || lp.session_duration)) || (item && (item.duration || item.sessionDuration)) || '';
+
+    // Category Tag & Contextual Headings
     let tag = 'FESTIVAL ONDERDEEL';
-    let title = domTitle;
-    let subtitle = item ? `${item.date} • ${item.time}` : 'Exclusieve festivalbeleving';
-    let location = (item && item.location) || 'Grote Kerk Den Haag';
-    let duration = '45 minuten';
-    let description = (item && (item.description || item.extra)) || '';
-    let ambName = item?.ambassadorName || '';
-    let ambTitle = item?.ambassadorTitle || (ambName ? 'Expert & Begeleider' : '');
-    let ambBio = item?.ambassadorBio || '';
     let descHeading = 'Over dit Festivalonderdeel';
     let lineupHeading = 'Inbegrepen bij dit ticket:';
-    let lineup: string[] = (item?.tastingLineup && Array.isArray(item.tastingLineup)) ? item.tastingLineup : [];
 
-    if (mcId.includes('vip') || (item && item.title && item.title.toLowerCase().includes('vip'))) {
+    const isVip = domCategory === 'vip' || mcId.includes('vip') || title.toLowerCase().includes('vip');
+    if (isVip) {
       tag = 'VIP FESTIVAL SESSIE';
-      title = item?.title || 'VIP Sessie - Vrijdagmiddag';
-      subtitle = `${item?.date || 'Vrijdag 13 Nov 2026'} • ${item?.time || '13:00 – 17:00 uur'}`;
-      location = 'Grote Kerk Den Haag';
-      duration = '4 uur exclusieve festivaltoegang';
       descHeading = 'Over het VIP Arrangement';
-      description = 'De ultieme festivalbeleving voor de echte whiskyliefhebber. Geniet van 4 uur lang ongestoord proeven, vroege toegang vóór de reguliere opening, toegang tot exclusieve VIP masterclasses en verwennerij met luxe hapjes.';
-      ambName = 'Festival Organisatie & VIP Concierge';
-      ambTitle = 'VIP Host & Begeleiding';
-      ambBio = 'Persoonlijke ontvangst en exclusieve service tijdens de officiële opening van het festivalweekend in Den Haag.';
       lineupHeading = 'Wat is inbegrepen bij uw VIP ticket:';
-      lineup = [
+    } else if (domCategory === 'entree' || mcId.startsWith('session-') || mcId.startsWith('dh-entree-')) {
+      tag = 'REGULIERE FESTIVAL SESSIE';
+      descHeading = 'Over deze Festivalsessie';
+      lineupHeading = 'Wat is inbegrepen bij uw entree:';
+    } else if (domCategory === 'warehouse') {
+      tag = 'WAREHOUSE TASTING';
+      descHeading = 'Over deze Warehouse Tasting';
+      lineupHeading = 'Inbegrepen Vatmonsters:';
+    } else if (domCategory === 'tram') {
+      tag = 'HISTORISCHE TRAMRIT';
+      descHeading = 'Over deze Historische Tramrit';
+      lineupHeading = 'Proefdrams tijdens de rit:';
+    } else if (domCategory === 'trail') {
+      tag = 'FESTIVAL WHISKY TRAIL';
+      descHeading = 'Over deze Whiskytrail';
+      lineupHeading = 'Inbegrepen bij de trail:';
+    } else if (domCategory === 'botteling') {
+      tag = 'FESTIVAL BOTTELING';
+      descHeading = 'Over deze Festival Botteling';
+      lineupHeading = 'Details van de botteling:';
+    } else if (domCategory === 'masterclass') {
+      tag = 'SPECIAL MASTERCLASS';
+      descHeading = 'Over deze Masterclass';
+      lineupHeading = 'Officiële Proeflijst (Inbegrepen Drams):';
+    }
+
+    // STRICT: Only use actual data from ticket properties or GHL — NEVER invent dummy data!
+    let description = (lp && (lp.ticket_description || lp.description)) || (item && (item.description || item.extra)) || '';
+    // Preserve default description ONLY for built-in Den Haag session tickets if empty in GHL
+    if (!description && mcId.startsWith('dh-entree-')) {
+      if (isVip) {
+        description = 'De ultieme festivalbeleving voor de echte whiskyliefhebber. Geniet van 4 uur lang ongestoord proeven, vroege toegang vóór de reguliere opening, toegang tot exclusieve VIP masterclasses en verwennerij met luxe hapjes.';
+      } else {
+        description = 'Beleef de magie van het meest toonaangevende whiskyfestival van Nederland in de historische Grote Kerk van Den Haag. Ontdek meer dan 40 standhouders en honderden verschillende Schotse single malts, wereldwhisky’s en Nederlandse distilleerderijen.';
+      }
+    }
+    description = description.trim();
+
+    let ambName = (lp && lp.ambassador_name) || (item && item.ambassadorName) || '';
+    if (!ambName && mcId.startsWith('dh-entree-')) {
+      ambName = isVip ? 'Festival Organisatie & VIP Concierge' : 'International Whisky Festival Team';
+    }
+    ambName = ambName.trim();
+
+    let ambTitle = (lp && lp.ambassador_title) || (item && item.ambassadorTitle) || (ambName ? (isVip ? 'VIP Host & Begeleiding' : 'Festival Host') : '');
+    ambTitle = ambTitle.trim();
+
+    let ambBio = (lp && lp.ambassador_bio) || (item && item.ambassadorBio) || '';
+    if (!ambBio && mcId.startsWith('dh-entree-')) {
+      ambBio = isVip ? 'Persoonlijke ontvangst en exclusieve service tijdens de officiële opening van het festivalweekend in Den Haag.' : 'Het officiële festivalteam staat klaar om u te verwelkomen in de historische ambiance van de Grote Kerk.';
+    }
+    ambBio = ambBio.trim();
+
+    let lineup: string[] = [];
+    if (lp && lp.tasting_lineup) {
+      lineup = Array.isArray(lp.tasting_lineup)
+        ? lp.tasting_lineup
+        : String(lp.tasting_lineup).split(/[\n,]+/).map((s: string) => s.trim()).filter(Boolean);
+    } else if (item && item.tastingLineup && Array.isArray(item.tastingLineup)) {
+      lineup = item.tastingLineup;
+    } else if (mcId.startsWith('dh-entree-')) {
+      lineup = isVip ? [
         '12 gratis festival proefdrams (t.w.v. € 12,00)',
         'Officieel Glencairn festival proefglas',
         'Toegang tot alle exclusieve VIP Masterclasses in de kerk',
         'Luxe hapjes-vouchers (worsten- & bitterballenplateau)',
         'Officieel festivalboekje met beursplattegrond en alle standhouders'
-      ];
-    } else if (domCategory === 'entree' || mcId.startsWith('session-')) {
-      tag = 'REGULIERE FESTIVAL SESSIE';
-      title = item?.title || 'Reguliere Festival Entree';
-      subtitle = `${item?.date || 'Festivaldag 2026'} • ${item?.time || '4 uur toegang'}`;
-      location = 'Grote Kerk Den Haag';
-      duration = '4 uur festivaltoegang';
-      descHeading = 'Over deze Festivalsessie';
-      description = 'Beleef de magie van het meest toonaangevende whiskyfestival van Nederland in de historische Grote Kerk van Den Haag. Ontdek meer dan 40 standhouders en honderden verschillende Schotse single malts, wereldwhisky’s en Nederlandse distilleerderijen.';
-      ambName = 'International Whisky Festival Team';
-      ambTitle = 'Festival Host';
-      ambBio = 'Het officiële festivalteam staat klaar om u te verwelkomen in de historische ambiance van de Grote Kerk.';
-      lineupHeading = 'Wat is inbegrepen bij uw entree:';
-      lineup = [
+      ] : [
         'Officieel Glencairn festival proefglas',
         'Talloze gratis te proeven drams op de beursvloer',
         'Compleet festivalboekje met alle standhouders en plattegrond',
         '4 uur onbeperkt toegang tot alle beurseilanden en stands'
       ];
-    } else if (domCategory === 'warehouse') {
-      tag = 'WAREHOUSE TASTING';
-      subtitle = `${item?.date || ''} • Kapel (Grote Kerk)`;
-      location = 'Kapel (Grote Kerk Den Haag)';
-      duration = '30 minuten';
-      descHeading = 'Over deze Warehouse Tasting';
-      description = `Exclusieve Warehouse Tasting: ${item?.title || ''}. Proef unieke vatmonsters rechtstreeks uit de opslag onder deskundige toelichting.`;
-      ambName = (item?.title && item.title.includes('Cadenhead')) ? 'Cadenhead Brand Ambassador' : 'Bresser & Timmer Specialist';
-      ambTitle = 'Cask Warehouse Keeper';
-      ambBio = 'Directe vatselecties en eeuwenoude warehouse tradities.';
-      lineupHeading = 'Inbegrepen Vatmonsters:';
-      lineup = [
-        'Vatmonster #1: Warehouse Cask Special',
-        'Vatmonster #2: Unchillfiltered Cask Strength',
-        'Vatmonster #3: Rare Single Cask Finish'
-      ];
-    } else if (domCategory === 'tram') {
-      tag = 'HISTORISCHE TRAMRIT';
-      subtitle = `${item?.date || ''} • Vertrek: ${item?.time || ''}`;
-      location = 'Opstelplaats Tram direct buiten de kerk';
-      duration = '60 minuten rondrit';
-      descHeading = 'Over deze Historische Tramrit';
-      description = `Geniet van een sfeervolle rit door historisch Den Haag in een gerestaureerde klassieke HTM-tram onder begeleiding van deskundige gidsen en topdrams van ${item?.extra || 'Schotse distilleerderijen'}.`;
-      ambName = item?.extra ? `${item.extra} Ambassador` : 'Gids & Tramconducteur';
-      ambTitle = 'Historisch Gastheer';
-      ambBio = 'Gepassioneerd kenner van zowel de Haagse stadsgeschiedenis als ambachtelijke whiskyproductie.';
-      lineupHeading = 'Proefdrams tijdens de rit:';
-      lineup = [
-        'Welkomstdram: Speyside Classic',
-        'Stadsrit Special: Cask Strength Single Malt',
-        'Finish Dram: Peated Single Malt'
-      ];
-    } else if (domCategory === 'trail') {
-      tag = 'FESTIVAL WHISKY TRAIL';
-      subtitle = `${item?.date || ''} • ${item?.time || ''}`;
-      location = 'Informatie-stand (Centraal in de kerk)';
-      duration = '30 minuten';
-      descHeading = 'Over deze Whiskytrail';
-      description = `Wandel mee met onze officiële festivalgids langs 5 toonaangevende standhouders. Kost € 5,00 en je krijgt er 5 gratis geselecteerde drams voor terug!`;
-      ambName = item?.title ? item.title.replace('Trail ', 'Gids ') : 'Festival Trail Guide';
-      ambTitle = 'Gecertificeerd Whisky Sommelier';
-      ambBio = 'Leidt u langs de absolute hoogtepunten van het festival en deelt deskundige proefnotities.';
-      lineupHeading = 'Wat krijgt u bij de trail:';
-      lineup = [
-        '5 Geselecteerde Topdrams op de beursvloer',
-        'Persoonlijke uitleg van de standhouders',
-        'Begeleiding in kleine groepen (max 6 personen)'
-      ];
-    } else if (domCategory === 'vatenmaken') {
-      tag = 'COOPER WORKSHOP';
-      subtitle = `${item?.date || ''} • ${item?.time || ''}`;
-      location = 'Buitenterrein (Festival Kuiperij)';
-      duration = '45 minuten';
-      descHeading = 'Over deze Kuiperij Workshop';
-      description = `Cooperclass: workshop vatenmaken met mini-tasting. Leer de eeuwenoude kunst van het vatenmaken en ervaar het branden en toasten van eikenhouten duigen.`;
-      ambName = 'Meesterkuiper & Houtspecialist';
-      ambTitle = 'Master Cooper';
-      ambBio = 'Vakman met decennia ervaring in het bouwen en herstellen van eikenhouten whiskyvaten.';
-      lineupHeading = 'Inbegrepen in de workshop:';
-      lineup = [
-        'Workshop vatenmaken & houtbewerking',
-        'Mini-tasting van vatenrijping profielen',
-        'Uitleg over first-fill en refill eikenhout'
-      ];
-    } else if (domCategory === 'botteling') {
-      tag = 'FESTIVAL BOTTELING';
-      subtitle = 'Gelimiteerde Cask Strength Single Cask';
-      location = 'Ophalen op het festival of thuisbezorgd';
-      duration = 'Festival Cask Exclusive';
-      descHeading = 'Over deze Festival Botteling';
-      description = `Officiële exclusieve botteling voor het International Whisky Festival Den Haag 2026. ${item?.title || ''}`;
-      ambName = 'Festival Bottling Panel';
-      ambTitle = 'Cask Selection Committee';
-      ambBio = 'Persoonlijk geselecteerd uit de beste vaten op vatsterkte.';
-      lineupHeading = 'Details van de botteling:';
-      lineup = [
-        '70cl Volledige Fles (Cask Strength)',
-        'Officieel genummerd herkomstcertificaat'
-      ];
-    } else if (domCategory === 'masterclass') {
-      tag = 'SPECIAL MASTERCLASS';
-      subtitle = `${item?.date || ''} • ${item?.time || ''}`;
-      location = item?.location || 'Nutshuis (Spaarkamer)';
-      duration = '45 minuten';
-      descHeading = 'Over deze Masterclass';
-      description = item?.description || item?.extra || '';
-      ambName = (item?.title && item.title.includes('Macallan')) ? 'Gerard Spaans' : (item?.ambassadorName || '');
-      ambTitle = (item?.title && item.title.includes('Macallan')) ? 'Senior Brand Ambassador & Master of Malt' : (item?.ambassadorTitle || (ambName ? 'Masterclass Host' : ''));
-      ambBio = (item?.title && item.title.includes('Macallan')) ? 'Internationaal expert met diepgaande kennis over distillatietechnieken, vatselecties en de unieke smaakprofielen van deze distilleerderij.' : (item?.ambassadorBio || '');
-      lineupHeading = 'Officiële Proeflijst (Inbegrepen Drams):';
-      lineup = (item?.tastingLineup && Array.isArray(item.tastingLineup) && item.tastingLineup.length > 0) ? item.tastingLineup : [];
-    }
-
-    // Dynamic overrides from GHL or dataset if provided
-    if (item?.description && item.description.trim() !== '') {
-      description = item.description;
-    }
-    if (item?.price !== undefined && item.price !== null && item.price > 0) {
-      numericPrice = typeof item.price === 'number' ? item.price : (parseFloat(item.price) || numericPrice);
-    }
-    if (item?.ambassadorName && item.ambassadorName.trim() !== '') ambName = item.ambassadorName;
-    if (item?.ambassadorTitle && item.ambassadorTitle.trim() !== '') ambTitle = item.ambassadorTitle;
-    if (item?.ambassadorBio && item.ambassadorBio.trim() !== '') ambBio = item.ambassadorBio;
-    if (item?.tastingLineup && Array.isArray(item.tastingLineup) && item.tastingLineup.length > 0) {
-      lineup = item.tastingLineup;
-    }
-
-    // Real-time live GHL overrides from Leadfabriek CRM
-    const liveRec = ((window as any).__LIVE_GHL_TICKETS__ || []).find((r: any) => r.id === mcId);
-    if (liveRec) {
-      const lp = liveRec.properties || liveRec;
-      if (lp.title) {
-        title = lp.title.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
-      }
-      if (lp.price !== undefined && lp.price !== null) {
-        numericPrice = typeof lp.price === 'number' ? lp.price : (parseFloat(lp.price) || parseFloat(lp.ticket_price) || numericPrice);
-      }
-      if (lp.ticket_description !== undefined || lp.description !== undefined) {
-        description = (lp.ticket_description || lp.description || '').trim();
-      }
-      if (lp.ambassador_name !== undefined) {
-        ambName = (lp.ambassador_name || '').trim();
-        ambTitle = (lp.ambassador_title || (ambName ? 'Masterclass Host' : '')).trim();
-        ambBio = (lp.ambassador_bio || '').trim();
-      }
-      if (lp.tasting_lineup !== undefined) {
-        lineup = lp.tasting_lineup ? (Array.isArray(lp.tasting_lineup) ? lp.tasting_lineup : String(lp.tasting_lineup).split(/[\n,]+/).map((s: string) => s.trim()).filter(Boolean)) : [];
-      }
-      if (lp.date_label || lp.time_label) {
-        subtitle = `${lp.date_label || ''} • ${lp.time_label || ''}`;
-      }
-      if (lp.location) location = lp.location;
     }
 
     // Populate modal fields
@@ -7791,8 +7708,22 @@ const tickets = await getTickets('den_haag');
     if (titleEl) titleEl.textContent = title;
     if (subtitleEl) subtitleEl.textContent = subtitle;
     if (locationEl) locationEl.textContent = location;
-    if (durationEl) durationEl.textContent = duration;
-    // Toggle description box
+
+    // Toggle Location & Duration Cards
+    const locCard = locationEl ? (locationEl.closest('div') as HTMLElement) : null;
+    const durCard = durationEl ? (durationEl.closest('div') as HTMLElement) : null;
+    if (durCard) {
+      if (duration && duration.trim() !== '') {
+        durCard.style.display = 'flex';
+        if (durationEl) durationEl.textContent = duration;
+        if (locCard) locCard.style.gridColumn = 'auto';
+      } else {
+        durCard.style.display = 'none';
+        if (locCard) locCard.style.gridColumn = '1 / -1';
+      }
+    }
+
+    // Toggle description box (only show if actual description exists!)
     const descBox = document.getElementById('mc-modal-desc-box');
     if (descBox) {
       if (description && description.trim() !== '') {
@@ -7804,7 +7735,7 @@ const tickets = await getTickets('den_haag');
       }
     }
 
-    // Toggle ambassador box
+    // Toggle ambassador box (only show if ambassador name exists!)
     const ambBox = document.getElementById('mc-modal-ambassador-box');
     if (ambBox) {
       if (ambName && ambName.trim() !== '') {
@@ -7823,7 +7754,7 @@ const tickets = await getTickets('den_haag');
       }
     }
 
-    // Toggle lineup box
+    // Toggle lineup box (only show if lineup items exist!)
     const lineupBox = document.getElementById('mc-modal-lineup-box');
     if (lineupBox) {
       if (lineup && lineup.length > 0) {
