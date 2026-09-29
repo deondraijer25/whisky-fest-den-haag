@@ -35,7 +35,7 @@ import Footer from '../components/Footer.astro';
 
   <main class="account-page-wrapper">
     <!-- Login / Access View (shown when logged out) -->
-    <div id="portal-login-area" class="login-view-wrapper animate-fade-in" style="display: none;">
+    <div id="portal-login-area" class="login-view-wrapper animate-fade-in">
       <div class="login-card-box">
         <div class="login-card-header">
           <span class="portal-tag">BEZOEKERS PORTAAL</span>
@@ -55,7 +55,7 @@ import Footer from '../components/Footer.astro';
               type="email" 
               id="login-email" 
               class="form-input" 
-              placeholder="bijv. deondraijer@gmail.com" 
+              placeholder="bijv. naam@domein.nl" 
               required 
             />
             <span class="form-subtext">Het e-mailadres waarmee de tickets zijn besteld.</span>
@@ -81,22 +81,20 @@ import Footer from '../components/Footer.astro';
           <p class="login-footer-help">
             Nog geen tickets? <a href="/#sessies" class="tt-text-link" style="color: var(--whisky-gold-dark); font-weight: 800;">Bestel uw tickets hier</a>
           </p>
-          <button type="button" id="btn-quick-demo-login" class="btn-demo-quick">
-            Direct bekijken als voorbeeldaccount (Deon Draijer)
-          </button>
+          
         </div>
       </div>
     </div>
 
     <!-- Authenticated Portal Area -->
-    <div id="portal-authenticated-area">
+    <div id="portal-authenticated-area" style="display: none;">
       <!-- Top Welcome Header -->
       <div class="portal-header animate-fade-in">
         <div class="portal-header-top-row">
           <div class="portal-header-text-block">
             <span class="portal-tag">Bezoekers Portaal</span>
-            <h1 class="portal-title" id="portal-title-name">Portaal van Deon Draijer</h1>
-            <p class="portal-subtitle" id="portal-welcome-email">Welkom in uw bezoeker omgeving · deondraijer@gmail.com</p>
+            <h1 class="portal-title" id="portal-title-name">Mijn Festival Portaal</h1>
+            <p class="portal-subtitle" id="portal-welcome-email">Welkom in uw bezoeker omgeving</p>
           </div>
           <button type="button" id="portal-page-logout-btn" class="btn-clean-logout" title="Uitloggen uit dit account">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
@@ -126,88 +124,11 @@ import Footer from '../components/Footer.astro';
       <div class="portal-container">
         <!-- Dynamic Tickets List (Rendered via JS) -->
         <div id="tickets-container" class="tickets-main-column">
-          <!-- Balanced 3-Layer Ticket Card (SSR) -->
-          <div class="ticket-envelope">
-            <div class="ticket-stub-large">
-              <!-- Scanner Stub -->
-              <div class="ticket-right-stub">
-                <span class="scan-label">CONTROLE STUB</span>
-                
-                <div class="qr-code-holder">
-                  <img 
-                    src="https://whiskytix-r1qq.vercel.app/api/tickets/WF-2026-84387-1/qr.svg?city=denhaag&name=Deon%20Draijer&title=VIP%20Sessie%20-%20Vrijdag" 
-                    alt="Controle QR-Code" 
-                    width="105" 
-                    height="105" 
-                    class="qr-code-img"
-                    style="display:block; width:105px; height:105px; object-fit:contain; image-rendering:pixelated;"
-                    loading="lazy"
-                  />
-                </div>
-
-                <span class="scan-instructions">SCAN BIJ DE DEUR</span>
-                <span class="scan-res-hash">#WF-2026-84387-1</span>
-              </div>
-
-              <!-- Clean Main Body -->
-              <div class="ticket-left-stub">
-                <div class="ticket-watermark">WF</div>
-                
-                <!-- 1. Header Row -->
-                <div class="ticket-header-row">
-                  <div class="ticket-title-block">
-                    <h2 class="ticket-session-title">VIP Sessie - Vrijdag</h2>
-                    <p class="ticket-schedule-text">Vrijdag 13 november 2026 &bull; 13:00 – 17:00 UUR</p>
-                  </div>
-                  <div class="ticket-badges-block">
-                    <span class="ticket-status-tag">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                      Geldig Toegangsbewijs
-                    </span>
-                  </div>
-                </div>
-
-                <!-- 2. Middle Row: 3-Column Meta Grid -->
-                <div class="ticket-meta-trio">
-                  <div class="meta-col">
-                    <span class="meta-col-label">Kaarthouder</span>
-                    <strong class="meta-col-val">Deon Draijer</strong>
-                  </div>
-                  <div class="meta-col">
-                    <span class="meta-col-label">Locatie</span>
-                    <strong class="meta-col-val">Grote Kerk, Den Haag</strong>
-                  </div>
-                  <div class="meta-col">
-                    <span class="meta-col-label">Ticket Code</span>
-                    <strong class="meta-col-val font-mono">#WF-2026-84387-1</strong>
-                  </div>
-                </div>
-
-                <!-- 3. Bottom Row: Action Buttons -->
-                <div class="ticket-actions-row">
-                  <button type="button" class="btn-ticket-download-gold" onclick="window.open('https://whiskytix-r1qq.vercel.app/api/tickets/WF-2026-84387-1/pdf?city=denhaag&name=Deon%20Draijer&title=VIP%20Sessie%20-%20Vrijdag&time=13:00%20-%2017:00%20UUR&orderNumber=WF-2026-84387', '_blank')">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    <span>Download E-Ticket (PDF)</span>
-                  </button>
-
-                  <div class="ticket-share-wrapper">
-                    <button type="button" class="btn-ticket-share-white btn-share-trigger">
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-                      <span>Deel Ticket</span>
-                    </button>
-                    <div class="ticket-share-menu">
-                      <a href="https://api.whatsapp.com/send?text=*Whisky%20Fest%20Den%20Haag%202026*%0AE-ticket%3A%20VIP%20Sessie%20-%20Vrijdag%0A%0AKaarthouder%3A%20Deon%20Draijer%0ATijdslot%3A%2013%3A00%20-%2017%3A00%20UUR%0ATicket%20Code%3A%20%23WF-2026-84387-1%0ALocatie%3A%20Grote%20Kerk%2C%20Den%20Haag" target="_blank" rel="noopener noreferrer" class="share-option-link">
-                        <span>Deel via WhatsApp</span>
-                      </a>
-                      <button type="button" class="share-option-link" onclick="navigator.clipboard.writeText(window.location.origin + '/ticket?id=WF-2026-84387-1&title=VIP%20Sessie%20-%20Vrijdag&name=Deon%20Draijer&time=13:00%20-%2017:00%20UUR'); alert('✓ Directe ticket link gekopieerd!');">
-                        <span>Kopieer Ticket Link</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="tickets-loading-skeleton" id="tickets-loading-state" style="padding: 2.5rem; text-align: center; color: var(--text-muted); font-size: 0.95rem;">
+            Uw e-tickets worden geladen...
           </div>
+        </div>
+
         </div>
 
         <!-- Sidebar Actions & Venue Info -->
@@ -271,17 +192,17 @@ import Footer from '../components/Footer.astro';
             <form id="profile-edit-form" class="vintage-form">
               <div class="form-group">
                 <label class="form-label" for="profile-input-name">Volledige Naam (Kaarthouder)</label>
-                <input type="text" id="profile-input-name" class="form-control" value="Deon Draijer" required />
+                <input type="text" id="profile-input-name" class="form-control" value="" placeholder="Uw volledige naam" required />
               </div>
               
               <div class="form-group">
                 <label class="form-label" for="profile-input-email">E-mailadres</label>
-                <input type="email" id="profile-input-email" class="form-control" value="deondraijer@gmail.com" required />
+                <input type="email" id="profile-input-email" class="form-control" value="" placeholder="bijv. naam@domein.nl" required />
               </div>
 
               <div class="form-group">
                 <label class="form-label" for="profile-input-phone">Telefoonnummer</label>
-                <input type="tel" id="profile-input-phone" class="form-control" value="+31 6 12345678" />
+                <input type="tel" id="profile-input-phone" class="form-control" value="" placeholder="bijv. Telefoonnummer" />
               </div>
 
               <div class="form-group">
@@ -325,9 +246,9 @@ import Footer from '../components/Footer.astro';
                 </thead>
                 <tbody>
                   <tr>
-                    <td><strong id="receipt-res-no">#WF-2026-84387</strong></td>
-                    <td>26 Mei 2026</td>
-                    <td><strong id="receipt-total" style="color: var(--success-green, #006448);">€ 79,50</strong></td>
+                    <td><strong id="receipt-res-no">-</strong></td>
+                    <td>-</td>
+                    <td><strong id="receipt-total" style="color: var(--success-green);">-</strong></td>
                     <td><span class="status-badge paid">Betaald</span></td>
                   </tr>
                 </tbody>
@@ -339,18 +260,18 @@ import Footer from '../components/Footer.astro';
                   <div class="rc-mobile-row rc-mobile-head">
                     <div class="rc-mobile-col">
                       <span class="rc-label">Reservering</span>
-                      <strong class="rc-res-val font-mono" id="receipt-res-no-mob">#WF-2026-84387</strong>
+                      <strong class="rc-res-val font-mono" id="receipt-res-no-mob">-</strong>
                     </div>
                     <span class="status-badge paid">Betaald</span>
                   </div>
                   <div class="rc-mobile-row rc-mobile-body">
                     <div class="rc-mobile-col">
                       <span class="rc-label">Datum</span>
-                      <span class="rc-date-val">26 Mei 2026</span>
+                      <span class="rc-date-val">-</span>
                     </div>
                     <div class="rc-mobile-col rc-mobile-right">
                       <span class="rc-label">Totaal</span>
-                      <strong class="rc-price-val" id="receipt-total-mob">€ 79,50</strong>
+                      <strong class="rc-price-val" id="receipt-total-mob">-</strong>
                     </div>
                   </div>
                 </div>
@@ -809,18 +730,21 @@ import Footer from '../components/Footer.astro';
 </Layout>
 
 <style is:global>
-  /* --- Anti-Flicker View Isolation --- */
-  html.wf-unauthenticated #portal-authenticated-area,
-  html.wf-unauthenticated .portal-authenticated-block {
+  /* --- Anti-Flicker View Isolation (Default: Unauthenticated / Login Visible) --- */
+  #portal-authenticated-area,
+  .portal-authenticated-block {
     display: none !important;
   }
-  html.wf-unauthenticated #portal-login-area {
+  #portal-login-area {
     display: flex !important;
   }
   html.wf-authenticated #portal-login-area {
     display: none !important;
   }
   html.wf-authenticated #portal-authenticated-area {
+    display: block !important;
+  }
+  html.wf-authenticated .portal-authenticated-block {
     display: block !important;
   }
 
@@ -2765,44 +2689,14 @@ import Footer from '../components/Footer.astro';
       }
     }
 
-    // Fallback default order data
-    if (!orderData) {
-      orderData = {
-        name: "Deon Draijer",
-        email: "deondraijer@gmail.com",
-        items: [
-          {
-            id: "vip-session",
-            title: "VIP Sessie - Vrijdag",
-            qty: 1,
-            price: 79.50,
-            category: "entree"
-          }
-        ],
-        resNumber: "#WF-2026-84387",
-        phone: "+31 6 12345678",
-        whiskyStyle: "Single Malt Scotch",
-        isMember: true,
-        totalPrice: 79.50
-      };
-    }
-
-    if (!orderData.items || orderData.items.length === 0) {
-      orderData.items = [
-        {
-          id: "vip-session",
-          title: "VIP Sessie - Vrijdag",
-          qty: 1,
-          price: 79.50,
-          category: "entree"
-        }
-      ];
-    }
+    // No dummy fallback order; only populated when authenticated or loaded from storage
 
     // Dynamic UI Renderer
     function updatePortalUI() {
-      const userName = orderData.name || "Deon Draijer";
-      const userEmail = orderData.email || "deondraijer@gmail.com";
+      const session = getValidSession();
+      if (!session) return;
+      const userName = (orderData && orderData.name) || session.name || (session.email ? session.email.split("@")[0] : "Bezoeker");
+      const userEmail = (orderData && orderData.email) || session.email || "";
 
       if (portalWelcomeEmail) {
         portalWelcomeEmail.textContent = `Welkom in uw bezoeker omgeving · ${userEmail}`;
@@ -2816,8 +2710,8 @@ import Footer from '../components/Footer.astro';
         }
       }
 
-      const formattedTotal = `€ ${(orderData.totalPrice || 79.50).toFixed(2).replace('.', ',')}`;
-      const resNum = orderData.resNumber || "#WF-2026-84387";
+      const formattedTotal = (orderData && orderData.totalPrice) ? `€ ${orderData.totalPrice.toFixed(2).replace('.', ',')}` : "-";
+      const resNum = (orderData && orderData.resNumber) || session.resNumber || "-";
 
       if (receiptResNo) receiptResNo.textContent = resNum;
       const receiptResNoMob = document.getElementById('receipt-res-no-mob');
@@ -2830,7 +2724,7 @@ import Footer from '../components/Footer.astro';
       // Populate form inputs
       if (profileInputName) profileInputName.value = userName;
       if (profileInputEmail) profileInputEmail.value = userEmail;
-      if (profileInputPhone) profileInputPhone.value = orderData.phone || "+31 6 12345678";
+      if (profileInputPhone) profileInputPhone.value = (orderData && orderData.phone) || "";
       if (profileInputWhisky) profileInputWhisky.value = orderData.whiskyStyle || "Single Malt Scotch";
 
       // Configure Bundled PDF Download button (all tickets in 1 multi-page vector A4 PDF)
@@ -2870,7 +2764,7 @@ import Footer from '../components/Footer.astro';
 
       // Render Dynamic Tickets in Tab 1 (Each ticket contains an individual Download Button)
       const ticketsContainer = document.getElementById("tickets-container");
-      if (ticketsContainer && (orderData.items || orderData.tickets || orderData.activeTickets)) {
+      if (ticketsContainer) {
         ticketsContainer.innerHTML = "";
 
         // Prefer authoritative active tickets from Whiskytix (omits cancelled & swapped tickets!)
@@ -3234,7 +3128,16 @@ import Footer from '../components/Footer.astro';
           });
         }
       }
-    }
+        if (!ticketsContainer.innerHTML.trim()) {
+          ticketsContainer.innerHTML = `
+            <div class="empty-tickets-notice" style="padding: 3rem 1.5rem; text-align: center; background: white; border-radius: 8px; border: 1.5px dashed var(--border-color-dark);">
+              <h3 style="font-family: var(--font-serif); font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--brand-dark);">Geen actieve tickets gevonden</h3>
+              <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 420px; margin: 0 auto 1.5rem;">Er zijn momenteel geen actieve tickets gekoppeld aan dit account. Heeft u zojuist tickets besteld? Deze verschijnen zodra de betaling is verwerkt.</p>
+              <a href="/#sessies" class="btn btn-gold" style="display: inline-flex;">Bestel Tickets &rarr;</a>
+            </div>
+          `;
+        }
+      }
 
     // Auth State Controller & Dynamic Render
     const authArea = document.getElementById('portal-authenticated-area');
@@ -3321,20 +3224,14 @@ import Footer from '../components/Footer.astro';
             orderData = {
               name: session.name || (session.email ? session.email.split('@')[0] : 'Bezoeker'),
               email: session.email,
-              resNumber: session.resNumber || '#WF-2026-84387',
-              phone: '+31 6 12345678',
+              resNumber: session.resNumber || '',
+              phone: '',
               whiskyStyle: 'Single Malt Scotch',
-              items: [
-                {
-                  id: 'vip-session',
-                  title: 'VIP Sessie - Vrijdag',
-                  qty: 1,
-                  price: 79.50,
-                  category: 'entree'
-                }
-              ],
+              items: [],
+              tickets: [],
+              activeTickets: [],
               isMember: (session.resNumber || '').includes('WS'),
-              totalPrice: 79.50
+              totalPrice: 0
             };
           }
         }
@@ -3490,15 +3387,7 @@ import Footer from '../components/Footer.astro';
               email: email,
               phone: verifiedOrder.customerPhone || verifiedOrder.phone || '+31 6 12345678',
               whiskyStyle: verifiedOrder.whiskyStyle || 'Single Malt Scotch',
-              items: items.length > 0 ? items : [
-                {
-                  id: 'vip-session',
-                  title: 'VIP Sessie - Vrijdag',
-                  qty: 1,
-                  price: 79.50,
-                  category: 'entree'
-                }
-              ],
+              items: items,
               tickets: verifiedOrder.tickets || [],
               activeTickets: verifiedOrder.activeTickets || [],
               cancelledTickets: verifiedOrder.cancelledTickets || [],
@@ -3521,24 +3410,7 @@ import Footer from '../components/Footer.astro';
           }
 
           // If no order was verified:
-          // Check if demo email was used
-          if (email === 'deondraijer@gmail.com') {
-            const sessionData = {
-              email: 'deondraijer@gmail.com',
-              resNumber: rawResNo || '#WF-2026-84387',
-              name: 'Deon Draijer',
-              timestamp: Date.now(),
-              expiresAt: Date.now() + SESSION_TTL
-            };
-            localStorage.setItem('wf_auth_session', JSON.stringify(sessionData));
-            localStorage.removeItem('wf_user_logged_out');
-
-            const cleanUrl = window.location.pathname;
-            window.history.replaceState({}, '', cleanUrl);
-            checkAuthAndRender();
-            window.dispatchEvent(new Event('storage'));
-            return;
-          }
+          // Demo backdoor eliminated
 
           if (rawResNo) {
             showError(`Geen bestelling gevonden voor ordernummer "${rawResNo}". Controleer uw e-mailadres en ordernummer.`);
@@ -3557,46 +3429,7 @@ import Footer from '../components/Footer.astro';
       });
     }
 
-    if (demoLoginBtn) {
-      demoLoginBtn.addEventListener('click', () => {
-        hideError();
-        localStorage.removeItem('wf_user_logged_out');
-        const demoSession = {
-          email: 'deondraijer@gmail.com',
-          resNumber: '#WF-2026-84387',
-          name: 'Deon Draijer',
-          timestamp: Date.now(),
-          expiresAt: Date.now() + SESSION_TTL
-        };
-        localStorage.setItem('wf_auth_session', JSON.stringify(demoSession));
-
-        orderData = {
-          name: 'Deon Draijer',
-          email: 'deondraijer@gmail.com',
-          phone: '+31 6 12345678',
-          whiskyStyle: 'Single Malt Scotch',
-          items: [
-            {
-              id: 'vip-session',
-              title: 'VIP Sessie - Vrijdag',
-              qty: 1,
-              price: 79.50,
-              category: 'entree'
-            }
-          ],
-          resNumber: '#WF-2026-84387',
-          isMember: true,
-          totalPrice: 79.50
-        };
-        localStorage.setItem('wf_last_order', JSON.stringify(orderData));
-
-        const cleanUrl = window.location.pathname;
-        window.history.replaceState({}, '', cleanUrl);
-
-        checkAuthAndRender();
-        window.dispatchEvent(new Event('storage'));
-      });
-    }
+    // Demo login button eliminated
 
     function performLogout() {
       localStorage.setItem('wf_user_logged_out', 'true');

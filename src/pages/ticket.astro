@@ -7,6 +7,15 @@ import Layout from '../layouts/Layout.astro';
   title="E-Ticket | International Whisky Festival"
   description="Digitaal E-Ticket voor International Whisky Festival"
 >
+  <script is:inline>
+    (function() {
+      var p = new URLSearchParams(window.location.search);
+      if (!p.has('id') && !p.has('code') && !p.has('orderNumber') && !p.has('order')) {
+        window.location.replace('/account?view=login');
+      }
+    })();
+  </script>
+
   <main class="single-ticket-standalone-view">
     <div class="ticket-centered-container">
       
@@ -36,7 +45,7 @@ import Layout from '../layouts/Layout.astro';
             <div class="qr-code-holder">
               <img 
                 id="tv-qr-img"
-                src="https://whiskytix-r1qq.vercel.app/api/tickets/WF-2026-84387-1/qr.svg?city=denhaag&name=Deon%20Draijer&title=VIP%20Sessie%20-%20Vrijdag" 
+                src="" 
                 alt="Controle QR-Code" 
                 width="110" 
                 height="110" 
@@ -47,7 +56,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
 
             <span class="scan-instructions">SCAN BIJ DE DEUR</span>
-            <span class="scan-res-hash" id="tv-code">#WF-2026-84387-1</span>
+            <span class="scan-res-hash" id="tv-code">#WF-TICKET</span>
           </div>
 
           <!-- Session & Holder details (Right on desktop, Bottom on mobile) -->
@@ -69,12 +78,12 @@ import Layout from '../layouts/Layout.astro';
             <div class="vintage-divider"></div>
 
             <div class="ticket-stub-body">
-              <h2 class="ticket-session-title" id="tv-session-title">VIP SESSIE - VRIJDAG</h2>
+              <h2 class="ticket-session-title" id="tv-session-title">FESTIVAL ENTREETICKET</h2>
               
               <div class="ticket-meta-grid">
                 <div class="meta-item">
                   <span class="meta-label">KAARTHOUDER:</span>
-                  <strong class="meta-value" id="tv-name">Deon Draijer</strong>
+                  <strong class="meta-value" id="tv-name">Kaarthouder</strong>
                 </div>
                 <div class="meta-item">
                   <span class="meta-label">STATUS:</span>
@@ -82,11 +91,11 @@ import Layout from '../layouts/Layout.astro';
                 </div>
                 <div class="meta-item">
                   <span class="meta-label">TIJDSSLOT:</span>
-                  <strong class="meta-value" id="tv-time">13:00 - 17:00 UUR</strong>
+                  <strong class="meta-value" id="tv-time">Toegangstijd volgens sessie</strong>
                 </div>
                 <div class="meta-item">
                   <span class="meta-label">TICKET CODE:</span>
-                  <strong class="meta-value" style="color: var(--brand-red, #E30613);" id="tv-ticket-code">#WF-2026-84387-1</strong>
+                  <strong class="meta-value" style="color: var(--brand-red, #E30613);" id="tv-ticket-code">#WF-TICKET</strong>
                 </div>
               </div>
 
@@ -437,11 +446,15 @@ import Layout from '../layouts/Layout.astro';
 
 <script>
   const params = new URLSearchParams(window.location.search);
-  let code = params.get('id') || params.get('code') || 'WF-2026-84387-1';
+  const hasValidQuery = params.has('id') || params.has('code') || params.has('orderNumber') || params.has('order');
+  if (!hasValidQuery) {
+    window.location.replace('/account?view=login');
+  }
+  let code = params.get('id') || params.get('code') || 'WF-TICKET';
   if (!code.startsWith('#')) code = '#' + code;
-  const title = params.get('title') || 'VIP Sessie - Vrijdag';
-  const name = params.get('name') || 'Deon Draijer';
-  const time = params.get('time') || '13:00 - 17:00 UUR';
+  const title = params.get('title') || 'Festival Entreeticket';
+  const name = params.get('name') || 'Kaarthouder';
+  const time = params.get('time') || 'Toegangstijd volgens sessie';
 
   const tvSessionTitle = document.getElementById('tv-session-title');
   const tvName = document.getElementById('tv-name');
@@ -464,11 +477,11 @@ import Layout from '../layouts/Layout.astro';
   let resolvedTime = time;
   if (!params.get('time')) {
     if (titleLower.includes('vrijdag')) {
-      resolvedTime = titleLower.includes('vip') ? '13:00 - 17:00 UUR' : '19:00 - 23:00 UUR';
+      resolvedTime = titleLower.includes('vip') ? 'Toegangstijd volgens sessie' : '19:00 - 23:00 UUR';
     } else if (titleLower.includes('zondag')) {
-      resolvedTime = '13:00 - 17:00 UUR';
+      resolvedTime = 'Toegangstijd volgens sessie';
     } else if (titleLower.includes('zaterdag')) {
-      resolvedTime = titleLower.includes('avond') ? '19:00 - 23:00 UUR' : '13:00 - 17:00 UUR';
+      resolvedTime = titleLower.includes('avond') ? '19:00 - 23:00 UUR' : 'Toegangstijd volgens sessie';
     }
   }
   if (tvTime) tvTime.textContent = resolvedTime.toUpperCase();

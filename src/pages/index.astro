@@ -6023,11 +6023,11 @@ const tickets = await getTickets('den_haag');
     mockPaymentForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       const emailInput = document.getElementById("cust-email") as HTMLInputElement;
-      const email = emailInput ? emailInput.value : "deondraijer@gmail.com";
+      const email = emailInput ? emailInput.value.trim() : "";
       const nameInput = document.getElementById("cust-name") as HTMLInputElement;
-      const name = nameInput ? nameInput.value : "Deon Draijer";
+      const name = nameInput ? nameInput.value.trim() : "Bezoeker";
       const phoneInput = document.getElementById("cust-phone") as HTMLInputElement;
-      const phone = phoneInput ? phoneInput.value : "+31 6 12345678";
+      const phone = phoneInput ? phoneInput.value.trim() : "";
 
       let orderList: string[] = [];
       let itemsOrdered: any[] = [];
