@@ -14,7 +14,7 @@ const GHL_STANDS_OBJECT_KEY = 'custom_objects.festival_standhouders';
 // In-memory Cache per city (60 seconds TTL)
 const ticketsCache: Record<string, { data: TicketItem[]; timestamp: number }> = {};
 const standsCache: Record<string, { data: ExhibitorItem[]; timestamp: number }> = {};
-const CACHE_TTL_MS = 60 * 1000;
+const CACHE_TTL_MS = 5 * 1000;
 
 export function invalidateGhlCache(city?: string) {
   if (city) {

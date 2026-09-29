@@ -310,6 +310,8 @@ const orgSchema = {
             if (!Array.isArray(records) || records.length === 0) return;
 
             window.__LIVE_GHL_TICKETS__ = records;
+            var matchedCards = new Set();
+            var matchedRows = new Set();
 
             records.forEach(function(r) {
               var p = r.properties || r;
@@ -373,6 +375,34 @@ const orgSchema = {
                 category === 'botteling' ? '1 FLES (70CL)' :
                 (cleanLoc ? cleanLoc.toUpperCase() : 'GROTE KERK DEN HAAG');
 
+              // Sync in-memory tickets array
+              if (Array.isArray(window.denHaagTicketsData)) {
+                var existingIdx = window.denHaagTicketsData.findIndex(function(t) { return t.id === r.id; });
+                var ticketObj = {
+                  id: r.id,
+                  title: cleanTitle,
+                  price: priceNum,
+                  date: dateLabel || cleanDate,
+                  time: cleanTime,
+                  day: day,
+                  daypart: daypart,
+                  category: category,
+                  location: p.location || 'Grote Kerk Den Haag',
+                  isSoldOut: isSoldOut,
+                  description: p.ticket_description || p.description || '',
+                  extra: p.ticket_description || p.description || '',
+                  ambassadorName: p.ambassador_name || '',
+                  ambassadorTitle: p.ambassador_title || '',
+                  ambassadorBio: p.ambassador_bio || '',
+                  tastingLineup: p.tasting_lineup ? (Array.isArray(p.tasting_lineup) ? p.tasting_lineup : String(p.tasting_lineup).split(/[\n,]+/).map(function(s){ return s.trim(); }).filter(Boolean)) : []
+                };
+                if (existingIdx !== -1) {
+                  window.denHaagTicketsData[existingIdx] = Object.assign(window.denHaagTicketsData[existingIdx], ticketObj);
+                } else {
+                  window.denHaagTicketsData.push(ticketObj);
+                }
+              }
+
               // 1. Homepage ticket stubs
               var cardFound = false;
               var allCards = document.querySelectorAll('.ticket-stub');
@@ -384,6 +414,7 @@ const orgSchema = {
 
                 if (isMatch) {
                   cardFound = true;
+                  matchedCards.add(card);
                   card.setAttribute('data-ticket-id', r.id);
                   card.setAttribute('data-title', cleanTitle);
                   card.setAttribute('data-price', String(priceNum));
@@ -457,6 +488,8 @@ const orgSchema = {
 
                   var priceParts = priceNum.toFixed(2).split('.');
                   var serialNo = Math.floor(Math.random() * 90000) + 10000;
+                  var titleLen = cleanTitle.length;
+                  var titleSizeClass = titleLen > 38 ? 'title-sm' : (titleLen > 28 ? 'title-md' : 'title-lg');
 
                   newCard.innerHTML =
                     '<div class="ticket-inner-border"></div>' +
@@ -468,7 +501,7 @@ const orgSchema = {
                       '<div class="ticket-top-meta">' +
                         '<span class="ticket-fest-subtitle">INTERNATIONAAL WHISKY FESTIVAL</span>' +
                       '</div>' +
-                      '<h3 class="ticket-title title-lg" title="' + cleanTitle + '">' + cleanTitle + '</h3>' +
+                      '<h3 class="ticket-title ' + titleSizeClass + '" title="' + cleanTitle + '">' + cleanTitle + '</h3>' +
                       '<div class="ticket-meta-grid">' +
                         '<div class="meta-col"><span class="meta-col-label">DATUM</span><strong class="meta-col-val">' + cleanDate + '</strong></div>' +
                         '<div class="meta-col"><span class="meta-col-label">TIJD</span><strong class="meta-col-val">' + cleanTime + '</strong></div>' +
@@ -504,6 +537,7 @@ const orgSchema = {
                   } else {
                     ticketsListContainer.appendChild(newCard);
                   }
+                  matchedCards.add(newCard);
                 }
               }
 
@@ -520,6 +554,7 @@ const orgSchema = {
 
                 if (isMatch) {
                   rowFound = true;
+                  matchedRows.add(row);
                   row.setAttribute('data-ticket-id', r.id);
                   var nameEl = row.querySelector('.item-name');
                   if (nameEl) nameEl.textContent = cleanTitle;
@@ -606,8 +641,45 @@ const orgSchema = {
                         '</div>' +
                       '</div>';
                     targetList.appendChild(newRow);
+                    matchedRows.add(newRow);
                   }
                 }
+              }
+            });
+
+            // DELETION SYNC: Prune ticket stubs deleted from GHL
+            var allDomCards = document.querySelectorAll('#shop-tickets-list .ticket-stub');
+            allDomCards.forEach(function(card) {
+              if (!matchedCards.has(card)) {
+                var cardId = card.getAttribute('data-ticket-id');
+                // Remove from shopping cart if present
+                try {
+                  var rawCart = localStorage.getItem('whiskyfest_cart');
+                  if (rawCart) {
+                    var parsedCart = JSON.parse(rawCart);
+                    if (cardId && parsedCart[cardId]) {
+                      delete parsedCart[cardId];
+                      localStorage.setItem('whiskyfest_cart', JSON.stringify(parsedCart));
+                      window.dispatchEvent(new CustomEvent('cart-updated', { detail: parsedCart }));
+                    }
+                  }
+                } catch(e) {}
+
+                // Remove from in-memory ticket dataset
+                if (Array.isArray(window.denHaagTicketsData)) {
+                  window.denHaagTicketsData = window.denHaagTicketsData.filter(function(t) {
+                    return t.id !== cardId;
+                  });
+                }
+                card.remove();
+              }
+            });
+
+            // DELETION SYNC: Prune timetable rows deleted from GHL
+            var allDomRows = document.querySelectorAll('.agenda-row-item');
+            allDomRows.forEach(function(row) {
+              if (!matchedRows.has(row)) {
+                row.remove();
               }
             });
 
