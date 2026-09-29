@@ -2824,7 +2824,7 @@ function formatSpeaker(host: string) {
         descEl.textContent = desc;
         descEl.style.display = desc ? 'block' : 'none';
       }
-      const speakerBox = hostEl ? hostEl.closest('.m-speaker-card') as HTMLElement : null;
+      const speakerBox = hostEl ? hostEl.closest('.m-speaker-card') : null;
       if (speakerBox) {
         if (host && host.trim()) {
           speakerBox.style.display = 'block';

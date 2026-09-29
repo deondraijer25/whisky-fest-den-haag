@@ -750,14 +750,14 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
       }
     });
 
-    window.addEventListener('ghl:tickets-updated', (e: any) => {
+    window.addEventListener('ghl:tickets-updated', (e) => {
       const records = e.detail;
       if (Array.isArray(records) && records.length > 0) {
-        if (!Array.isArray((window as any).GLOBAL_TICKETS)) (window as any).GLOBAL_TICKETS = [];
-        records.forEach((r: any) => {
+        if (!Array.isArray(window.GLOBAL_TICKETS)) window.GLOBAL_TICKETS = [];
+        records.forEach((r) => {
           const p = r.properties || r;
           const cleanTitle = (p.title || '').replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
-          const match = (window as any).GLOBAL_TICKETS.find((t: any) => t.id === r.id || (t.title && cleanTitle && t.title.toLowerCase().replace(/[^a-z0-9]/g, '') === cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '')));
+          const match = window.GLOBAL_TICKETS.find((t) => t.id === r.id || (t.title && cleanTitle && t.title.toLowerCase().replace(/[^a-z0-9]/g, '') === cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '')));
           if (match) {
             if (p.price) match.price = typeof p.price === 'number' ? p.price : (parseFloat(p.price) || match.price);
             if (p.date_label) match.date = p.date_label;
