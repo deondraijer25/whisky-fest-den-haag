@@ -10,6 +10,9 @@ interface Props {
 }
 
 const { currentCity = 'denhaag' } = Astro.props;
+
+const currentCityLogoSvg = currentCity === 'amsterdam' ? Middel14Svg : currentCity === 'denhaag' ? Middel15Svg : Middel13Svg;
+const currentCityTitle = currentCity === 'amsterdam' ? 'Whisky Fest Amsterdam' : currentCity === 'denhaag' ? 'International Whisky Festival Den Haag' : 'Gents Whisky Festival';
 ---
 
 <!-- Ripped Paper Overlay - Exact replica of ticket section -->
@@ -102,41 +105,16 @@ const { currentCity = 'denhaag' } = Astro.props;
 
     </div>
 
-    <!-- 2. NEWSLETTER LETTERPRESS CARD WITH INSTANT ON-PAGE FEEDBACK -->
-    <div class="newsletter-section">
-      <div class="newsletter-card">
-        <div class="newsletter-border">
-          <div class="newsletter-content">
-            <span class="newsletter-mini-tag">BLIJF OP DE HOOGTE</span>
-            <h3 class="newsletter-title">Schrijf u in voor onze nieuwsbrief</h3>
-            <p class="newsletter-desc">
-              Ontvang als eerste exclusieve updates over de ticketverkoop, speciale festivalbottelingen en zeldzame masterclasses.
-            </p>
-            <form 
-              class="newsletter-form" 
-              onsubmit="event.preventDefault(); const inp = this.querySelector('input'); const msg = this.parentElement.querySelector('.newsletter-success-msg'); if(inp && inp.value){ if(msg) { msg.style.display = 'block'; } alert('✓ Hartelijk dank! U bent succesvol ingeschreven voor de nieuwsbrief van International Whisky Festival.'); inp.value = ''; }"
-            >
-              <input type="email" placeholder="Uw e-mailadres invoeren..." required class="newsletter-input" />
-              <button type="submit" class="btn-newsletter-submit">Inschrijven</button>
-            </form>
-            <div class="newsletter-success-msg" style="display: none; margin-top: 1rem; padding: 0.65rem 1rem; background: rgba(0, 100, 72, 0.2); border: 1px solid #4ade80; border-radius: 6px; color: #4ade80; font-weight: 700; font-size: 0.9rem;">
-              ✓ Hartelijk dank! U bent succesvol ingeschreven voor onze officiële nieuwsbrief.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3. MAIN FOOTER 4-COLUMN GRID (Info, Nav, Account, Google Map) -->
+    <!-- 2. MAIN FOOTER 4-COLUMN GRID (Info, Nav, Account, Google Map) -->
     <div class="footer-grid">
       
-      <!-- COL 1: ORGANISATIE & INFO -->
+      <!-- COL 1: ORGANISATIE & INFO (Logo links onder ipv vierkant) -->
       <div class="footer-col brand-col">
-        <div class="footer-brand-badge">
-          <span class="badge-est">Est. 2000</span>
-          <h4 class="badge-name">International Whisky Festival</h4>
-          <span class="badge-city">Den Haag</span>
-        </div>
+        <a href="/" class="footer-brand-logo-wrap" aria-label={currentCityTitle}>
+          <div class="footer-brand-logo-svg">
+            <Fragment set:html={currentCityLogoSvg} />
+          </div>
+        </a>
         <p class="brand-pitch">Al meer dan 26 jaar het meest toonaangevende en sfeervolle whisky evenement in de historische Grote Kerk van Den Haag.</p>
         <div class="contact-box">
           <p class="contact-line"><strong>Locatie:</strong> Grote Kerk Den Haag</p>
@@ -267,8 +245,9 @@ const { currentCity = 'denhaag' } = Astro.props;
     justify-content: center;
     align-items: flex-start;
     gap: 4.5rem;
-    margin-bottom: 4.5rem;
-    padding: 1.5rem 0;
+    margin-bottom: 3.5rem;
+    padding: 1.5rem 0 3rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   }
 
   .freestanding-logo-item {
@@ -358,111 +337,7 @@ const { currentCity = 'denhaag' } = Astro.props;
   }
 
   /* ----------------------------------------------------
-     2. NEWSLETTER CARD
-     ---------------------------------------------------- */
-  .newsletter-section {
-    margin-bottom: 4.5rem;
-  }
-
-  .newsletter-card {
-    background-color: rgba(0, 0, 0, 0.24);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 10px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-  }
-
-  .newsletter-border {
-    border: 1px dashed rgba(255, 255, 255, 0.25);
-    padding: 2.75rem 2rem;
-    border-radius: 8px;
-  }
-
-  .newsletter-content {
-    max-width: 720px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .newsletter-mini-tag {
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: #caac8e;
-    display: block;
-    margin-bottom: 0.35rem;
-  }
-
-  .newsletter-title {
-    color: #FFFFFF;
-    font-size: 1.9rem;
-    margin-bottom: 0.65rem;
-    font-family: var(--font-display, 'bourbon-rough', serif);
-    letter-spacing: 0.04em;
-  }
-
-  .newsletter-desc {
-    color: rgba(255, 255, 255, 0.82);
-    font-size: 0.95rem;
-    margin-bottom: 1.75rem;
-    line-height: 1.6;
-  }
-
-  .newsletter-form {
-    display: flex;
-    gap: 0.75rem;
-    max-width: 540px;
-    margin: 0 auto;
-  }
-
-  .newsletter-input {
-    flex: 1;
-    background-color: rgba(0, 0, 0, 0.35);
-    border: 1.5px solid rgba(255, 255, 255, 0.25);
-    color: #FFFFFF;
-    padding: 0.85rem 1.25rem;
-    font-family: var(--font-sans, sans-serif);
-    font-size: 0.95rem;
-    border-radius: 6px;
-    transition: all 0.3s;
-  }
-
-  .newsletter-input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-  }
-
-  .newsletter-input:focus {
-    outline: none;
-    border-color: #caac8e;
-    background-color: rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0 12px rgba(213, 194, 138, 0.35);
-  }
-
-  .btn-newsletter-submit {
-    padding: 0.85rem 2rem;
-    background-color: #caac8e;
-    color: #171614;
-    font-family: var(--font-sans, sans-serif);
-    font-weight: 800;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-  }
-
-  .btn-newsletter-submit:hover {
-    background-color: #e4d5c4;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-  }
-
-  /* ----------------------------------------------------
-     3. 4-COLUMN MAIN FOOTER GRID
+     2. 4-COLUMN MAIN FOOTER GRID
      ---------------------------------------------------- */
   .footer-grid {
     display: grid;
@@ -496,40 +371,36 @@ const { currentCity = 'denhaag' } = Astro.props;
     background-color: #caac8e;
   }
 
-  /* Column 1: Brand badge */
-  .footer-brand-badge {
-    display: inline-flex;
-    flex-direction: column;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 0.75rem 1.25rem;
+  /* Column 1: Brand logo (Links onder ipv vierkant) */
+  .footer-brand-logo-wrap {
+    display: inline-block;
+    text-decoration: none;
     margin-bottom: 1.25rem;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 6px;
-    max-width: 280px;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
   }
 
-  .badge-est {
-    font-size: 0.65rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: #caac8e;
+  .footer-brand-logo-wrap:hover {
+    transform: translateY(-3px) scale(1.03);
+    opacity: 0.95;
   }
 
-  .badge-name {
-    font-family: var(--font-display, 'bourbon-rough', serif);
-    font-size: 1.35rem;
-    color: #FFFFFF;
-    letter-spacing: 0.04em;
-    margin: 0.2rem 0;
+  .footer-brand-logo-svg {
+    width: 110px;
+    height: 148px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
   }
 
-  .badge-city {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: rgba(255, 255, 255, 0.7);
+  .footer-brand-logo-svg :global(svg),
+  .footer-brand-logo-svg svg {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 110px !important;
+    max-height: 148px !important;
+    object-fit: contain;
+    display: block !important;
+    filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.35));
   }
 
   .brand-pitch {
@@ -749,11 +620,9 @@ const { currentCity = 'denhaag' } = Astro.props;
       grid-template-columns: 1fr;
       gap: 2.5rem;
     }
-    .newsletter-form {
-      flex-direction: column;
-    }
-    .btn-newsletter-submit {
-      width: 100%;
+    .footer-brand-logo-svg {
+      width: 95px !important;
+      height: 128px !important;
     }
     .bottom-row {
       flex-direction: column;
