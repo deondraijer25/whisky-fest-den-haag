@@ -2616,8 +2616,29 @@ import Footer from '../components/Footer.astro';
             const attendeeName = ticket.attendeeName || userName;
             const ticketTitle = ticket.sessionTitle || ticket.title || 'Festival Entreeticket';
             const cleanTitle = ticketTitle.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
-            const displayTime = ticket.timeStr || ticket.time || ticket.timeslot || '13:00 - 17:00 UUR';
-            const formattedDate = ticket.dateStr || ticket.date || 'Vrijdag 13 november 2026';
+            let displayTime = ticket.timeStr || ticket.time || ticket.timeslot || '13:00 - 17:00 UUR';
+            let formattedDate = ticket.dateStr || ticket.date || 'Vrijdag 13 november 2026';
+
+            // Check live GHL records first: GHL is authoritative for live festival schedule!
+            const liveGhlTickets = (window as any).__LIVE_GHL_TICKETS__;
+            if (Array.isArray(liveGhlTickets) && liveGhlTickets.length > 0) {
+              const cleanTKey = cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '');
+              const ghlMatch = liveGhlTickets.find((r: any) => {
+                const p = r.properties || r;
+                const pTitle = (p.title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                return pTitle && cleanTKey && (pTitle.includes(cleanTKey) || cleanTKey.includes(pTitle));
+              });
+              if (ghlMatch) {
+                const p = ghlMatch.properties || ghlMatch;
+                if (p.date_label) formattedDate = p.date_label.trim();
+                if (p.time_label) {
+                  let cTime = p.time_label.trim().replace(/–/g, '-');
+                  if (!cTime.toUpperCase().includes('UUR')) cTime += ' UUR';
+                  displayTime = cTime;
+                }
+              }
+            }
+
             const formattedSchedule = `${formattedDate} • ${displayTime}`;
 
             const titleLower = ticketTitle.toLowerCase();
@@ -3096,6 +3117,11 @@ import Footer from '../components/Footer.astro';
         }
       }
     }
+
+    // Live re-render when GHL tickets sync completes in background
+    window.addEventListener('ghl:tickets-updated', () => {
+      updatePortalUI();
+    });
 
     if (loginForm) {
       loginForm.addEventListener('submit', async (e) => {
