@@ -248,5 +248,287 @@ const orgSchema = {
 
     <!-- Global Mobile Bottom Sheet Cart Drawer -->
     <MobileCartDrawer />
+
+    <!-- Real-time Live GHL Ticket & Standhouder Sync (Instant Realtime Updates from Leadfabriek CRM) -->
+    <script is:inline>
+      (function initRealtimeGhlSync() {
+        var GHL_API_BASE = 'https://services.leadconnectorhq.com';
+        var GHL_API_KEY = 'pit-150d6114-ac2c-4cf7-9d5c-ffc20499c790';
+        var GHL_LOCATION_ID = '1OZ9uxIBFoxwbheVC5iN';
+
+        function syncLiveTickets() {
+          fetch(GHL_API_BASE + '/objects/custom_objects.festival_tickets/records/search', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ' + GHL_API_KEY,
+              'Version': '2021-07-28',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              locationId: GHL_LOCATION_ID,
+              page: 1,
+              pageLimit: 250,
+              query: 'Den Haag',
+              searchAfter: []
+            })
+          })
+          .then(function(res) {
+            if (!res.ok) return null;
+            return res.json();
+          })
+          .then(function(data) {
+            if (!data) return;
+            var records = data.customObjectRecords || data.records || [];
+            if (!Array.isArray(records) || records.length === 0) return;
+
+            window.__LIVE_GHL_TICKETS__ = records;
+
+            records.forEach(function(r) {
+              var p = r.properties || r;
+              var rawTitle = p.title || '';
+              var cleanTitle = rawTitle.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
+              var priceNum = typeof p.price === 'number' ? p.price : (parseFloat(p.price) || parseFloat(p.ticket_price) || 0);
+              var capacity = parseInt(p.capacity, 10) || 0;
+              var sold = parseInt(p.sold, 10) || 0;
+              var rawSoldOut = p.is_sold_out === true || p.is_sold_out === 'true' || p.is_sold_out === '1' || p.is_sold_out === 'ja' || p.is_sold_out === 'yes';
+              var isSoldOut = rawSoldOut || (capacity > 0 && sold >= capacity);
+
+              var rawDay = (p.day || '').toLowerCase().trim();
+              var dateLabel = p.date_label || '';
+              var timeLabel = p.time_label || '';
+              var day = rawDay;
+              if (!day || day === 'all') {
+                if (dateLabel.toLowerCase().includes('vrijdag')) day = 'vrijdag';
+                else if (dateLabel.toLowerCase().includes('zaterdag')) day = 'zaterdag';
+                else if (dateLabel.toLowerCase().includes('zondag')) day = 'zondag';
+                else day = 'all';
+              }
+
+              var daypart = (p.daypart || '').toLowerCase().trim();
+              if (!daypart || daypart === 'all') {
+                var hourMatch = timeLabel.match(/(\d{1,2}):\d{2}/);
+                if (hourMatch) {
+                  var startHour = parseInt(hourMatch[1], 10);
+                  if (startHour < 12) daypart = 'ochtend';
+                  else if (startHour < 18) daypart = 'middag';
+                  else daypart = 'avond';
+                } else {
+                  daypart = 'all';
+                }
+              }
+
+              var category = (p.category || '').toLowerCase().trim() || 'masterclass';
+
+              var cleanDate = dateLabel;
+              if (day === 'vrijdag' || (cleanDate.toLowerCase().includes('vrijdag') && (cleanDate.includes('13') || cleanDate.toLowerCase().includes('13 nov')))) {
+                cleanDate = 'VRIJDAG 13 NOV';
+              } else if (day === 'zaterdag' || (cleanDate.toLowerCase().includes('zaterdag') && (cleanDate.includes('14') || cleanDate.toLowerCase().includes('14 nov')))) {
+                cleanDate = 'ZATERDAG 14 NOV';
+              } else if (day === 'zondag' || (cleanDate.toLowerCase().includes('zondag') && (cleanDate.includes('15') || cleanDate.toLowerCase().includes('15 nov')))) {
+                cleanDate = 'ZONDAG 15 NOV';
+              } else {
+                cleanDate = cleanDate.replace(/ 2026/g, '').toUpperCase();
+              }
+
+              var cleanTime = timeLabel;
+              if (cleanTime && !cleanTime.toLowerCase().includes('uur')) {
+                cleanTime = cleanTime + ' uur';
+              }
+
+              var cleanLoc = (p.location || '')
+                .replace(/\s*\(Grote Kerk Den Haag\)/gi, '')
+                .replace(/\s*Grote Kerk/gi, '')
+                .trim();
+              if (/melden bij entree-deur/i.test(cleanLoc)) cleanLoc = 'Entree-deur';
+              if (/afhalen bij festival slijterij/i.test(cleanLoc)) cleanLoc = 'Festival Slijterij';
+              var accessText = category === 'entree' ? '1 PERSOON' :
+                category === 'botteling' ? '1 FLES (70CL)' :
+                (cleanLoc ? cleanLoc.toUpperCase() : 'GROTE KERK DEN HAAG');
+
+              // 1. Homepage ticket stubs
+              var allCards = document.querySelectorAll('.ticket-stub');
+              allCards.forEach(function(card) {
+                var cardId = card.getAttribute('data-ticket-id');
+                var cardTitle = (card.getAttribute('data-title') || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                var matchKey = cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '');
+                var isMatch = (cardId && cardId === r.id) || (cardTitle && matchKey && (cardTitle.indexOf(matchKey) !== -1 || matchKey.indexOf(cardTitle) !== -1));
+
+                if (isMatch) {
+                  card.setAttribute('data-ticket-id', r.id);
+                  card.setAttribute('data-title', cleanTitle);
+                  card.setAttribute('data-price', String(priceNum));
+                  card.setAttribute('data-soldout', isSoldOut ? 'true' : 'false');
+                  if (day) card.setAttribute('data-day', day);
+                  if (daypart) card.setAttribute('data-daypart', daypart);
+                  if (category) card.setAttribute('data-category', category);
+                  card.setAttribute('data-date', dateLabel || cleanDate);
+                  card.setAttribute('data-time', cleanTime);
+
+                  var titleEl = card.querySelector('.ticket-title');
+                  if (titleEl) {
+                    titleEl.textContent = cleanTitle;
+                    titleEl.setAttribute('title', cleanTitle);
+                  }
+
+                  var priceParts = priceNum.toFixed(2).split('.');
+                  var priceValEl = card.querySelector('.price-val');
+                  var priceCentsEl = card.querySelector('.price-cents');
+                  if (priceValEl) priceValEl.textContent = priceParts[0];
+                  if (priceCentsEl) priceCentsEl.textContent = ',' + priceParts[1];
+
+                  var metaCols = card.querySelectorAll('.ticket-meta-grid .meta-col');
+                  if (metaCols.length >= 1) {
+                    var dateVal = metaCols[0].querySelector('.meta-col-val');
+                    if (dateVal && cleanDate) dateVal.textContent = cleanDate;
+                  }
+                  if (metaCols.length >= 2) {
+                    var timeVal = metaCols[1].querySelector('.meta-col-val');
+                    if (timeVal && cleanTime) timeVal.textContent = cleanTime;
+                  }
+                  if (metaCols.length >= 3) {
+                    var locVal = metaCols[2].querySelector('.meta-col-val');
+                    if (locVal && accessText) locVal.textContent = accessText;
+                  }
+
+                  if (isSoldOut) {
+                    card.classList.add('ticket-sold-out');
+                    var qtySel = card.querySelector('.qty-selector');
+                    if (qtySel) {
+                      var soldBox = card.querySelector('.sold-out-box');
+                      if (!soldBox) {
+                        var newSold = document.createElement('div');
+                        newSold.className = 'sold-out-box';
+                        newSold.innerHTML = '<span class="sold-out-text">UITVERKOCHT</span>';
+                        qtySel.replaceWith(newSold);
+                      }
+                    }
+                  } else {
+                    card.classList.remove('ticket-sold-out');
+                  }
+                }
+              });
+
+              // 2. Programma timetable rows
+              var allRows = document.querySelectorAll('.agenda-row-item');
+              allRows.forEach(function(row) {
+                var btn = row.querySelector('.btn-table-buy');
+                var detailsBtn = row.querySelector('.btn-trigger-details');
+                var rowId = row.getAttribute('data-ticket-id') || (btn ? btn.getAttribute('data-ticket-id') : '');
+                var rowTitle = (row.querySelector('.item-name')?.textContent || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                var matchKey = cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '');
+                var isMatch = (rowId && rowId === r.id) || (rowTitle && matchKey && (rowTitle.indexOf(matchKey) !== -1 || matchKey.indexOf(rowTitle) !== -1));
+
+                if (isMatch) {
+                  row.setAttribute('data-ticket-id', r.id);
+                  var nameEl = row.querySelector('.item-name');
+                  if (nameEl) nameEl.textContent = cleanTitle;
+
+                  var timeEl = row.querySelector('.item-time-val');
+                  if (timeEl && cleanTime) timeEl.textContent = cleanTime;
+
+                  var priceEl = row.querySelector('.item-price');
+                  if (priceEl) priceEl.textContent = '€ ' + priceNum.toFixed(2).replace('.', ',');
+
+                  if (btn) {
+                    btn.setAttribute('data-ticket-id', r.id);
+                    btn.setAttribute('data-title', cleanTitle);
+                    if (isSoldOut) {
+                      btn.className = 'btn btn-gold btn-table-buy sold-out';
+                      btn.disabled = true;
+                      btn.textContent = 'Uitverkocht';
+                    } else {
+                      btn.className = 'btn btn-gold btn-table-buy';
+                      btn.disabled = false;
+                      btn.textContent = '+ Bestel';
+                    }
+                  }
+
+                  if (detailsBtn) {
+                    detailsBtn.setAttribute('data-title', cleanTitle);
+                    if (cleanTime) detailsBtn.setAttribute('data-time', cleanTime);
+                    detailsBtn.setAttribute('data-price', '€ ' + priceNum.toFixed(2).replace('.', ','));
+                    if (p.ticket_description || p.description) {
+                      detailsBtn.setAttribute('data-desc', p.ticket_description || p.description);
+                    }
+                    if (p.ambassador_name) {
+                      var hostStr = p.ambassador_name + (p.ambassador_title ? ' — ' + p.ambassador_title : '');
+                      detailsBtn.setAttribute('data-host', hostStr);
+                    }
+                  }
+
+                  // Move row to correct session agenda pane if day/daypart changed
+                  if (day && day !== 'all' && daypart && daypart !== 'all') {
+                    var targetPaneId = 'pane-' + day + '-' + daypart;
+                    var targetPane = document.getElementById(targetPaneId);
+                    var currentPane = row.closest('.session-agenda-pane');
+                    if (targetPane && currentPane && currentPane !== targetPane) {
+                      var targetList = targetPane.querySelector('.pane-rows-list');
+                      if (targetList) {
+                        targetList.appendChild(row);
+                      }
+                    }
+                  }
+                }
+              });
+            });
+
+            // Re-apply active filters on the homepage
+            if (typeof window.__applyTicketFilters === 'function') {
+              window.__applyTicketFilters();
+            }
+
+            // Dispatch global tickets updated event
+            window.dispatchEvent(new CustomEvent('ghl:tickets-updated', { detail: records }));
+          })
+          .catch(function(err) {
+            // Silently fall back to pre-rendered HTML
+          });
+        }
+
+        function syncLiveStands() {
+          fetch(GHL_API_BASE + '/objects/custom_objects.festival_standhouders/records/search', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ' + GHL_API_KEY,
+              'Version': '2021-07-28',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              locationId: GHL_LOCATION_ID,
+              page: 1,
+              pageLimit: 250,
+              query: 'Den Haag',
+              searchAfter: []
+            })
+          })
+          .then(function(res) {
+            if (!res.ok) return null;
+            return res.json();
+          })
+          .then(function(data) {
+            if (!data) return;
+            var records = data.customObjectRecords || data.records || [];
+            if (!Array.isArray(records) || records.length === 0) return;
+
+            window.__LIVE_GHL_STANDS__ = records;
+            window.dispatchEvent(new CustomEvent('ghl:stands-updated', { detail: records }));
+          })
+          .catch(function(err) {});
+        }
+
+        function syncAll() {
+          syncLiveTickets();
+          syncLiveStands();
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', syncAll);
+        } else {
+          syncAll();
+        }
+        window.addEventListener('focus', syncAll);
+        setInterval(syncAll, 10000);
+      })();
+    </script>
   </body>
 </html>

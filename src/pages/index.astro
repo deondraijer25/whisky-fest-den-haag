@@ -1138,6 +1138,7 @@ const tickets = await getTickets('den_haag');
                   date={ticket.date}
                   time={ticket.time}
                   category={ticket.category}
+                  day={ticket.day}
                   daypart={ticket.daypart}
                   location={ticket.location}
                   bookingType={ticket.bookingType}
@@ -5482,6 +5483,11 @@ const tickets = await getTickets('den_haag');
     }
   }
 
+  (window as any).__applyTicketFilters = applyFilters;
+  if ((window as any).__LIVE_GHL_TICKETS__) {
+    applyFilters();
+  }
+
   if (showMoreBtn) {
     showMoreBtn.addEventListener('click', () => {
       visibleCount += 5;
@@ -6670,8 +6676,64 @@ const tickets = await getTickets('den_haag');
   }
 ]
 ;
-  const denHaagTicketsData: any[] = JSON.parse(document.getElementById("tickets-data-json")?.textContent || "[]");
-  const allAddonsList: any[] = denHaagTicketsData.filter(t => t.category !== 'entree');
+  let denHaagTicketsData: any[] = JSON.parse(document.getElementById("tickets-data-json")?.textContent || "[]");
+  let allAddonsList: any[] = denHaagTicketsData.filter(t => t.category !== 'entree');
+
+  function updateLiveTicketsData(records: any[]) {
+    if (!Array.isArray(records) || records.length === 0) return;
+    records.forEach((r: any) => {
+      const p = r.properties || r;
+      const cleanTitle = (p.title || '').replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
+      const priceNum = typeof p.price === 'number' ? p.price : (parseFloat(p.price) || parseFloat(p.ticket_price) || 0);
+      const isSoldOut = p.is_sold_out === true || p.is_sold_out === 'true' || p.is_sold_out === '1' || p.is_sold_out === 'ja' || p.is_sold_out === 'yes';
+      const day = (p.day || '').toLowerCase().trim();
+      const daypart = (p.daypart || '').toLowerCase().trim();
+
+      let target = denHaagTicketsData.find((t: any) => t.id === r.id);
+      if (!target) {
+        target = denHaagTicketsData.find((t: any) => 
+          t.title && cleanTitle && (
+            t.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '')) ||
+            cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '').includes(t.title.toLowerCase().replace(/[^a-z0-9]/g, ''))
+          )
+        );
+      }
+      if (target) {
+        target.id = r.id;
+        target.title = cleanTitle;
+        target.price = priceNum;
+        if (day) target.day = day;
+        if (daypart) target.daypart = daypart;
+        if (p.date_label) target.date = p.date_label;
+        if (p.time_label) target.time = p.time_label;
+        if (p.category) target.category = p.category;
+        if (p.location) target.location = p.location;
+        if (p.ticket_description || p.description) target.description = p.ticket_description || p.description;
+        if (p.ambassador_name) target.ambassadorName = p.ambassador_name;
+        if (p.ambassador_title) target.ambassadorTitle = p.ambassador_title;
+        if (p.ambassador_bio) target.ambassadorBio = p.ambassador_bio;
+        if (p.tasting_lineup) {
+          target.tastingLineup = Array.isArray(p.tasting_lineup) 
+            ? p.tasting_lineup 
+            : String(p.tasting_lineup).split(/[\n,]+/).map((s: string) => s.trim()).filter(Boolean);
+        }
+        target.isSoldOut = isSoldOut;
+      }
+    });
+    allAddonsList = denHaagTicketsData.filter(t => t.category !== 'entree');
+    if (typeof (window as any).__renderAddonUpsellList === 'function') {
+      (window as any).__renderAddonUpsellList();
+    }
+  }
+
+  window.addEventListener('ghl:tickets-updated', ((e: CustomEvent) => {
+    if (e.detail) updateLiveTicketsData(e.detail);
+  }) as EventListener);
+
+  if (Array.isArray((window as any).__LIVE_GHL_TICKETS__)) {
+    updateLiveTicketsData((window as any).__LIVE_GHL_TICKETS__);
+  }
+
   let activeMcId: string | null = null;
 
   const mcModal = document.getElementById('masterclass-info-modal');

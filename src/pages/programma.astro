@@ -1004,7 +1004,7 @@ function formatSpeaker(host: string) {
 
               <!-- Rows in 5 Clean Columns -->
               {s.items.map((item) => (
-                <article class="agenda-row-item">
+                <article class="agenda-row-item" data-ticket-id={item.id}>
                   <!-- 1. Tijd (Begin- en Eindtijd) -->
                   <div class="col-time">
                     <span class="item-time-val">{item.time}</span>
@@ -2463,6 +2463,47 @@ function formatSpeaker(host: string) {
 </style>
 
 <script define:vars={{ liveTicketsData: liveTickets }}>
+  let ticketsList = Array.isArray(liveTicketsData) ? liveTicketsData : [];
+
+  function updateProgrammaTicketsData(records) {
+    if (!Array.isArray(records) || records.length === 0) return;
+    records.forEach(r => {
+      const p = r.properties || r;
+      const cleanTitle = (p.title || '').replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
+      const priceNum = typeof p.price === 'number' ? p.price : (parseFloat(p.price) || parseFloat(p.ticket_price) || 0);
+      const isSoldOut = p.is_sold_out === true || p.is_sold_out === 'true' || p.is_sold_out === '1' || p.is_sold_out === 'ja' || p.is_sold_out === 'yes';
+
+      let target = ticketsList.find(t => t.id === r.id);
+      if (!target) {
+        target = ticketsList.find(t =>
+          t.title && cleanTitle && (
+            t.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '')) ||
+            cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '').includes(t.title.toLowerCase().replace(/[^a-z0-9]/g, ''))
+          )
+        );
+      }
+      if (target) {
+        target.id = r.id;
+        target.title = cleanTitle;
+        target.price = priceNum;
+        if (p.day) target.day = p.day;
+        if (p.daypart) target.daypart = p.daypart;
+        if (p.date_label) target.date = p.date_label;
+        if (p.time_label) target.time = p.time_label;
+        if (p.category) target.category = p.category;
+        target.isSoldOut = isSoldOut;
+      }
+    });
+  }
+
+  window.addEventListener('ghl:tickets-updated', (e) => {
+    if (e.detail) updateProgrammaTicketsData(e.detail);
+  });
+
+  if (Array.isArray(window.__LIVE_GHL_TICKETS__)) {
+    updateProgrammaTicketsData(window.__LIVE_GHL_TICKETS__);
+  }
+
   function initProgramma() {
     // 1. Session Tab Switching (All 7 Cards)
     const navTabs = document.querySelectorAll('.session-btn-card');
@@ -2608,7 +2649,7 @@ function formatSpeaker(host: string) {
           if (!it) return;
           const qty = typeof it === 'number' ? it : it.qty;
           if (qty > 0) {
-            const rawObj = (liveTicketsData || []).find(t => t.id === k);
+            const rawObj = (ticketsList || []).find(t => t.id === k);
             const price = (typeof it === 'object' && it.price !== undefined) ? it.price : (rawObj?.price || 20);
             const title = (typeof it === 'object' && it.title) ? it.title : (rawObj?.title || k);
             const category = (typeof it === 'object' && it.category) ? it.category : (rawObj?.category || 'masterclass');
@@ -2661,7 +2702,7 @@ function formatSpeaker(host: string) {
 
       try {
         const cart = getProgrammaCart();
-        const itemObj = (liveTicketsData || []).find(t => t.id === ticketId);
+        const itemObj = (ticketsList || []).find(t => t.id === ticketId);
 
         if (!cart[ticketId]) {
           cart[ticketId] = {
@@ -2709,7 +2750,7 @@ function formatSpeaker(host: string) {
 
       try {
         const cart = getProgrammaCart();
-        const itemObj = (liveTicketsData || []).find(t => t.id === ticketId);
+        const itemObj = (ticketsList || []).find(t => t.id === ticketId);
 
         if (!cart[ticketId]) {
           cart[ticketId] = {
@@ -2814,7 +2855,7 @@ function formatSpeaker(host: string) {
 
         try {
           const cart = getProgrammaCart();
-          const itemObj = (liveTicketsData || []).find(t => t.id === ticketId);
+          const itemObj = (ticketsList || []).find(t => t.id === ticketId);
 
           if (!cart[ticketId]) {
             cart[ticketId] = {

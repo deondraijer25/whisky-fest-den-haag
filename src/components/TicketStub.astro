@@ -15,6 +15,7 @@ interface Props {
   extraMeta?: string;
   location?: string;
   bookingType?: string;
+  day?: 'vrijdag' | 'zaterdag' | 'zondag' | 'all';
   daypart?: 'ochtend' | 'middag' | 'avond' | 'all';
   isSoldOut?: boolean;
 }
@@ -34,6 +35,7 @@ const {
   extraMeta,
   location,
   bookingType,
+  day,
   daypart = 'all',
   isSoldOut = false
 } = Astro.props;
@@ -42,13 +44,19 @@ const soldOut = isSoldOut || status === 'sold-out';
 
 const festivalSubtitle = "INTERNATIONAAL WHISKY FESTIVAL";
 
+const effectiveDay = day || (
+  date.toLowerCase().includes('vrijdag') ? 'vrijdag' :
+  date.toLowerCase().includes('zaterdag') ? 'zaterdag' :
+  date.toLowerCase().includes('zondag') ? 'zondag' : 'all'
+);
+
 // Clean date display (e.g. "VRIJDAG 13 NOV")
 let cleanDate = date;
-if (date.toLowerCase().includes('vrijdag') && (date.includes('13') || date.toLowerCase().includes('13 nov'))) {
+if (effectiveDay === 'vrijdag' || (date.toLowerCase().includes('vrijdag') && (date.includes('13') || date.toLowerCase().includes('13 nov')))) {
   cleanDate = 'VRIJDAG 13 NOV';
-} else if (date.toLowerCase().includes('zaterdag') && (date.includes('14') || date.toLowerCase().includes('14 nov'))) {
+} else if (effectiveDay === 'zaterdag' || (date.toLowerCase().includes('zaterdag') && (date.includes('14') || date.toLowerCase().includes('14 nov')))) {
   cleanDate = 'ZATERDAG 14 NOV';
-} else if (date.toLowerCase().includes('zondag') && (date.includes('15') || date.toLowerCase().includes('15 nov'))) {
+} else if (effectiveDay === 'zondag' || (date.toLowerCase().includes('zondag') && (date.includes('15') || date.toLowerCase().includes('15 nov')))) {
   cleanDate = 'ZONDAG 15 NOV';
 } else {
   cleanDate = date.replace(/ 2026/g, '').toUpperCase();
@@ -97,11 +105,9 @@ const titleSizeClass =
   data-category={category}
   data-daypart={daypart}
   data-soldout={soldOut ? 'true' : 'false'}
-  data-day={
-    date.toLowerCase().includes('vrijdag') ? 'vrijdag' :
-    date.toLowerCase().includes('zaterdag') ? 'zaterdag' :
-    date.toLowerCase().includes('zondag') ? 'zondag' : 'all'
-  }
+  data-day={effectiveDay}
+  data-date={date}
+  data-time={cleanTime || time}
 >
   <!-- Inner art-deco double border -->
   <div class="ticket-inner-border"></div>
