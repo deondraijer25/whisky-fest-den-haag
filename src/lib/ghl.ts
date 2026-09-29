@@ -117,29 +117,70 @@ export async function getTickets(city: string = 'den_haag'): Promise<TicketItem[
 
   try {
     const url = `${GHL_API_BASE}/objects/${GHL_TICKETS_OBJECT_KEY}/records/search`;
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${GHL_API_KEY}`,
-        'Version': '2021-07-28',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        locationId: GHL_LOCATION_ID,
-        page: 1,
-        pageLimit: 250,
-        query: citySearchQuery,
-        searchAfter: []
-      })
-    });
+    console.log(`[GHL API] Fetching live tickets for ${city} (filter: properties.festival_city = ${normalizedCity})...`);
+    
+    let records: any[] = [];
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${GHL_API_KEY}`,
+          'Version': '2021-07-28',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          locationId: GHL_LOCATION_ID,
+          page: 1,
+          pageLimit: 250,
+          filters: [{ field: 'properties.festival_city', operator: 'eq', value: normalizedCity }],
+          searchAfter: []
+        })
+      });
 
-    if (!response.ok) {
-      console.warn(`[GHL API] Tickets fetch for ${city} failed with status ${response.status}. Using fallback dataset.`);
-      return TICKETS_DEN_HAAG;
+      if (response.ok) {
+        const json = await response.json();
+        records = json.customObjectRecords || json.records || [];
+      }
+    } catch (filterErr) {
+      console.warn(`[GHL API] Filtered tickets fetch for ${city} encountered error:`, filterErr);
     }
 
-    const json = await response.json();
-    const records = json.customObjectRecords || json.records || [];
+    // Resilient fallback: If direct filter returned 0 records, fetch all records and filter in-memory
+    if (!Array.isArray(records) || records.length === 0) {
+      try {
+        console.info(`[GHL API] Direct filter returned 0 records. Falling back to in-memory festival_city match for ${city}...`);
+        const fallbackRes = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${GHL_API_KEY}`,
+            'Version': '2021-07-28',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            locationId: GHL_LOCATION_ID,
+            page: 1,
+            pageLimit: 250,
+            searchAfter: []
+          })
+        });
+        if (fallbackRes.ok) {
+          const fallbackJson = await fallbackRes.json();
+          const allRecs = fallbackJson.customObjectRecords || fallbackJson.records || [];
+          records = allRecs.filter((r: any) => {
+            const p = r.properties || r;
+            const c = String(p.festival_city || '').toLowerCase().trim();
+            if (normalizedCity === 'gent') return c === 'gent' || c.includes('gent');
+            if (normalizedCity === 'den_haag') return c === 'den_haag' || c === 'den haag' || c.includes('haag');
+            if (normalizedCity === 'amsterdam') return c === 'amsterdam' || c.includes('amsterdam');
+            return false;
+          });
+        }
+      } catch (fbErr) {
+        console.warn(`[GHL API] Fallback tickets fetch for ${city} failed:`, fbErr);
+      }
+    }
+
+    console.log(`[GHL API] Successfully received ${records.length} tickets from GHL for ${city}!`);
     
     if (!Array.isArray(records) || records.length === 0) {
       console.info(`[GHL API] No ticket records found in GHL for ${city}. Using fallback dataset.`);
@@ -220,29 +261,65 @@ export async function getStandhouders(city: string = 'den_haag'): Promise<Exhibi
 
   try {
     const url = `${GHL_API_BASE}/objects/${GHL_STANDS_OBJECT_KEY}/records/search`;
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${GHL_API_KEY}`,
-        'Version': '2021-07-28',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        locationId: GHL_LOCATION_ID,
-        page: 1,
-        pageLimit: 250,
-        query: citySearchQuery,
-        searchAfter: []
-      })
-    });
+    let records: any[] = [];
 
-    if (!response.ok) {
-      console.warn(`[GHL API] Standhouders fetch for ${city} failed with status ${response.status}. Using fallback dataset.`);
-      return EXHIBITORS_DEN_HAAG;
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${GHL_API_KEY}`,
+          'Version': '2021-07-28',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          locationId: GHL_LOCATION_ID,
+          page: 1,
+          pageLimit: 250,
+          filters: [{ field: 'properties.festival_city', operator: 'eq', value: normalizedCity }],
+          searchAfter: []
+        })
+      });
+
+      if (response.ok) {
+        const json = await response.json();
+        records = json.customObjectRecords || json.records || [];
+      }
+    } catch (filterErr) {
+      console.warn(`[GHL API] Filtered standhouders fetch for ${city} encountered error:`, filterErr);
     }
 
-    const json = await response.json();
-    const records = json.customObjectRecords || json.records || [];
+    if (!Array.isArray(records) || records.length === 0) {
+      try {
+        const fallbackRes = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${GHL_API_KEY}`,
+            'Version': '2021-07-28',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            locationId: GHL_LOCATION_ID,
+            page: 1,
+            pageLimit: 250,
+            searchAfter: []
+          })
+        });
+        if (fallbackRes.ok) {
+          const fallbackJson = await fallbackRes.json();
+          const allRecs = fallbackJson.customObjectRecords || fallbackJson.records || [];
+          records = allRecs.filter((r: any) => {
+            const p = r.properties || r;
+            const c = String(p.festival_city || '').toLowerCase().trim();
+            if (normalizedCity === 'gent') return c === 'gent' || c.includes('gent');
+            if (normalizedCity === 'den_haag') return c === 'den_haag' || c === 'den haag' || c.includes('haag');
+            if (normalizedCity === 'amsterdam') return c === 'amsterdam' || c.includes('amsterdam');
+            return false;
+          });
+        }
+      } catch (fbErr) {
+        console.warn(`[GHL API] Fallback standhouders fetch for ${city} failed:`, fbErr);
+      }
+    }
 
     if (!Array.isArray(records) || records.length === 0) {
       console.info(`[GHL API] No standhouder records found in GHL for ${city}. Using fallback dataset.`);

@@ -268,7 +268,7 @@ const orgSchema = {
               locationId: GHL_LOCATION_ID,
               page: 1,
               pageLimit: 250,
-              query: 'Den Haag',
+              filters: [{ field: 'properties.festival_city', operator: 'eq', value: 'den_haag' }],
               searchAfter: []
             })
           })
@@ -277,8 +277,36 @@ const orgSchema = {
             return res.json();
           })
           .then(function(data) {
-            if (!data) return;
-            var records = data.customObjectRecords || data.records || [];
+            var records = (data && (data.customObjectRecords || data.records)) || [];
+            if (records.length === 0) {
+              // Fallback to fetch all and filter in memory
+              return fetch(GHL_API_BASE + '/objects/custom_objects.festival_tickets/records/search', {
+                method: 'POST',
+                headers: {
+                  'Authorization': 'Bearer ' + GHL_API_KEY,
+                  'Version': '2021-07-28',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  locationId: GHL_LOCATION_ID,
+                  page: 1,
+                  pageLimit: 250,
+                  searchAfter: []
+                })
+              })
+              .then(function(fbRes) { return fbRes.ok ? fbRes.json() : null; })
+              .then(function(fbData) {
+                var allRecs = (fbData && (fbData.customObjectRecords || fbData.records)) || [];
+                return allRecs.filter(function(r) {
+                  var p = r.properties || r;
+                  var c = String(p.festival_city || '').toLowerCase().trim();
+                  return c === 'den_haag' || c === 'den haag' || c.indexOf('haag') !== -1;
+                });
+              });
+            }
+            return records;
+          })
+          .then(function(records) {
             if (!Array.isArray(records) || records.length === 0) return;
 
             window.__LIVE_GHL_TICKETS__ = records;
@@ -346,6 +374,7 @@ const orgSchema = {
                 (cleanLoc ? cleanLoc.toUpperCase() : 'GROTE KERK DEN HAAG');
 
               // 1. Homepage ticket stubs
+              var cardFound = false;
               var allCards = document.querySelectorAll('.ticket-stub');
               allCards.forEach(function(card) {
                 var cardId = card.getAttribute('data-ticket-id');
@@ -354,6 +383,7 @@ const orgSchema = {
                 var isMatch = (cardId && cardId === r.id) || (cardTitle && matchKey && (cardTitle.indexOf(matchKey) !== -1 || matchKey.indexOf(cardTitle) !== -1));
 
                 if (isMatch) {
+                  cardFound = true;
                   card.setAttribute('data-ticket-id', r.id);
                   card.setAttribute('data-title', cleanTitle);
                   card.setAttribute('data-price', String(priceNum));
@@ -408,7 +438,77 @@ const orgSchema = {
                 }
               });
 
+              // Dynamically inject brand-new ticket card if not present in DOM
+              if (!cardFound && category !== 'standhouder') {
+                var ticketsListContainer = document.getElementById('shop-tickets-list');
+                if (ticketsListContainer) {
+                  var showMoreContainer = document.getElementById('show-more-container');
+                  var newCard = document.createElement('div');
+                  newCard.className = 'ticket-stub filterable-ticket' + (isSoldOut ? ' ticket-sold-out' : '');
+                  newCard.setAttribute('data-ticket-id', r.id);
+                  newCard.setAttribute('data-price', String(priceNum));
+                  newCard.setAttribute('data-title', cleanTitle);
+                  newCard.setAttribute('data-category', category);
+                  newCard.setAttribute('data-daypart', daypart);
+                  newCard.setAttribute('data-soldout', isSoldOut ? 'true' : 'false');
+                  newCard.setAttribute('data-day', day);
+                  newCard.setAttribute('data-date', dateLabel || cleanDate);
+                  newCard.setAttribute('data-time', cleanTime);
+
+                  var priceParts = priceNum.toFixed(2).split('.');
+                  var serialNo = Math.floor(Math.random() * 90000) + 10000;
+
+                  newCard.innerHTML =
+                    '<div class="ticket-inner-border"></div>' +
+                    '<div class="ticket-serial">' +
+                      '<span class="serial-no">NO. ' + serialNo + '</span>' +
+                      '<div class="barcode"></div>' +
+                    '</div>' +
+                    '<div class="ticket-body">' +
+                      '<div class="ticket-top-meta">' +
+                        '<span class="ticket-fest-subtitle">INTERNATIONAAL WHISKY FESTIVAL</span>' +
+                      '</div>' +
+                      '<h3 class="ticket-title title-lg" title="' + cleanTitle + '">' + cleanTitle + '</h3>' +
+                      '<div class="ticket-meta-grid">' +
+                        '<div class="meta-col"><span class="meta-col-label">DATUM</span><strong class="meta-col-val">' + cleanDate + '</strong></div>' +
+                        '<div class="meta-col"><span class="meta-col-label">TIJD</span><strong class="meta-col-val">' + cleanTime + '</strong></div>' +
+                        '<div class="meta-col"><span class="meta-col-label">LOCATIE</span><strong class="meta-col-val">' + accessText + '</strong></div>' +
+                      '</div>' +
+                      '<div class="ticket-info-row">' +
+                        '<button type="button" class="btn-mc-info-trigger" data-mc-id="' + r.id + '" aria-label="Bekijk meer informatie">' +
+                          '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -1px; margin-right: 4px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>' +
+                          'Meer info &rarr;' +
+                        '</button>' +
+                      '</div>' +
+                    '</div>' +
+                    '<div class="ticket-divider"></div>' +
+                    '<div class="ticket-stub-end">' +
+                      '<span class="stub-label">' + (category === 'botteling' ? 'PRIJS PER FLES' : 'PRIJS P.P.') + '</span>' +
+                      '<div class="ticket-price-block">' +
+                        '<span class="price-currency">&euro;</span>' +
+                        '<span class="price-val">' + priceParts[0] + '</span>' +
+                        '<span class="price-cents">,' + priceParts[1] + '</span>' +
+                      '</div>' +
+                      (isSoldOut ? 
+                        '<div class="sold-out-box"><span class="sold-out-text">UITVERKOCHT</span></div>' :
+                        '<div class="qty-selector">' +
+                          '<button type="button" class="qty-btn minus-btn" data-action="minus" aria-label="Aantal verlagen" disabled>&minus;</button>' +
+                          '<span class="qty-val" id="qty-' + r.id + '">0</span>' +
+                          '<button type="button" class="qty-btn plus-btn" data-action="plus" aria-label="Aantal verhogen">&plus;</button>' +
+                        '</div>'
+                      ) +
+                    '</div>';
+
+                  if (showMoreContainer) {
+                    ticketsListContainer.insertBefore(newCard, showMoreContainer);
+                  } else {
+                    ticketsListContainer.appendChild(newCard);
+                  }
+                }
+              }
+
               // 2. Programma timetable rows
+              var rowFound = false;
               var allRows = document.querySelectorAll('.agenda-row-item');
               allRows.forEach(function(row) {
                 var btn = row.querySelector('.btn-table-buy');
@@ -419,6 +519,7 @@ const orgSchema = {
                 var isMatch = (rowId && rowId === r.id) || (rowTitle && matchKey && (rowTitle.indexOf(matchKey) !== -1 || matchKey.indexOf(rowTitle) !== -1));
 
                 if (isMatch) {
+                  rowFound = true;
                   row.setAttribute('data-ticket-id', r.id);
                   var nameEl = row.querySelector('.item-name');
                   if (nameEl) nameEl.textContent = cleanTitle;
@@ -470,6 +571,44 @@ const orgSchema = {
                   }
                 }
               });
+
+              // Dynamically inject brand-new agenda row if not present on /programma
+              if (!rowFound && category !== 'standhouders' && day && day !== 'all' && daypart && daypart !== 'all') {
+                var targetPaneId = 'pane-' + day + '-' + daypart;
+                var targetPane = document.getElementById(targetPaneId);
+                if (targetPane) {
+                  var targetList = targetPane.querySelector('.pane-rows-list');
+                  if (targetList) {
+                    var newRow = document.createElement('article');
+                    newRow.className = 'agenda-row-item';
+                    newRow.setAttribute('data-ticket-id', r.id);
+                    newRow.innerHTML = 
+                      '<div class="col-time"><span class="item-time-val">' + cleanTime + '</span></div>' +
+                      '<div class="col-title"><h3 class="item-name">' + cleanTitle + '</h3></div>' +
+                      '<div class="col-type-loc">' +
+                        '<span class="cat-pill cat-' + category + '">' + (category.charAt(0).toUpperCase() + category.slice(1)) + '</span>' +
+                        '<span class="item-loc-tag">' +
+                          '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>' +
+                          (p.location || 'Grote Kerk') +
+                        '</span>' +
+                      '</div>' +
+                      '<div class="col-speaker"><div class="speaker-block"><strong class="speaker-name">' + (p.ambassador_name || '—') + '</strong>' +
+                        (p.ambassador_title ? '<span class="speaker-role">' + p.ambassador_title + '</span>' : '') +
+                      '</div></div>' +
+                      '<div class="col-action">' +
+                        '<strong class="item-price">&euro; ' + priceNum.toFixed(2).replace('.', ',') + '</strong>' +
+                        '<div class="action-buttons-group">' +
+                          '<button type="button" class="btn-trigger-details" data-title="' + cleanTitle + '" data-loc="' + (p.location || '') + '" data-time="' + cleanTime + '" data-price="&euro; ' + priceNum.toFixed(2).replace('.', ',') + '" data-desc="' + (p.ticket_description || p.description || '') + '" data-host="' + (p.ambassador_name || '') + '">Details</button>' +
+                          (isSoldOut ? 
+                            '<button type="button" class="btn btn-gold btn-table-buy sold-out" disabled>Uitverkocht</button>' :
+                            '<button type="button" class="btn btn-gold btn-table-buy" data-ticket-id="' + r.id + '" data-title="' + cleanTitle + '">+ Bestel</button>'
+                          ) +
+                        '</div>' +
+                      '</div>';
+                    targetList.appendChild(newRow);
+                  }
+                }
+              }
             });
 
             // Re-apply active filters on the homepage
@@ -497,7 +636,7 @@ const orgSchema = {
               locationId: GHL_LOCATION_ID,
               page: 1,
               pageLimit: 250,
-              query: 'Den Haag',
+              filters: [{ field: 'properties.festival_city', operator: 'eq', value: 'den_haag' }],
               searchAfter: []
             })
           })
@@ -506,8 +645,35 @@ const orgSchema = {
             return res.json();
           })
           .then(function(data) {
-            if (!data) return;
-            var records = data.customObjectRecords || data.records || [];
+            var records = (data && (data.customObjectRecords || data.records)) || [];
+            if (records.length === 0) {
+              return fetch(GHL_API_BASE + '/objects/custom_objects.festival_standhouders/records/search', {
+                method: 'POST',
+                headers: {
+                  'Authorization': 'Bearer ' + GHL_API_KEY,
+                  'Version': '2021-07-28',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  locationId: GHL_LOCATION_ID,
+                  page: 1,
+                  pageLimit: 250,
+                  searchAfter: []
+                })
+              })
+              .then(function(fbRes) { return fbRes.ok ? fbRes.json() : null; })
+              .then(function(fbData) {
+                var allRecs = (fbData && (fbData.customObjectRecords || fbData.records)) || [];
+                return allRecs.filter(function(r) {
+                  var p = r.properties || r;
+                  var c = String(p.festival_city || '').toLowerCase().trim();
+                  return c === 'den_haag' || c === 'den haag' || c.indexOf('haag') !== -1;
+                });
+              });
+            }
+            return records;
+          })
+          .then(function(records) {
             if (!Array.isArray(records) || records.length === 0) return;
 
             window.__LIVE_GHL_STANDS__ = records;
