@@ -187,7 +187,17 @@ export async function getTickets(city: string = 'den_haag'): Promise<TicketItem[
       return TICKETS_DEN_HAAG;
     }
 
-    const parsedTickets: TicketItem[] = records.map((r: any, idx: number) => {
+    const filteredRecords = records.filter((r: any) => {
+      const p = r.properties || r;
+      const title = (p.title || '').toLowerCase().trim();
+      const slug = (p.festival_slug || '').toLowerCase().trim();
+      if (title.includes('programma volgt')) return false;
+      if (title.includes('test') || title.includes('concept') || title.includes('draft') || title.includes('sophie')) return false;
+      if (slug.includes('test') || slug.includes('concept') || slug.includes('draft')) return false;
+      return true;
+    });
+
+    const parsedTickets: TicketItem[] = filteredRecords.map((r: any, idx: number) => {
       const p = r.properties || r;
       const isSoldOut = parseGhlBoolean(p.is_sold_out);
       const capacity = parseInt(p.capacity, 10) || 0;
