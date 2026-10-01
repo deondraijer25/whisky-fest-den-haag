@@ -3206,6 +3206,18 @@ import Footer from '../components/Footer.astro';
         document.documentElement.classList.remove('wf-unauthenticated');
         document.documentElement.classList.add('wf-authenticated');
 
+        // STRICT GUARD: If stored order is cancelled or not paid, terminate session immediately
+        const isPaidOrder = orderData && (orderData.status === 'paid' || orderData.isPaid === true);
+        if (orderData && !isPaidOrder) {
+          sessionStorage.removeItem('wf_auth_session');
+          localStorage.removeItem('wf_auth_session');
+          localStorage.removeItem('wf_last_order');
+          orderData = null;
+          checkAuthAndRender();
+          showError("U heeft geen voltooide bestelling. Het accountportaal is alleen toegankelijk na een voltooide betaling.");
+          return;
+        }
+
         // Verify orderData matches session user
         if (!orderData || (session.email && orderData.email && orderData.email.toLowerCase() !== session.email.toLowerCase())) {
           try {
@@ -3245,6 +3257,16 @@ import Footer from '../components/Footer.astro';
             .then((data) => {
               if (data && data.order) {
                 const vOrder = data.order;
+                if (vOrder.status !== 'paid' && vOrder.isPaid !== true) {
+                  console.warn('Toegang ontzegd: order is niet betaald of geannuleerd:', vOrder.orderNumber);
+                  sessionStorage.removeItem('wf_auth_session');
+                  localStorage.removeItem('wf_auth_session');
+                  localStorage.removeItem('wf_last_order');
+                  orderData = null;
+                  checkAuthAndRender();
+                  showError(`Bestelling ${activeResNo} is niet voltooid of geannuleerd. Het portaal is alleen toegankelijk voor bezoekers met een voltooide ticketbestelling.`);
+                  return;
+                }
                 const items = (vOrder.items || []).map((it: any) => ({
                   id: it.id || it.ticketId || 'ticket',
                   title: it.title || it.name || 'Entreeticket',
@@ -3343,6 +3365,16 @@ import Footer from '../components/Footer.astro';
 
           // 3. Validation Logic
           if (verifiedOrder) {
+            const isOrderPaid = verifiedOrder.status === 'paid' || verifiedOrder.isPaid === true;
+            if (!isOrderPaid) {
+              showError(`Bestelling ${rawResNo || verifiedOrder.orderNumber || ''} is niet voltooid of geannuleerd. Toegang tot het portaal is uitsluitend beschikbaar voor voltooide bestellingen.`);
+              if (loginSubmitBtn) {
+                loginSubmitBtn.disabled = false;
+                loginSubmitBtn.innerHTML = originalBtnText;
+              }
+              return;
+            }
+
             const orderEmail = (verifiedOrder.customerEmail || verifiedOrder.email || '').trim().toLowerCase();
             if (orderEmail && orderEmail !== email) {
               showError(`Het e-mailadres komt niet overeen met ordernummer ${rawResNo}.`);

@@ -6216,7 +6216,7 @@ const tickets = await getTickets('den_haag');
               discountApplied: promoDiscount,
               totalPrice: recalcModalTotal()
             };
-            localStorage.setItem('wf_last_order', JSON.stringify(pendingOrderData));
+            // Do not set wf_last_order before payment is confirmed
             
             // Redirect to Mollie checkout or local Mollie sandbox simulator!
             const targetUrl = data.checkoutUrl.startsWith('/') ? `https://whiskytix-r1qq.vercel.app${data.checkoutUrl}` : data.checkoutUrl;
@@ -7851,36 +7851,119 @@ const tickets = await getTickets('den_haag');
     });
   }
 
-  // 11. Handle Payment Return & Show Native Success Modal
+  // 11. Handle Payment Return & Verify Payment with Whiskytix Backend
   (async function handleOrderReturn() {
     const urlParams = new URLSearchParams(window.location.search);
     const orderNumber = urlParams.get('orderNumber') || urlParams.get('order') || urlParams.get('order_success');
 
     if (!orderNumber) return;
 
-    // Populate Native Success Modal
+    // Clean URL query parameters smoothly so refreshing won't re-trigger
+    const cleanUrl = window.location.pathname + window.location.hash;
+    window.history.replaceState({}, document.title, cleanUrl);
+
+    // Fetch live order verification from Whiskytix backend
+    const whiskytixBase = 'https://whiskytix-r1qq.vercel.app';
+    let verifiedOrder: any = null;
+    let isPaid = false;
+
+    try {
+      const res = await fetch(`${whiskytixBase}/api/checkout/order/${encodeURIComponent(orderNumber)}`);
+      if (res.ok) {
+        const json = await res.json();
+        if (json && json.order) {
+          verifiedOrder = json.order;
+          isPaid = json.isPaid === true || json.order.status === 'paid';
+        }
+      }
+    } catch (err) {
+      console.warn("Kon live orderstatus niet verifiëren:", err);
+    }
+
+    // STRICT PAYMENT CHECK:
+    // If the payment is not completed / cancelled / aborted:
+    if (!isPaid) {
+      console.warn("Betaling niet voltooid of geannuleerd voor order:", orderNumber);
+      // Clean up any uncompleted order state or residual auth
+      sessionStorage.removeItem('wf_auth_session');
+      localStorage.removeItem('wf_auth_session');
+      localStorage.removeItem('wf_last_order');
+
+      // Show user-friendly cancellation banner
+      const cancelAlert = document.createElement('div');
+      cancelAlert.setAttribute('style', 'position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 99999; background: #171614; color: #FAF7F2; padding: 14px 22px; border-radius: 10px; border: 1.5px solid rgba(239, 68, 68, 0.6); box-shadow: 0 10px 30px rgba(0,0,0,0.35); font-family: var(--font-sans, sans-serif); font-size: 0.88rem; max-width: 90vw; display: flex; align-items: center; gap: 12px;');
+      cancelAlert.innerHTML = `
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+        <span>De betaling voor <strong>${orderNumber}</strong> is niet afgerond of geannuleerd. Er zijn geen tickets aangemaakt en er is geen account geactiveerd.</span>
+      `;
+      document.body.appendChild(cancelAlert);
+      setTimeout(() => {
+        cancelAlert.style.opacity = '0';
+        cancelAlert.style.transition = 'opacity 0.5s ease';
+        setTimeout(() => cancelAlert.remove(), 500);
+      }, 7000);
+      return;
+    }
+
+    // PAYMENT IS 100% CONFIRMED & PAID!
+    // 1. Clear shopping cart
+    if (typeof cart !== 'undefined') {
+      Object.keys(cart).forEach(id => {
+        if (cart[id]) cart[id].qty = 0;
+        const qEl = document.getElementById(`qty-${id}`);
+        if (qEl) qEl.textContent = "0";
+        const card = document.querySelector(`.ticket-stub[data-ticket-id="${id}"]`);
+        if (card) {
+          const qtyVal = card.querySelector('.qty-val');
+          if (qtyVal) qtyVal.textContent = "0";
+          card.classList.remove('selected');
+        }
+      });
+    }
+    localStorage.removeItem("whiskyfest_cart");
+    if (typeof updateShop === 'function') {
+      updateShop();
+    }
+
+    // 2. Persist confirmed order to localStorage so /account portal can access it
+    localStorage.setItem('wf_last_order', JSON.stringify(verifiedOrder));
+    const customerEmail = (verifiedOrder.customerEmail || verifiedOrder.email || '').trim().toLowerCase();
+    const customerName = verifiedOrder.customerName || verifiedOrder.name || 'Gast';
+    sessionStorage.setItem('wf_auth_session', JSON.stringify({
+      email: customerEmail,
+      name: customerName,
+      resNumber: orderNumber,
+      authenticatedAt: new Date().toISOString(),
+      expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000
+    }));
+
+    // 3. Populate Native Success Modal
     const successResNumEl = document.getElementById("receipt-res-number") || document.querySelector("#modal-step-3 .ticket-summary-box strong");
     if (successResNumEl) {
       successResNumEl.textContent = orderNumber;
     }
 
-    const emailDisplay = (orderData && (orderData.customerEmail || orderData.email)) || "uw e-mailadres";
+    const emailDisplay = customerEmail || "uw e-mailadres";
     if (receiptSentEmail) {
       receiptSentEmail.textContent = emailDisplay;
     }
 
     const myAccountLink = document.getElementById("my-account-link");
     if (myAccountLink) {
-      const emailForLink = (orderData && (orderData.customerEmail || orderData.email)) || '';
-      myAccountLink.setAttribute("href", `/account?view=login&email=${encodeURIComponent(emailForLink)}&order=${encodeURIComponent(orderNumber)}`);
+      myAccountLink.setAttribute("href", `/account?email=${encodeURIComponent(customerEmail)}&order=${encodeURIComponent(orderNumber)}`);
     }
 
     if (receiptTicketsList) {
       receiptTicketsList.innerHTML = "";
-
-      const itemsToRender = (orderData && orderData.items) || [];
+      const itemsToRender = (verifiedOrder && verifiedOrder.items) || [];
       if (itemsToRender.length > 0) {
         itemsToRender.forEach((item: any) => {
+          let itemTitle = item.title || item.name || "Festivalticket";
+          if (/^[a-f0-9]{24}$/i.test(itemTitle)) {
+            if (itemTitle === "6abb978f1eb866bf2b8779e0" || item.category === "warehouse") {
+              itemTitle = "Rondleiding Distilleerderij";
+            }
+          }
           let spec = "";
           const qty = item.quantity || item.qty || 1;
           const price = item.unitPriceCents ? (item.unitPriceCents / 100) : (item.price || 0);
@@ -7888,11 +7971,17 @@ const tickets = await getTickets('den_haag');
           if (item.category === "entree") {
             spec = "Inclusief proefglas & festivalgids";
           } else if (item.category === "tram") {
-            spec = item.timeslot ? `Afvaart: ${item.timeslot}` : "Historische rondvaart Den Haag";
+            spec = item.timeslot ? `Afvaart/Rit: ${item.timeslot}` : "Historische tour";
           } else if (item.category === "masterclass") {
             spec = item.timeslot ? `Tijdslot: ${item.timeslot}` : "Exclusieve proeverij";
+          } else if (item.category === "warehouse") {
+            spec = item.timeslot ? `Sessie: ${item.timeslot}` : "Distilleerderij Rondleiding";
+          } else if (item.category === "trail") {
+            spec = item.timeslot ? `Tijdslot: ${item.timeslot}` : "Culinaire ontdekkingstocht";
+          } else if (item.category === "vatenmaken") {
+            spec = item.timeslot ? `Tijdslot: ${item.timeslot}` : "Workshop kuipen";
           } else if (item.category === "botteling") {
-            spec = item.delivery === "shipping" ? "Verzending per post (+ €12,50)" : "Afhalen bij Infodesk (Stand O)";
+            spec = item.delivery === "shipping" ? "Verzending per post (+ €12,50)" : "Afhalen bij Infodesk";
           }
 
           const row = document.createElement("div");
@@ -7900,7 +7989,7 @@ const tickets = await getTickets('den_haag');
           row.setAttribute("style", "display: flex !important; justify-content: space-between !important; align-items: center !important; gap: 0.75rem !important; padding: 0.55rem 0.75rem !important; background: #FFFFFF !important; border: 1px solid rgba(140, 110, 70, 0.2) !important; border-radius: 6px !important; margin-bottom: 0.4rem !important;");
           row.innerHTML = `
             <div style="display: flex !important; flex-direction: column !important; gap: 0.15rem !important; flex: 1 !important; min-width: 0 !important; text-align: left !important;">
-              <span style="font-weight: 700 !important; color: #171614 !important; font-size: 0.84rem !important; line-height: 1.25 !important; display: block !important;">${qty} &times; ${item.title}</span>
+              <span style="font-weight: 700 !important; color: #171614 !important; font-size: 0.84rem !important; line-height: 1.25 !important; display: block !important;">${qty} &times; ${itemTitle}</span>
               ${spec ? `<span style="font-size: 0.74rem !important; color: #665C54 !important; line-height: 1.2 !important; display: block !important;">${spec}</span>` : ''}
             </div>
             <span style="font-weight: 800 !important; color: #006448 !important; font-size: 0.92rem !important; font-family: var(--font-sans, sans-serif) !important; white-space: nowrap !important; text-align: right !important; margin-left: auto !important;">&euro;${(price * qty).toFixed(2).replace('.', ',')}</span>
@@ -7910,7 +7999,7 @@ const tickets = await getTickets('den_haag');
       }
     }
 
-    // Display the success modal popup
+    // 4. Display the success modal popup ONLY when payment is confirmed!
     if (modalOverlay) modalOverlay.style.display = "flex";
     if (modalStep1) modalStep1.style.display = "none";
     if (modalStep2) modalStep2.style.display = "none";
