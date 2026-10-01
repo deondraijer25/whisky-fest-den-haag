@@ -2586,22 +2586,20 @@ const tickets = await getTickets('den_haag');
       <div id="modal-step-1">
         <h3 class="modal-title">Voltooi Uw Reservering</h3>
         <div class="vintage-line"></div>
-        <p class="modal-subtitle">Dit is een demonstratie van uw nieuwe, premium bestelflow.</p>
+        <p class="modal-subtitle">Vul uw gegevens in om uw tickets veilig te reserveren.</p>
 
         <form id="mock-payment-form">
           <div class="modal-two-columns">
             
             <!-- Left Column: Fields & Payment -->
             <div class="modal-form-side">
-              <div class="form-row-two-col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-                <div class="form-group">
+              <div class="form-group">
                   <label for="cust-first-name" class="form-label">Voornaam</label>
                   <input type="text" id="cust-first-name" placeholder="Jan" required class="form-control" />
                 </div>
                 <div class="form-group">
                   <label for="cust-last-name" class="form-label">Achternaam</label>
                   <input type="text" id="cust-last-name" placeholder="de Vries" required class="form-control" />
-                </div>
               </div>
               <div class="form-group">
                 <label for="cust-email" class="form-label">E-mailadres</label>
@@ -4520,7 +4518,7 @@ const tickets = await getTickets('den_haag');
   .modal-subtitle { font-family: var(--font-sans); font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-bottom: 1rem; }
   .form-group { margin-bottom: 0.85rem; display: flex; flex-direction: column; gap: 0.3rem; }
   .form-label { font-family: var(--font-sans); font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-charcoal); }
-  .form-control { background-color: var(--bg-parchment); border: 1px solid var(--border-color-dark); padding: 0.6rem 0.85rem; border-radius: 6px; font-family: var(--font-sans); font-size: 0.9rem; color: var(--text-charcoal); transition: all 0.3s; }
+  .form-control { background-color: var(--bg-parchment); border: 1px solid var(--border-color-dark); padding: 0.6rem 0.85rem; border-radius: 6px; font-family: var(--font-sans); font-size: 0.9rem; color: var(--text-charcoal); transition: all 0.3s;  width: 100% !important; box-sizing: border-box !important; }
   .form-control:focus { outline: none; border-color: var(--whisky-gold-dark); box-shadow: 0 0 8px rgba(197, 139, 57, 0.15); }
   .payment-method-section { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px dashed var(--border-color); }
   .payment-method-title { display: block; font-family: var(--font-sans); font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-charcoal); margin-bottom: 0.5rem; }
@@ -7857,47 +7855,8 @@ const tickets = await getTickets('den_haag');
   (async function handleOrderReturn() {
     const urlParams = new URLSearchParams(window.location.search);
     const orderNumber = urlParams.get('orderNumber') || urlParams.get('order') || urlParams.get('order_success');
-    const paymentStatus = urlParams.get('status');
 
     if (!orderNumber) return;
-
-    // Reset shopping cart upon confirmed order
-    Object.keys(cart).forEach(id => {
-      if (cart[id]) cart[id].qty = 0;
-      const qEl = document.getElementById(`qty-${id}`);
-      if (qEl) qEl.textContent = "0";
-      const card = document.querySelector(`.ticket-stub[data-ticket-id="${id}"]`);
-      if (card) {
-        const qtyVal = card.querySelector('.qty-val');
-        if (qtyVal) qtyVal.textContent = "0";
-        card.classList.remove('selected');
-      }
-    });
-    localStorage.removeItem("whiskyfest_cart");
-    updateShop();
-
-    // Clean URL query parameters smoothly without reloading
-    const cleanUrl = window.location.pathname + window.location.hash;
-    window.history.replaceState({}, document.title, cleanUrl);
-
-    // Try fetching live order details from Whiskytix backend
-    let orderData: any = null;
-    try {
-      const res = await fetch(`https://whiskytix-r1qq.vercel.app/api/checkout/order/${encodeURIComponent(orderNumber)}`);
-      if (res.ok) {
-        const json = await res.json();
-        if (json.order) orderData = json.order;
-      }
-    } catch (err) {
-      console.warn("Kon order niet direct ophalen van backend, gebruik localStorage fallback:", err);
-    }
-
-    if (!orderData) {
-      try {
-        const saved = localStorage.getItem('wf_last_order');
-        if (saved) orderData = JSON.parse(saved);
-      } catch (e) {}
-    }
 
     // Populate Native Success Modal
     const successResNumEl = document.getElementById("receipt-res-number") || document.querySelector("#modal-step-3 .ticket-summary-box strong");
