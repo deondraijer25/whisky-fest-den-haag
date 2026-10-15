@@ -2613,7 +2613,7 @@ const tickets = await getTickets('den_haag');
               <div class="form-group" style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
                 <label for="checkout-promo-code" class="form-label">Kortingscode of IWS Lidnummer</label>
                 <div style="display: flex; gap: 0.5rem;">
-                  <input type="text" id="checkout-promo-code" placeholder="Bijv. WS-10024 of GIFT-50" class="form-control" style="flex: 1;" />
+                  <input type="text" id="checkout-promo-code" placeholder="Bijv. NEW10, WS-10024 of GIFT-50" class="form-control" style="flex: 1;" />
                   <button type="button" class="btn btn-outline" id="apply-promo-btn" style="padding: 0 1rem; font-size: 0.85rem; border-color: rgba(140, 110, 70, 0.4); background: transparent; color: var(--text-charcoal);">Toepassen</button>
                 </div>
                 <span id="promo-status-msg" style="display: none; font-size: 0.75rem; margin-top: 4px; font-weight: 600;"></span>
@@ -5801,6 +5801,8 @@ const tickets = await getTickets('den_haag');
 
   let promoDiscount = 0;
   let activePromoCode = "";
+  let activePromoType: "" | "percentage" | "fixed_amount" = "";
+  let activePromoValue = 0;
 
   function recalcModalTotal() {
     let subtotal = 0;
@@ -5854,8 +5856,17 @@ const tickets = await getTickets('den_haag');
 
     const activeShipping = shippingActive ? 12.50 : 0;
     const activeFee = getServiceFee(totalItems);
-    const totalBeforeDiscount = subtotal + activeFee + activeShipping;
-    const finalTotal = Math.max(0, totalBeforeDiscount - promoDiscount);
+
+    if (activePromoType === "percentage" && activePromoValue > 0) {
+      promoDiscount = Math.min(subtotal, Math.round(subtotal * (activePromoValue / 100) * 100) / 100);
+    } else if (activePromoType === "fixed_amount" && activePromoValue > 0) {
+      promoDiscount = Math.min(subtotal, activePromoValue);
+    } else if (!activePromoCode) {
+      promoDiscount = 0;
+    }
+
+    const discountedSubtotal = Math.max(0, subtotal - promoDiscount);
+    const finalTotal = discountedSubtotal + activeFee + activeShipping;
 
     if (modalTotalAmt) {
       modalTotalAmt.innerHTML = `&euro;${finalTotal.toFixed(2)}`;
@@ -5915,6 +5926,14 @@ const tickets = await getTickets('den_haag');
     if (modalSummaryDiscountRow && modalSummaryDiscount) {
       if (promoDiscount > 0) {
         modalSummaryDiscountRow.style.display = "flex";
+        const labelSpan = modalSummaryDiscountRow.querySelector("span:first-child");
+        if (labelSpan) {
+          labelSpan.textContent = activePromoType === "percentage" && activePromoCode
+            ? `Korting (${activePromoCode} - ${activePromoValue}%):`
+            : activePromoCode
+            ? `Korting (${activePromoCode}):`
+            : "Korting:";
+        }
         modalSummaryDiscount.innerHTML = `- &euro;${promoDiscount.toFixed(2)}`;
       } else {
         modalSummaryDiscountRow.style.display = "none";
@@ -5929,35 +5948,77 @@ const tickets = await getTickets('den_haag');
   const applyPromoBtn = document.getElementById("apply-promo-btn");
 
   if (applyPromoBtn && promoInput && promoMsg) {
-    applyPromoBtn.addEventListener("click", () => {
+    applyPromoBtn.addEventListener("click", async () => {
       const code = promoInput.value.trim().toUpperCase();
       if (!code) {
         promoDiscount = 0;
         activePromoCode = "";
+        activePromoType = "";
+        activePromoValue = 0;
         promoMsg.style.display = "none";
         recalcModalTotal();
         return;
       }
 
-      if (code.startsWith("WS-") || code === "IWS") {
-        promoDiscount = 55.00;
+      if (code === "NEW10") {
         activePromoCode = code;
+        activePromoType = "percentage";
+        activePromoValue = 10;
+        promoMsg.style.display = "block";
+        promoMsg.style.color = "var(--success-green)";
+        promoMsg.textContent = "✓ Kortingscode NEW10 toegepast: 10% korting verwerkt.";
+        recalcModalTotal();
+        return;
+      } else if (code.startsWith("WS-") || code === "IWS") {
+        activePromoCode = code;
+        activePromoType = "fixed_amount";
+        activePromoValue = 55.00;
+        promoDiscount = 55.00;
         promoMsg.style.display = "block";
         promoMsg.style.color = "var(--success-green)";
         promoMsg.textContent = "✓ Lidmaatschap gevalideerd: €55,00 korting toegepast.";
+        recalcModalTotal();
+        return;
       } else if (code === "GIFT-50" || code === "CADEAU-50") {
-        promoDiscount = 50.00;
         activePromoCode = code;
+        activePromoType = "fixed_amount";
+        activePromoValue = 50.00;
+        promoDiscount = 50.00;
         promoMsg.style.display = "block";
         promoMsg.style.color = "var(--success-green)";
         promoMsg.textContent = "✓ Cadeaubon toegepast: €50,00 korting verwerkt.";
-      } else {
-        promoDiscount = 0;
-        activePromoCode = "";
-        promoMsg.style.display = "block";
-        promoMsg.style.color = "#d9534f";
-        promoMsg.textContent = "✗ Ongeldige code. Probeer het opnieuw.";
+        recalcModalTotal();
+        return;
       }
+
+      try {
+        const res = await fetch("https://whiskytix-r1qq.vercel.app/api/coupons/validate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code, festivalId: "denhaag" })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.valid) {
+            activePromoCode = data.code || code;
+            activePromoType = data.type === "percentage" ? "percentage" : "fixed_amount";
+            activePromoValue = Number(data.value) || 0;
+            promoMsg.style.display = "block";
+            promoMsg.style.color = "var(--success-green)";
+            promoMsg.textContent = data.message || `✓ Kortingscode ${activePromoCode} toegepast.`;
+            recalcModalTotal();
+            return;
+          }
+        }
+      } catch {}
+
+      promoDiscount = 0;
+      activePromoCode = "";
+      activePromoType = "";
+      activePromoValue = 0;
+      promoMsg.style.display = "block";
+      promoMsg.style.color = "#d9534f";
+      promoMsg.textContent = "✗ Ongeldige code. Probeer het opnieuw.";
       recalcModalTotal();
     });
   }
@@ -6193,6 +6254,7 @@ const tickets = await getTickets('den_haag');
             items: itemsOrdered,
             shippingAddress: shippingAddress,
             ageVerification: ageVerification,
+            promoCode: activePromoCode,
             discountCents: Math.round(promoDiscount * 100),
             returnUrl: window.location.origin + window.location.pathname
           })
@@ -6825,6 +6887,8 @@ const tickets = await getTickets('den_haag');
   function openCheckoutModal() {
     promoDiscount = 0;
     activePromoCode = "";
+    activePromoType = "";
+    activePromoValue = 0;
     if (promoInput) promoInput.value = "";
     if (promoMsg) promoMsg.style.display = "none";
     
