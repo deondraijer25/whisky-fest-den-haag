@@ -1,0 +1,1707 @@
+---
+// src/pages/poster-drukker.astro
+// Complete Dubbelzijdige A3 Drukker-Versie (297mm x 420mm, 2 Pagina's onder elkaar in 1 PDF: Voorkant + Achterkant)
+import Layout from '../layouts/Layout.astro';
+import LogoSvg from '../assets/Logo/Logo.svg?raw';
+---
+
+<Layout
+  title="Drukker-Versie Dubbelzijdige A3 Poster (Voorkant + Achterkant) | International Whisky Festival Den Haag"
+  description="Printklare dubbelzijdige A3 poster (2 pagina's onder elkaar: Pagina 1 Voorkant Schotse Distilleerderijen Kaart + Pagina 2 Achterkant 25 Jaar Tijdlijn) voor de drukker."
+>
+  <!-- Top Screen-Only Control Bar (Hidden on Print) -->
+  <div class="poster-toolbar no-print">
+    <div class="toolbar-inner">
+      <div class="toolbar-left">
+        <a href="/poster-voorkant" class="toolbar-back-link">
+          Losse Voorkant
+        </a>
+        <a href="/poster-tijdlijn-v2" class="toolbar-back-link">
+          Losse Achterkant
+        </a>
+        <span class="toolbar-badge">DRUKKER-VERSIE &bull; PAGINA 1 (VOORKANT) + PAGINA 2 (ACHTERKANT)</span>
+      </div>
+      <div class="toolbar-actions">
+        <button type="button" id="toggle-logo-btn" class="toolbar-btn toolbar-btn-outline" style="border-color: #caac8e; color: #caac8e;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"></circle><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path></svg>
+          <span>Voorkant Kop: Logo + Titel (2 Regels)</span>
+        </button>
+        <button type="button" id="toggle-texture-btn" class="toolbar-btn toolbar-btn-outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+          <span>Papiertextuur: Handgeschept Katoen</span>
+        </button>
+        <button type="button" id="toggle-frame-btn" class="toolbar-btn toolbar-btn-outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect></svg>
+          <span>Kader: Fijne Enkele Lijn</span>
+        </button>
+        <button type="button" onclick="window.print()" class="toolbar-btn toolbar-btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          Opslaan als Dubbelzijdige A3 PDF (2 Pagina's, ~2.2 MB)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- A3 STAGE WRAPPER: Both A3 Sheets Stacked Vertically -->
+  <main class="poster-stage-wrapper">
+
+    <!-- Screen-only Page 1 Label -->
+    <div class="page-sheet-label no-print">
+      <span>PAGINA 1 VAN 2 &mdash; VOORKANT (SCHOTSE WHISKY DISTILLEERDERIJEN)</span>
+    </div>
+
+    <!-- =====================================================================
+         PAGINA 1: VOORKANT (SCHOTSE DISTILLEERDERIJEN KAART)
+         ===================================================================== -->
+    <article class="a3-poster-sheet a3-sheet-front texture-cotton frame-single" id="a3-poster-front">
+
+      <div class="v2-crumpled-paper-bg" aria-hidden="true">
+        <img id="screen-paper-front" class="v2-paper-texture-img" alt="" />
+      </div>
+
+      <!-- Full-sheet pre-baked print image for Page 1 -->
+      <img id="baked-fullsheet-print" class="v2-baked-fullsheet-print" alt="" />
+
+      <div class="v2-clean-frame" aria-hidden="true"></div>
+
+      <div class="front-safe-zone" id="front-safe-zone">
+        <div class="front-map-loading" id="front-map-loading">
+          <span>Schotse Distilleerderijen Kaart laden...</span>
+        </div>
+        <div id="front-festival-logo" class="front-festival-logo">
+          <Fragment set:html={LogoSvg} />
+        </div>
+        <h1 id="front-custom-title" class="front-custom-title">
+          <span class="front-title-line1">SCHOTSE WHISKY</span>
+          <span class="front-title-line2">DISTILLEERDERIJEN</span>
+        </h1>
+        <canvas id="front-map-canvas" class="front-map-canvas"></canvas>
+      </div>
+
+    </article>
+
+    <!-- Screen-only Page 2 Label -->
+    <div class="page-sheet-label no-print" style="margin-top: 2.5rem;">
+      <span>PAGINA 2 VAN 2 &mdash; ACHTERKANT (25 JAAR INTERNATIONAL WHISKY FESTIVAL TIJDLIJN)</span>
+    </div>
+
+    <!-- =====================================================================
+         PAGINA 2: ACHTERKANT (25 JAAR TIJDLIJN)
+         ===================================================================== -->
+    <article class="a3-poster-sheet a3-sheet-back texture-cotton frame-single" id="a3-poster-back">
+
+      <div class="v2-crumpled-paper-bg" aria-hidden="true">
+        <img id="baked-paper-print" class="v2-paper-texture-img v2-baked-paper-print" alt="" />
+      </div>
+
+      <div class="v2-clean-frame" aria-hidden="true"></div>
+
+      <div class="back-safe-zone">
+
+        <!-- 1. V2 HEADER -->
+        <header class="v2-poster-header">
+          <div class="v2-header-grid">
+            <div class="v2-header-logo">
+              <Fragment set:html={LogoSvg} />
+            </div>
+            <div class="v2-header-titles">
+              <h1 class="v2-poster-main-title editable-node">Het Ontstaan van het Festival</h1>
+              <p class="v2-poster-subtitle editable-node">
+                Een kwart eeuw passie voor whisky in de Grote Kerk Den Haag
+              </p>
+            </div>
+            <div class="v2-header-crest">
+              <div class="v2-crest-clean">
+                <div class="v2-crest-years editable-node">2000 &ndash; 2026</div>
+                <div class="v2-crest-edition editable-node">25 JAAR HISTORIE</div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- 2. S-CURVE TIMELINE CANVAS (Exact 1:1 Integer Pixels: 1238 x 1589) -->
+        <div class="poster-timeline-canvas" id="timeline-canvas">
+          <svg class="timeline-svg-layer" id="timeline-svg" viewBox="0 0 1238 1589" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M 237 219
+                 L 928 219
+                 A 192.5 192.5 0 0 1 928 604
+                 L 320 604
+                 A 193 193 0 0 0 320 990
+                 L 928 990
+                 A 190.5 190.5 0 0 1 928 1371
+                 L 313 1371"
+              stroke="#caac8e"
+              stroke-width="8.5"
+              stroke-linecap="round"
+              stroke-opacity="0.35"
+            />
+            <path
+              id="s-curve-main"
+              d="M 237 219
+                 L 928 219
+                 A 192.5 192.5 0 0 1 928 604
+                 L 320 604
+                 A 193 193 0 0 0 320 990
+                 L 928 990
+                 A 190.5 190.5 0 0 1 928 1371
+                 L 313 1371"
+              stroke="#006448"
+              stroke-width="3.5"
+              stroke-linecap="round"
+            />
+            <g id="pointer-lines-group"></g>
+          </svg>
+
+          <!-- 4 UNIFORM FESTIVAL PHOTOS (Exact 1:1 Integer Pixels) -->
+          <figure class="poster-photo-card draggable-item" style="left: 24px; top: 310px; width: 264px;">
+            <div class="photo-inner" style="height: 165px;">
+              <img class="retro-photo-img" src="/Afbeeldingen/2025/InternationalWhiskyFestival-MilouvanderWillPhotography-196.jpg" alt="Proeven van bijzondere whisky's" />
+            </div>
+            <figcaption class="editable-node">Proeven van bijzondere whisky's</figcaption>
+          </figure>
+
+          <figure class="poster-photo-card draggable-item" style="left: 954px; top: 4px; width: 264px;">
+            <div class="photo-inner" style="height: 165px;">
+              <img class="retro-photo-img" src="/timeline_2002_drams.jpg" alt="De Dram als betaalmiddel" />
+            </div>
+            <figcaption class="editable-node">De Dram als betaalmiddel</figcaption>
+          </figure>
+
+          <figure class="poster-photo-card draggable-item" style="left: 954px; top: 696px; width: 264px;">
+            <div class="photo-inner" style="height: 165px;">
+              <img class="retro-photo-img" src="/Afbeeldingen/2025/InternationalWhiskyFestival-MilouvanderWillPhotography-132.jpg" alt="De beursvloer in de Grote Kerk" />
+            </div>
+            <figcaption class="editable-node">De beursvloer in de Grote Kerk</figcaption>
+          </figure>
+
+          <figure class="poster-photo-card draggable-item" style="left: 24px; top: 1079px; width: 264px;">
+            <div class="photo-inner" style="height: 165px;">
+              <img class="retro-photo-img" src="/Afbeeldingen/2025/IWF2025-MilouvanderWillPhotography-265.jpg" alt="De Haagsche Whisky Tram" />
+            </div>
+            <figcaption class="editable-node">De Haagsche Whisky Tram</figcaption>
+          </figure>
+
+          <!-- 13 MILESTONES (Exact 1:1 Integer Pixels) -->
+          <div class="milestone-node milestone-top-row draggable-item" data-anchor-x="237" data-anchor-y="219" style="left: 24px; top: 41px; width: 428px;">
+            <div class="ms-header">
+              <span class="ms-year">2000</span>
+              <h2 class="ms-title editable-node">Het Eerste Whisky Festival</h2>
+            </div>
+            <p class="ms-desc editable-node">
+              Het eerste whiskyfestival van Nederland en Europa &mdash; en <strong>één van de eerste drie ter wereld</strong>, naast San Francisco en Tokyo (nu <em>Whisky Live Japan</em>).
+            </p>
+          </div>
+
+          <div class="milestone-node draggable-item" data-anchor-x="494" data-anchor-y="219" style="left: 324px; top: 269px; width: 338px;">
+            <div class="ms-header">
+              <span class="ms-year">2001</span>
+              <h2 class="ms-title editable-node">Verhuizing Grote Kerk</h2>
+            </div>
+            <p class="ms-desc editable-node">
+              Het festival krijgt zijn iconische thuisbasis in de <strong>Grote Kerk in Den Haag</strong> en de <em>International Malt Whisky Society</em> wordt opgericht.
+            </p>
+          </div>
+
+          <div class="milestone-node milestone-top-row draggable-item" data-anchor-x="703" data-anchor-y="219" style="left: 489px; top: 41px; width: 428px;">
+            <div class="ms-header">
+              <span class="ms-year">2002</span>
+              <h2 class="ms-title editable-node">De Dram als Betaalmiddel</h2>
+            </div>
+            <p class="ms-desc editable-node">
+              Invoering van de <strong>Dram</strong> als eigen festivalmunt op de beursvloer voor het proeven van bijzondere en exclusieve whisky's.
+            </p>
+          </div>
+
+          <div class="milestone-node draggable-item" data-anchor-x="1121" data-anchor-y="412" style="left: 700px; top: 360px; width: 343px;">
+            <div class="ms-header">
+              <span class="ms-year">2003</span>
+              <h2 class="ms-title editable-node">Naamwijziging &amp; Leiden</h2>
+            </div>
+            <p class="ms-desc editable-node">
+              De toevoeging <em>'Malt'</em> vervalt omdat er steeds meer wereldwhisky's worden geschonken. Het festival wijkt tijdelijk uit naar de Pieterskerk in Leiden.
+            </p>
+          </div>
+
+          <div class="milestone-node draggable-item" data-anchor-x="766" data-anchor-y="604" style="left: 597px; top: 654px; width: 338px;">
+            <div class="ms-header">
+              <span class="ms-year">2004</span>
+              <h2 class="ms-title editable-node">Gent &amp; Masterclasses</h2>
+            </div>
+            <p class="ms-desc editable-node">
+              Oprichting van het <strong>Gents Whisky Festival</strong> in België én de start van verdiepende <strong>Masterclasses</strong> in Den Haag.
+            </p>
+          </div>
+
+          <div class="milestone-node draggable-item" data-anchor-x="494" data-anchor-y="604" style="left: 324px; top: 451px; width: 338px;">
+            <div class="ms-header">
+              <span class="ms-year">2009</span>
+              <h2 class="ms-title editable-node">Introductie Whisky Awards</h2>
+            </div>
+            <p class="ms-desc editable-node">
+              Eerste uitreiking van de jaarlijkse <strong>Whisky Awards</strong> voor de meest gewaardeerde bottelingen en standhouders.
+            </p>
+          </div>
+
+          <div class="milestone-node draggable-item" data-anchor-x="127" data-anchor-y="797" style="left: 193px; top: 743px; width: 367px;">
+            <div class="ms-header">
+              <span class="ms-year">2011</span>
+              <h2 class="ms-title editable-node">Terugkeer &amp; Whisky Tram</h2>
+            </div>
+            <p class="ms-desc editable-node">
+              Terug naar de vertrouwde <strong>Grote Kerk in Den Haag</strong> én de eerste rit van <strong>Dram in de Tram</strong>: proeven tijdens een stadsrit per historische tram.
+            </p>
+          </div>
+
+          <div class="milestone-node draggable-item" data-anchor-x="494" data-anchor-y="990" style="left: 324px; top: 1038px; width: 338px;">
+            <div class="ms-header">
+              <span class="ms-year">2015</span>
+              <h2 class="ms-title editable-node">De Eigen Festivalslijterij</h2>
+            </div>
+            <p class="ms-desc editable-node">
+              Opening van een eigen slijterij op de kerkvloer, zodat bezoekers hun favoriete geproefde fles direct mee naar huis kunnen nemen.
+            </p>
+          </div>
+
+          <div class="milestone-node draggable-item" data-anchor-x="766" data-anchor-y="990" style="left: 597px; top: 835px; width: 338px;">
+            <div class="ms-header">
+              <span class="ms-year">2017</span>
+              <h2 class="ms-title editable-node">Tasting For Women Only</h2>
+            </div>
+            <p class="ms-desc editable-node">
+              Een primeur op het programma: de allereerste speciale whiskyproeverij exclusief voor <strong>vrouwelijke liefhebbers</strong>.
+            </p>
+          </div>
+
+          <div class="milestone-node draggable-item" data-anchor-x="1119" data-anchor-y="1180" style="left: 700px; top: 1126px; width: 343px;">
+            <div class="ms-header">
+              <span class="ms-year">2022</span>
+              <h2 class="ms-title editable-node">Proeven in de Haagse Toren</h2>
+            </div>
+            <p class="ms-desc editable-node">
+              Lancering van de <strong>Toren-tasting</strong>: een beklimming met gids, een dram op grote hoogte en aansluitend een bijzondere proeverij.
+            </p>
+          </div>
+
+          <div class="milestone-node milestone-bottom-row draggable-item" data-anchor-x="928" data-anchor-y="1371" style="left: 639px; top: 1416px; width: 579px;">
+            <div class="ms-header">
+              <span class="ms-year">2023</span>
+              <h2 class="ms-title editable-node">Het Buitenterrein</h2>
+            </div>
+            <p class="ms-desc editable-node">
+              Een sfeervol <strong>buitenplein</strong> naast de Grote Kerk met ambachtelijke foodtrucks, gezellige zitplekken en extra ruimte voor bezoekers.
+            </p>
+          </div>
+
+          <div class="milestone-node draggable-item" data-anchor-x="494" data-anchor-y="1371" style="left: 324px; top: 1215px; width: 338px;">
+            <div class="ms-header">
+              <span class="ms-year">2025</span>
+              <h2 class="ms-title editable-node">Amsterdam &amp; Vatenmaken</h2>
+            </div>
+            <p class="ms-desc editable-node">
+              Oprichting van <strong>WhiskyFest Amsterdam</strong> én introductie van de kuipersworkshop over de invloed van eikenhout op whisky.
+            </p>
+          </div>
+
+          <div class="milestone-node milestone-jubilee-card milestone-bottom-row draggable-item" data-anchor-x="313" data-anchor-y="1371" style="left: 24px; top: 1416px; width: 578px;">
+            <div class="jubilee-card-header">
+              <span class="ms-year jubilee-year">2026</span>
+              <span class="jubilee-tag editable-node">13, 14 &amp; 15 NOVEMBER 2026 &bull; GROTE KERK DEN HAAG</span>
+            </div>
+            <h2 class="ms-title editable-node">25e Editie International Whisky Festival</h2>
+            <p class="ms-desc editable-node">
+              Een kwart eeuw passie, vakmanschap en gastvrijheid onder de monumentale gewelven van de Grote Kerk.
+            </p>
+          </div>
+        </div>
+
+        <!-- 3. POSTER FOOTER -->
+        <footer class="poster-footer">
+          <div class="footer-item footer-left editable-node">
+            INTERNATIONAL WHISKY FESTIVAL
+          </div>
+          <div class="footer-item footer-center editable-node">
+            25E JUBILEUMEDITIE
+          </div>
+          <div class="footer-item footer-right editable-node">
+            WHISKYFESTIVAL.NL
+          </div>
+        </footer>
+
+      </div>
+
+    </article>
+
+  </main>
+
+  <style is:inline>
+    /* ----------------------------------------------------
+       SCREEN TOOLBAR & STAGE
+       ---------------------------------------------------- */
+    .poster-toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: #1D1C1A;
+      color: #FAF7F2;
+      border-bottom: 2px solid #006448;
+      padding: 0.75rem 1.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .toolbar-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      color: #FAF7F2;
+      text-decoration: none;
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.42rem 0.8rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      transition: background 0.2s ease;
+    }
+
+    .toolbar-back-link:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .toolbar-badge {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #caac8e;
+      border: 1px solid rgba(202, 172, 142, 0.4);
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 800;
+      padding: 0.5rem 0.95rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .toolbar-btn-outline {
+      background: transparent;
+      color: #FAF7F2;
+      border: 1.5px solid rgba(250, 247, 242, 0.35);
+    }
+
+    .toolbar-btn-outline:hover {
+      border-color: #caac8e;
+      color: #caac8e;
+    }
+
+    .toolbar-btn-primary {
+      background: #006448;
+      color: #FFFFFF;
+      border: 1.5px solid #caac8e;
+      box-shadow: 2px 2px 0px #000000;
+    }
+
+    .toolbar-btn-primary:hover {
+      background: #004D37;
+    }
+
+    .poster-stage-wrapper {
+      background: #2A2927;
+      min-height: calc(100vh - 60px);
+      padding: 2rem 1.5rem 4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 1rem;
+      overflow-x: auto;
+    }
+
+    .page-sheet-label {
+      width: 1400px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #caac8e;
+      padding: 0.35rem 0.25rem;
+      border-bottom: 1px solid rgba(202, 172, 142, 0.25);
+    }
+
+    /* ----------------------------------------------------
+       SHARED A3 SHEET: Exact 1400px x 1980px (= 297mm x 420mm)
+       ---------------------------------------------------- */
+    .a3-poster-sheet {
+      position: relative !important;
+      width: 1400px !important;
+      height: 1980px !important;
+      min-width: 1400px !important;
+      min-height: 1980px !important;
+      background-color: #FAF7F2 !important;
+      color: #1D1C1A !important;
+      box-shadow: 0 25px 75px rgba(0, 0, 0, 0.6);
+      overflow: hidden !important;
+      box-sizing: border-box !important;
+    }
+
+    .a3-sheet-front {
+      padding: 0 !important;
+      display: block !important;
+    }
+
+    /* ----------------------------------------------------
+       0A. AUTHENTIC HANDMADE COTTON & LAID PARCHMENT PAPER
+       ---------------------------------------------------- */
+    .v2-crumpled-paper-bg {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 1400px !important;
+      height: 1980px !important;
+      pointer-events: none !important;
+      z-index: 1 !important;
+      overflow: hidden !important;
+      background-color: #FAF7F2 !important;
+    }
+
+    .v2-paper-texture-img {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 1400px !important;
+      height: 1980px !important;
+      object-fit: cover !important;
+      display: block !important;
+      z-index: 1 !important;
+    }
+
+    .v2-baked-fullsheet-print {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 1400px !important;
+      height: 1980px !important;
+      object-fit: cover !important;
+      display: none !important;
+      z-index: 2 !important;
+    }
+
+    /* ----------------------------------------------------
+       0B. CLEAN SINGLE HAIRLINE FRAME (inset: 44px)
+       ---------------------------------------------------- */
+    .v2-clean-frame {
+      position: absolute !important;
+      inset: 44px !important;
+      border: 1px solid rgba(0, 100, 72, 0.28) !important;
+      border-radius: 2px !important;
+      pointer-events: none !important;
+      z-index: 20 !important;
+    }
+
+    .a3-poster-sheet.frame-none .v2-clean-frame {
+      display: none !important;
+    }
+
+    /* ----------------------------------------------------
+       PAGE 1 (FRONT): SAFE ZONE, LOGO & VECTOR TITLE
+       ---------------------------------------------------- */
+    .front-safe-zone {
+      position: absolute !important;
+      left: 105px !important;
+      top: 88px !important;
+      width: 1194px !important;
+      height: 1800px !important;
+      z-index: 5 !important;
+      display: block !important;
+      transform: none !important;
+      zoom: 1 !important;
+      box-sizing: border-box !important;
+    }
+
+    .front-map-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 700;
+      color: #006448;
+      z-index: 10;
+    }
+
+    .front-festival-logo {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: 12;
+      width: 117px;
+      height: auto;
+      pointer-events: none;
+      display: none;
+    }
+
+    .front-festival-logo svg {
+      width: 100% !important;
+      height: auto !important;
+      display: block !important;
+      shape-rendering: geometricPrecision;
+      text-rendering: geometricPrecision;
+    }
+
+    .front-custom-title {
+      position: absolute !important;
+      left: 144px !important;
+      top: 24px !important;
+      transform: none !important;
+      z-index: 12 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      display: none;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      justify-content: center !important;
+      font-family: var(--font-display) !important;
+      font-size: 56px !important;
+      line-height: 54px !important;
+      color: #006448 !important;
+      letter-spacing: 0.035em !important;
+      text-transform: uppercase !important;
+      pointer-events: none !important;
+      white-space: nowrap !important;
+    }
+
+    .front-custom-title.is-visible {
+      display: flex !important;
+    }
+
+    .front-custom-title.is-single-line {
+      top: 51px !important;
+      flex-direction: row !important;
+      gap: 18px !important;
+    }
+
+    .front-title-line1,
+    .front-title-line2 {
+      display: block;
+    }
+
+    .front-map-canvas {
+      position: absolute !important;
+      left: 0 !important;
+      top: 0 !important;
+      z-index: 5 !important;
+      width: 1194px !important;
+      height: 1800px !important;
+      display: block !important;
+      background: transparent !important;
+      mix-blend-mode: normal !important;
+      filter: none !important;
+    }
+
+    /* ----------------------------------------------------
+       PAGE 2 (BACK): 100% NATIVE 1:1 INTEGER PIXELS (zoom: 1, transform: none)
+       Zero subpixel scaling, zero CSS filter/blend GPU squashing!
+       ---------------------------------------------------- */
+    .a3-sheet-back {
+      padding: 88px 81px 82px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+    }
+
+    .back-safe-zone {
+      position: relative !important;
+      z-index: 5 !important;
+      width: 1238px !important;
+      height: 1810px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      transform: none !important;
+      zoom: 1 !important;
+      box-sizing: border-box !important;
+    }
+
+    .v2-poster-header {
+      position: relative !important;
+      z-index: 15 !important;
+      width: 1194px !important;
+      margin-left: 24px !important;
+      margin-right: 20px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      box-sizing: border-box !important;
+    }
+
+    .v2-header-grid {
+      display: grid !important;
+      grid-template-columns: 150px 1fr 150px !important;
+      align-items: center !important;
+      gap: 22px !important;
+      width: 100% !important;
+      padding-bottom: 11px !important;
+    }
+
+    .v2-header-logo {
+      width: 117px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+    }
+
+    .v2-header-logo svg {
+      width: 100% !important;
+      height: auto !important;
+      display: block !important;
+      shape-rendering: geometricPrecision;
+      text-rendering: geometricPrecision;
+    }
+
+    .v2-header-titles {
+      text-align: center !important;
+    }
+
+    .v2-poster-main-title {
+      font-family: var(--font-display) !important;
+      font-size: 56px !important;
+      line-height: 54px !important;
+      color: #006448 !important;
+      letter-spacing: 0.035em !important;
+      margin: 0 0 5px !important;
+      text-transform: uppercase !important;
+    }
+
+    .v2-poster-subtitle {
+      font-family: var(--font-sans) !important;
+      font-size: 15px !important;
+      line-height: 21px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.02em !important;
+      color: #1D1C1A !important;
+      margin: 0 !important;
+    }
+
+    .v2-header-crest {
+      display: flex !important;
+      justify-content: flex-end !important;
+      align-items: center !important;
+    }
+
+    .v2-crest-clean {
+      text-align: right !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-end !important;
+      gap: 4px !important;
+    }
+
+    .v2-crest-years {
+      font-family: var(--font-display) !important;
+      font-size: 32px !important;
+      line-height: 32px !important;
+      color: #006448 !important;
+      letter-spacing: 0.04em !important;
+    }
+
+    .v2-crest-edition {
+      font-family: var(--font-sans) !important;
+      font-size: 11px !important;
+      line-height: 15px !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.14em !important;
+      color: #1D1C1A !important;
+    }
+
+    .poster-timeline-canvas {
+      position: relative !important;
+      width: 1238px !important;
+      height: 1589px !important;
+      z-index: 5 !important;
+    }
+
+    .timeline-svg-layer {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 1238px !important;
+      height: 1589px !important;
+      pointer-events: none !important;
+      z-index: 2 !important;
+    }
+
+    /* 12 REGULAR TIMELINE CARDS (2000–2025): 100% Solid Pure White (#FFFFFF), Solid Opaque Border & Native 1:1 Pixels */
+    .milestone-node,
+    .milestone-jubilee-card {
+      position: absolute !important;
+      z-index: 5 !important;
+      text-align: left !important;
+      background: #FFFFFF !important;
+      color: #1D1C1A !important;
+      border: 1.5px solid #006448 !important;
+      border-left: 5px solid #006448 !important;
+      padding: 10px 14px !important;
+      border-radius: 8px !important;
+      box-shadow: none !important;
+      box-sizing: border-box !important;
+    }
+
+    .ms-header {
+      display: flex !important;
+      align-items: baseline !important;
+      gap: 10px !important;
+      margin-bottom: 4px !important;
+      flex-wrap: nowrap !important;
+    }
+
+    .ms-year {
+      font-family: var(--font-display) !important;
+      font-size: 32px !important;
+      line-height: 32px !important;
+      color: #006448 !important;
+      letter-spacing: 0.03em !important;
+      flex-shrink: 0 !important;
+    }
+
+    .ms-title {
+      font-family: var(--font-sans) !important;
+      font-size: 17px !important;
+      line-height: 21px !important;
+      font-weight: 800 !important;
+      color: #1D1C1A !important;
+      text-transform: none !important;
+      letter-spacing: -0.01em !important;
+      margin: 0 !important;
+    }
+
+    .ms-desc {
+      font-family: var(--font-sans) !important;
+      font-size: 14px !important;
+      line-height: 20px !important;
+      font-weight: 500 !important;
+      color: #1D1C1A !important;
+      margin: 0 !important;
+    }
+
+    .ms-desc strong {
+      color: #1D1C1A !important;
+      font-weight: 800 !important;
+    }
+
+    .milestone-top-row {
+      height: 128px !important;
+      padding-top: 15px !important;
+      padding-bottom: 13px !important;
+      display: block !important;
+    }
+
+    .milestone-bottom-row {
+      height: 132px !important;
+      padding-top: 15px !important;
+      padding-bottom: 13px !important;
+      display: block !important;
+    }
+
+    /* 2026 Jubilee Finale Card: Den Haag Green (#006448) Statement Card */
+    .milestone-jubilee-card {
+      background: #006448 !important;
+      color: #FFFFFF !important;
+      padding: 14px 18px !important;
+      border-radius: 8px !important;
+      border: 2px solid #1D1C1A !important;
+      box-shadow: 5px 5px 0px #1D1C1A !important;
+    }
+
+    .jubilee-card-header {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 12px !important;
+      margin-bottom: 4px !important;
+    }
+
+    .jubilee-year {
+      color: #caac8e !important;
+      font-size: 34px !important;
+      line-height: 34px !important;
+      margin: 0 !important;
+    }
+
+    .jubilee-tag {
+      font-family: var(--font-sans) !important;
+      font-size: 11px !important;
+      line-height: 15px !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.06em !important;
+      background: #19735A !important;
+      color: #FFFFFF !important;
+      padding: 4px 10px !important;
+      border-radius: 4px !important;
+    }
+
+    .milestone-jubilee-card .ms-title {
+      color: #FFFFFF !important;
+      font-size: 18px !important;
+      line-height: 22px !important;
+      margin-bottom: 3px !important;
+    }
+
+    .milestone-jubilee-card .ms-desc {
+      color: #FFFFFF !important;
+      font-size: 14px !important;
+      line-height: 20px !important;
+      font-weight: 500 !important;
+    }
+
+    .milestone-jubilee-card .ms-desc strong {
+      color: #FFFFFF !important;
+    }
+
+    /* 4 PHOTO CARDS: Den Haag Green (#006448) Background & Zero CSS Filter/Blend GPU Triggers */
+    .poster-photo-card {
+      position: absolute !important;
+      z-index: 5 !important;
+      width: 264px !important;
+      background: #006448 !important;
+      border: 2px solid #1D1C1A !important;
+      box-shadow: 5px 5px 0px #1D1C1A !important;
+      padding: 8px 8px 6px !important;
+      border-radius: 6px !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    .poster-photo-card .photo-inner {
+      position: relative !important;
+      width: 100% !important;
+      height: 165px !important;
+      overflow: hidden !important;
+      border-radius: 3px !important;
+      background: #e4d5c4 !important;
+      border: 1px solid #4D937F !important;
+    }
+
+    .poster-photo-card .photo-inner::after {
+      display: none !important;
+    }
+
+    .poster-photo-card img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      display: block !important;
+      filter: none !important;
+    }
+
+    .poster-photo-card figcaption {
+      font-family: var(--font-sans) !important;
+      font-size: 12px !important;
+      line-height: 16px !important;
+      font-weight: 800 !important;
+      color: #FFFFFF !important;
+      text-align: center !important;
+      padding-top: 6px !important;
+      letter-spacing: 0.02em !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+    }
+
+    .poster-footer {
+      position: relative !important;
+      z-index: 15 !important;
+      width: 1194px !important;
+      margin-left: 24px !important;
+      margin-right: 20px !important;
+      display: grid !important;
+      grid-template-columns: 1fr auto 1fr !important;
+      align-items: center !important;
+      padding-top: 10px !important;
+      border-top: 1.5px solid #8BAFA3 !important;
+      box-sizing: border-box !important;
+    }
+
+    .footer-item {
+      font-family: var(--font-sans) !important;
+      font-size: 12px !important;
+      line-height: 16px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.12em !important;
+      color: #1D1C1A !important;
+      text-transform: uppercase !important;
+    }
+
+    .footer-left {
+      text-align: left !important;
+    }
+
+    .footer-center {
+      text-align: center !important;
+    }
+
+    .footer-right {
+      text-align: right !important;
+    }
+
+    /* Hide all global Layout.astro widgets */
+    body > *:not(.poster-toolbar):not(.poster-stage-wrapper),
+    .floating-social-dock,
+    .mobile-sticky-cart,
+    .mobile-sticky-bar,
+    .mobile-cart-sheet,
+    .mobile-cart-backdrop,
+    #mobile-sticky-bar,
+    #mobile-cart-sheet,
+    #mobile-cart-backdrop {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    /* ----------------------------------------------------
+       EXACT 2-PAGE A3 PRINT MEDIA QUERY (~2.2 MB TOTAL PDF)
+       ---------------------------------------------------- */
+    @media print {
+      @page {
+        size: A3 portrait;
+        margin: 0;
+      }
+
+      html,
+      body {
+        width: 297mm !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #FAF7F2 !important;
+        overflow: visible !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      body > *:not(.poster-stage-wrapper),
+      .no-print,
+      .poster-toolbar,
+      .page-sheet-label,
+      .front-map-loading {
+        display: none !important;
+        visibility: hidden !important;
+      }
+
+      .poster-stage-wrapper {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: none !important;
+        width: 297mm !important;
+        height: auto !important;
+        min-height: 0 !important;
+        display: block !important;
+        gap: 0 !important;
+        overflow: visible !important;
+      }
+
+      .a3-poster-sheet {
+        width: 1400px !important;
+        height: 1980px !important;
+        zoom: 0.8015;
+        box-shadow: none !important;
+        margin: 0 !important;
+        break-inside: avoid !important;
+      }
+
+      /* Page 1 breaks cleanly to Page 2 */
+      .a3-sheet-front {
+        page-break-after: always !important;
+        break-after: page !important;
+      }
+
+      .a3-sheet-back {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+
+      /* Use lightweight pre-baked paper textures during print so total 2-page PDF is ~2.2 MB */
+      .a3-sheet-front .v2-crumpled-paper-bg,
+      .front-map-canvas {
+        display: none !important;
+      }
+
+      .v2-baked-fullsheet-print,
+      .v2-baked-paper-print {
+        display: block !important;
+      }
+
+      .milestone-node:not(.milestone-jubilee-card) {
+        background: #FFFFFF !important;
+        box-shadow: none !important;
+      }
+
+      .milestone-jubilee-card,
+      .poster-photo-card {
+        background: #006448 !important;
+        box-shadow: 5px 5px 0px #1D1C1A !important;
+      }
+    }
+  </style>
+
+  <script type="module" is:inline>
+    import * as pdfjsLib from '/pdfjs/pdf.min.mjs';
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdfjs/pdf.worker.min.mjs';
+
+    var frontPoster = document.getElementById('a3-poster-front');
+    var backPoster = document.getElementById('a3-poster-back');
+    var loadingEl = document.getElementById('front-map-loading');
+    var mapCanvas = document.getElementById('front-map-canvas');
+    var logoImg = document.getElementById('front-festival-logo');
+    var customTitleEl = document.getElementById('front-custom-title');
+    var screenPaperFrontImg = document.getElementById('screen-paper-front');
+    var bakedFullsheetImg = document.getElementById('baked-fullsheet-print');
+    var bakedBackPrintImg = document.getElementById('baked-paper-print');
+
+    var logoBtn = document.getElementById('toggle-logo-btn');
+    var textureBtn = document.getElementById('toggle-texture-btn');
+    var frameBtn = document.getElementById('toggle-frame-btn');
+
+    var logoModes = ['left-2line', 'left-1line', 'none'];
+    var logoModeIndex = 0;
+    var textureModes = ['cotton', 'laid', 'clean'];
+    var textureIndex = 0;
+    var showFrame = true;
+
+    var rawPdfImageData = null;
+    var pdfW = 0;
+    var pdfH = 0;
+
+    /* ----------------------------------------------------
+       PAGE 2 (BACK): POINTER LINES & BAKED PAPER TEXTURE
+       ---------------------------------------------------- */
+    var timelineCanvas = document.getElementById('timeline-canvas');
+    var linesGroup = document.getElementById('pointer-lines-group');
+
+    function updatePointerLines() {
+      if (!timelineCanvas || !linesGroup) return;
+      while (linesGroup.firstChild) {
+        linesGroup.removeChild(linesGroup.firstChild);
+      }
+
+      var nodes = timelineCanvas.querySelectorAll('.milestone-node[data-anchor-x]');
+      nodes.forEach(function(node) {
+        var ax = parseFloat(node.getAttribute('data-anchor-x') || '0');
+        var ay = parseFloat(node.getAttribute('data-anchor-y') || '0');
+        var isJubilee = node.classList.contains('milestone-jubilee-card');
+
+        var left = node.offsetLeft;
+        var top = node.offsetTop;
+        var width = node.offsetWidth;
+        var height = node.offsetHeight;
+
+        var tx = Math.max(left + 12, Math.min(ax, left + width - 12));
+        var ty = Math.max(top + 4, Math.min(ay, top + height - 4));
+
+        var svgNS = 'http://www.w3.org/2000/svg';
+
+        var line = document.createElementNS(svgNS, 'line');
+        line.setAttribute('x1', String(ax));
+        line.setAttribute('y1', String(ay));
+        line.setAttribute('x2', String(tx));
+        line.setAttribute('y2', String(ty));
+        line.setAttribute('stroke', isJubilee ? '#006448' : '#1D1C1A');
+        line.setAttribute('stroke-width', isJubilee ? '2.5' : '1.75');
+        line.setAttribute('stroke-dasharray', isJubilee ? 'none' : '3 3');
+        linesGroup.appendChild(line);
+
+        var endDot = document.createElementNS(svgNS, 'circle');
+        endDot.setAttribute('cx', String(tx));
+        endDot.setAttribute('cy', String(ty));
+        endDot.setAttribute('r', '3.5');
+        endDot.setAttribute('fill', '#006448');
+        linesGroup.appendChild(endDot);
+
+        var outerRing = document.createElementNS(svgNS, 'circle');
+        outerRing.setAttribute('cx', String(ax));
+        outerRing.setAttribute('cy', String(ay));
+        outerRing.setAttribute('r', isJubilee ? '11' : '7.5');
+        outerRing.setAttribute('fill', '#FAF7F2');
+        outerRing.setAttribute('stroke', '#006448');
+        outerRing.setAttribute('stroke-width', isJubilee ? '3.5' : '2.5');
+        linesGroup.appendChild(outerRing);
+
+        var innerDot = document.createElementNS(svgNS, 'circle');
+        innerDot.setAttribute('cx', String(ax));
+        innerDot.setAttribute('cy', String(ay));
+        innerDot.setAttribute('r', isJubilee ? '5' : '3.2');
+        innerDot.setAttribute('fill', '#006448');
+        linesGroup.appendChild(innerDot);
+      });
+    }
+
+    updatePointerLines();
+    window.addEventListener('load', updatePointerLines);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(updatePointerLines);
+    }
+
+    /* =====================================================================
+       AUTHENTIC HANDMADE COTTON & LAID PARCHMENT PAPER GENERATOR
+       Uses multi-scale bicubic/smoothstep value noise + organic cellulose
+       cotton fibers + subtle laid wire lines + natural botanical specks.
+       Zero sine-wave plaid artifacts; identical on screen and in PDF print.
+       ===================================================================== */
+    var cachedMasterPaper = {};
+
+    function generateMasterPaperCanvas(mode) {
+      if (cachedMasterPaper[mode]) return cachedMasterPaper[mode];
+
+      var w = 1000;
+      var h = 1414;
+      var c = document.createElement('canvas');
+      c.width = w;
+      c.height = h;
+      var ctx = c.getContext('2d');
+
+      /* Deterministic PRNG (Mulberry32) so texture is 100% consistent */
+      var seed = mode === 'laid' ? 73921 : mode === 'clean' ? 19403 : 42857;
+      function rand() {
+        seed |= 0;
+        seed = (seed + 0x6D2B79F5) | 0;
+        var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      }
+
+      /* Helper: generate a smooth 2D value-noise grid of size (gw x gh) */
+      function makeGrid(gw, gh) {
+        var g = new Float32Array(gw * gh);
+        for (var i = 0; i < gw * gh; i++) {
+          g[i] = rand() * 2 - 1;
+        }
+        /* Box-blur pass on the control grid for organic clouding */
+        var out = new Float32Array(gw * gh);
+        for (var y = 0; y < gh; y++) {
+          for (var x = 0; x < gw; x++) {
+            var sum = 0;
+            var cnt = 0;
+            for (var dy = -1; dy <= 1; dy++) {
+              for (var dx = -1; dx <= 1; dx++) {
+                var nx = Math.min(gw - 1, Math.max(0, x + dx));
+                var ny = Math.min(gh - 1, Math.max(0, y + dy));
+                sum += g[ny * gw + nx];
+                cnt++;
+              }
+            }
+            out[y * gw + x] = sum / cnt;
+          }
+        }
+        return { data: out, gw: gw, gh: gh };
+      }
+
+      function sampleGrid(grid, u, v) {
+        var gx = u * (grid.gw - 1);
+        var gy = v * (grid.gh - 1);
+        var x0 = Math.floor(gx);
+        var y0 = Math.floor(gy);
+        var x1 = Math.min(grid.gw - 1, x0 + 1);
+        var y1 = Math.min(grid.gh - 1, y0 + 1);
+        var fx = gx - x0;
+        var fy = gy - y0;
+        /* Smoothstep interpolation eliminates grid edges */
+        var sx = fx * fx * (3 - 2 * fx);
+        var sy = fy * fy * (3 - 2 * fy);
+        var d = grid.data;
+        var gw = grid.gw;
+        var n00 = d[y0 * gw + x0];
+        var n10 = d[y0 * gw + x1];
+        var n01 = d[y1 * gw + x0];
+        var n11 = d[y1 * gw + x1];
+        var nx0 = n00 + sx * (n10 - n00);
+        var nx1 = n01 + sx * (n11 - n01);
+        return nx0 + sy * (nx1 - nx0);
+      }
+
+      /* 4 Octaves of non-periodic value noise (from broad parchment clouds to fine grain) */
+      var gMacro = makeGrid(14, 20);
+      var gMed   = makeGrid(38, 54);
+      var gFine  = makeGrid(110, 155);
+      var gMicro = makeGrid(300, 424);
+
+      var intensity = mode === 'clean' ? 0.38 : mode === 'laid' ? 0.92 : 1.0;
+
+      var imgData = ctx.createImageData(w, h);
+      var d = imgData.data;
+
+      /* Base parchment color: #FAF7F2 (R: 250, G: 247, B: 242) */
+      for (var y = 0; y < h; y++) {
+        var v = y / h;
+        var dyEdge = (v - 0.5) * 2;
+        for (var x = 0; x < w; x++) {
+          var u = x / w;
+          var dxEdge = (u - 0.5) * 2;
+
+          /* Organic cotton pulp clouding ("wolking" van handgeschept papier) */
+          var n1 = sampleGrid(gMacro, u, v);
+          var n2 = sampleGrid(gMed, u, v);
+          var n3 = sampleGrid(gFine, u, v);
+          var n4 = sampleGrid(gMicro, u, v);
+
+          /* Soft ridge-crease relief from medium octave */
+          var ridge = (1 - Math.abs(n2 + n3 * 0.35)) - 0.65;
+
+          var cloudDelta = (n1 * 5.2 + n2 * 3.4 + n3 * 2.1 + n4 * 1.4 + ridge * 2.4) * intensity;
+
+          /* Subtle laid wire lines ("vergé-papier") for 'laid' mode, or very faint woven linen in 'cotton' */
+          var laidDelta = 0;
+          if (mode === 'laid') {
+            var wireH = Math.sin(y * 1.85 + n2 * 1.6) * 1.45;
+            var chainV = Math.cos(x * (Math.PI * 2 / 78) + n1 * 0.5) > 0.92 ? 0.9 : 0;
+            laidDelta = (wireH + chainV) * intensity;
+          } else if (mode === 'cotton') {
+            laidDelta = Math.sin(y * 1.9 + n2 * 2.2) * 0.45 * intensity;
+          }
+
+          /* Gentle warm deckle-edge patina towards the outer A3 border */
+          var distSq = dxEdge * dxEdge * 0.85 + dyEdge * dyEdge * 0.85;
+          var vignette = Math.max(0, distSq - 0.28) * 10.5 * intensity;
+
+          /* Ultra-fine tactile tooth (non-periodic PRNG) */
+          var tooth = (rand() - 0.5) * 2.2 * intensity;
+
+          var delta = cloudDelta + laidDelta + tooth - vignette;
+
+          /* Warm parchment color shift: darker spots shift slightly warmer towards #E5D7C1 */
+          var r = 249.5 + delta * 0.95 - vignette * 0.25;
+          var g = 246.0 + delta * 1.08 - vignette * 0.45;
+          var b = 240.0 + delta * 1.28 - vignette * 0.75;
+
+          var idx = (y * w + x) * 4;
+          d[idx]     = Math.min(255, Math.max(0, Math.round(r)));
+          d[idx + 1] = Math.min(255, Math.max(0, Math.round(g)));
+          d[idx + 2] = Math.min(255, Math.max(0, Math.round(b)));
+          d[idx + 3] = 255;
+        }
+      }
+
+      ctx.putImageData(imgData, 0, 0);
+
+      /* Layer 2: Authentic Organic Cotton & Cellulose Fibers + Tiny Botanical Inclusions */
+      if (mode !== 'clean') {
+        ctx.save();
+        var fiberCount = mode === 'cotton' ? 4200 : 2800;
+        for (var f = 0; f < fiberCount; f++) {
+          var fx = rand() * w;
+          var fy = rand() * h;
+          var len = 3 + rand() * 14;
+          var angle = (rand() - 0.5) * Math.PI * 2;
+          var curve = (rand() - 0.5) * 4;
+          var isLight = rand() > 0.62;
+
+          ctx.beginPath();
+          ctx.moveTo(fx, fy);
+          var mx = fx + Math.cos(angle) * (len * 0.5) - Math.sin(angle) * curve;
+          var my = fy + Math.sin(angle) * (len * 0.5) + Math.cos(angle) * curve;
+          var ex = fx + Math.cos(angle) * len;
+          var ey = fy + Math.sin(angle) * len;
+          ctx.quadraticCurveTo(mx, my, ex, ey);
+
+          if (isLight) {
+            ctx.strokeStyle = 'rgba(255, 253, 249, ' + (0.18 + rand() * 0.22) + ')';
+          } else {
+            ctx.strokeStyle = 'rgba(186, 166, 138, ' + (0.07 + rand() * 0.11) + ')';
+          }
+          ctx.lineWidth = 0.45 + rand() * 0.55;
+          ctx.lineCap = 'round';
+          ctx.stroke();
+        }
+
+        /* Subtle natural parchment mineral/husk micro-specks (very delicate, warm) */
+        var speckCount = mode === 'cotton' ? 650 : 350;
+        for (var s = 0; s < speckCount; s++) {
+          var sx = rand() * w;
+          var sy = rand() * h;
+          var sr = 0.35 + rand() * 0.75;
+          ctx.fillStyle = 'rgba(168, 145, 114, ' + (0.06 + rand() * 0.12) + ')';
+          ctx.beginPath();
+          ctx.arc(sx, sy, sr, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      cachedMasterPaper[mode] = c;
+      return c;
+    }
+
+    function createSeamlessPaperCanvas(w, h, mode) {
+      var master = generateMasterPaperCanvas(mode);
+      var c = document.createElement('canvas');
+      c.width = w;
+      c.height = h;
+      var ctx = c.getContext('2d');
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(master, 0, 0, master.width, master.height, 0, 0, w, h);
+      return c;
+    }
+
+    function bakeBackPagePaper(mode) {
+      var master = generateMasterPaperCanvas(mode);
+      var dataUrl = master.toDataURL('image/jpeg', 0.88);
+      if (bakedBackPrintImg) {
+        bakedBackPrintImg.src = dataUrl;
+      }
+      if (screenPaperFrontImg) {
+        screenPaperFrontImg.src = dataUrl;
+      }
+    }
+
+    bakeBackPagePaper('cotton');
+
+    /* ----------------------------------------------------
+       PAGE 1 (FRONT): PDF MAP RENDERING & PRINT COMPOSITING
+       ---------------------------------------------------- */
+    function renderCleanMapAndPrintSheet() {
+      if (!rawPdfImageData || !mapCanvas) return;
+
+      var logoMode = logoModes[logoModeIndex];
+      var texMode = textureModes[textureIndex];
+
+      var cleanFull = document.createElement('canvas');
+      cleanFull.width = pdfW;
+      cleanFull.height = pdfH;
+      var cCtx = cleanFull.getContext('2d');
+      var outData = cCtx.createImageData(pdfW, pdfH);
+      var src = rawPdfImageData.data;
+      var dst = outData.data;
+
+      var cornerIdx = (10 * pdfW + 10) * 4;
+      var bgR = src[cornerIdx] || 255;
+      var bgG = src[cornerIdx + 1] || 255;
+      var bgB = src[cornerIdx + 2] || 255;
+
+      var mapMinX = pdfW, mapMaxX = 0, mapMinY = pdfH, mapMaxY = 0;
+
+      for (var y = 0; y < pdfH; y++) {
+        for (var x = 0; x < pdfW; x++) {
+          var i = (y * pdfW + x) * 4;
+          var r = src[i];
+          var g = src[i + 1];
+          var b = src[i + 2];
+
+          var dr = Math.abs(bgR - r);
+          var dg = Math.abs(bgG - g);
+          var db = Math.abs(bgB - b);
+          var diff = Math.max(dr, dg, db);
+          var minC = Math.min(r, g, b);
+          var maxC = Math.max(r, g, b);
+          var chroma = maxC - minC;
+
+          if (diff <= 14 || (minC >= 240 && chroma <= 18)) {
+            dst[i] = 0;
+            dst[i + 1] = 0;
+            dst[i + 2] = 0;
+            dst[i + 3] = 0;
+          } else if (diff < 42 && (g - r) < 12 && chroma <= 24) {
+            var a = (diff - 14) / (42 - 14);
+            var ur = Math.max(0, Math.min(255, Math.round((r - bgR * (1 - a)) / a)));
+            var ug = Math.max(0, Math.min(255, Math.round((g - bgG * (1 - a)) / a)));
+            var ub = Math.max(0, Math.min(255, Math.round((b - bgB * (1 - a)) / a)));
+            dst[i] = ur;
+            dst[i + 1] = ug;
+            dst[i + 2] = ub;
+            var alphaByte = Math.round(a * 255);
+            dst[i + 3] = alphaByte;
+            if (alphaByte > 60) {
+              if (x < mapMinX) mapMinX = x;
+              if (x > mapMaxX) mapMaxX = x;
+              if (y < mapMinY) mapMinY = y;
+              if (y > mapMaxY) mapMaxY = y;
+            }
+          } else {
+            dst[i] = r;
+            dst[i + 1] = g;
+            dst[i + 2] = b;
+            dst[i + 3] = minC > 165 ? 236 : 255;
+            if (x < mapMinX) mapMinX = x;
+            if (x > mapMaxX) mapMaxX = x;
+            if (y < mapMinY) mapMinY = y;
+            if (y > mapMaxY) mapMaxY = y;
+          }
+        }
+      }
+
+      cCtx.putImageData(outData, 0, 0);
+
+      var scanMaxX = Math.floor(pdfW * 0.68);
+      var scanMaxY = Math.floor(pdfH * 0.118);
+      var tMinX = scanMaxX, tMaxX = 0, tMinY = scanMaxY, tMaxY = 0;
+      for (var ty = 0; ty < scanMaxY; ty++) {
+        for (var tx = 0; tx < scanMaxX; tx++) {
+          var aVal = dst[(ty * pdfW + tx) * 4 + 3];
+          if (aVal > 40) {
+            if (tx < tMinX) tMinX = tx;
+            if (tx > tMaxX) tMaxX = tx;
+            if (ty < tMinY) tMinY = ty;
+            if (ty > tMaxY) tMaxY = ty;
+          }
+        }
+      }
+
+      if (tMaxX > tMinX && tMaxY > tMinY && logoMode !== 'none') {
+        var pad = 8;
+        var sx = Math.max(0, tMinX - pad);
+        var sy = Math.max(0, tMinY - pad);
+        var tsW = Math.min(pdfW - sx, (tMaxX - tMinX + 1) + pad * 2);
+        var tsH = Math.min(pdfH - sy, (tMaxY - tMinY + 1) + pad * 2);
+        cCtx.clearRect(sx, sy, tsW, tsH);
+      }
+
+      var safeCssW = 1194;
+      var safeCssH = 1800;
+      var scaleFactor = 2.4;
+      var targetW = Math.round(safeCssW * scaleFactor);
+      var targetH = Math.round(safeCssH * scaleFactor);
+
+      mapCanvas.width = targetW;
+      mapCanvas.height = targetH;
+      var ctx = mapCanvas.getContext('2d');
+      ctx.clearRect(0, 0, targetW, targetH);
+
+      var inkW = Math.max(1, mapMaxX - mapMinX + 1);
+      var inkH = Math.max(1, mapMaxY - mapMinY + 1);
+
+      var drawScaleX = targetW / inkW;
+      var drawScaleY = Math.min(drawScaleX, targetH / inkH);
+
+      var destMapW = Math.round(inkW * drawScaleX);
+      var destMapH = Math.round(inkH * drawScaleY);
+
+      ctx.save();
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(cleanFull, mapMinX, mapMinY, inkW, inkH, 0, 0, destMapW, destMapH);
+      ctx.restore();
+
+      var logoCssW = 117;
+
+      if (logoImg && customTitleEl) {
+        if (logoMode === 'left-2line' || logoMode === 'left-1line') {
+          logoImg.style.left = '0px';
+          logoImg.style.top = '0px';
+          logoImg.style.width = logoCssW + 'px';
+          logoImg.style.height = 'auto';
+          logoImg.style.display = 'block';
+
+          customTitleEl.classList.add('is-visible');
+          customTitleEl.classList.toggle('is-single-line', logoMode === 'left-1line');
+        } else {
+          logoImg.style.display = 'none';
+          customTitleEl.classList.remove('is-visible', 'is-single-line');
+        }
+      }
+
+      if (bakedFullsheetImg) {
+        var printW = 2100;
+        var printH = 2970;
+        var fullSheet = createSeamlessPaperCanvas(printW, printH, texMode);
+        var fCtx = fullSheet.getContext('2d');
+
+        var pLeft = Math.round((105 / 1400) * printW);
+        var pTop = Math.round((88 / 1980) * printH);
+        var pWidth = Math.round((1194 / 1400) * printW);
+        var pHeight = Math.round((1800 / 1980) * printH);
+
+        fCtx.save();
+        fCtx.imageSmoothingEnabled = true;
+        fCtx.imageSmoothingQuality = 'high';
+        fCtx.drawImage(mapCanvas, 0, 0, targetW, targetH, pLeft, pTop, pWidth, pHeight);
+        fCtx.restore();
+
+        bakedFullsheetImg.src = fullSheet.toDataURL('image/jpeg', 0.88);
+      }
+    }
+
+    async function loadFrontMapPdf() {
+      try {
+        var loadingTask = pdfjsLib.getDocument('/whisky-kaart-2026.pdf');
+        var pdf = await loadingTask.promise;
+        var page = await pdf.getPage(1);
+
+        var viewport = page.getViewport({ scale: 2.35 });
+        var c = document.createElement('canvas');
+        pdfW = Math.round(viewport.width);
+        pdfH = Math.round(viewport.height);
+        c.width = pdfW;
+        c.height = pdfH;
+        var ctx = c.getContext('2d');
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, pdfW, pdfH);
+
+        await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+        rawPdfImageData = ctx.getImageData(0, 0, pdfW, pdfH);
+
+        if (loadingEl && loadingEl.parentNode) {
+          loadingEl.parentNode.removeChild(loadingEl);
+        }
+
+        renderCleanMapAndPrintSheet();
+      } catch (err) {
+        console.error('Error rendering front map PDF:', err);
+        if (loadingEl) {
+          loadingEl.textContent = 'Fout bij het laden van de kaart-PDF.';
+        }
+      }
+    }
+
+    loadFrontMapPdf();
+
+    /* Bake warm retro sepia + contrast + vignette directly into the 4 photo <img> tags
+       so zero CSS filter / mix-blend-mode GPU layers are created on the page! */
+    function bakeRetroPhotoElement(img) {
+      if (img.dataset.retroBaked === 'true') return;
+      var nw = img.naturalWidth;
+      var nh = img.naturalHeight;
+      if (!nw || !nh) return;
+      img.dataset.retroBaked = 'true';
+
+      var cw = 528;
+      var ch = 330;
+      var c = document.createElement('canvas');
+      c.width = cw;
+      c.height = ch;
+      var ctx = c.getContext('2d');
+
+      var scale = Math.max(cw / nw, ch / nh);
+      var dw = nw * scale;
+      var dh = nh * scale;
+      var dx = (cw - dw) * 0.5;
+      var dy = (ch - dh) * 0.5;
+
+      ctx.drawImage(img, dx, dy, dw, dh);
+
+      var id = ctx.getImageData(0, 0, cw, ch);
+      var data = id.data;
+      for (var y = 0; y < ch; y++) {
+        var ny = (y / ch - 0.5) * 2;
+        for (var x = 0; x < cw; x++) {
+          var nx = (x / cw - 0.5) * 2;
+          var i = (y * cw + x) * 4;
+          var r = data[i];
+          var g = data[i + 1];
+          var b = data[i + 2];
+
+          /* Warm retro sepia (24%) + subtle contrast (1.06) */
+          var sr = r * 0.393 + g * 0.769 + b * 0.189;
+          var sg = r * 0.349 + g * 0.686 + b * 0.168;
+          var sb = r * 0.272 + g * 0.534 + b * 0.131;
+
+          r = r * 0.76 + sr * 0.24;
+          g = g * 0.76 + sg * 0.24;
+          b = b * 0.76 + sb * 0.24;
+
+          r = (r - 128) * 1.06 + 126;
+          g = (g - 128) * 1.06 + 125;
+          b = (b - 128) * 1.06 + 122;
+
+          /* Soft warm vintage corner vignette */
+          var distSq = nx * nx * 0.55 + ny * ny * 0.55;
+          var vig = Math.max(0.76, 1 - Math.max(0, distSq - 0.18) * 0.38);
+
+          data[i]     = Math.min(255, Math.max(0, Math.round(r * vig)));
+          data[i + 1] = Math.min(255, Math.max(0, Math.round(g * vig)));
+          data[i + 2] = Math.min(255, Math.max(0, Math.round(b * vig)));
+        }
+      }
+      ctx.putImageData(id, 0, 0);
+      img.src = c.toDataURL('image/jpeg', 0.92);
+    }
+
+    document.querySelectorAll('img.retro-photo-img').forEach(function(img) {
+      if (img.complete && img.naturalWidth > 0) {
+        bakeRetroPhotoElement(img);
+      } else {
+        img.addEventListener('load', function() {
+          bakeRetroPhotoElement(img);
+        }, { once: true });
+      }
+    });
+
+    if (logoBtn) {
+      logoBtn.addEventListener('click', function() {
+        logoModeIndex = (logoModeIndex + 1) % logoModes.length;
+        var mode = logoModes[logoModeIndex];
+        renderCleanMapAndPrintSheet();
+        var span = logoBtn.querySelector('span');
+        if (span) {
+          if (mode === 'left-2line') span.textContent = 'Voorkant Kop: Logo + Titel (2 Regels)';
+          if (mode === 'left-1line') span.textContent = 'Voorkant Kop: Logo + Titel (1 Regel)';
+          if (mode === 'none') span.textContent = 'Voorkant Kop: Origineel Zonder Logo';
+        }
+      });
+    }
+
+    if (textureBtn && frontPoster && backPoster) {
+      textureBtn.addEventListener('click', function() {
+        textureIndex = (textureIndex + 1) % textureModes.length;
+        var mode = textureModes[textureIndex];
+        [frontPoster, backPoster].forEach(function(p) {
+          p.classList.remove('texture-cotton', 'texture-laid', 'texture-clean');
+          p.classList.add('texture-' + mode);
+        });
+        bakeBackPagePaper(mode);
+        renderCleanMapAndPrintSheet();
+        var span = textureBtn.querySelector('span');
+        if (span) {
+          if (mode === 'cotton') span.textContent = 'Papiertextuur: Handgeschept Katoen';
+          if (mode === 'laid') span.textContent = 'Papiertextuur: Fijn Vergé & Linnen';
+          if (mode === 'clean') span.textContent = 'Papiertextuur: Zacht Effen Perkament';
+        }
+      });
+    }
+
+    if (frameBtn && frontPoster && backPoster) {
+      frameBtn.addEventListener('click', function() {
+        showFrame = !showFrame;
+        frontPoster.classList.toggle('frame-none', !showFrame);
+        backPoster.classList.toggle('frame-none', !showFrame);
+        var span = frameBtn.querySelector('span');
+        if (span) {
+          span.textContent = showFrame ? 'Kader: Fijne Enkele Lijn' : 'Kader: Geen Kader';
+        }
+      });
+    }
+  </script>
+</Layout>

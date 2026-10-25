@@ -8,13 +8,25 @@ import { getTickets } from '../lib/ghl';
 const liveTickets = await getTickets('den_haag');
 
 function getSlotTicketInfo(slotTicketId: string, guideKey: string, timeStr: string, sessionDay: string) {
+  const expectedDay = sessionDay.includes('fri') || sessionDay.includes('vrijdag')
+    ? 'vrijdag'
+    : sessionDay.includes('sat') || sessionDay.includes('zaterdag')
+    ? 'zaterdag'
+    : 'zondag';
+  const expectedDaypart = sessionDay.includes('evening') || sessionDay.includes('avond') ? 'avond' : 'middag';
+
   const t = liveTickets.find(ticket => ticket.id === slotTicketId) ||
             liveTickets.find(ticket => {
               if (ticket.category !== 'trail') return false;
-              const matchesGuide = ticket.title?.toLowerCase().includes(guideKey.toLowerCase()) ||
-                                   ticket.ambassadorName?.toLowerCase().includes(guideKey.toLowerCase());
+              const gLower = guideKey.toLowerCase();
+              const titleLower = (ticket.title || '').toLowerCase();
+              const ambLower = (ticket.ambassadorName || '').toLowerCase();
+              const matchesGuide = titleLower.includes(gLower) || ambLower.includes(gLower) ||
+                (gLower === 'marlie' && (titleLower.includes('marly') || ambLower.includes('marly')));
               const matchesTime = ticket.time?.includes(timeStr.split(' - ')[0]) || ticket.time === timeStr;
-              return matchesGuide && matchesTime;
+              const matchesDay = !ticket.day || ticket.day === expectedDay;
+              const matchesPart = !ticket.daypart || ticket.daypart === expectedDaypart;
+              return matchesGuide && matchesTime && matchesDay && matchesPart;
             });
 
   const capacity = t?.capacity || 6;
@@ -55,7 +67,7 @@ interface SessionData {
 export const GUIDE_COLUMNS = [
   { key: 'Ernst', name: 'Ernst', specialty: 'Speyside & Sherry' },
   { key: 'Klaas', name: 'Klaas', specialty: 'Islay & Peat' },
-  { key: 'Marlie', name: 'Marlie', specialty: 'Fruitig & Wereld' },
+  { key: 'Marlie', name: 'Marly', specialty: 'Fruitig & Wereld' },
   { key: 'Sebastiaan', name: 'Sebastiaan', specialty: 'Craft & Dutch' },
   { key: 'Stanley', name: 'Stanley', specialty: 'Klassiek Schots' }
 ];
@@ -77,37 +89,37 @@ export const MATRIX_SESSIONS: TrailMatrixSession[] = [
   {
     id: 'trail-fri-evening',
     title: 'Vrijdagavond',
-    dayLabel: 'Vrijdag 13 Nov',
+    dayLabel: 'Vrijdag 12 Nov',
     timeLabel: '19:00 - 23:00 uur',
     rows: [
       {
         time: '20:00 - 20:30',
         slots: {
-          Klaas: { ticketId: 'dh-trail-65-whisky-trail-gids-klaas' },
-          Stanley: { ticketId: 'dh-trail-66-whisky-trail-gids-stanley' }
+          Klaas: { ticketId: 'dh-trail-1' },
+          Stanley: { ticketId: 'dh-trail-2' }
         }
       },
       {
         time: '20:30 - 21:00',
         slots: {
-          Ernst: { ticketId: 'dh-trail-67-whisky-trail-gids-ernst' },
-          Marlie: { ticketId: 'dh-trail-68-whisky-trail-gids-marly' },
-          Sebastiaan: { ticketId: 'dh-trail-69-whisky-trail-gids-sebastiaan' }
+          Ernst: { ticketId: 'dh-trail-3' },
+          Marlie: { ticketId: 'dh-trail-4' },
+          Sebastiaan: { ticketId: 'dh-trail-5' }
         }
       },
       {
         time: '21:00 - 21:30',
         slots: {
-          Klaas: { ticketId: 'dh-trail-70-whisky-trail-gids-klaas' },
-          Stanley: { ticketId: 'dh-trail-71-whisky-trail-gids-stanley' }
+          Klaas: { ticketId: 'dh-trail-6' },
+          Stanley: { ticketId: 'dh-trail-7' }
         }
       },
       {
         time: '21:30 - 22:00',
         slots: {
-          Ernst: { ticketId: 'dh-trail-72-whisky-trail-gids-ernst' },
-          Marlie: { ticketId: 'dh-trail-73-whisky-trail-gids-marly' },
-          Sebastiaan: { ticketId: 'dh-trail-74-whisky-trail-gids-sebastiaan' }
+          Ernst: { ticketId: 'dh-trail-8' },
+          Marlie: { ticketId: 'dh-trail-9' },
+          Sebastiaan: { ticketId: 'dh-trail-10' }
         }
       }
     ]
@@ -115,37 +127,37 @@ export const MATRIX_SESSIONS: TrailMatrixSession[] = [
   {
     id: 'trail-sat-afternoon',
     title: 'Zaterdagmiddag',
-    dayLabel: 'Zaterdag 14 Nov',
+    dayLabel: 'Zaterdag 13 Nov',
     timeLabel: '13:00 - 17:00 uur',
     rows: [
       {
         time: '14:00 - 14:30',
         slots: {
-          Ernst: { ticketId: 'dh-trail-75-whisky-trail-gids-ernst' },
-          Marlie: { ticketId: 'dh-trail-76-whisky-trail-gids-marly' },
-          Sebastiaan: { ticketId: 'dh-trail-77-whisky-trail-gids-sebastiaan' }
+          Ernst: { ticketId: 'dh-trail-11' },
+          Marlie: { ticketId: 'dh-trail-12' },
+          Sebastiaan: { ticketId: 'dh-trail-13' }
         }
       },
       {
         time: '14:30 - 15:00',
         slots: {
-          Stanley: { ticketId: 'dh-trail-78-whisky-trail-gids-stanley' },
-          Klaas: { ticketId: 'dh-trail-79-whisky-trail-gids-klaas' }
+          Stanley: { ticketId: 'dh-trail-14' },
+          Klaas: { ticketId: 'dh-trail-15' }
         }
       },
       {
         time: '15:00 - 15:30',
         slots: {
-          Ernst: { ticketId: 'dh-trail-80-whisky-trail-gids-ernst' },
-          Marlie: { ticketId: 'dh-trail-81-whisky-trail-gids-marly' },
-          Sebastiaan: { ticketId: 'dh-trail-82-whisky-trail-gids-sebastiaan' }
+          Ernst: { ticketId: 'dh-trail-16' },
+          Marlie: { ticketId: 'dh-trail-17' },
+          Sebastiaan: { ticketId: 'dh-trail-18' }
         }
       },
       {
         time: '15:30 - 16:00',
         slots: {
-          Stanley: { ticketId: 'dh-trail-83-whisky-trail-gids-stanley' },
-          Klaas: { ticketId: 'dh-trail-84-whisky-trail-gids-klaas' }
+          Stanley: { ticketId: 'dh-trail-19' },
+          Klaas: { ticketId: 'dh-trail-20' }
         }
       }
     ]
@@ -153,37 +165,37 @@ export const MATRIX_SESSIONS: TrailMatrixSession[] = [
   {
     id: 'trail-sat-evening',
     title: 'Zaterdagavond',
-    dayLabel: 'Zaterdag 14 Nov',
+    dayLabel: 'Zaterdag 13 Nov',
     timeLabel: '19:00 - 23:00 uur',
     rows: [
       {
         time: '20:00 - 20:30',
         slots: {
-          Klaas: { ticketId: 'dh-trail-85-whisky-trail-gids-klaas' },
-          Stanley: { ticketId: 'dh-trail-86-whisky-trail-gids-stanley' }
+          Klaas: { ticketId: 'dh-trail-21' },
+          Stanley: { ticketId: 'dh-trail-22' }
         }
       },
       {
         time: '20:30 - 21:00',
         slots: {
-          Ernst: { ticketId: 'dh-trail-87-whisky-trail-gids-ernst' },
-          Marlie: { ticketId: 'dh-trail-88-whisky-trail-gids-marly' },
-          Sebastiaan: { ticketId: 'dh-trail-89-whisky-trail-gids-sebastiaan' }
+          Ernst: { ticketId: 'dh-trail-23' },
+          Marlie: { ticketId: 'dh-trail-24' },
+          Sebastiaan: { ticketId: 'dh-trail-25' }
         }
       },
       {
         time: '21:00 - 21:30',
         slots: {
-          Klaas: { ticketId: 'dh-trail-90-whisky-trail-gids-klaas' },
-          Stanley: { ticketId: 'dh-trail-91-whisky-trail-gids-stanley' }
+          Klaas: { ticketId: 'dh-trail-26' },
+          Stanley: { ticketId: 'dh-trail-27' }
         }
       },
       {
         time: '21:30 - 22:00',
         slots: {
-          Ernst: { ticketId: 'dh-trail-92-whisky-trail-gids-ernst' },
-          Marlie: { ticketId: 'dh-trail-93-whisky-trail-gids-marly' },
-          Sebastiaan: { ticketId: 'dh-trail-94-whisky-trail-gids-sebastiaan' }
+          Ernst: { ticketId: 'dh-trail-28' },
+          Marlie: { ticketId: 'dh-trail-29' },
+          Sebastiaan: { ticketId: 'dh-trail-30' }
         }
       }
     ]
@@ -191,37 +203,37 @@ export const MATRIX_SESSIONS: TrailMatrixSession[] = [
   {
     id: 'trail-sun-afternoon',
     title: 'Zondagmiddag',
-    dayLabel: 'Zondag 15 Nov',
+    dayLabel: 'Zondag 14 Nov',
     timeLabel: '13:00 - 17:00 uur',
     rows: [
       {
         time: '14:00 - 14:30',
         slots: {
-          Ernst: { ticketId: 'dh-trail-95-whisky-trail-gids-ernst' },
-          Marlie: { ticketId: 'dh-trail-96-whisky-trail-gids-marly' },
-          Sebastiaan: { ticketId: 'dh-trail-97-whisky-trail-gids-sebastiaan' }
+          Ernst: { ticketId: 'dh-trail-31' },
+          Marlie: { ticketId: 'dh-trail-32' },
+          Sebastiaan: { ticketId: 'dh-trail-33' }
         }
       },
       {
         time: '14:30 - 15:00',
         slots: {
-          Klaas: { ticketId: 'dh-trail-98-whisky-trail-gids-klaas' },
-          Stanley: { ticketId: 'dh-trail-99-whisky-trail-gids-stanley' }
+          Klaas: { ticketId: 'dh-trail-34' },
+          Stanley: { ticketId: 'dh-trail-35' }
         }
       },
       {
         time: '15:00 - 15:30',
         slots: {
-          Ernst: { ticketId: 'dh-trail-100-whisky-trail-gids-ernst' },
-          Marlie: { ticketId: 'dh-trail-101-whisky-trail-gids-marly' },
-          Sebastiaan: { ticketId: 'dh-trail-102-whisky-trail-gids-sebastiaan' }
+          Ernst: { ticketId: 'dh-trail-36' },
+          Marlie: { ticketId: 'dh-trail-37' },
+          Sebastiaan: { ticketId: 'dh-trail-38' }
         }
       },
       {
         time: '15:30 - 16:00',
         slots: {
-          Klaas: { ticketId: 'dh-trail-103-whisky-trail-gids-klaas' },
-          Stanley: { ticketId: 'dh-trail-104-whisky-trail-gids-stanley' }
+          Klaas: { ticketId: 'dh-trail-39' },
+          Stanley: { ticketId: 'dh-trail-40' }
         }
       }
     ]
@@ -236,662 +248,104 @@ const SESSION_TRAIL_MAP: Record<string, TrailMatrixSession | undefined> = {
   'zondag-middag': MATRIX_SESSIONS[3]
 };
 
+function mapTicketToProgramRow(t: any): ProgramRow {
+  const rawCat = (t.category || 'masterclass').toLowerCase();
+  const mappedCat: ProgramRow['category'] =
+    rawCat === 'vatenmaken' ? 'workshop' :
+    rawCat === 'tram' ? 'tram' :
+    rawCat === 'warehouse' ? 'warehouse' :
+    rawCat === 'trail' ? 'trail' :
+    rawCat === 'botteling' ? 'botteling' : 'masterclass';
+
+  const catLabel =
+    mappedCat === 'workshop' ? 'Cooperclass' :
+    mappedCat === 'tram' ? 'Whiskytram' :
+    mappedCat === 'warehouse' ? 'Warehouse Tasting' :
+    t.title?.toLowerCase().includes('torentasting') ? 'Torentasting' :
+    t.title?.toLowerCase().includes('introductie') ? 'Introductie' : 'Masterclass';
+
+  const cleanTimeStr = (t.time || '')
+    .replace(/\s*uur/gi, '')
+    .replace(/\s*-\s*/g, ' – ')
+    .trim();
+
+  const hostStr = t.ambassadorName
+    ? (t.ambassadorTitle ? `${t.ambassadorName} (${t.ambassadorTitle})` : t.ambassadorName)
+    : 'Festival Specialist';
+
+  return {
+    id: t.id,
+    time: cleanTimeStr,
+    location: t.location || 'Grote Kerk Den Haag',
+    title: t.title,
+    category: mappedCat,
+    categoryLabel: catLabel,
+    host: hostStr,
+    description: t.description || '',
+    price: Number(t.price) || 0
+  };
+}
+
+function buildSessionItems(day: string, isAfternoon: boolean): ProgramRow[] {
+  return liveTickets
+    .filter(t => {
+      if (t.category === 'entree' || t.category === 'botteling' || t.category === 'trail') return false;
+      if (t.day !== day) return false;
+      const dp = t.daypart || 'middag';
+      if (isAfternoon) return dp === 'ochtend' || dp === 'middag';
+      return dp === 'avond';
+    })
+    .map(mapTicketToProgramRow)
+    .sort((a, b) => a.time.localeCompare(b.time));
+}
+
 const SESSIONS: SessionData[] = [
   {
     id: 'vrijdag-middag',
     name: 'Vrijdag VIP',
-    dayLabel: 'Vrijdag 13 Nov',
+    dayLabel: 'Vrijdag 12 Nov',
     timeLabel: '13:00 - 17:00 uur',
-    items: [
-      {
-        id: 'dh-masterclass-29-macallan-torentasting-inc-bekl',
-        time: '11:15 – 12:00',
-        location: 'Haagsche Toren',
-        title: 'Macallan Exclusive (Inc. Torenklim)',
-        category: 'masterclass',
-        categoryLabel: 'Torenbeleving',
-        host: 'Gerard Spaans (Master of Malt)',
-        description: 'Exclusieve Macallan sherry-cask proeverij inclusief adembenemende beklimming van de toren vóór de beursvloer opent.',
-        price: 77.50
-      },
-      {
-        id: 'dh-masterclass-30-macallan-torentasting-zonder-b',
-        time: '12:00 – 12:45',
-        location: 'Haagsche Toren • Zolder',
-        title: 'Macallan Exclusive (Zonder Klim)',
-        category: 'masterclass',
-        categoryLabel: 'Torenbeleving',
-        host: 'Gerard Spaans (Master of Malt)',
-        description: 'Zeldzame Macallan single malts proeven in de intieme historische torenzolder.',
-        price: 70.00
-      },
-      {
-        id: 'dh-masterclass-31-teeling-whiskey-masterclass',
-        time: '12:15 – 13:00',
-        location: 'Nutshuis • Spaarkamer',
-        title: 'Teeling Whiskey Masterclass',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Chris Hayes (Brand Ambassador)',
-        description: '6 expressies van Dublin’s craft pioneer inclusief Small Batch en Renaissance series.',
-        price: 20.00
-      },
-      {
-        id: 'dh-masterclass-32-whisky-bites-dennis-mulder',
-        time: '12:15 – 13:00',
-        location: 'Nutshuis • Telkamer',
-        title: 'Whisky & Food Pairing',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Dennis Mulder (Whisky Chef)',
-        description: 'Verfijnde gastronomische whisky & hapjes combinaties.',
-        price: 27.50
-      },
-      {
-        id: 'dh-masterclass-33-smws-single-cask-masterclass',
-        time: '12:15 – 13:00',
-        location: 'Nutshuis • Foyer',
-        title: 'SMWS Single Cask Tasting',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Richard Wayland (Society Specialist)',
-        description: '4 onverdunde cask-strength single casks van de Scotch Malt Whisky Society.',
-        price: 25.00
-      },
-      {
-        id: 'dh-warehouse-14-warehouse-tasting-cley-distill',
-        time: '14:00 – 14:45',
-        location: 'Grote Kerk • Stand 14 (Cley)',
-        title: 'Cley Warehouse Tasting (Ronde 1)',
-        category: 'warehouse',
-        categoryLabel: 'Warehouse Tasting',
-        host: 'Cley Meesterstoker',
-        description: 'Intieme proeverij van speciale vatmonsters direct aan de stand.',
-        price: 20.00
-      },
-      {
-        id: 'dh-masterclass-35-glengoyne-tamdhu-masterclass',
-        time: '14:00 – 14:45',
-        location: 'Nutshuis • Telkamer',
-        title: 'Glengoyne & Tamdhu Sherry Tasting',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Carlos Perez & Gordon Dallas',
-        description: 'Vergelijkende sherry-cask masterclass tussen Glengoyne en 100% Oloroso Tamdhu.',
-        price: 17.50
-      },
-      {
-        id: 'dh-masterclass-34-glenfiddich-old-timers-tony-va',
-        time: '14:00 – 14:45',
-        location: 'Nutshuis • Foyer',
-        title: 'Glenfiddich Old Timers (Vintage Vaten)',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Tony van Rooijen (Brand Ambassador)',
-        description: 'Zeer zeldzame vintage vaten van Glenfiddich (18, 21, 23 YO Grand Cru & archief).',
-        price: 55.00
-      },
-      {
-        id: 'dh-warehouse-15-warehouse-tasting-cley-distill',
-        time: '15:00 – 15:45',
-        location: 'Grote Kerk • Stand 14 (Cley)',
-        title: 'Cley Warehouse Tasting (Ronde 2)',
-        category: 'warehouse',
-        categoryLabel: 'Warehouse Tasting',
-        host: 'Cley Meesterstoker',
-        description: 'Vatmonsters en New Make proeven direct aan de stand.',
-        price: 20.00
-      },
-      {
-        id: 'dh-masterclass-36-stokerij-sculte-masterclass',
-        time: '15:30 – 16:15',
-        location: 'Nutshuis • Telkamer',
-        title: 'Stokerij Sculte: Taste of Oak',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Gerard Velthuis (Meesterstoker)',
-        description: 'Top van Nederlandse whisky gerijpt op eeuwenoud Twents eikenhout.',
-        price: 49.50
-      },
-      {
-        id: 'dh-masterclass-37-house-of-suntory-japanese-port',
-        time: '15:30 – 16:15',
-        location: 'Nutshuis • Foyer',
-        title: 'House of Suntory Japanese Portfolio',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Kenji Sato (Japanese Specialist)',
-        description: 'Zintuiglijke reis langs Yamazaki, Hakushu, Hibiki en Chita.',
-        price: 20.00
-      },
-      {
-        id: 'whiskytram-fri-1715',
-        time: '17:15 – 18:15',
-        location: 'Kerkplein • Tramhalte',
-        title: 'Haagsche Whiskytram (Middagrit)',
-        category: 'tram',
-        categoryLabel: 'Whiskytram',
-        host: 'HTM Historische Tram • 4 drams',
-        description: 'Sluit uw VIP-middag af met een rit door Den Haag onder het genot van 4 geselecteerde topdrams.',
-        price: 39.50
-      }
-    ]
+    items: buildSessionItems('vrijdag', true)
   },
   {
     id: 'vrijdag-avond',
     name: 'Vrijdagavond',
-    dayLabel: 'Vrijdag 13 Nov',
+    dayLabel: 'Vrijdag 12 Nov',
     timeLabel: '19:00 - 23:00 uur',
-    items: [
-      {
-        id: 'dh-masterclass-38-whisky-introductie-masterclass',
-        time: '18:30 – 19:15',
-        location: 'Nutshuis • Spaarkamer',
-        title: 'Whisky Introductie Masterclass',
-        category: 'masterclass',
-        categoryLabel: 'Introductie',
-        host: 'Valentijn Klop (Educator)',
-        description: 'Ideaal voor beginners: leer nosing & tasting technieken vóór u de beursvloer opstapt.',
-        price: 7.50
-      },
-      {
-        id: 'dh-masterclass-39-the-balvenie-old-timers-tony-v',
-        time: '18:30 – 19:15',
-        location: 'Nutshuis • Foyer',
-        title: 'The Balvenie Old Timers (Exclusief)',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Tony van Rooijen (Brand Ambassador)',
-        description: 'Handcrafted Speyside iconen inclusief 14YO Caribbean Cask, 21YO PortWood en Tun 1509.',
-        price: 65.00
-      },
-      {
-        id: 'whiskytram-fri-1845',
-        time: '18:45 – 19:45',
-        location: 'Kerkplein • Tramhalte',
-        title: 'Haagsche Whiskytram (Avondrit 1)',
-        category: 'tram',
-        categoryLabel: 'Whiskytram',
-        host: 'HTM Historische Tram • 4 drams',
-        description: 'Sfeervolle avondrit door de verlichte residentie met 4 bijzondere drams.',
-        price: 39.50
-      },
-      {
-        id: 'dh-masterclass-40-de-bronckhorst-the-rise-of-gra',
-        time: '20:00 – 20:45',
-        location: 'Nutshuis • Spaarkamer',
-        title: 'De Bronckhorst: The Rise of Grain',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Distillery Team Bronckhorst',
-        description: 'Nederlandse innovatie met zeldzame granen en ambachtelijke vatrijping.',
-        price: 17.50
-      },
-      {
-        id: 'dh-masterclass-41-ncnean-organic-single-malt',
-        time: '20:00 – 20:45',
-        location: 'Nutshuis • Telkamer',
-        title: "Nc'nean Organic Single Malt",
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: "Nc'nean Brand Ambassador",
-        description: 'Duurzame biologische Schotse whisky met innovatieve giststammen en STR-vaten.',
-        price: 25.00
-      },
-      {
-        id: 'vatenmaken-tickets',
-        time: '20:00 – 20:45',
-        location: 'Grote Kerk • Kuiperij',
-        title: 'Workshop Vatenmaken & Kuiperij',
-        category: 'workshop',
-        categoryLabel: 'Workshop',
-        host: 'Meesterkuiper',
-        description: 'Leer zelf de kunst van het vatenmaken, inclusief het toasten van duigen en proeverij.',
-        price: 27.50
-      },
-      {
-        id: 'dh-warehouse-17-warehouse-tasting-cley-distill',
-        time: '20:00 – 20:45',
-        location: 'Grote Kerk • Stand 14 (Cley)',
-        title: 'Cley Warehouse Tasting (Vatmonsters)',
-        category: 'warehouse',
-        categoryLabel: 'Warehouse Tasting',
-        host: 'Cley Meesterstoker',
-        description: 'Intieme proeverij van speciale vatmonsters direct aan de stand.',
-        price: 20.00
-      },
-      {
-        id: 'whiskytram-fri-2015',
-        time: '20:15',
-        location: 'Kerkplein • Tramhalte',
-        title: 'Haagsche Whiskytram (Avondrit 2)',
-        category: 'tram',
-        categoryLabel: 'Whiskytram',
-        host: 'HTM Historische Tram • 4 drams',
-        description: 'Laatste avondrit door Den Haag met 4 drams aan boord.',
-        price: 39.50
-      },
-      {
-        id: 'dh-masterclass-42-filliers-single-rye-malt',
-        time: '21:30',
-        location: 'Nutshuis • Telkamer',
-        title: 'Filliers Single Rye & Malt',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Filliers Master Blender',
-        description: 'Belgisch vakmanschap en graandistillatie van het allerhoogste niveau.',
-        price: 17.50
-      }
-    ]
+    items: buildSessionItems('vrijdag', false)
   },
   {
     id: 'zaterdag-middag',
     name: 'Zaterdagmiddag',
-    dayLabel: 'Zaterdag 14 Nov',
+    dayLabel: 'Zaterdag 13 Nov',
     timeLabel: '13:00 - 17:00 uur',
-    items: [
-      {
-        id: 'dh-masterclass-44-bowmore-torentasting-inc-bekli',
-        time: '11:15 – 12:00',
-        location: 'Haagsche Toren',
-        title: 'Bowmore Torentasting (Inc. Beklimming)',
-        category: 'masterclass',
-        categoryLabel: 'Torenbeleving',
-        host: 'Beam Suntory Ambassador',
-        description: 'Islay turf en sherryrijping op grote hoogte inclusief beklimming van de toren.',
-        price: 35.00
-      },
-      {
-        id: 'dh-masterclass-45-bowmore-torentasting-zonder-be',
-        time: '12:00 – 12:45',
-        location: 'Haagsche Toren • Zolder',
-        title: 'Bowmore Torentasting (Zonder Klim)',
-        category: 'masterclass',
-        categoryLabel: 'Torenbeleving',
-        host: 'Beam Suntory Ambassador',
-        description: 'Proeverij van klassieke Bowmore expressies in de intieme torenzolder.',
-        price: 35.00
-      },
-      {
-        id: 'dh-masterclass-46-whisky-introductie-masterclass',
-        time: '12:30 – 13:15',
-        location: 'Nutshuis • Spaarkamer',
-        title: 'Whisky Introductie Masterclass',
-        category: 'masterclass',
-        categoryLabel: 'Introductie',
-        host: 'Valentijn Klop (Educator)',
-        description: 'Toegankelijke introductie proeven voor beginners.',
-        price: 7.50
-      },
-      {
-        id: 'dh-masterclass-47-unieke-old-timers-port-ellen-g',
-        time: '12:30 – 13:15',
-        location: 'Nutshuis • Telkamer',
-        title: 'Unieke Old Timers (Port Ellen & Glen Grant)',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Specialist Vintage Vaten',
-        description: 'Ultra-zeldzame legendarische bottelingen uit gesloten distilleerderijen.',
-        price: 85.00
-      },
-      {
-        id: 'dh-masterclass-48-the-ultimate-historische-botte',
-        time: '12:30 – 13:15',
-        location: 'Nutshuis • Foyer',
-        title: 'The Ultimate: Historische Single Casks',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Van Wees Tasting Team',
-        description: 'Beroemde single cask selecties van The Ultimate.',
-        price: 35.00
-      },
-      {
-        id: 'whiskytram-sat-1330',
-        time: '13:30 – 14:30',
-        location: 'Kerkplein • Tramhalte',
-        title: 'Haagsche Whiskytram (Middagrit 1)',
-        category: 'tram',
-        categoryLabel: 'Whiskytram',
-        host: 'HTM Historische Tram • 4 drams',
-        description: '4 drams aan boord van de historische tram door Den Haag.',
-        price: 39.50
-      },
-      {
-        id: 'dh-masterclass-49-teeling-whiskey-masterclass',
-        time: '14:00 – 14:45',
-        location: 'Nutshuis • Spaarkamer',
-        title: 'Teeling Whiskey Masterclass',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Chris Hayes (Teeling)',
-        description: 'Dublin’s beste expressies en limited editions.',
-        price: 20.00
-      },
-      {
-        id: 'dh-masterclass-50-brugs-heilig-water-masterclass',
-        time: '14:00 – 14:45',
-        location: 'Nutshuis • Foyer',
-        title: 'Brugs Heilig Water Masterclass',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Belgian Craft Distillers',
-        description: 'Ambachtelijke Belgische distillatie en vatrijping.',
-        price: 25.00
-      },
-      {
-        id: 'dh-warehouse-20-warehouse-tasting-cley-distill',
-        time: '14:00 – 14:45',
-        location: 'Grote Kerk • Stand 14 (Cley)',
-        title: 'Cley Warehouse Tasting (Vatmonsters)',
-        category: 'warehouse',
-        categoryLabel: 'Warehouse Tasting',
-        host: 'Cley Meesterstoker',
-        description: 'Exclusieve vatmonsters direct aan de stand.',
-        price: 20.00
-      },
-      {
-        id: 'dh-masterclass-52-sakurao-japanese-whisky',
-        time: '15:30 – 16:15',
-        location: 'Nutshuis • Foyer',
-        title: 'Sakurao Japanese Single Malt',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Japanese Specialist',
-        description: 'De nieuwe generatie Japanse whisky uit Hiroshima.',
-        price: 20.00
-      },
-      {
-        id: 'whiskytram-sat-1715',
-        time: '17:15 – 18:15',
-        location: 'Kerkplein • Tramhalte',
-        title: 'Haagsche Whiskytram (Namiddagrit)',
-        category: 'tram',
-        categoryLabel: 'Whiskytram',
-        host: 'HTM Historische Tram • 4 drams',
-        description: 'Middagafsluiting met 4 drams aan boord van de tram.',
-        price: 39.50
-      }
-    ]
+    items: buildSessionItems('zaterdag', true)
   },
   {
     id: 'zaterdag-avond',
     name: 'Zaterdagavond',
-    dayLabel: 'Zaterdag 14 Nov',
+    dayLabel: 'Zaterdag 13 Nov',
     timeLabel: '19:00 - 23:00 uur',
-    items: [
-      {
-        id: 'dh-masterclass-53-whisky-introductie-masterclass',
-        time: '18:30 – 19:15',
-        location: 'Nutshuis • Spaarkamer',
-        title: 'Whisky Introductie Masterclass',
-        category: 'masterclass',
-        categoryLabel: 'Introductie',
-        host: 'Valentijn Klop (Educator)',
-        description: 'Basis nosing & tasting voor beginners.',
-        price: 7.50
-      },
-      {
-        id: 'dh-masterclass-54-unieke-old-timers-macallan-bal',
-        time: '18:30 – 19:15',
-        location: 'Nutshuis • Telkamer',
-        title: 'Unieke Old Timers (Macallan & Balvenie)',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Tony van Rooijen',
-        description: 'Exclusieve proeverij van Speyside honingzachte zeldzaamheden en vintage vaten.',
-        price: 65.00
-      },
-      {
-        id: 'dh-masterclass-55-teeling-whiskey-masterclass',
-        time: '18:30 – 19:15',
-        location: 'Nutshuis • Foyer',
-        title: 'Teeling Whiskey Masterclass',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Chris Hayes (Teeling)',
-        description: 'Dublin’s beste expressies en limited editions.',
-        price: 20.00
-      },
-      {
-        id: 'whiskytram-sat-1845',
-        time: '18:45 – 19:45',
-        location: 'Kerkplein • Tramhalte',
-        title: 'Haagsche Whiskytram (Avondrit 1)',
-        category: 'tram',
-        categoryLabel: 'Whiskytram',
-        host: 'HTM Historische Tram • 4 drams',
-        description: '4 topdrams aan boord door historisch Den Haag.',
-        price: 39.50
-      },
-      {
-        id: 'dh-masterclass-56-glenfarclas-family-casks-maste',
-        time: '20:00 – 20:45',
-        location: 'Nutshuis • Telkamer',
-        title: 'Glenfarclas Family Casks Masterclass',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Glenfarclas Ambassador',
-        description: 'Legendarische 100% Oloroso sherry cask single malts uit Ballindalloch.',
-        price: 25.00
-      },
-      {
-        id: 'dh-masterclass-57-amrut-indian-single-malt-maste',
-        time: '20:00 – 20:45',
-        location: 'Nutshuis • Spaarkamer',
-        title: 'Amrut Indian Single Malt Masterclass',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Amrut Ambassador',
-        description: 'Tropische vatrijping en intense smaken uit Bangalore.',
-        price: 17.50
-      },
-      {
-        id: 'vatenmaken-sat-2000',
-        time: '20:00 – 20:45',
-        location: 'Grote Kerk • Kuiperij',
-        title: 'Workshop Vatenmaken & Kuiperij',
-        category: 'workshop',
-        categoryLabel: 'Workshop',
-        host: 'Meesterkuiper',
-        description: 'Ambachtelijke vatenbouw en mini-tasting.',
-        price: 27.50
-      },
-      {
-        id: 'dh-warehouse-23-warehouse-tasting-cley-distill',
-        time: '20:00 – 20:45',
-        location: 'Grote Kerk • Stand 14 (Cley)',
-        title: 'Cley Warehouse Tasting (Vatmonsters)',
-        category: 'warehouse',
-        categoryLabel: 'Warehouse Tasting',
-        host: 'Cley Meesterstoker',
-        description: 'Vatmonsters direct aan de stand.',
-        price: 20.00
-      },
-      {
-        id: 'whiskytram-sat-2015',
-        time: '20:15',
-        location: 'Kerkplein • Tramhalte',
-        title: 'Haagsche Whiskytram (Avondrit 2)',
-        category: 'tram',
-        categoryLabel: 'Whiskytram',
-        host: 'HTM Historische Tram • 4 drams',
-        description: '4 drams in de sfeervol verlichte tram.',
-        price: 39.50
-      },
-      {
-        id: 'dh-masterclass-58-arran-cask-samples-masterclass',
-        time: '21:30',
-        location: 'Nutshuis • Foyer',
-        title: 'Arran Cask Samples Masterclass',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Arran Specialist',
-        description: 'Eilandwhisky met exclusieve vatmonsters.',
-        price: 25.00
-      }
-    ]
+    items: buildSessionItems('zaterdag', false)
   },
   {
     id: 'zondag-middag',
     name: 'Zondagmiddag',
-    dayLabel: 'Zondag 15 Nov',
+    dayLabel: 'Zondag 14 Nov',
     timeLabel: '13:00 - 17:00 uur',
-    items: [
-      {
-        id: 'whiskytram-sun-1100',
-        time: '11:00',
-        location: 'Kerkplein • Tramhalte',
-        title: 'Haagsche Whiskytram (Ochtendrit)',
-        category: 'tram',
-        categoryLabel: 'Whiskytram',
-        host: 'HTM Historische Tram • 4 drams',
-        description: 'Ontspannen zondagochtendrit met 4 drams aan boord.',
-        price: 39.50
-      },
-      {
-        id: 'dh-masterclass-59-the-glenturret-torentasting-in',
-        time: '11:15 – 12:00',
-        location: 'Haagsche Toren',
-        title: 'The Glenturret Torentasting (Inc. Klim)',
-        category: 'masterclass',
-        categoryLabel: 'Torenbeleving',
-        host: 'Glenturret Ambassador',
-        description: "Schotland's oudste distilleerderij proeven met panoramisch uitzicht.",
-        price: 37.50
-      },
-      {
-        id: 'dh-masterclass-60-the-glenturret-torentasting-zo',
-        time: '12:00 – 12:45',
-        location: 'Haagsche Toren • Zolder',
-        title: 'The Glenturret Torentasting (Zonder Klim)',
-        category: 'masterclass',
-        categoryLabel: 'Torenbeleving',
-        host: 'Glenturret Ambassador',
-        description: 'Exclusieve Glenturret proeverij in de intieme torenzolder.',
-        price: 37.50
-      },
-      {
-        id: 'dh-masterclass-62-lagg-peated-single-malt-master',
-        time: '12:15 – 13:00',
-        location: 'Nutshuis • Telkamer',
-        title: 'Lagg Peated Single Malt Masterclass',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Arran & Lagg Ambassador',
-        description: 'Zware turf en moderne distillatie van het eiland Arran.',
-        price: 25.00
-      },
-      {
-        id: 'dh-masterclass-63-smws-single-cask-masterclass',
-        time: '12:15 – 13:00',
-        location: 'Nutshuis • Foyer',
-        title: 'SMWS Single Cask Masterclass',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Richard Wayland',
-        description: '4 onverdunde cask-strength single casks van de Society.',
-        price: 25.00
-      },
-      {
-        id: 'dh-masterclass-61-whisky-introductie-masterclass',
-        time: '12:30 – 13:15',
-        location: 'Nutshuis • Spaarkamer',
-        title: 'Whisky Introductie Masterclass',
-        category: 'masterclass',
-        categoryLabel: 'Introductie',
-        host: 'Valentijn Klop (Educator)',
-        description: 'Basis nosing & tasting voor beginners.',
-        price: 7.50
-      },
-      {
-        id: 'dh-warehouse-26-warehouse-tasting-cley-distill',
-        time: '14:00 – 14:45',
-        location: 'Grote Kerk • Stand 14 (Cley)',
-        title: 'Cley Warehouse Tasting (Ronde 1)',
-        category: 'warehouse',
-        categoryLabel: 'Warehouse Tasting',
-        host: 'Cley Meesterstoker',
-        description: 'Vatmonsters direct aan de stand.',
-        price: 20.00
-      },
-      {
-        id: 'whiskytram-sun-1400',
-        time: '14:00 – 14:45',
-        location: 'Kerkplein • Tramhalte',
-        title: 'Haagsche Whiskytram (Middagrit)',
-        category: 'tram',
-        categoryLabel: 'Whiskytram',
-        host: 'HTM Historische Tram • 4 drams',
-        description: 'Middagrit door Den Haag met 4 drams.',
-        price: 39.50
-      },
-      {
-        id: 'dh-masterclass-64-angus-dundee-single-malt-maste',
-        time: '14:00 – 14:45',
-        location: 'Nutshuis • Foyer',
-        title: 'Angus Dundee Single Malt Masterclass',
-        category: 'masterclass',
-        categoryLabel: 'Masterclass',
-        host: 'Tomintoul & Glencadam Team',
-        description: 'De zachte Speyside stijl van Tomintoul & de nobele Glencadam.',
-        price: 17.50
-      },
-      {
-        id: 'dh-warehouse-27-warehouse-tasting-cley-distill',
-        time: '15:00 – 15:45',
-        location: 'Grote Kerk • Stand 14 (Cley)',
-        title: 'Cley Warehouse Tasting (Ronde 2)',
-        category: 'warehouse',
-        categoryLabel: 'Warehouse Tasting',
-        host: 'Cley Meesterstoker',
-        description: 'Tweede zondagronde aan de stand.',
-        price: 20.00
-      },
-      {
-        id: 'dh-warehouse-28-warehouse-tasting-cley-distill',
-        time: '16:00 – 16:45',
-        location: 'Grote Kerk • Stand 14 (Cley)',
-        title: 'Cley Warehouse Tasting (Finale)',
-        category: 'warehouse',
-        categoryLabel: 'Warehouse Tasting',
-        host: 'Cley Meesterstoker',
-        description: 'Laatste vatenproeverij van het festivalweekend.',
-        price: 20.00
-      }
-    ]
+    items: buildSessionItems('zondag', true)
   }
 ];
 
-const BOTTELLINGS = [
-  {
-    id: 'dh-botteling-8-festival-botteling-amrut-single-c',
-    title: 'Amrut Single Cask #9318 (Vat A)',
-    spec: 'Single Cask Edition • 57.1% ABV • Oloroso Cask',
-    description: 'Exclusief geselecteerd vat voor Whisky Fest Den Haag. Gelimiteerde genummerde oplage.',
-    price: 85.00
-  },
-  {
-    id: 'dh-botteling-9-festival-botteling-amrut-single-c',
-    title: 'Amrut Single Cask #3464 (Vat B)',
-    spec: 'Single Cask Edition • 56.5% ABV • Bourbon Cask',
-    description: 'Tweede zuster-vat van Amrut distillery, speciaal gebotteld voor het festival.',
-    price: 85.00
-  },
-  {
-    id: 'dh-botteling-10-festival-botteling-cley-distiller',
-    title: 'Cley Distillery Cask Strength Festival Edition',
-    spec: 'Nederlandse Single Cask • Vatsterkte • 58.2% ABV',
-    description: 'Exclusieve Nederlandse craft whisky gebotteld op volle vatsterkte.',
-    price: 79.50
-  },
-  {
-    id: 'dh-botteling-11-festival-botteling-kilchoman-18yo',
-    title: 'Kilchoman 18YO Single Cask (Ultra Zeldzaam)',
-    spec: 'Islay Single Malt • 18 Jaar Oud • Zeer Zeldzaam',
-    description: 'Een van de allereerste 18 jaar oude Kilchoman vaten ter wereld. Slechts enkele flessen beschikbaar.',
-    price: 385.00
-  }
-];
+const BOTTELLINGS = liveTickets
+  .filter(t => t.category === 'botteling')
+  .map(t => ({
+    id: t.id,
+    title: t.title,
+    spec: `Single Cask Edition • Gelimiteerde Oplage (${t.capacity || 125} flessen)`,
+    description: t.description || 'Exclusieve festivalbotteling voor International Whisky Festival Den Haag 2027.',
+    price: Number(t.price) || 79.00
+  }));
 
 function formatSpeaker(host: string) {
   if (!host) return { name: '—', role: '' };
@@ -911,7 +365,7 @@ function formatSpeaker(host: string) {
 ---
 
 <Layout 
-  title="Programma & Tijdschema 2026 - Whisky Fest Den Haag" 
+  title="Programma & Tijdschema 2027 - Whisky Fest Den Haag" 
   description="Volledig tijdschema van alle masterclasses, tramritten en tastings tijdens Whisky Fest Den Haag."
 >
   <Header />
@@ -1150,7 +604,7 @@ function formatSpeaker(host: string) {
         <!-- 6: Bottelingen Pane -->
         <section class="session-agenda-pane" id="pane-bottelingen">
           <div class="pane-header-bar">
-            <h2 class="pane-title">Exclusieve Festival Bottelingen 2026</h2>
+            <h2 class="pane-title">Exclusieve Festival Bottelingen 2027</h2>
             <span class="pane-badge-time">Afhalen bij Festivalslijterij (Grote Kerk)</span>
           </div>
 

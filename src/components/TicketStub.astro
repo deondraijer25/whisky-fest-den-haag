@@ -50,16 +50,16 @@ const effectiveDay = day || (
   date.toLowerCase().includes('zondag') ? 'zondag' : 'all'
 );
 
-// Clean date display (e.g. "VRIJDAG 13 NOV")
+// Clean date display (e.g. "VRIJDAG 12 NOV")
 let cleanDate = date;
-if (effectiveDay === 'vrijdag' || (date.toLowerCase().includes('vrijdag') && (date.includes('13') || date.toLowerCase().includes('13 nov')))) {
-  cleanDate = 'VRIJDAG 13 NOV';
-} else if (effectiveDay === 'zaterdag' || (date.toLowerCase().includes('zaterdag') && (date.includes('14') || date.toLowerCase().includes('14 nov')))) {
-  cleanDate = 'ZATERDAG 14 NOV';
-} else if (effectiveDay === 'zondag' || (date.toLowerCase().includes('zondag') && (date.includes('15') || date.toLowerCase().includes('15 nov')))) {
-  cleanDate = 'ZONDAG 15 NOV';
+if (effectiveDay === 'vrijdag' || (date.toLowerCase().includes('vrijdag') && (date.includes('12') || date.toLowerCase().includes('12 nov')))) {
+  cleanDate = 'VRIJDAG 12 NOV';
+} else if (effectiveDay === 'zaterdag' || (date.toLowerCase().includes('zaterdag') && (date.includes('13') || date.toLowerCase().includes('13 nov')))) {
+  cleanDate = 'ZATERDAG 13 NOV';
+} else if (effectiveDay === 'zondag' || (date.toLowerCase().includes('zondag') && (date.includes('14') || date.toLowerCase().includes('14 nov')))) {
+  cleanDate = 'ZONDAG 14 NOV';
 } else {
-  cleanDate = date.replace(/ 2026/g, '').toUpperCase();
+  cleanDate = date.replace(/ 202[67]/g, '').toUpperCase();
 }
 
 // Clean access / location display
@@ -105,6 +105,7 @@ const titleSizeClass =
   data-category={category}
   data-daypart={daypart}
   data-soldout={soldOut ? 'true' : 'false'}
+  data-is-vip={(id.toLowerCase().includes('vip') || displayTitle.toLowerCase().includes('vip')) ? 'true' : 'false'}
   data-day={effectiveDay}
   data-date={date}
   data-time={cleanTime || time}
@@ -125,6 +126,9 @@ const titleSizeClass =
       <span class="ticket-fest-subtitle">{festivalSubtitle}</span>
       {derivedStatusText && !soldOut && (
         <span class={"status-badge " + (status || '')}>{derivedStatusText}</span>
+      )}
+      {soldOut && category === 'entree' && (
+        <span class="status-badge iws-unlocked-badge">IWS LEDENVOORRAAD</span>
       )}
     </div>
     
@@ -171,9 +175,27 @@ const titleSizeClass =
     </div>
 
     {soldOut ? (
-      <div class="sold-out-box">
-        <span class="sold-out-text">UITVERKOCHT</span>
-      </div>
+      <>
+        <div class="sold-out-box">
+          <span class="sold-out-text">UITVERKOCHT</span>
+        </div>
+        {category === 'entree' && (
+          <>
+            <button type="button" class="iws-stub-unlock-btn js-open-iws-unlock">
+              IWS-lid? Bestel hier &rarr;
+            </button>
+            <div class="iws-stub-inline-form" style="display: none;">
+              <input type="text" class="iws-stub-input" placeholder="Lidnr. (WS-...)" aria-label="IWS Lidnummer" />
+              <button type="button" class="iws-stub-submit-btn">OK</button>
+            </div>
+            <div class="qty-selector iws-member-qty-selector">
+              <button type="button" class="qty-btn minus-btn" aria-label="Aantal verlagen" data-action="minus">&minus;</button>
+              <span class="qty-val" id={"qty-" + id}>0</span>
+              <button type="button" class="qty-btn plus-btn" aria-label="Aantal verhogen" data-action="plus">&plus;</button>
+            </div>
+          </>
+        )}
+      </>
     ) : (
       <!-- Quantity Controls (Clean Soft Cream Stepper) -->
       <div class="qty-selector">
@@ -820,5 +842,93 @@ const titleSizeClass =
       text-align: center !important;
       line-height: 1 !important;
     }
+  }
+
+  /* IWS Member Sold-Out Unlock States */
+  .ticket-stub .iws-unlocked-badge,
+  .ticket-stub .iws-member-qty-selector {
+    display: none !important;
+  }
+
+  .iws-stub-unlock-btn {
+    background: transparent !important;
+    border: none !important;
+    padding: 0.25rem 0 0 !important;
+    margin: 0 auto !important;
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif) !important;
+    font-size: 0.68rem !important;
+    font-weight: 800 !important;
+    color: #006448 !important;
+    text-decoration: underline !important;
+    text-underline-offset: 2px !important;
+    cursor: pointer !important;
+    display: inline-block !important;
+    line-height: 1.2 !important;
+  }
+
+  .iws-stub-unlock-btn:hover {
+    color: #171614 !important;
+  }
+
+  .iws-stub-inline-form {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    width: 132px;
+    margin: 0.25rem auto 0;
+  }
+
+  .iws-stub-input {
+    width: 90px !important;
+    height: 28px !important;
+    padding: 0 0.35rem !important;
+    background: #FAF7F2 !important;
+    border: 1px solid rgba(160, 140, 110, 0.65) !important;
+    border-radius: 4px !important;
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif) !important;
+    font-size: 0.68rem !important;
+    font-weight: 700 !important;
+    color: #171614 !important;
+    text-transform: uppercase !important;
+    box-sizing: border-box !important;
+  }
+
+  .iws-stub-submit-btn {
+    height: 28px !important;
+    padding: 0 0.45rem !important;
+    background: #006448 !important;
+    color: #FAF7F2 !important;
+    border: 1px solid #006448 !important;
+    border-radius: 4px !important;
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif) !important;
+    font-size: 0.68rem !important;
+    font-weight: 800 !important;
+    cursor: pointer !important;
+  }
+
+  .ticket-stub.iws-unlocked .sold-out-box,
+  .ticket-stub.iws-unlocked .iws-stub-unlock-btn,
+  .ticket-stub.iws-unlocked .iws-stub-inline-form {
+    display: none !important;
+  }
+
+  .ticket-stub.iws-unlocked .iws-member-qty-selector {
+    display: flex !important;
+  }
+
+  @media (max-width: 990px) {
+    .ticket-stub.iws-unlocked .iws-member-qty-selector {
+      display: inline-flex !important;
+    }
+  }
+
+  .ticket-stub.iws-unlocked .iws-unlocked-badge {
+    display: inline-flex !important;
+    background: #006448 !important;
+    color: #FAF7F2 !important;
+    border: 1px solid #caac8e !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.06em !important;
   }
 </style>

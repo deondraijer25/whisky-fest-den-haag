@@ -32,6 +32,14 @@ export interface BrandConfig {
     heroTintRadial: string;
   };
 
+  contact: {
+    email: string;
+    whatsappNumber: string;
+    whatsappDisplay: string;
+  };
+
+  marqueeBrands: string[];
+
   copy: {
     heroTitleLine1: string;
     heroTitleLine2: string;
@@ -57,11 +65,38 @@ export const BRAND: BrandConfig = {
   venue: 'Grote Kerk Den Haag',
   venueShort: 'Grote Kerk',
   foundingYear: 2000,
-  edition: '25e Jubileum Editie',
-  datesText: '13, 14 en 15 November 2026',
-  datesShort: '13-15 Nov 2026',
+  edition: '26e Editie',
+  datesText: '12, 13 en 14 November 2027',
+  datesShort: '12-14 Nov 2027',
   domain: 'https://whisky-fest-den-haag.vercel.app',
   localPort: 4330,
+
+  contact: {
+    email: 'info@whiskyfestival.nl',
+    whatsappNumber: '3197006532822',
+    whatsappDisplay: '+31 970 065 32822',
+  },
+
+  marqueeBrands: [
+    'Springbank',
+    'The Macallan',
+    'Ardbeg',
+    'Glenfiddich',
+    'Laphroaig',
+    'Zuidam Millstone',
+    'Highland Park',
+    'Bowmore',
+    'Balvenie',
+    'Glenmorangie',
+    'Bruichladdich',
+    'Tamdhu',
+    'Oban',
+    'Clynelish',
+    'Glengoyne',
+    'Bunnahabhain',
+    'Caol Ila',
+    'Kilchoman',
+  ],
 
   colors: {
     primary: '#006448',         // Festival Pine Green
@@ -90,7 +125,7 @@ export const BRAND: BrandConfig = {
     tramTitle: 'Haagsche Whiskytram',
     tramDesc: 'Rondrit door historisch Den Haag in een klassieke tram inclusief deskundig geleide proeverij van 4 topdrams.',
     floorplanTitle: 'Plattegrond Grote Kerk Den Haag',
-    metaTitle: 'International Whisky Festival Den Haag | 13-15 Nov 2026',
+    metaTitle: 'International Whisky Festival Den Haag | 12-14 Nov 2027',
     metaDescription: 'Bezoek het meest sfeervolle en toonaangevende whiskyfestival van Nederland in de Grote Kerk Den Haag. Bestel nu direct uw entreekaarten.'
   }
 };

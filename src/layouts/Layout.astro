@@ -23,10 +23,10 @@ const {
 const eventSchema = {
   "@context": "https://schema.org",
   "@type": "Festival",
-  "name": "International Whisky Festival Den Haag 2026",
+  "name": "International Whisky Festival Den Haag 2027",
   "description": "Het bekendste en meest premium whisky festival van Nederland. Proef honderden whisky's, volg exclusieve masterclasses en geniet van de sfeer in de Grote Kerk Den Haag.",
-  "startDate": "2026-11-13T13:00:00+01:00",
-  "endDate": "2026-11-15T17:00:00+01:00",
+  "startDate": "2027-11-12T13:00:00+01:00",
+  "endDate": "2027-11-14T17:00:00+01:00",
   "eventStatus": "https://schema.org/EventScheduled",
   "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
   "location": {
@@ -316,6 +316,9 @@ const orgSchema = {
             records.forEach(function(r) {
               var p = r.properties || r;
               var rawTitle = p.title || '';
+              var badge = String(p.status_badge || '').toLowerCase().trim();
+              if (badge === 'hidden' || badge === 'concept' || badge === 'draft') return;
+              if (rawTitle.toLowerCase().indexOf('nog niet bekend') !== -1 || rawTitle.toLowerCase().indexOf('programma volgt') !== -1) return;
               var cleanTitle = rawTitle.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
               var priceNum = typeof p.price === 'number' ? p.price : (parseFloat(p.price) || parseFloat(p.ticket_price) || 0);
               var capacity = parseInt(p.capacity, 10) || 0;
@@ -350,14 +353,14 @@ const orgSchema = {
               var category = (p.category || '').toLowerCase().trim() || 'masterclass';
 
               var cleanDate = dateLabel;
-              if (day === 'vrijdag' || (cleanDate.toLowerCase().includes('vrijdag') && (cleanDate.includes('13') || cleanDate.toLowerCase().includes('13 nov')))) {
-                cleanDate = 'VRIJDAG 13 NOV';
-              } else if (day === 'zaterdag' || (cleanDate.toLowerCase().includes('zaterdag') && (cleanDate.includes('14') || cleanDate.toLowerCase().includes('14 nov')))) {
-                cleanDate = 'ZATERDAG 14 NOV';
-              } else if (day === 'zondag' || (cleanDate.toLowerCase().includes('zondag') && (cleanDate.includes('15') || cleanDate.toLowerCase().includes('15 nov')))) {
-                cleanDate = 'ZONDAG 15 NOV';
+              if (day === 'vrijdag' || (cleanDate.toLowerCase().includes('vrijdag') && (cleanDate.includes('12') || cleanDate.toLowerCase().includes('12 nov')))) {
+                cleanDate = 'VRIJDAG 12 NOV';
+              } else if (day === 'zaterdag' || (cleanDate.toLowerCase().includes('zaterdag') && (cleanDate.includes('13') || cleanDate.toLowerCase().includes('13 nov')))) {
+                cleanDate = 'ZATERDAG 13 NOV';
+              } else if (day === 'zondag' || (cleanDate.toLowerCase().includes('zondag') && (cleanDate.includes('14') || cleanDate.toLowerCase().includes('14 nov')))) {
+                cleanDate = 'ZONDAG 14 NOV';
               } else {
-                cleanDate = cleanDate.replace(/ 2026/g, '').toUpperCase();
+                cleanDate = cleanDate.replace(/ 202[67]/g, '').toUpperCase();
               }
 
               var cleanTime = timeLabel;
@@ -453,7 +456,8 @@ const orgSchema = {
 
                   if (isSoldOut) {
                     card.classList.add('ticket-sold-out');
-                    var qtySel = card.querySelector('.qty-selector');
+                    card.setAttribute('data-soldout', 'true');
+                    var qtySel = card.querySelector('.qty-selector:not(.iws-member-qty-selector)');
                     if (qtySel) {
                       var soldBox = card.querySelector('.sold-out-box');
                       if (!soldBox) {
@@ -463,8 +467,31 @@ const orgSchema = {
                         qtySel.replaceWith(newSold);
                       }
                     }
+                    if (category === 'entree') {
+                      var stubEnd = card.querySelector('.ticket-stub-end');
+                      if (stubEnd && !stubEnd.querySelector('.iws-stub-unlock-btn')) {
+                        var unlockBtn = document.createElement('button');
+                        unlockBtn.type = 'button';
+                        unlockBtn.className = 'iws-stub-unlock-btn js-open-iws-unlock';
+                        unlockBtn.innerHTML = 'IWS-lid? Bestel hier &rarr;';
+                        stubEnd.appendChild(unlockBtn);
+
+                        var inlineForm = document.createElement('div');
+                        inlineForm.className = 'iws-stub-inline-form';
+                        inlineForm.style.display = 'none';
+                        inlineForm.innerHTML = '<input type="text" class="iws-stub-input" placeholder="Lidnr. (WS-...)" aria-label="IWS Lidnummer" /><button type="button" class="iws-stub-submit-btn">OK</button>';
+                        stubEnd.appendChild(inlineForm);
+                      }
+                      if (stubEnd && !stubEnd.querySelector('.iws-member-qty-selector')) {
+                        var iwsSel = document.createElement('div');
+                        iwsSel.className = 'qty-selector iws-member-qty-selector';
+                        iwsSel.innerHTML = '<button type="button" class="qty-btn minus-btn" data-action="minus" aria-label="Aantal verlagen">&minus;</button><span class="qty-val" id="qty-' + r.id + '">0</span><button type="button" class="qty-btn plus-btn" data-action="plus" aria-label="Aantal verhogen">&plus;</button>';
+                        stubEnd.appendChild(iwsSel);
+                      }
+                    }
                   } else {
                     card.classList.remove('ticket-sold-out');
+                    card.setAttribute('data-soldout', 'false');
                   }
                 }
               });

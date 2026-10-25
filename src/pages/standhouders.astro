@@ -18,7 +18,7 @@ const exhibitors = await getStandhouders('den_haag');
   <main class="standhouders-page-wrapper">
     <!-- Page Header -->
     <div class="page-title-section animate-fade-in">
-      <span class="page-tag">Festival Gids 2026</span>
+      <span class="page-tag">Festival Gids 2027</span>
       <h1 class="page-title">Plattegrond & Stands</h1>
       <div class="vintage-line"></div>
       <p class="page-subtitle">Verken de Grote Kerk, zoek uw favoriete merken en zie direct welke standhouder zich waar bevindt.</p>
@@ -125,24 +125,26 @@ const exhibitors = await getStandhouders('den_haag');
               </g>
 
               <!-- EXTERNAL ANNOTATIONS & ZONES -->
-              <!-- Top-Right: Buitenruimte / Food Trucks / Vaten-Maker -->
+              <!-- Top-Right: Buitenruimte / Food Trucks / Vaten-Maker (Arrow via passage between Stand 38 & 37) -->
               <g class="map-annotation-zone">
-                <path d="M 770 40 Q 810 25 840 20 M 840 20 L 825 18 M 840 20 L 836 32" stroke="#006448" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                <path d="M 833 116 Q 848 78 866 56 M 866 56 L 853 59 M 866 56 L 864 69" stroke="#006448" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
                 <text x="850" y="22" font-family="var(--font-sans)" font-size="11" font-weight="800" fill="#006448">Workshop ruimte "Vaten-Maker"</text>
                 <text x="850" y="36" font-family="var(--font-sans)" font-size="11" font-weight="800" fill="#006448">Food trucks</text>
-                <text x="850" y="50" font-family="var(--font-sans)" font-size="12" font-weight="900" fill="#b57402">Buitenterrein ↗</text>
+                <text x="850" y="50" font-family="var(--font-sans)" font-size="12" font-weight="900" fill="#b57402">Buitenterrein</text>
               </g>
 
-              <!-- Top-Left: Garderobe en uitgang (Clean text label) -->
+              <!-- Left Main Entrance: Ingang & Uitgang + Garderobe -->
               <g class="map-annotation-zone">
-                <text x="15" y="30" font-family="var(--font-sans)" font-size="13" font-weight="800" fill="var(--text-charcoal)">Garderobe en uitgang</text>
+                <text x="10" y="162" font-family="var(--font-sans)" font-size="11.5" font-weight="900" fill="#006448">Ingang &amp; Uitgang</text>
+                <text x="10" y="176" font-family="var(--font-sans)" font-size="10.5" font-weight="800" fill="var(--text-charcoal)">Garderobe</text>
+                <path d="M 8 250 L 44 250 M 37 244 L 44 250 L 37 256 M 15 244 L 8 250 L 15 256" stroke="#006448" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
               </g>
 
               <!-- Bottom-Left: Nutshuis (Clean text label block) -->
               <g class="map-annotation-zone">
                 <text x="15" y="425" font-family="var(--font-sans)" font-size="13" font-weight="900" fill="var(--text-charcoal)">Nutshuis</text>
                 <text x="15" y="440" font-family="var(--font-sans)" font-size="11" font-weight="800" fill="var(--text-charcoal)">ALLE masterclasses</text>
-                <text x="15" y="453" font-family="var(--font-sans)" font-size="9.5" font-weight="600" fill="var(--text-muted)">m.u.v. de Toren-tastings</text>
+                <text x="15" y="453" font-family="var(--font-sans)" font-size="9.5" font-weight="600" fill="var(--text-muted)">m.u.v. Toren-tastings en Warehouse tastings</text>
               </g>
 
               <!-- ============================================== -->
@@ -151,22 +153,17 @@ const exhibitors = await getStandhouders('den_haag');
               
               <!-- LEFT AREA (Main Entrance & Stand U) -->
               <g class="svg-stand" data-stand="U">
-                <rect x="50" y="210" width="60" height="80" rx="4" class="stand-box" />
-                <text x="80" y="255" class="stand-num">U</text>
+                <rect x="52" y="210" width="58" height="80" rx="4" class="stand-box" />
+                <text x="81" y="255" class="stand-num">U</text>
               </g>
 
               <!-- Entrance Text Labels (Above and Below Corridor) -->
-              <text x="80" y="195" font-family="var(--font-sans)" font-size="11" font-weight="900" fill="var(--text-charcoal)" text-anchor="middle">Uitgifte glazen +</text>
-              <text x="80" y="308" font-family="var(--font-sans)" font-size="11" font-weight="900" fill="var(--text-charcoal)" text-anchor="middle">Festival botteling</text>
+              <text x="81" y="198" font-family="var(--font-sans)" font-size="10.5" font-weight="900" fill="var(--text-charcoal)" text-anchor="middle">Uitgifte glazen +</text>
+              <text x="81" y="308" font-family="var(--font-sans)" font-size="10.5" font-weight="900" fill="var(--text-charcoal)" text-anchor="middle">Festival botteling</text>
 
               <!-- Entrance Corridor Arrow pointing into the Schip -->
               <g class="entrance-arrow">
                 <path d="M 120 250 L 138 250 M 132 245 L 138 250 L 132 255" stroke="var(--text-charcoal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-              </g>
-
-              <!-- Entrance Corridor Arrow pointing into the Schip -->
-              <g class="entrance-arrow">
-                <path d="M 125 250 L 140 250 M 135 245 L 140 250 L 135 255" stroke="var(--text-charcoal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
               </g>
 
               <!-- Stands 1 & 2 (Left wall above entrance passage) -->
@@ -195,9 +192,10 @@ const exhibitors = await getStandhouders('den_haag');
                 <rect x="155" y="85" width="85" height="45" rx="3" class="stand-box" />
                 <text x="197" y="112" class="stand-num">3</text>
               </g>
+              <!-- Stand 4: Larger block as per floorplan proportions (Item #19) -->
               <g class="svg-stand" data-stand="4">
-                <rect x="250" y="85" width="130" height="35" rx="3" class="stand-box" />
-                <text x="315" y="107" class="stand-num">4</text>
+                <rect x="250" y="85" width="130" height="72" rx="3" class="stand-box" />
+                <text x="315" y="126" class="stand-num">4</text>
               </g>
 
               <g class="svg-stand" data-stand="5">
@@ -219,10 +217,10 @@ const exhibitors = await getStandhouders('den_haag');
                 <text x="590" y="107" class="stand-num text-small">6</text>
               </g>
 
-              <!-- Main Nave: Middle-Left (Stands 12, 14, 14A, 19, 18, 17) -->
+              <!-- Main Nave: Middle-Left (Stand 12 compact below Stand 4, Stands 14, 15, 22, 21, 20) -->
               <g class="svg-stand" data-stand="12">
-                <rect x="250" y="170" width="130" height="60" rx="3" class="stand-box" />
-                <text x="315" y="205" class="stand-num">12</text>
+                <rect x="250" y="185" width="130" height="38" rx="3" class="stand-box" />
+                <text x="315" y="209" class="stand-num">12</text>
               </g>
 
               <g class="svg-stand" data-stand="14">
@@ -247,22 +245,14 @@ const exhibitors = await getStandhouders('den_haag');
                 <text x="355" y="345" class="stand-num text-small">20</text>
               </g>
 
-              <!-- Main Nave: Middle-Center (Stands 11, 8, 9, 10, O, 16, 15) -->
+              <!-- Main Nave: Middle-Center (Stand 11 & Merged Stand 10 - Item #15) -->
               <g class="svg-stand" data-stand="11">
                 <rect x="440" y="170" width="80" height="70" rx="3" class="stand-box" />
                 <text x="480" y="210" class="stand-num">11</text>
               </g>
-              <g class="svg-stand" data-stand="8">
-                <rect x="525" y="170" width="35" height="33" rx="3" class="stand-box" />
-                <text x="542" y="191" class="stand-num text-small">8</text>
-              </g>
-              <g class="svg-stand" data-stand="9">
-                <rect x="565" y="170" width="35" height="33" rx="3" class="stand-box" />
-                <text x="582" y="191" class="stand-num text-small">9</text>
-              </g>
               <g class="svg-stand" data-stand="10">
-                <rect x="525" y="208" width="75" height="32" rx="3" class="stand-box" />
-                <text x="562" y="229" class="stand-num text-small">10</text>
+                <rect x="525" y="170" width="75" height="70" rx="3" class="stand-box" />
+                <text x="562" y="210" class="stand-num">10</text>
               </g>
 
               <!-- Organisatie block: O (top-left), 16 (bottom-left), 17 (top-right), 18 (bottom-right) -->
@@ -283,14 +273,10 @@ const exhibitors = await getStandhouders('den_haag');
                 <text x="465" y="343" class="stand-num text-small">18</text>
               </g>
               
-              <!-- Two central tasting island blocks: Stand 15 (Moët Hennessy) and Stand 19 (Helvetia Spirits) -->
-              <g class="svg-stand" data-stand="15">
-                <rect x="500" y="285" width="60" height="71" rx="3" class="stand-box" />
-                <text x="530" y="325" class="stand-num">15</text>
-              </g>
-              <g class="svg-stand" data-stand="19">
-                <rect x="570" y="285" width="60" height="71" rx="3" class="stand-box" />
-                <text x="600" y="325" class="stand-num">19</text>
+              <!-- Merged central tasting island stand: Stand X (Item #14, dynamically configurable via GHL map_slot="X") -->
+              <g class="svg-stand" data-stand="X" data-map-slot="X">
+                <rect x="500" y="285" width="130" height="71" rx="3" class="stand-box" />
+                <text x="565" y="325" class="stand-num">X</text>
               </g>
 
               <!-- Main Nave: Bottom Row (Stands 23, 24, S, 25, 26, 27, 28) -->
@@ -379,15 +365,15 @@ const exhibitors = await getStandhouders('den_haag');
                 <text x="777" y="103" class="stand-num text-small">39</text>
               </g>
               <g class="svg-stand" data-stand="38">
-                <rect x="800" y="85" width="35" height="28" rx="2" class="stand-box" />
-                <text x="817" y="103" class="stand-num text-small">38</text>
+                <rect x="798" y="85" width="34" height="28" rx="2" class="stand-box" />
+                <text x="815" y="103" class="stand-num text-small">38</text>
               </g>
 
               <!-- Outer Curved Wall: Right curving down (37, 36, 35, 34, 33, 32, 31, 30) -->
               <!-- 100% Straight, unrotated SVG stand boxes placed along the curve contour -->
               <g class="svg-stand" data-stand="37">
-                <rect x="838" y="105" width="35" height="28" rx="2" class="stand-box" />
-                <text x="855" y="123" class="stand-num text-small">37</text>
+                <rect x="844" y="110" width="35" height="28" rx="2" class="stand-box" />
+                <text x="861" y="128" class="stand-num text-small">37</text>
               </g>
 
               <g class="svg-stand" data-stand="36">
@@ -442,9 +428,11 @@ const exhibitors = await getStandhouders('den_haag');
           </div>
           
           <div class="card-padded" id="active-info-state" style="display: none;">
-            <div class="detail-stand-badge-row">
+            <div class="detail-stand-badge-row" style="flex-wrap: wrap; gap: 0.4rem;">
               <span class="detail-stand-number" id="detail-number">11</span>
-              <span class="status-badge" id="detail-category-badge">Schots</span>
+              <div id="detail-category-badges" style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end;">
+                <span class="status-badge" id="detail-category-badge">Schots</span>
+              </div>
             </div>
             
             <div class="detail-content-block">
@@ -472,38 +460,45 @@ const exhibitors = await getStandhouders('den_haag');
     <section class="directory-list-section">
       <div class="directory-section-header">
         <h2 class="directory-title">Deelnemerslijst (A-Z)</h2>
-        <span class="results-counter" id="results-count">48 standhouders gevonden</span>
+        <span class="results-counter" id="results-count">{exhibitors.length} standhouders gevonden</span>
       </div>
       
       <div class="directory-grid" id="directory-grid">
-        {exhibitors.map((exh) => (
-          <div class="directory-item-card" data-id={exh.id} data-cat={exh.category} data-name={exh.name.toLowerCase()} data-brands={exh.brands.join(' ').toLowerCase()}>
-            <div class="card-top-header">
-              <span class="card-stand-number">{exh.isNotOnMap ? 'Niet op plattegrond' : `Stand ${exh.id}`}</span>
-              <span class={`category-tag tag-${exh.category}`}>
-                {exh.category === 'scotch' ? 'Schots' : 
-                 exh.category === 'dutch' ? 'Nederlands' : 
-                 exh.category === 'independent' ? 'Onafhankelijke Bottelaar' : 
-                 exh.category === 'world' ? 'Wereld' : 
-                 exh.category === 'catering' ? 'Catering' : 'Organisatie'}
-              </span>
-            </div>
-            <div class="card-body-content">
-              <h4>{exh.name}</h4>
-              <p>{exh.description}</p>
-              <div class="card-brands-row">
-                <strong>Merken:</strong> {exh.brands.join(', ')}
+        {exhibitors.map((exh) => {
+          const allCats = (exh.categories && exh.categories.length > 0) ? exh.categories : [exh.category];
+          return (
+            <div class="directory-item-card" data-id={exh.id} data-map-slot={exh.mapSlot || exh.id} data-cat={exh.category} data-cats={allCats.join(',')} data-name={exh.name.toLowerCase()} data-brands={exh.brands.join(' ').toLowerCase()}>
+              <div class="card-top-header" style="flex-wrap: wrap; gap: 0.4rem;">
+                <span class="card-stand-number">{exh.isNotOnMap ? 'Niet op plattegrond' : `Stand ${exh.id}`}</span>
+                <div class="card-category-tags" style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end;">
+                  {allCats.map((cat) => (
+                    <span class={`category-tag tag-${cat}`}>
+                      {cat === 'scotch' ? 'Schots' : 
+                       cat === 'dutch' ? 'Nederlands' : 
+                       cat === 'independent' ? 'Onafhankelijke Bottelaar' : 
+                       cat === 'world' ? 'Wereld' : 
+                       cat === 'catering' ? 'Catering' : 'Organisatie'}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div class="card-body-content">
+                <h4>{exh.name}</h4>
+                <p>{exh.description}</p>
+                <div class="card-brands-row">
+                  <strong>Merken:</strong> {exh.brands.join(', ')}
+                </div>
+              </div>
+              <div class="card-action-footer">
+                {!exh.isNotOnMap && (
+                  <button type="button" class="btn-locate-stand" data-target={exh.id}>
+                    Toon op plattegrond &rarr;
+                  </button>
+                )}
               </div>
             </div>
-            <div class="card-action-footer">
-              {!exh.isNotOnMap && (
-                <button type="button" class="btn-locate-stand" data-target={exh.id}>
-                  Toon op plattegrond &rarr;
-                </button>
-              )}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
 
@@ -1310,6 +1305,8 @@ const exhibitors = await getStandhouders('den_haag');
   }
 
   // --- Update Details Card ---
+  const detailCategoryBadges = document.getElementById('detail-category-badges');
+
   function showStandDetails(exh) {
     if (!exh) {
       activeInfoState.style.display = 'none';
@@ -1322,9 +1319,17 @@ const exhibitors = await getStandhouders('den_haag');
     detailName.textContent = exh.name;
     detailDesc.textContent = exh.description;
     
-    // Category mapping
-    detailCategory.textContent = categoryLabels[exh.category] || 'Overig';
-    detailCategory.className = `status-badge category-tag tag-${exh.category}`;
+    // Multi-Category badges mapping
+    const cats = (Array.isArray(exh.categories) && exh.categories.length > 0) ? exh.categories : [exh.category];
+    if (detailCategoryBadges) {
+      detailCategoryBadges.innerHTML = cats.map(c => {
+        const lbl = categoryLabels[c] || 'Overig';
+        return `<span class="status-badge category-tag tag-${c}">${lbl}</span>`;
+      }).join('');
+    } else if (detailCategory) {
+      detailCategory.textContent = categoryLabels[exh.category] || 'Overig';
+      detailCategory.className = `status-badge category-tag tag-${exh.category}`;
+    }
 
     // Clear and fill brands
     detailBrands.innerHTML = '';
@@ -1342,13 +1347,15 @@ const exhibitors = await getStandhouders('den_haag');
   // --- Search & Filter Logic ---
   function filterAndSearch() {
     let count = 0;
+    const currentCards = document.querySelectorAll('.directory-item-card');
     
-    directoryCards.forEach(card => {
-      const name = card.getAttribute('data-name');
-      const brands = card.getAttribute('data-brands');
-      const cat = card.getAttribute('data-cat');
+    currentCards.forEach(card => {
+      const name = card.getAttribute('data-name') || '';
+      const brands = card.getAttribute('data-brands') || '';
+      const catsAttr = card.getAttribute('data-cats') || card.getAttribute('data-cat') || '';
+      const cardCats = catsAttr.split(',').map(s => s.trim()).filter(Boolean);
       const matchesSearch = name.includes(activeSearch) || brands.includes(activeSearch);
-      const matchesFilter = activeFilter === 'all' || cat === activeFilter;
+      const matchesFilter = activeFilter === 'all' || cardCats.includes(activeFilter);
 
       if (matchesSearch && matchesFilter) {
         card.style.display = 'flex';
@@ -1363,7 +1370,8 @@ const exhibitors = await getStandhouders('den_haag');
     // Also update SVG map visuals (dim non-matching stands)
     svgStands.forEach(group => {
       const standId = group.getAttribute('data-stand');
-      const standExhibitors = exhibitors.filter(e => e.id === standId);
+      const mapSlot = group.getAttribute('data-map-slot');
+      const standExhibitors = exhibitors.filter(e => e.id === standId || (mapSlot && e.mapSlot === mapSlot));
 
       // Check if any exhibitor on this stand matches
       let matches = false;
@@ -1372,7 +1380,8 @@ const exhibitors = await getStandhouders('den_haag');
           const nameMatches = e.name.toLowerCase().includes(activeSearch);
           const brandsMatches = e.brands.join(' ').toLowerCase().includes(activeSearch);
           const matchesSearch = nameMatches || brandsMatches;
-          const matchesFilter = activeFilter === 'all' || e.category === activeFilter;
+          const exhCats = (Array.isArray(e.categories) && e.categories.length > 0) ? e.categories : [e.category];
+          const matchesFilter = activeFilter === 'all' || exhCats.includes(activeFilter);
           return matchesSearch && matchesFilter;
         });
       }
@@ -1414,7 +1423,7 @@ const exhibitors = await getStandhouders('den_haag');
 
     // 1. Highlight in SVG
     svgStands.forEach(group => {
-      if (group.getAttribute('data-stand') === standId) {
+      if (group.getAttribute('data-stand') === standId || group.getAttribute('data-map-slot') === standId) {
         group.classList.add('selected-stand');
       } else {
         group.classList.remove('selected-stand');
@@ -1422,12 +1431,12 @@ const exhibitors = await getStandhouders('den_haag');
     });
 
     // 2. Update Details Panel
-    const selectedExhibitor = exhibitors.find(e => e.id === standId);
+    const selectedExhibitor = exhibitors.find(e => e.id === standId || e.mapSlot === standId);
     showStandDetails(selectedExhibitor);
 
     // 3. Highlight in Directory List
-    directoryCards.forEach(card => {
-      if (card.getAttribute('data-id') === standId) {
+    document.querySelectorAll('.directory-item-card').forEach(card => {
+      if (card.getAttribute('data-id') === standId || card.getAttribute('data-map-slot') === standId) {
         card.classList.add('selected-card');
       } else {
         card.classList.remove('selected-card');
@@ -1466,4 +1475,84 @@ const exhibitors = await getStandhouders('den_haag');
       document.querySelector('.map-visual-container').scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
   });
+
+  // --- Live Leadfabriek CRM (GHL) Stand Sync (Allows renaming Stand "X" or updating stands dynamically) ---
+  function syncGhlStandsOnPage(records) {
+    if (!Array.isArray(records) || records.length === 0) return;
+
+    records.forEach(r => {
+      const p = r.properties || r;
+      const newStandId = String(p.stand_id || p.id || '').trim();
+      const mapSlot = String(p.map_slot || p.mapSlot || newStandId || '').trim();
+      if (!newStandId && !mapSlot) return;
+
+      const rawCat = p.categories || p.category || '';
+      const validCats = ['scotch', 'dutch', 'independent', 'world', 'catering', 'organisation'];
+      const parsedCats = (Array.isArray(rawCat) ? rawCat : String(rawCat).split(/[,;|]+/))
+        .map(s => String(s).trim().toLowerCase())
+        .filter(s => validCats.includes(s));
+
+      const brandsArr = Array.isArray(p.brands)
+        ? p.brands
+        : (typeof p.brands === 'string' && p.brands.trim() !== ''
+            ? p.brands.split(',').map(b => b.trim()).filter(Boolean)
+            : null);
+
+      // Find matching exhibitor by mapSlot or standId
+      let targetExh = exhibitors.find(e => (mapSlot && (e.mapSlot === mapSlot || e.id === mapSlot)) || (newStandId && e.id === newStandId));
+      if (targetExh) {
+        const oldId = targetExh.id;
+        if (newStandId) targetExh.id = newStandId;
+        if (mapSlot) targetExh.mapSlot = mapSlot;
+        if (p.exhibitor_name || p.name) targetExh.name = p.exhibitor_name || p.name;
+        if (p.description) targetExh.description = p.description;
+        if (brandsArr) targetExh.brands = brandsArr;
+        if (parsedCats.length > 0) {
+          targetExh.category = parsedCats[0];
+          targetExh.categories = parsedCats;
+        }
+
+        // Update SVG stand label & data-stand if mapSlot (e.g. "X") was given a new stand_id in GHL
+        const svgNode = document.querySelector(`.svg-stand[data-map-slot="${mapSlot}"]`) || document.querySelector(`.svg-stand[data-stand="${oldId}"]`);
+        if (svgNode && newStandId) {
+          svgNode.setAttribute('data-stand', newStandId);
+          const numText = svgNode.querySelector('.stand-num');
+          if (numText) numText.textContent = newStandId;
+        }
+
+        // Update Directory Card DOM
+        const cardNode = document.querySelector(`.directory-item-card[data-map-slot="${mapSlot}"]`) || document.querySelector(`.directory-item-card[data-id="${oldId}"]`);
+        if (cardNode) {
+          cardNode.setAttribute('data-id', targetExh.id);
+          cardNode.setAttribute('data-name', targetExh.name.toLowerCase());
+          cardNode.setAttribute('data-brands', targetExh.brands.join(' ').toLowerCase());
+          const allCats = (targetExh.categories && targetExh.categories.length > 0) ? targetExh.categories : [targetExh.category];
+          cardNode.setAttribute('data-cats', allCats.join(','));
+          const standNumEl = cardNode.querySelector('.card-stand-number');
+          if (standNumEl && !targetExh.isNotOnMap) standNumEl.textContent = `Stand ${targetExh.id}`;
+          const h4El = cardNode.querySelector('h4');
+          if (h4El) h4El.textContent = targetExh.name;
+          const pEl = cardNode.querySelector('.card-body-content p');
+          if (pEl) pEl.textContent = targetExh.description || '';
+          const bEl = cardNode.querySelector('.card-brands-row');
+          if (bEl) bEl.innerHTML = `<strong>Merken:</strong> ${targetExh.brands.join(', ')}`;
+          const locBtn = cardNode.querySelector('.btn-locate-stand');
+          if (locBtn) locBtn.setAttribute('data-target', targetExh.id);
+        }
+      }
+    });
+
+    filterAndSearch();
+    if (selectedStandId) {
+      const updated = exhibitors.find(e => e.id === selectedStandId || e.mapSlot === selectedStandId);
+      if (updated) showStandDetails(updated);
+    }
+  }
+
+  window.addEventListener('ghl:stands-updated', (e) => {
+    if (e.detail) syncGhlStandsOnPage(e.detail);
+  });
+  if (Array.isArray(window.__LIVE_GHL_STANDS__)) {
+    syncGhlStandsOnPage(window.__LIVE_GHL_STANDS__);
+  }
 </script>

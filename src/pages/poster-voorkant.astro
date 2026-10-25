@@ -1,0 +1,937 @@
+---
+// src/pages/poster-voorkant.astro
+// A3 Print-Ready Front Side Poster (297mm x 420mm) — Scottish Whisky Distilleries Map in Den Haag Heritage Style
+import Layout from '../layouts/Layout.astro';
+import LogoSvg from '../assets/Logo/Logo.svg?raw';
+---
+
+<Layout
+  title="A3 Poster Voorkant — Schotse Whisky Distilleerderijen | International Whisky Festival Den Haag"
+  description="Printklare A3 poster voorkant (297 x 420 mm): Schotse Whisky Distilleerderijen kaart naadloos op ons subtiele Den Haag perkament met fijn kader en print-bleed."
+>
+  <!-- Top Screen-Only Control Bar (Hidden on Print) -->
+  <div class="poster-toolbar no-print">
+    <div class="toolbar-inner">
+      <div class="toolbar-left">
+        <a href="/poster-drukker" class="toolbar-back-link" style="background: #006448; border: 1.5px solid #caac8e; color: #FFFFFF;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="8" y1="10" x2="16" y2="10"></line><line x1="8" y1="14" x2="12" y2="14"></line></svg>
+          Drukker-Versie (Voor + Achter onder elkaar) &rarr;
+        </a>
+        <a href="/poster-tijdlijn-v2" class="toolbar-back-link">
+          &larr; Bekijk Achterkant
+        </a>
+        <span class="toolbar-badge">VOORKANT &bull; SCHOTSE DISTILLEERDERIJEN KAART</span>
+      </div>
+      <div class="toolbar-actions">
+        <button type="button" id="toggle-logo-btn" class="toolbar-btn toolbar-btn-outline" style="border-color: #caac8e; color: #caac8e;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"></circle><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path></svg>
+          <span>Logo: Links naast Titel (Zoals Achterkant)</span>
+        </button>
+        <button type="button" id="toggle-tone-btn" class="toolbar-btn toolbar-btn-outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 0 20z"></path></svg>
+          <span>Kaartkleuren: Origineel</span>
+        </button>
+        <button type="button" id="toggle-texture-btn" class="toolbar-btn toolbar-btn-outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+          <span>Papiertextuur: Handgeschept Katoen</span>
+        </button>
+        <button type="button" id="toggle-frame-btn" class="toolbar-btn toolbar-btn-outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect></svg>
+          <span>Kader: Fijne Enkele Lijn</span>
+        </button>
+        <button type="button" onclick="window.print()" class="toolbar-btn toolbar-btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          Print / Opslaan als A3 PDF (~1.3 MB)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- A3 STAGE WRAPPER -->
+  <main class="poster-stage-wrapper">
+    <!-- A3 SHEET: Exact 1400 x 1980 coordinate space (= 297mm x 420mm ratio 1 : 1.41428) -->
+    <article class="a3-poster-sheet texture-cotton frame-single" id="a3-poster-front">
+
+      <!-- 0A. AUTHENTIC HANDMADE COTTON & LAID PARCHMENT PAPER BACKGROUND (100% Identical to Back Side & Print) -->
+      <div class="v2-crumpled-paper-bg" aria-hidden="true">
+        <img id="screen-paper-front" class="v2-paper-texture-img" alt="" />
+      </div>
+
+      <!-- Full-sheet pre-baked print image (only shown during @media print for ~1.3 MB PDF export) -->
+      <img id="baked-fullsheet-print" class="v2-baked-fullsheet-print" alt="" />
+
+      <!-- 0B. IDENTICAL CLEAN SINGLE HAIRLINE FRAME (Inset 44px inside 3mm bleed + trim margin) -->
+      <div class="v2-clean-frame" aria-hidden="true"></div>
+
+      <!-- 1. PRINT SAFE ZONE WRAPPER (Matches Back Side Margins 1-to-1) -->
+      <div class="v2-print-safe-zone" id="front-safe-zone">
+        <div class="front-map-loading" id="front-map-loading">
+          <span>Schotse Distilleerderijen Kaart laden...</span>
+        </div>
+        <!-- Official Den Haag Full-Color Vector Logo (100% identical to back side) -->
+        <div id="front-festival-logo" class="front-festival-logo">
+          <Fragment set:html={LogoSvg} />
+        </div>
+        <!-- Vector HTML Title in exact same font & size as Back Side (.v2-poster-main-title) -->
+        <h1 id="front-custom-title" class="front-custom-title">
+          <span class="front-title-line1">SCHOTSE WHISKY</span>
+          <span class="front-title-line2">DISTILLEERDERIJEN</span>
+        </h1>
+        <!-- Direct lossless canvas where PDF background is 100% transparent (alpha = 0) -->
+        <canvas id="front-map-canvas" class="front-map-canvas"></canvas>
+      </div>
+
+    </article>
+  </main>
+
+  <style is:inline>
+    /* ----------------------------------------------------
+       SCREEN TOOLBAR & STAGE
+       ---------------------------------------------------- */
+    .poster-toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: #1D1C1A;
+      color: #FAF7F2;
+      border-bottom: 2px solid #006448;
+      padding: 0.75rem 1.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .toolbar-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .toolbar-back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      color: #FAF7F2;
+      text-decoration: none;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.45rem 0.85rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      transition: background 0.2s ease;
+    }
+
+    .toolbar-back-link:hover {
+      background: #004D37 !important;
+    }
+
+    .toolbar-badge {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #caac8e;
+      border: 1px solid rgba(202, 172, 142, 0.4);
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 800;
+      padding: 0.5rem 0.95rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .toolbar-btn-outline {
+      background: transparent;
+      color: #FAF7F2;
+      border: 1.5px solid rgba(250, 247, 242, 0.35);
+    }
+
+    .toolbar-btn-outline:hover {
+      border-color: #caac8e;
+      color: #caac8e;
+    }
+
+    .toolbar-btn-primary {
+      background: #006448;
+      color: #FFFFFF;
+      border: 1.5px solid #caac8e;
+      box-shadow: 2px 2px 0px #000000;
+    }
+
+    .toolbar-btn-primary:hover {
+      background: #004D37;
+    }
+
+    .poster-stage-wrapper {
+      background: #2A2927;
+      min-height: calc(100vh - 60px);
+      padding: 2.5rem 1.5rem 4rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      overflow-x: auto;
+    }
+
+    /* ----------------------------------------------------
+       A3 SHEET: Exact 1400px x 1980px (= 297mm x 420mm ratio)
+       ---------------------------------------------------- */
+    .a3-poster-sheet {
+      position: relative !important;
+      width: 1400px !important;
+      height: 1980px !important;
+      min-width: 1400px !important;
+      min-height: 1980px !important;
+      background-color: #FAF7F2 !important;
+      color: #1D1C1A !important;
+      box-shadow: 0 25px 75px rgba(0, 0, 0, 0.6);
+      padding: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
+      align-items: center !important;
+      overflow: hidden !important;
+      box-sizing: border-box !important;
+    }
+
+    /* ----------------------------------------------------
+       0A. AUTHENTIC HANDMADE COTTON & LAID PARCHMENT PAPER
+       ---------------------------------------------------- */
+    .v2-crumpled-paper-bg {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 1400px !important;
+      height: 1980px !important;
+      pointer-events: none !important;
+      z-index: 1 !important;
+      overflow: hidden !important;
+      background-color: #FAF7F2 !important;
+    }
+
+    .v2-paper-texture-img {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 1400px !important;
+      height: 1980px !important;
+      object-fit: cover !important;
+      display: block !important;
+      z-index: 1 !important;
+    }
+
+    .v2-baked-fullsheet-print {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 1400px !important;
+      height: 1980px !important;
+      object-fit: cover !important;
+      display: none !important;
+      z-index: 2 !important;
+    }
+
+    /* ----------------------------------------------------
+       0B. IDENTICAL CLEAN SINGLE HAIRLINE FRAME (inset: 44px)
+       ---------------------------------------------------- */
+    .v2-clean-frame {
+      position: absolute !important;
+      inset: 44px !important;
+      border: 1px solid rgba(0, 100, 72, 0.28) !important;
+      border-radius: 2px !important;
+      pointer-events: none !important;
+      z-index: 20 !important;
+    }
+
+    .a3-poster-sheet.frame-none .v2-clean-frame {
+      display: none !important;
+    }
+
+    /* ----------------------------------------------------
+       1. PRINT SAFE ZONE & LOSSLESS TRANSPARENT CANVAS
+          Exact same screen coordinates as Back Side (poster-tijdlijn-v2):
+          Left = 105px, Right = 1299px (Width = 1194px = 1270 * 0.94)
+          Top  = 93.4px, Bottom = 1892.6px (Height = 1799px)
+       ---------------------------------------------------- */
+    .v2-print-safe-zone {
+      position: absolute !important;
+      left: 105px !important;
+      top: 88px !important;
+      width: 1194px !important;
+      height: 1800px !important;
+      z-index: 5 !important;
+      display: block !important;
+      transform: none !important;
+      zoom: 1 !important;
+      box-sizing: border-box !important;
+    }
+
+    .front-map-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 700;
+      color: #006448;
+      z-index: 10;
+    }
+
+    /* Exact same position & size as .v2-header-logo on Back Side (117px at left:0, top:0 of safe zone) */
+    .front-festival-logo {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: 12;
+      width: 117px;
+      height: auto;
+      pointer-events: none;
+      display: none;
+    }
+
+    .front-festival-logo svg {
+      width: 100% !important;
+      height: auto !important;
+      display: block !important;
+      shape-rendering: geometricPrecision;
+      text-rendering: geometricPrecision;
+    }
+
+    /* Exact same font-family, font-size (56px), line-height (54px), letter-spacing (0.035em) & color (#006448) as Back Side .v2-poster-main-title */
+    .front-custom-title {
+      position: absolute !important;
+      left: 144px !important;
+      top: 24px !important;
+      transform: none !important;
+      z-index: 12 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      display: none;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      justify-content: center !important;
+      font-family: var(--font-display) !important;
+      font-size: 56px !important;
+      line-height: 54px !important;
+      color: #006448 !important;
+      letter-spacing: 0.035em !important;
+      text-transform: uppercase !important;
+      pointer-events: none !important;
+      white-space: nowrap !important;
+    }
+
+    .front-custom-title.is-visible {
+      display: flex !important;
+    }
+
+    .front-custom-title.is-single-line {
+      top: 51px !important;
+      flex-direction: row !important;
+      gap: 18px !important;
+    }
+
+    .front-title-line1,
+    .front-title-line2 {
+      display: block;
+    }
+
+    .front-map-canvas {
+      position: absolute !important;
+      left: 0 !important;
+      top: 0 !important;
+      z-index: 5 !important;
+      width: 1194px !important;
+      height: 1800px !important;
+      display: block !important;
+      background: transparent !important;
+      mix-blend-mode: normal !important;
+      filter: none !important;
+    }
+
+    /* Hide all global Layout.astro widgets (MobileCartDrawer, sticky cart bar, social dock, modals) */
+    body > *:not(.poster-toolbar):not(.poster-stage-wrapper),
+    .floating-social-dock,
+    .mobile-sticky-cart,
+    .mobile-sticky-bar,
+    .mobile-cart-sheet,
+    .mobile-cart-backdrop,
+    #mobile-sticky-bar,
+    #mobile-cart-sheet,
+    #mobile-cart-backdrop {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    /* ----------------------------------------------------
+       EXACT A3 PRINT MEDIA QUERY (~1.3 MB PDF, ZERO SEAMS)
+       ---------------------------------------------------- */
+    @media print {
+      @page {
+        size: A3 portrait;
+        margin: 0;
+      }
+
+      html,
+      body {
+        width: 297mm !important;
+        height: 420mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #FAF7F2 !important;
+        overflow: hidden !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      body > *:not(.poster-stage-wrapper),
+      .no-print,
+      .poster-toolbar,
+      .front-map-loading {
+        display: none !important;
+        visibility: hidden !important;
+      }
+
+      .poster-stage-wrapper {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: none !important;
+        width: 297mm !important;
+        height: 420mm !important;
+        min-height: 0 !important;
+        display: block !important;
+        overflow: hidden !important;
+      }
+
+      .a3-poster-sheet {
+        width: 1400px !important;
+        height: 1980px !important;
+        zoom: 0.8015;
+        box-shadow: none !important;
+        margin: 0 !important;
+        page-break-after: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      /* In print, hide the screen paper layer and map canvas, and display the single full-sheet 100% seamless print image + vector logo & vector title */
+      .v2-crumpled-paper-bg,
+      .front-map-canvas {
+        display: none !important;
+      }
+
+      .v2-baked-fullsheet-print {
+        display: block !important;
+      }
+    }
+  </style>
+
+  <script type="module" is:inline>
+    import * as pdfjsLib from '/pdfjs/pdf.min.mjs';
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdfjs/pdf.worker.min.mjs';
+
+    var poster = document.getElementById('a3-poster-front');
+    var loadingEl = document.getElementById('front-map-loading');
+    var mapCanvas = document.getElementById('front-map-canvas');
+    var logoImg = document.getElementById('front-festival-logo');
+    var customTitleEl = document.getElementById('front-custom-title');
+    var screenPaperFrontImg = document.getElementById('screen-paper-front');
+    var bakedFullsheetImg = document.getElementById('baked-fullsheet-print');
+    var logoBtn = document.getElementById('toggle-logo-btn');
+    var toneBtn = document.getElementById('toggle-tone-btn');
+    var textureBtn = document.getElementById('toggle-texture-btn');
+    var frameBtn = document.getElementById('toggle-frame-btn');
+
+    var logoModes = ['left-2line', 'left-1line', 'none'];
+    var logoModeIndex = 0;
+    var tones = ['original', 'heritage'];
+    var toneIndex = 0;
+    var textureModes = ['cotton', 'laid', 'clean'];
+    var textureIndex = 0;
+    var showFrame = true;
+
+    var rawPdfImageData = null;
+    var pdfW = 0;
+    var pdfH = 0;
+
+    /* =====================================================================
+       AUTHENTIC HANDMADE COTTON & LAID PARCHMENT PAPER GENERATOR
+       Uses multi-scale smoothstep value noise + organic cellulose cotton
+       fibers + subtle laid wire lines + natural botanical specks.
+       ===================================================================== */
+    var cachedMasterPaper = {};
+
+    function generateMasterPaperCanvas(mode) {
+      if (cachedMasterPaper[mode]) return cachedMasterPaper[mode];
+
+      var w = 1000;
+      var h = 1414;
+      var c = document.createElement('canvas');
+      c.width = w;
+      c.height = h;
+      var ctx = c.getContext('2d');
+
+      var seed = mode === 'laid' ? 73921 : mode === 'clean' ? 19403 : 42857;
+      function rand() {
+        seed |= 0;
+        seed = (seed + 0x6D2B79F5) | 0;
+        var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      }
+
+      function makeGrid(gw, gh) {
+        var g = new Float32Array(gw * gh);
+        for (var i = 0; i < gw * gh; i++) {
+          g[i] = rand() * 2 - 1;
+        }
+        var out = new Float32Array(gw * gh);
+        for (var y = 0; y < gh; y++) {
+          for (var x = 0; x < gw; x++) {
+            var sum = 0;
+            var cnt = 0;
+            for (var dy = -1; dy <= 1; dy++) {
+              for (var dx = -1; dx <= 1; dx++) {
+                var nx = Math.min(gw - 1, Math.max(0, x + dx));
+                var ny = Math.min(gh - 1, Math.max(0, y + dy));
+                sum += g[ny * gw + nx];
+                cnt++;
+              }
+            }
+            out[y * gw + x] = sum / cnt;
+          }
+        }
+        return { data: out, gw: gw, gh: gh };
+      }
+
+      function sampleGrid(grid, u, v) {
+        var gx = u * (grid.gw - 1);
+        var gy = v * (grid.gh - 1);
+        var x0 = Math.floor(gx);
+        var y0 = Math.floor(gy);
+        var x1 = Math.min(grid.gw - 1, x0 + 1);
+        var y1 = Math.min(grid.gh - 1, y0 + 1);
+        var fx = gx - x0;
+        var fy = gy - y0;
+        var sx = fx * fx * (3 - 2 * fx);
+        var sy = fy * fy * (3 - 2 * fy);
+        var d = grid.data;
+        var gw = grid.gw;
+        var n00 = d[y0 * gw + x0];
+        var n10 = d[y0 * gw + x1];
+        var n01 = d[y1 * gw + x0];
+        var n11 = d[y1 * gw + x1];
+        var nx0 = n00 + sx * (n10 - n00);
+        var nx1 = n01 + sx * (n11 - n01);
+        return nx0 + sy * (nx1 - nx0);
+      }
+
+      var gMacro = makeGrid(14, 20);
+      var gMed   = makeGrid(38, 54);
+      var gFine  = makeGrid(110, 155);
+      var gMicro = makeGrid(300, 424);
+
+      var intensity = mode === 'clean' ? 0.38 : mode === 'laid' ? 0.92 : 1.0;
+
+      var imgData = ctx.createImageData(w, h);
+      var d = imgData.data;
+
+      for (var y = 0; y < h; y++) {
+        var v = y / h;
+        var dyEdge = (v - 0.5) * 2;
+        for (var x = 0; x < w; x++) {
+          var u = x / w;
+          var dxEdge = (u - 0.5) * 2;
+
+          var n1 = sampleGrid(gMacro, u, v);
+          var n2 = sampleGrid(gMed, u, v);
+          var n3 = sampleGrid(gFine, u, v);
+          var n4 = sampleGrid(gMicro, u, v);
+
+          var ridge = (1 - Math.abs(n2 + n3 * 0.35)) - 0.65;
+          var cloudDelta = (n1 * 5.2 + n2 * 3.4 + n3 * 2.1 + n4 * 1.4 + ridge * 2.4) * intensity;
+
+          var laidDelta = 0;
+          if (mode === 'laid') {
+            var wireH = Math.sin(y * 1.85 + n2 * 1.6) * 1.45;
+            var chainV = Math.cos(x * (Math.PI * 2 / 78) + n1 * 0.5) > 0.92 ? 0.9 : 0;
+            laidDelta = (wireH + chainV) * intensity;
+          } else if (mode === 'cotton') {
+            laidDelta = Math.sin(y * 1.9 + n2 * 2.2) * 0.45 * intensity;
+          }
+
+          var distSq = dxEdge * dxEdge * 0.85 + dyEdge * dyEdge * 0.85;
+          var vignette = Math.max(0, distSq - 0.28) * 10.5 * intensity;
+
+          var tooth = (rand() - 0.5) * 2.2 * intensity;
+          var delta = cloudDelta + laidDelta + tooth - vignette;
+
+          var r = 249.5 + delta * 0.95 - vignette * 0.25;
+          var g = 246.0 + delta * 1.08 - vignette * 0.45;
+          var b = 240.0 + delta * 1.28 - vignette * 0.75;
+
+          var idx = (y * w + x) * 4;
+          d[idx]     = Math.min(255, Math.max(0, Math.round(r)));
+          d[idx + 1] = Math.min(255, Math.max(0, Math.round(g)));
+          d[idx + 2] = Math.min(255, Math.max(0, Math.round(b)));
+          d[idx + 3] = 255;
+        }
+      }
+
+      ctx.putImageData(imgData, 0, 0);
+
+      if (mode !== 'clean') {
+        ctx.save();
+        var fiberCount = mode === 'cotton' ? 4200 : 2800;
+        for (var f = 0; f < fiberCount; f++) {
+          var fx = rand() * w;
+          var fy = rand() * h;
+          var len = 3 + rand() * 14;
+          var angle = (rand() - 0.5) * Math.PI * 2;
+          var curve = (rand() - 0.5) * 4;
+          var isLight = rand() > 0.62;
+
+          ctx.beginPath();
+          ctx.moveTo(fx, fy);
+          var mx = fx + Math.cos(angle) * (len * 0.5) - Math.sin(angle) * curve;
+          var my = fy + Math.sin(angle) * (len * 0.5) + Math.cos(angle) * curve;
+          var ex = fx + Math.cos(angle) * len;
+          var ey = fy + Math.sin(angle) * len;
+          ctx.quadraticCurveTo(mx, my, ex, ey);
+
+          if (isLight) {
+            ctx.strokeStyle = 'rgba(255, 253, 249, ' + (0.18 + rand() * 0.22) + ')';
+          } else {
+            ctx.strokeStyle = 'rgba(186, 166, 138, ' + (0.07 + rand() * 0.11) + ')';
+          }
+          ctx.lineWidth = 0.45 + rand() * 0.55;
+          ctx.lineCap = 'round';
+          ctx.stroke();
+        }
+
+        var speckCount = mode === 'cotton' ? 650 : 350;
+        for (var s = 0; s < speckCount; s++) {
+          var sx = rand() * w;
+          var sy = rand() * h;
+          var sr = 0.35 + rand() * 0.75;
+          ctx.fillStyle = 'rgba(168, 145, 114, ' + (0.06 + rand() * 0.12) + ')';
+          ctx.beginPath();
+          ctx.arc(sx, sy, sr, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      cachedMasterPaper[mode] = c;
+      return c;
+    }
+
+    function createSeamlessPaperCanvas(w, h, mode) {
+      var master = generateMasterPaperCanvas(mode);
+      var c = document.createElement('canvas');
+      c.width = w;
+      c.height = h;
+      var ctx = c.getContext('2d');
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(master, 0, 0, master.width, master.height, 0, 0, w, h);
+      return c;
+    }
+
+    function updateScreenPaper(mode) {
+      if (!screenPaperFrontImg) return;
+      var master = generateMasterPaperCanvas(mode);
+      screenPaperFrontImg.src = master.toDataURL('image/jpeg', 0.88);
+    }
+
+    updateScreenPaper('cotton');
+
+    function renderCleanMapAndPrintSheet() {
+      if (!rawPdfImageData || !mapCanvas) return;
+
+      var logoMode = logoModes[logoModeIndex];
+      var toneMode = tones[toneIndex];
+      var texMode = textureModes[textureIndex];
+
+      /* 1. Key out the PDF background to 100% transparent (alpha = 0) on an offscreen full-res canvas */
+      var cleanFull = document.createElement('canvas');
+      cleanFull.width = pdfW;
+      cleanFull.height = pdfH;
+      var cCtx = cleanFull.getContext('2d');
+      var outData = cCtx.createImageData(pdfW, pdfH);
+      var src = rawPdfImageData.data;
+      var dst = outData.data;
+
+      var cornerIdx = (10 * pdfW + 10) * 4;
+      var bgR = src[cornerIdx] || 255;
+      var bgG = src[cornerIdx + 1] || 255;
+      var bgB = src[cornerIdx + 2] || 255;
+
+      var mapMinX = pdfW, mapMaxX = 0, mapMinY = pdfH, mapMaxY = 0;
+
+      for (var y = 0; y < pdfH; y++) {
+        for (var x = 0; x < pdfW; x++) {
+          var i = (y * pdfW + x) * 4;
+          var r = src[i];
+          var g = src[i + 1];
+          var b = src[i + 2];
+
+          var dr = Math.abs(bgR - r);
+          var dg = Math.abs(bgG - g);
+          var db = Math.abs(bgB - b);
+          var diff = Math.max(dr, dg, db);
+          var minC = Math.min(r, g, b);
+          var maxC = Math.max(r, g, b);
+          var chroma = maxC - minC;
+
+          if (diff <= 14 || (minC >= 240 && chroma <= 18)) {
+            dst[i] = 0;
+            dst[i + 1] = 0;
+            dst[i + 2] = 0;
+            dst[i + 3] = 0;
+          } else if (diff < 42 && (g - r) < 12 && chroma <= 24) {
+            var a = (diff - 14) / (42 - 14);
+            var ur = Math.max(0, Math.min(255, Math.round((r - bgR * (1 - a)) / a)));
+            var ug = Math.max(0, Math.min(255, Math.round((g - bgG * (1 - a)) / a)));
+            var ub = Math.max(0, Math.min(255, Math.round((b - bgB * (1 - a)) / a)));
+            dst[i] = ur;
+            dst[i + 1] = ug;
+            dst[i + 2] = ub;
+            var alphaByte = Math.round(a * 255);
+            dst[i + 3] = alphaByte;
+            if (alphaByte > 60) {
+              if (x < mapMinX) mapMinX = x;
+              if (x > mapMaxX) mapMaxX = x;
+              if (y < mapMinY) mapMinY = y;
+              if (y > mapMaxY) mapMaxY = y;
+            }
+          } else {
+            if (toneMode === 'heritage') {
+              dst[i] = Math.min(255, Math.round(r * 0.96 + g * 0.04));
+              dst[i + 1] = Math.min(255, Math.round(g * 0.98 + r * 0.02));
+              dst[i + 2] = Math.min(255, Math.round(b * 0.93));
+            } else {
+              dst[i] = r;
+              dst[i + 1] = g;
+              dst[i + 2] = b;
+            }
+            dst[i + 3] = minC > 165 ? 236 : 255;
+            if (x < mapMinX) mapMinX = x;
+            if (x > mapMaxX) mapMaxX = x;
+            if (y < mapMinY) mapMinY = y;
+            if (y > mapMaxY) mapMaxY = y;
+          }
+        }
+      }
+
+      cCtx.putImageData(outData, 0, 0);
+
+      /* 2. Detect and clear the original PDF title ("SCHOTSE WHISKY DISTILLEERDERIJEN") when using our vector festival header */
+      var scanMaxX = Math.floor(pdfW * 0.68);
+      var scanMaxY = Math.floor(pdfH * 0.118);
+      var tMinX = scanMaxX, tMaxX = 0, tMinY = scanMaxY, tMaxY = 0;
+      for (var ty = 0; ty < scanMaxY; ty++) {
+        for (var tx = 0; tx < scanMaxX; tx++) {
+          var aVal = dst[(ty * pdfW + tx) * 4 + 3];
+          if (aVal > 40) {
+            if (tx < tMinX) tMinX = tx;
+            if (tx > tMaxX) tMaxX = tx;
+            if (ty < tMinY) tMinY = ty;
+            if (ty > tMaxY) tMaxY = ty;
+          }
+        }
+      }
+
+      if (tMaxX > tMinX && tMaxY > tMinY && logoMode !== 'none') {
+        var pad = 8;
+        var sx = Math.max(0, tMinX - pad);
+        var sy = Math.max(0, tMinY - pad);
+        var tsW = Math.min(pdfW - sx, (tMaxX - tMinX + 1) + pad * 2);
+        var tsH = Math.min(pdfH - sy, (tMaxY - tMinY + 1) + pad * 2);
+        cCtx.clearRect(sx, sy, tsW, tsH);
+      }
+
+      /* 3. Map the PDF ink bounding box [mapMinX .. mapMaxX] to the exact 1194 x 1799 safe-zone width
+            so the left edge (105px) and right edge (1299px) match the Back Side 100%! */
+      var safeCssW = 1194;
+      var safeCssH = 1800;
+      var scaleFactor = 2.4;
+      var targetW = Math.round(safeCssW * scaleFactor);
+      var targetH = Math.round(safeCssH * scaleFactor);
+
+      mapCanvas.width = targetW;
+      mapCanvas.height = targetH;
+      var ctx = mapCanvas.getContext('2d');
+      ctx.clearRect(0, 0, targetW, targetH);
+
+      var inkW = Math.max(1, mapMaxX - mapMinX + 1);
+      var inkH = Math.max(1, mapMaxY - mapMinY + 1);
+
+      var drawScaleX = targetW / inkW;
+      var drawScaleY = Math.min(drawScaleX, targetH / inkH);
+
+      var destMapW = Math.round(inkW * drawScaleX);
+      var destMapH = Math.round(inkH * drawScaleY);
+
+      ctx.save();
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(cleanFull, mapMinX, mapMinY, inkW, inkH, 0, 0, destMapW, destMapH);
+      ctx.restore();
+
+      /* 4. Position the Official Den Haag Logo (left:0, top:0, width:117px) & Vector HTML Title */
+      var logoCssW = 117;
+
+      if (logoImg && customTitleEl) {
+        if (logoMode === 'left-2line' || logoMode === 'left-1line') {
+          logoImg.style.left = '0px';
+          logoImg.style.top = '0px';
+          logoImg.style.width = logoCssW + 'px';
+          logoImg.style.height = 'auto';
+          logoImg.style.display = 'block';
+
+          customTitleEl.classList.add('is-visible');
+          customTitleEl.classList.toggle('is-single-line', logoMode === 'left-1line');
+        } else {
+          logoImg.style.display = 'none';
+          customTitleEl.classList.remove('is-visible', 'is-single-line');
+        }
+      }
+
+      /* 5. Build the single full-sheet 100% seamless print image (1400x1980 proportion -> 2100x2970 px) */
+      if (bakedFullsheetImg) {
+        var printW = 2100;
+        var printH = 2970;
+        var fullSheet = createSeamlessPaperCanvas(printW, printH, texMode);
+        var fCtx = fullSheet.getContext('2d');
+
+        var pLeft = Math.round((105 / 1400) * printW);
+        var pTop = Math.round((88 / 1980) * printH);
+        var pWidth = Math.round((1194 / 1400) * printW);
+        var pHeight = Math.round((1800 / 1980) * printH);
+
+        fCtx.save();
+        fCtx.imageSmoothingEnabled = true;
+        fCtx.imageSmoothingQuality = 'high';
+        fCtx.drawImage(mapCanvas, 0, 0, targetW, targetH, pLeft, pTop, pWidth, pHeight);
+        fCtx.restore();
+
+        bakedFullsheetImg.src = fullSheet.toDataURL('image/jpeg', 0.88);
+      }
+    }
+
+    async function loadFrontMapPdf() {
+      try {
+        var loadingTask = pdfjsLib.getDocument('/whisky-kaart-2026.pdf');
+        var pdf = await loadingTask.promise;
+        var page = await pdf.getPage(1);
+
+        var viewport = page.getViewport({ scale: 2.35 });
+        var c = document.createElement('canvas');
+        pdfW = Math.round(viewport.width);
+        pdfH = Math.round(viewport.height);
+        c.width = pdfW;
+        c.height = pdfH;
+        var ctx = c.getContext('2d');
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, pdfW, pdfH);
+
+        await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+        rawPdfImageData = ctx.getImageData(0, 0, pdfW, pdfH);
+
+        /* Remove loading indicator completely from DOM so it never overlaps the map */
+        if (loadingEl && loadingEl.parentNode) {
+          loadingEl.parentNode.removeChild(loadingEl);
+        }
+
+        renderCleanMapAndPrintSheet();
+      } catch (err) {
+        console.error('Error rendering front map PDF:', err);
+        if (loadingEl) {
+          loadingEl.textContent = 'Fout bij het laden van de kaart-PDF.';
+        }
+      }
+    }
+
+    loadFrontMapPdf();
+
+    if (logoBtn) {
+      logoBtn.addEventListener('click', function() {
+        logoModeIndex = (logoModeIndex + 1) % logoModes.length;
+        var mode = logoModes[logoModeIndex];
+        renderCleanMapAndPrintSheet();
+        var span = logoBtn.querySelector('span');
+        if (span) {
+          if (mode === 'left-2line') span.textContent = 'Kop: Logo + Festival-Titel (2 Regels)';
+          if (mode === 'left-1line') span.textContent = 'Kop: Logo + Festival-Titel (1 Regel)';
+          if (mode === 'none') span.textContent = 'Kop: Origineel Zonder Logo';
+        }
+      });
+    }
+
+    if (toneBtn) {
+      toneBtn.addEventListener('click', function() {
+        toneIndex = (toneIndex + 1) % tones.length;
+        var mode = tones[toneIndex];
+        renderCleanMapAndPrintSheet();
+        var span = toneBtn.querySelector('span');
+        if (span) {
+          if (mode === 'original') span.textContent = 'Kaartkleuren: Origineel';
+          if (mode === 'heritage') span.textContent = 'Kaartkleuren: Subtiel Warm';
+        }
+      });
+    }
+
+    if (textureBtn && poster) {
+      textureBtn.addEventListener('click', function() {
+        textureIndex = (textureIndex + 1) % textureModes.length;
+        var mode = textureModes[textureIndex];
+        poster.classList.remove('texture-cotton', 'texture-laid', 'texture-clean');
+        poster.classList.add('texture-' + mode);
+        updateScreenPaper(mode);
+        renderCleanMapAndPrintSheet();
+        var span = textureBtn.querySelector('span');
+        if (span) {
+          if (mode === 'cotton') span.textContent = 'Papiertextuur: Handgeschept Katoen';
+          if (mode === 'laid') span.textContent = 'Papiertextuur: Fijn Vergé & Linnen';
+          if (mode === 'clean') span.textContent = 'Papiertextuur: Zacht Effen Perkament';
+        }
+      });
+    }
+
+    if (frameBtn && poster) {
+      frameBtn.addEventListener('click', function() {
+        showFrame = !showFrame;
+        poster.classList.toggle('frame-none', !showFrame);
+        var span = frameBtn.querySelector('span');
+        if (span) {
+          span.textContent = showFrame ? 'Kader: Fijne Enkele Lijn' : 'Kader: Geen Kader';
+        }
+      });
+    }
+  </script>
+</Layout>

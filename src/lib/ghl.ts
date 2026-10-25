@@ -40,12 +40,14 @@ function parseGhlBoolean(val: any): boolean {
 
 const CATEGORY_ORDER: Record<string, number> = {
   entree: 1,
-  masterclass: 2,
-  warehouse: 3,
-  tram: 4,
-  trail: 5,
-  vatenmaken: 6,
-  botteling: 7
+  botteling: 2,
+  masterclass: 3,
+  warehouse: 4,
+  toren: 4,
+  tram: 5,
+  trail: 6,
+  vatenmaken: 7,
+  munten: 8
 };
 
 const DAY_ORDER: Record<string, number> = {
@@ -191,7 +193,9 @@ export async function getTickets(city: string = 'den_haag'): Promise<TicketItem[
       const p = r.properties || r;
       const title = (p.title || '').toLowerCase().trim();
       const slug = (p.festival_slug || '').toLowerCase().trim();
-      if (title.includes('programma volgt')) return false;
+      const badge = (p.status_badge || '').toLowerCase().trim();
+      if (badge === 'hidden' || badge === 'concept' || badge === 'draft') return false;
+      if (title.includes('programma volgt') || title.includes('nog niet bekend') || title.includes('nog niet live')) return false;
       if (title.includes('test') || title.includes('concept') || title.includes('draft') || title.includes('sophie')) return false;
       if (slug.includes('test') || slug.includes('concept') || slug.includes('draft')) return false;
       return true;
@@ -343,10 +347,21 @@ export async function getStandhouders(city: string = 'den_haag'): Promise<Exhibi
         ? rawBrands
         : String(rawBrands).split(',').map(b => b.trim()).filter(Boolean);
 
+      const rawCats = p.categories || p.category || 'world';
+      const parsedCats = (Array.isArray(rawCats)
+        ? rawCats
+        : String(rawCats).split(',').map(c => c.trim().toLowerCase()).filter(Boolean)) as any[];
+      const primaryCat = parsedCats[0] || 'world';
+
+      const standId = String(p.stand_id || p.display_number || r.id).trim();
+      const mapSlot = p.map_slot ? String(p.map_slot).trim() : undefined;
+
       return {
-        id: String(p.stand_id || r.id),
+        id: standId,
+        mapSlot,
         name: p.name || 'Standhouder',
-        category: p.category || 'world',
+        category: primaryCat,
+        categories: parsedCats.length > 0 ? parsedCats : [primaryCat],
         brands: brandsList,
         description: p.stand_description || p.description || '',
         isNotOnMap: parseGhlBoolean(p.is_not_on_map)

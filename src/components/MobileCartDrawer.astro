@@ -102,12 +102,12 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
           <svg class="sheet-select-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
           <select class="sheet-filter-select" id="sheet-filter-cat" aria-label="Filter op categorie">
             <option value="all">Alle extra's</option>
+            <option value="botteling">Festival Botteling</option>
             <option value="masterclass">Masterclasses</option>
             <option value="warehouse">Warehouse Tastings</option>
             <option value="tram">Whiskytram</option>
             <option value="trail">Whiskytrails</option>
             <option value="vatenmaken">Workshops</option>
-            <option value="botteling">Festival Botteling</option>
           </select>
         </div>
       </div>
@@ -181,10 +181,19 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
     const stickyCount = document.getElementById('mscb-cart-count');
     const stickyTotal = document.getElementById('mscb-cart-total');
 
+    function getServiceFeeForCart(totalQty, entreeQty) {
+      if (totalQty <= 0) return 0;
+      if (entreeQty === 0) return 0.50;
+      if (entreeQty === 1) return 1.75;
+      if (entreeQty <= 5) return 3.50;
+      return 4.50;
+    }
+
     function updateStickyBar() {
       if (!stickyBar) return;
       const cart = getLocalCart();
       let totalQty = 0;
+      let entreeQty = 0;
       let subtotal = 0;
       let shippingActive = false;
 
@@ -193,19 +202,21 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
         const qty = typeof storedVal === 'number' ? storedVal : storedVal?.qty || 0;
         const rawItem = (window.GLOBAL_TICKETS || []).find(t => t.id === id);
         const price = (typeof storedVal === 'object' && storedVal.price) ? storedVal.price : (rawItem?.price || 0);
+        const cat = (typeof storedVal === 'object' && storedVal.category) ? storedVal.category : (rawItem?.category || 'entree');
 
         if (qty > 0) {
           totalQty += qty;
+          if (!cat || cat === 'entree') entreeQty += qty;
           subtotal += price * qty;
-          if (rawItem?.category === 'botteling' || storedVal?.category === 'botteling') {
+          if (cat === 'botteling') {
             if (storedVal?.delivery === 'shipping') shippingActive = true;
           }
         }
       });
 
       if (totalQty > 0) {
-        const fee = 1.50;
-        const shipping = shippingActive ? 12.50 : 0;
+        const fee = getServiceFeeForCart(totalQty, entreeQty);
+        const shipping = shippingActive ? 10.00 : 0;
         const grandTotal = subtotal + fee + shipping;
 
         if (stickyCount) {
@@ -266,6 +277,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
       try {
         let subtotal = 0;
         let totalItems = 0;
+        let entreeItems = 0;
         const itemsArr = [];
         const cartRaw = {};
 
@@ -276,15 +288,17 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
             const raw = (window.GLOBAL_TICKETS || []).find(t => t.id === id);
             const price = (typeof val === 'object' && val.price) ? val.price : (raw?.price || 0);
             const title = (typeof val === 'object' && val.title) ? val.title : (raw?.title || id);
-            const itemData = typeof val === 'object' ? { ...val, id, qty, price, title } : { id, qty, price, title };
+            const category = (typeof val === 'object' && val.category) ? val.category : (raw?.category || 'entree');
+            const itemData = typeof val === 'object' ? { ...val, id, qty, price, title, category } : { id, qty, price, title, category };
             itemsArr.push(itemData);
             cartRaw[id] = itemData;
             subtotal += price * qty;
             totalItems += qty;
+            if (!category || category === 'entree') entreeItems += qty;
           }
         });
 
-        const fee = totalItems > 0 ? 1.50 : 0;
+        const fee = getServiceFeeForCart(totalItems, entreeItems);
         const finalObj = {
           items: itemsArr,
           cartRaw: cartRaw,
@@ -322,6 +336,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
 
       let subtotal = 0;
       let totalQty = 0;
+      let entreeQty = 0;
       let shippingActive = false;
 
       sheetCartList.innerHTML = itemIds.map(id => {
@@ -332,12 +347,13 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
         const title = (typeof storedVal === 'object' && storedVal.title) ? storedVal.title : (rawItem?.title || id);
         const date = (typeof storedVal === 'object' && storedVal.date) ? storedVal.date : (rawItem?.date || '');
         const time = (typeof storedVal === 'object' && storedVal.time) ? storedVal.time : (rawItem?.time || '');
-        const category = (typeof storedVal === 'object' && storedVal.category) ? storedVal.category : (rawItem?.category || '');
+        const category = (typeof storedVal === 'object' && storedVal.category) ? storedVal.category : (rawItem?.category || 'entree');
         const delivery = typeof storedVal === 'object' ? storedVal.delivery : undefined;
 
         const lineTotal = price * qty;
         subtotal += lineTotal;
         totalQty += qty;
+        if (!category || category === 'entree') entreeQty += qty;
         if (category === 'botteling' && delivery === 'shipping') shippingActive = true;
 
         const metaText = [date, time].filter(Boolean).join(' • ');
@@ -376,8 +392,8 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
         `;
       }).join('');
 
-      const fee = totalQty > 0 ? 1.50 : 0;
-      const shipping = shippingActive ? 12.50 : 0;
+      const fee = getServiceFeeForCart(totalQty, entreeQty);
+      const shipping = shippingActive ? 10.00 : 0;
       const finalTotal = subtotal + fee + shipping;
 
       if (sheetCartSubtotal) sheetCartSubtotal.textContent = `€ ${subtotal.toFixed(2).replace('.', ',')}`;
@@ -406,22 +422,25 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
 
       let subtotal = 0;
       let totalItems = 0;
+      let entreeItems = 0;
       let shippingActive = false;
       Object.keys(cart).forEach(id => {
         const storedVal = cart[id];
         const qty = typeof storedVal === 'number' ? storedVal : storedVal?.qty || 0;
         const rawItem = (window.GLOBAL_TICKETS || []).find(t => t.id === id);
         const price = (typeof storedVal === 'object' && storedVal.price) ? storedVal.price : (rawItem?.price || 0);
+        const cat = (typeof storedVal === 'object' && storedVal.category) ? storedVal.category : (rawItem?.category || 'entree');
         if (qty > 0) {
           subtotal += price * qty;
           totalItems += qty;
-          if (rawItem?.category === 'botteling' || storedVal?.category === 'botteling') {
+          if (!cat || cat === 'entree') entreeItems += qty;
+          if (cat === 'botteling') {
             if (storedVal?.delivery === 'shipping') shippingActive = true;
           }
         }
       });
-      const fee = totalItems > 0 ? 1.50 : 0;
-      const shipping = shippingActive ? 12.50 : 0;
+      const fee = getServiceFeeForCart(totalItems, entreeItems);
+      const shipping = shippingActive ? 10.00 : 0;
       const grandTotal = subtotal + fee + shipping;
 
       if (sheetFinalCheckoutText) {
@@ -440,7 +459,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
         const isSoldOut = item.isSoldOut;
         const catLabel = item.category === 'warehouse' ? 'Warehouse' : item.category === 'tram' ? 'Whiskytram' : item.category === 'trail' ? 'Whiskytrail' : item.category === 'vatenmaken' ? 'Workshop' : item.category === 'botteling' ? 'Botteling' : 'Masterclass';
 
-        const dateStr = item.date ? item.date.replace(/ 2026/g, '') : '';
+        const dateStr = item.date ? item.date.replace(/ 202[67]/g, '') : '';
         const metaParts = [dateStr, item.time, item.location || 'Grote Kerk'].filter(Boolean);
         const metaLine = metaParts.join(' • ');
 

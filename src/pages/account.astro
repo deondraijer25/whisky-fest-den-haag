@@ -67,7 +67,7 @@ import Footer from '../components/Footer.astro';
               type="text" 
               id="login-res-no" 
               class="form-input" 
-              placeholder="bijv. #WF-2026-84387" 
+              placeholder="bijv. #WF-2027-84387" 
             />
             <span class="form-subtext">U vindt uw ordernummer in de bevestigingsmail.</span>
           </div>
@@ -322,7 +322,7 @@ import Footer from '../components/Footer.astro';
 
                   <!-- Interior Architecture Zones -->
                   <rect x="670" y="150" width="180" height="200" fill="#EBE4D5" stroke="var(--border-color-dark)" stroke-width="1.5" stroke-dasharray="4 4" />
-                  <text x="760" y="255" class="map-zone-label" style="font-family: var(--font-sans); font-size: 11px; fill: var(--text-muted); text-anchor: middle;">Kade Zaal</text>
+                  <text x="760" y="255" class="map-zone-label" style="font-family: var(--font-sans); font-size: 11px; fill: var(--text-muted); text-anchor: middle;">Hoogkoor</text>
                   
                   <path d="M 670 80 A 170 170 0 0 1 890 250 A 170 170 0 0 1 670 420" fill="none" stroke="var(--border-color-dark)" stroke-width="1" stroke-dasharray="6 6" />
 
@@ -355,15 +355,55 @@ import Footer from '../components/Footer.astro';
                     <circle cx="890" cy="350" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
                   </g>
 
+                  <!-- EXTERNAL ANNOTATIONS & ZONES -->
+                  <g class="map-annotation-zone">
+                    <path d="M 833 116 Q 848 78 866 56 M 866 56 L 853 59 M 866 56 L 864 69" stroke="#006448" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                    <text x="850" y="22" font-family="var(--font-sans)" font-size="11" font-weight="800" fill="#006448">Workshop ruimte "Vaten-Maker"</text>
+                    <text x="850" y="36" font-family="var(--font-sans)" font-size="11" font-weight="800" fill="#006448">Food trucks</text>
+                    <text x="850" y="50" font-family="var(--font-sans)" font-size="12" font-weight="900" fill="#b57402">Buitenterrein</text>
+                  </g>
+
+                  <g class="map-annotation-zone">
+                    <text x="10" y="162" font-family="var(--font-sans)" font-size="11.5" font-weight="900" fill="#006448">Ingang &amp; Uitgang</text>
+                    <text x="10" y="176" font-family="var(--font-sans)" font-size="10.5" font-weight="800" fill="var(--text-charcoal)">Garderobe</text>
+                    <path d="M 8 250 L 44 250 M 37 244 L 44 250 L 37 256 M 15 244 L 8 250 L 15 256" stroke="#006448" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                  </g>
+
+                  <g class="map-annotation-zone">
+                    <text x="15" y="425" font-family="var(--font-sans)" font-size="13" font-weight="900" fill="var(--text-charcoal)">Nutshuis</text>
+                    <text x="15" y="440" font-family="var(--font-sans)" font-size="11" font-weight="800" fill="var(--text-charcoal)">ALLE masterclasses</text>
+                    <text x="15" y="453" font-family="var(--font-sans)" font-size="9.5" font-weight="600" fill="var(--text-muted)">m.u.v. Toren-tastings en Warehouse tastings</text>
+                  </g>
+
                   <!-- 1-to-1 Interactive Stands -->
                   <g class="svg-stand" data-stand="U">
-                    <rect x="50" y="210" width="60" height="80" rx="4" class="stand-box" />
-                    <text x="80" y="255" class="stand-num">U</text>
+                    <rect x="52" y="210" width="58" height="80" rx="4" class="stand-box" />
+                    <text x="81" y="255" class="stand-num">U</text>
+                  </g>
+
+                  <text x="81" y="198" font-family="var(--font-sans)" font-size="10.5" font-weight="900" fill="var(--text-charcoal)" text-anchor="middle">Uitgifte glazen +</text>
+                  <text x="81" y="308" font-family="var(--font-sans)" font-size="10.5" font-weight="900" fill="var(--text-charcoal)" text-anchor="middle">Festival botteling</text>
+
+                  <g class="entrance-arrow">
+                    <path d="M 120 250 L 138 250 M 132 245 L 138 250 L 132 255" stroke="var(--text-charcoal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                  </g>
+
+                  <g class="svg-stand" data-stand="2">
+                    <rect x="155" y="155" width="22" height="28" rx="2" class="stand-box" />
+                    <text x="166" y="173" class="stand-num text-small">2</text>
+                  </g>
+                  <g class="svg-stand" data-stand="1">
+                    <rect x="155" y="188" width="22" height="28" rx="2" class="stand-box" />
+                    <text x="166" y="206" class="stand-num text-small">1</text>
+                  </g>
+                  <g class="svg-stand" data-stand="13">
+                    <rect x="155" y="260" width="22" height="28" rx="2" class="stand-box" />
+                    <text x="166" y="278" class="stand-num text-small">13</text>
                   </g>
 
                   <g class="svg-stand" data-stand="C">
-                    <rect x="145" y="300" width="45" height="45" rx="4" class="stand-box catering" />
-                    <text x="167" y="327" class="stand-num text-small">C</text>
+                    <rect x="145" y="305" width="45" height="45" rx="4" class="stand-box catering" />
+                    <text x="167" y="332" class="stand-num text-small">C</text>
                   </g>
 
                   <g class="svg-stand" data-stand="3">
@@ -371,8 +411,8 @@ import Footer from '../components/Footer.astro';
                     <text x="197" y="112" class="stand-num">3</text>
                   </g>
                   <g class="svg-stand" data-stand="4">
-                    <rect x="250" y="85" width="130" height="35" rx="3" class="stand-box" />
-                    <text x="315" y="107" class="stand-num">4</text>
+                    <rect x="250" y="85" width="130" height="72" rx="3" class="stand-box" />
+                    <text x="315" y="126" class="stand-num">4</text>
                   </g>
 
                   <g class="svg-stand" data-stand="5">
@@ -394,8 +434,8 @@ import Footer from '../components/Footer.astro';
                   </g>
 
                   <g class="svg-stand" data-stand="12">
-                    <rect x="250" y="170" width="130" height="60" rx="3" class="stand-box" />
-                    <text x="315" y="205" class="stand-num">12</text>
+                    <rect x="250" y="185" width="130" height="38" rx="3" class="stand-box" />
+                    <text x="315" y="209" class="stand-num">12</text>
                   </g>
 
                   <g class="svg-stand" data-stand="14">
@@ -424,17 +464,9 @@ import Footer from '../components/Footer.astro';
                     <rect x="440" y="170" width="80" height="70" rx="3" class="stand-box" />
                     <text x="480" y="210" class="stand-num">11</text>
                   </g>
-                  <g class="svg-stand" data-stand="8">
-                    <rect x="525" y="170" width="35" height="33" rx="3" class="stand-box" />
-                    <text x="542" y="191" class="stand-num text-small">8</text>
-                  </g>
-                  <g class="svg-stand" data-stand="9">
-                    <rect x="565" y="170" width="35" height="33" rx="3" class="stand-box" />
-                    <text x="582" y="191" class="stand-num text-small">9</text>
-                  </g>
                   <g class="svg-stand" data-stand="10">
-                    <rect x="525" y="208" width="75" height="32" rx="3" class="stand-box" />
-                    <text x="562" y="229" class="stand-num text-small">10</text>
+                    <rect x="525" y="170" width="75" height="70" rx="3" class="stand-box" />
+                    <text x="562" y="210" class="stand-num">10</text>
                   </g>
 
                   <g class="svg-stand" data-stand="O">
@@ -454,22 +486,18 @@ import Footer from '../components/Footer.astro';
                     <text x="465" y="343" class="stand-num text-small">18</text>
                   </g>
                   
-                  <g class="svg-stand" data-stand="15">
-                    <rect x="500" y="285" width="60" height="71" rx="3" class="stand-box" />
-                    <text x="530" y="325" class="stand-num">15</text>
-                  </g>
-                  <g class="svg-stand" data-stand="19">
-                    <rect x="570" y="285" width="60" height="71" rx="3" class="stand-box" />
-                    <text x="600" y="325" class="stand-num">19</text>
+                  <g class="svg-stand" data-stand="X" data-map-slot="X">
+                    <rect x="500" y="285" width="130" height="71" rx="3" class="stand-box" />
+                    <text x="565" y="325" class="stand-num">X</text>
                   </g>
 
-                  <g class="svg-stand" data-stand="20">
-                    <rect x="250" y="375" width="85" height="35" rx="3" class="stand-box" />
-                    <text x="292" y="397" class="stand-num">20</text>
+                  <g class="svg-stand" data-stand="23">
+                    <rect x="250" y="375" width="75" height="35" rx="3" class="stand-box" />
+                    <text x="287" y="397" class="stand-num text-small">23</text>
                   </g>
-                  <g class="svg-stand" data-stand="21">
-                    <rect x="335" y="375" width="45" height="35" rx="3" class="stand-box" />
-                    <text x="357" y="397" class="stand-num text-small">21</text>
+                  <g class="svg-stand" data-stand="24">
+                    <rect x="330" y="375" width="50" height="35" rx="3" class="stand-box" />
+                    <text x="355" y="397" class="stand-num text-small">24</text>
                   </g>
 
                   <g class="svg-stand" data-stand="S">
@@ -477,21 +505,21 @@ import Footer from '../components/Footer.astro';
                     <text x="315" y="455" class="stand-num">S</text>
                   </g>
 
-                  <g class="svg-stand" data-stand="22">
-                    <rect x="400" y="375" width="45" height="35" rx="3" class="stand-box" />
-                    <text x="422" y="397" class="stand-num text-small">22</text>
-                  </g>
-                  <g class="svg-stand" data-stand="23">
-                    <rect x="450" y="375" width="65" height="35" rx="3" class="stand-box" />
-                    <text x="482" y="397" class="stand-num">23</text>
-                  </g>
                   <g class="svg-stand" data-stand="25">
-                    <rect x="525" y="375" width="45" height="35" rx="3" class="stand-box" />
-                    <text x="547" y="397" class="stand-num text-small">25</text>
+                    <rect x="400" y="375" width="45" height="35" rx="3" class="stand-box" />
+                    <text x="422" y="397" class="stand-num text-small">25</text>
+                  </g>
+                  <g class="svg-stand" data-stand="26">
+                    <rect x="450" y="375" width="45" height="35" rx="3" class="stand-box" />
+                    <text x="472" y="397" class="stand-num text-small">26</text>
+                  </g>
+                  <g class="svg-stand" data-stand="27">
+                    <rect x="500" y="375" width="45" height="35" rx="3" class="stand-box" />
+                    <text x="522" y="397" class="stand-num text-small">27</text>
                   </g>
                   <g class="svg-stand" data-stand="28">
-                    <rect x="575" y="375" width="45" height="35" rx="3" class="stand-box" />
-                    <text x="597" y="397" class="stand-num text-small">28</text>
+                    <rect x="550" y="375" width="45" height="35" rx="3" class="stand-box" />
+                    <text x="572" y="397" class="stand-num text-small">28</text>
                   </g>
 
                   <g class="svg-stand" data-stand="42">
@@ -542,13 +570,13 @@ import Footer from '../components/Footer.astro';
                     <text x="777" y="103" class="stand-num text-small">39</text>
                   </g>
                   <g class="svg-stand" data-stand="38">
-                    <rect x="800" y="85" width="35" height="28" rx="2" class="stand-box" />
-                    <text x="817" y="103" class="stand-num text-small">38</text>
+                    <rect x="798" y="85" width="34" height="28" rx="2" class="stand-box" />
+                    <text x="815" y="103" class="stand-num text-small">38</text>
                   </g>
 
                   <g class="svg-stand" data-stand="37">
-                    <rect x="838" y="105" width="35" height="28" rx="2" class="stand-box" />
-                    <text x="855" y="123" class="stand-num text-small">37</text>
+                    <rect x="844" y="110" width="35" height="28" rx="2" class="stand-box" />
+                    <text x="861" y="128" class="stand-num text-small">37</text>
                   </g>
                   <g class="svg-stand" data-stand="36">
                     <rect x="865" y="145" width="35" height="28" rx="2" class="stand-box" />
@@ -592,7 +620,7 @@ import Footer from '../components/Footer.astro';
                 </div>
                 
                 <div class="card-padded" id="account-active-info-state" style="display: none;">
-                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.4rem;">
                     <span class="status-badge paid" id="account-stand-badge" style="background: var(--whisky-gold-dark); color: #fff; border: none;">STAND 17</span>
                     <span class="meta-label" id="account-stand-category" style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase;">SCHOTSE SINGLE MALTS</span>
                   </div>
@@ -663,21 +691,21 @@ import Footer from '../components/Footer.astro';
                   <div class="rule-item">
                     <h5>◆ Drams (Proefmunten)</h5>
                     <p class="sidebar-card-subtext">
-                      Het proeven van whisky's gebeurt met "Drams", verkregen bij de kassa's in de hal (pinnen/contant). Restitutie is niet mogelijk.
+                      Het proeven van whisky's gebeurt met "Drams" (1 Dram = &euro; 1,-), verkrijgbaar bij de kassa's in de kerk. Overgebleven drams zijn na afloop aan de kassa inwisselbaar.
                     </p>
                   </div>
 
                   <div class="rule-item">
-                    <h5>◆ Festivalslijterij (Stand 48)</h5>
+                    <h5>◆ Festivalslijterij (Stand S)</h5>
                     <p class="sidebar-card-subtext">
-                      Koop uw favoriete flessen direct bij Stand 48 in de hal of haal uw bestelde festivalbotteling op.
+                      Koop uw favoriete flessen direct bij de Festivalslijterij in de kerk of haal uw bestelde festivalbotteling op.
                     </p>
                   </div>
 
                   <div class="rule-item">
                     <h5>◆ Horeca & Garderobe</h5>
                     <p class="sidebar-card-subtext">
-                      Warme snacks bij het Food Court aan het IJ. Gratis bewaakte garderobe bij de hoofdingang.
+                      Warme snacks en foodtrucks op het buitenterrein bij de Grote Kerk. Gratis bewaakte garderobe bij de hoofdingang.
                     </p>
                   </div>
                 </div>
@@ -750,7 +778,7 @@ import Footer from '../components/Footer.astro';
   .account-page-wrapper {
     background-color: var(--bg-parchment);
     min-height: calc(100vh - 100px);
-    padding: 10rem 2rem 6rem;
+    padding: 12.5rem 2rem 6rem;
     max-width: 1250px;
     margin: 0 auto;
     display: flex;
@@ -1759,7 +1787,7 @@ import Footer from '../components/Footer.astro';
     }
 
     .account-page-wrapper {
-      padding: 7.75rem 1.15rem 4rem !important;
+      padding: 8.75rem 1.15rem 4rem !important;
       gap: 1.5rem !important;
       max-width: 100vw !important;
       overflow-x: hidden !important;
@@ -2675,13 +2703,65 @@ import Footer from '../components/Footer.astro';
     const receiptResNo = document.getElementById('receipt-res-no');
     const receiptTotal = document.getElementById('receipt-total');
 
+    const whiskytixApiBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      ? 'http://localhost:4000'
+      : 'https://whiskytix-r1qq.vercel.app';
+
+    function normalizeOrderObject(raw: any): any {
+      if (!raw || typeof raw !== 'object') return null;
+      const rawRes = String(raw.resNumber || raw.orderNumber || '').trim();
+      const fullRes = rawRes ? (rawRes.startsWith('#') ? rawRes : `#${rawRes}`) : '';
+      const email = String(raw.email || raw.customerEmail || '').trim().toLowerCase();
+      const name = String(raw.name || raw.customerName || (email ? email.split('@')[0] : 'Bezoeker')).trim();
+      const phone = String(raw.phone || raw.customerPhone || '').trim();
+      const totalPrice = typeof raw.totalPrice === 'number' && raw.totalPrice > 0
+        ? raw.totalPrice
+        : (typeof raw.totalCents === 'number' ? raw.totalCents / 100 : 0);
+      const items = Array.isArray(raw.items)
+        ? raw.items.map((it: any) => ({
+            ...it,
+            id: it.id || it.ticketTypeId || it.ticketId || 'ticket',
+            title: it.title || it.name || 'Entreeticket',
+            qty: it.qty || it.quantity || 1,
+            quantity: it.quantity || it.qty || 1,
+            price: typeof it.price === 'number' ? it.price : (it.unitPriceCents ? it.unitPriceCents / 100 : 0),
+            category: it.category || 'entree',
+            timeslot: it.timeslot || it.time || '',
+            delivery: it.delivery || '',
+          }))
+        : [];
+      const tickets = Array.isArray(raw.tickets) ? raw.tickets : [];
+      const activeTickets = Array.isArray(raw.activeTickets) && raw.activeTickets.length > 0
+        ? raw.activeTickets
+        : tickets.filter((t: any) => t.status !== 'cancelled' && t.status !== 'swapped');
+      return {
+        ...raw,
+        name,
+        customerName: name,
+        email,
+        customerEmail: email,
+        phone,
+        customerPhone: phone,
+        resNumber: fullRes,
+        orderNumber: fullRes,
+        totalPrice,
+        totalCents: raw.totalCents || Math.round(totalPrice * 100),
+        status: raw.status || (raw.isPaid ? 'paid' : 'paid'),
+        isPaid: raw.isPaid !== undefined ? raw.isPaid : (raw.status ? raw.status === 'paid' : true),
+        isMember: Boolean(raw.isMember || fullRes.includes('WS') || (raw.promoCode && (String(raw.promoCode).startsWith('WS-') || String(raw.promoCode).startsWith('IWS')))),
+        items,
+        tickets,
+        activeTickets,
+      };
+    }
+
     // Retrieve order details from localStorage
     const stored = localStorage.getItem('wf_last_order');
     let orderData: any = null;
     
     if (stored) {
       try {
-        orderData = JSON.parse(stored);
+        orderData = normalizeOrderObject(JSON.parse(stored));
       } catch (e) {
         console.error("Failed to parse stored order:", e);
       }
@@ -2701,7 +2781,7 @@ import Footer from '../components/Footer.astro';
       }
 
       if (portalTitleName) {
-        if (orderData.isMember) {
+        if (orderData && orderData.isMember) {
           portalTitleName.innerHTML = `Portaal van ${userName} <span class="member-tag-badge">IWS Lid</span>`;
         } else {
           portalTitleName.innerHTML = `Portaal van ${userName}`;
@@ -2709,7 +2789,7 @@ import Footer from '../components/Footer.astro';
       }
 
       const formattedTotal = (orderData && orderData.totalPrice) ? `€ ${orderData.totalPrice.toFixed(2).replace('.', ',')}` : "-";
-      const resNum = (orderData && orderData.resNumber) || session.resNumber || "-";
+      const resNum = (orderData && (orderData.resNumber || orderData.orderNumber)) || session.resNumber || "-";
 
       if (receiptResNo) receiptResNo.textContent = resNum;
       const receiptResNoMob = document.getElementById('receipt-res-no-mob');
@@ -2723,17 +2803,17 @@ import Footer from '../components/Footer.astro';
       if (profileInputName) profileInputName.value = userName;
       if (profileInputEmail) profileInputEmail.value = userEmail;
       if (profileInputPhone) profileInputPhone.value = (orderData && orderData.phone) || "";
-      if (profileInputWhisky) profileInputWhisky.value = orderData.whiskyStyle || "Single Malt Scotch";
+      if (profileInputWhisky) profileInputWhisky.value = (orderData && orderData.whiskyStyle) || "Single Malt Scotch";
 
       // Configure Bundled PDF Download button (all tickets in 1 multi-page vector A4 PDF)
       const btnBundle = document.getElementById('btn-download-all-tickets');
       if (btnBundle) {
         btnBundle.onclick = (e) => {
           e.preventDefault();
-          const cleanOrderNum = (orderData?.resNumber || '').replace(/^#+/, '').trim() || 'WF-2027-19302';
+          const cleanOrderNum = ((orderData?.resNumber || orderData?.orderNumber || session.resNumber || '')).replace(/^#+/, '').trim() || 'WF-2027-19302';
           const citySlug = 'denhaag';
           
-          let bundleUrl = `https://whiskytix-r1qq.vercel.app/api/orders/${encodeURIComponent(cleanOrderNum)}/pdf?city=${encodeURIComponent(citySlug)}`;
+          let bundleUrl = `${whiskytixApiBase}/api/orders/${encodeURIComponent(cleanOrderNum)}/pdf?city=${encodeURIComponent(citySlug)}`;
 
           const ticketsList = (orderData?.tickets && Array.isArray(orderData.tickets) && orderData.tickets.length > 0)
             ? orderData.tickets
@@ -2774,14 +2854,14 @@ import Footer from '../components/Footer.astro';
 
         if (authoritativeTickets && authoritativeTickets.length > 0) {
           authoritativeTickets.forEach((ticket: any, tIdx: number) => {
-            const rawCode = (ticket.ticketCode || `${orderData.resNumber || 'WF-2026-84387'}-${tIdx + 1}`).replace(/^#/, '');
+            const rawCode = (ticket.ticketCode || `${orderData.resNumber || 'WF-2027-84387'}-${tIdx + 1}`).replace(/^#/, '');
             const cleanCode = rawCode.trim();
             const displayCode = `#${cleanCode}`;
             const attendeeName = ticket.attendeeName || userName;
             const ticketTitle = ticket.sessionTitle || ticket.title || 'Festival Entreeticket';
             const cleanTitle = ticketTitle.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
             let displayTime = ticket.timeStr || ticket.time || ticket.timeslot || '13:00 - 17:00 UUR';
-            let formattedDate = ticket.dateStr || ticket.date || 'Vrijdag 13 november 2026';
+            let formattedDate = ticket.dateStr || ticket.date || 'Vrijdag 12 november 2027';
 
             // Check live GHL records first: GHL is authoritative for live festival schedule!
             const liveGhlTickets = (window as any).__LIVE_GHL_TICKETS__;
@@ -2838,7 +2918,7 @@ import Footer from '../components/Footer.astro';
             const ticketLink = `${baseUrl}/ticket?id=${cleanCode}&title=${encodeURIComponent(cleanTitle)}&name=${encodeURIComponent(attendeeName)}&time=${encodeURIComponent(displayTime)}&date=${encodeURIComponent(formattedDate)}&orderNumber=${encodeURIComponent(orderData.resNumber || '')}`;
 
             const shareText = encodeURIComponent(
-              `*International Whisky Festival 2026*\n` +
+              `*International Whisky Festival 2027*\n` +
               `E-ticket: ${cleanTitle}\n\n` +
               `Kaarthouder: ${attendeeName}\n` +
               `Datum: ${formattedDate}\n` +
@@ -2852,7 +2932,7 @@ import Footer from '../components/Footer.astro';
             const mailSubject = encodeURIComponent(`E-ticket voor International Whisky Festival: ${cleanTitle}`);
             const mailBody = encodeURIComponent(
               `Beste ${attendeeName},\n\n` +
-              `Hierbij ontvang je jouw toegangsbewijs voor International Whisky Festival 2026.\n\n` +
+              `Hierbij ontvang je jouw toegangsbewijs voor International Whisky Festival 2027.\n\n` +
               `Ticket: ${cleanTitle}\n` +
               `Datum: ${formattedDate}\n` +
               `Tijdslot: ${displayTime}\n` +
@@ -2871,7 +2951,7 @@ import Footer from '../components/Footer.astro';
                     <span class="scan-label">CONTROLE STUB</span>
                     <div class="qr-code-holder">
                       <img 
-                        src="https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/qr.svg?city=denhaag&name=${encodeURIComponent(attendeeName)}&title=${encodeURIComponent(cleanTitle)}" 
+                        src="${whiskytixApiBase}/api/tickets/${encodeURIComponent(cleanCode)}/qr.svg?city=denhaag&name=${encodeURIComponent(attendeeName)}&title=${encodeURIComponent(cleanTitle)}" 
                         alt="Controle QR-Code ${displayCode}" 
                         width="105" 
                         height="105" 
@@ -2923,7 +3003,7 @@ import Footer from '../components/Footer.astro';
 
                     <!-- 3. Bottom Row: Action Buttons -->
                     <div class="ticket-actions-row">
-                      <button type="button" class="btn-ticket-download-gold" onclick="window.open('https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/pdf?city=denhaag&name=${encodeURIComponent(attendeeName)}&title=${encodeURIComponent(cleanTitle)}&time=${encodeURIComponent(displayTime)}&date=${encodeURIComponent(formattedDate)}&orderNumber=${encodeURIComponent(orderData.resNumber || '')}', '_blank')">
+                      <button type="button" class="btn-ticket-download-gold" onclick="window.open('${whiskytixApiBase}/api/tickets/${encodeURIComponent(cleanCode)}/pdf?city=denhaag&name=${encodeURIComponent(attendeeName)}&title=${encodeURIComponent(cleanTitle)}&time=${encodeURIComponent(displayTime)}&date=${encodeURIComponent(formattedDate)}&orderNumber=${encodeURIComponent(orderData.resNumber || orderData.orderNumber || '')}', '_blank')">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                         <span>Download E-Ticket (PDF)</span>
                       </button>
@@ -2963,35 +3043,35 @@ import Footer from '../components/Footer.astro';
             if (item.category === "entree") {
               watermark = orderData.isMember ? "WS" : "WF";
               if (titleLower.includes("vrijdag")) {
-                displayDay = "13";
+                displayDay = "12";
                 displayTime = titleLower.includes("vip") ? "13:00 - 17:00 UUR" : "19:00 - 23:00 UUR";
               } else if (titleLower.includes("zondag")) {
-                displayDay = "15";
+                displayDay = "14";
                 displayTime = "13:00 - 17:00 UUR";
               } else {
-                displayDay = "14";
+                displayDay = "13";
                 displayTime = (titleLower.includes("avond") || (item.time && item.time.includes("19:00")) || (item.timeslot && item.timeslot.includes("19:00")))
                   ? "19:00 - 23:00 UUR"
                   : "13:00 - 17:00 UUR";
               }
             } else if (item.category === "tram") {
               watermark = "WT";
-              displayDay = "14";
+              displayDay = "13";
               displayTime = item.timeslot || "14:00 UUR";
             } else if (item.category === "botteling") {
               watermark = "FB";
-              displayDay = "13-15";
+              displayDay = "12-14";
               displayTime = item.delivery === "shipping" ? "VERZENDING PER POST" : "AFHALEN (STAND 48)";
             } else if (item.category === "masterclass") {
               watermark = "MC";
-              displayDay = "14";
+              displayDay = "13";
               displayTime = item.timeslot || "14:00 - 14:45 UUR";
             }
 
             // Expand multiple quantities into individual separate ticket cards
             const qty = item.qty || 1;
             for (let t = 0; t < qty; t++) {
-              const rawCode = (orderData.resNumber || "WF-2026-84387").replace('#', '');
+              const rawCode = (orderData.resNumber || orderData.orderNumber || "WF-2027-84387").replace('#', '');
               const cleanCode = `${rawCode}-${globalTicketIndex}`;
               const displayCode = `#${cleanCode}`;
               
@@ -3004,7 +3084,7 @@ import Footer from '../components/Footer.astro';
               const ticketLink = `${baseUrl}/ticket?id=${cleanCode}&title=${encodeURIComponent(cleanTitle)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}`;
               
               const shareText = encodeURIComponent(
-                `*${'International Whisky Festival 2026'}*\n` +
+                `*${'International Whisky Festival 2027'}*\n` +
                 `E-ticket: ${cleanTitle}\n\n` +
                 `Kaarthouder: ${userName}\n` +
                 `Tijdslot: ${displayTime}\n` +
@@ -3017,7 +3097,7 @@ import Footer from '../components/Footer.astro';
               const mailSubject = encodeURIComponent(`E-ticket voor International Whisky Festival: ${cleanTitle}`);
               const mailBody = encodeURIComponent(
                 `Beste ${userName},\n\n` +
-                `Hierbij ontvang je jouw toegangsbewijs voor International Whisky Festival 2026.\n\n` +
+                `Hierbij ontvang je jouw toegangsbewijs voor International Whisky Festival 2027.\n\n` +
                 `Ticket: ${cleanTitle}\n` +
                 `Tijdslot: ${displayTime}\n` +
                 `Ticket Code: ${displayCode}\n` +
@@ -3028,13 +3108,13 @@ import Footer from '../components/Footer.astro';
               );
 
               // Natural schedule string
-              let formattedSchedule = "Vrijdag 13 november 2026 • " + displayTime;
+              let formattedSchedule = "Vrijdag 12 november 2027 • " + displayTime;
               if (titleLower.includes("zaterdag")) {
-                formattedSchedule = "Zaterdag 14 november 2026 • " + displayTime;
+                formattedSchedule = "Zaterdag 13 november 2027 • " + displayTime;
               } else if (titleLower.includes("zondag")) {
-                formattedSchedule = "Zondag 15 november 2026 • " + displayTime;
+                formattedSchedule = "Zondag 14 november 2027 • " + displayTime;
               } else if (item.category === 'masterclass') {
-                formattedSchedule = "Zaterdag 14 november 2026 • " + displayTime;
+                formattedSchedule = "Zaterdag 13 november 2027 • " + displayTime;
               }
 
               const ticketHTML = `
@@ -3045,7 +3125,7 @@ import Footer from '../components/Footer.astro';
                       <span class="scan-label">CONTROLE STUB</span>
                       <div class="qr-code-holder">
                         <img 
-                          src="https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/qr.svg?city=denhaag&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(cleanTitle)}" 
+                          src="${whiskytixApiBase}/api/tickets/${encodeURIComponent(cleanCode)}/qr.svg?city=denhaag&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(cleanTitle)}" 
                           alt="Controle QR-Code ${displayCode}" 
                           width="105" 
                           height="105" 
@@ -3095,7 +3175,7 @@ import Footer from '../components/Footer.astro';
 
                       <!-- 3. Bottom Row: Action Buttons -->
                       <div class="ticket-actions-row">
-                        <button type="button" class="btn-ticket-download-gold" onclick="window.open('https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/pdf?city=denhaag&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(cleanTitle)}&time=${encodeURIComponent(displayTime)}&orderNumber=${encodeURIComponent(orderData.resNumber || '')}', '_blank')">
+                        <button type="button" class="btn-ticket-download-gold" onclick="window.open('${whiskytixApiBase}/api/tickets/${encodeURIComponent(cleanCode)}/pdf?city=denhaag&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(cleanTitle)}&time=${encodeURIComponent(displayTime)}&orderNumber=${encodeURIComponent(orderData.resNumber || orderData.orderNumber || '')}', '_blank')">
                           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                           <span>Download E-Ticket (PDF)</span>
                         </button>
@@ -3223,7 +3303,7 @@ import Footer from '../components/Footer.astro';
           try {
             const rawStored = localStorage.getItem('wf_last_order');
             if (rawStored) {
-              const p = JSON.parse(rawStored);
+              const p = normalizeOrderObject(JSON.parse(rawStored));
               if (p && p.email && p.email.toLowerCase() === session.email.toLowerCase()) {
                 orderData = p;
               }
@@ -3249,10 +3329,13 @@ import Footer from '../components/Footer.astro';
         updatePortalUI();
 
         // 3. LIVE WHISKYTIX SYNC: Always re-fetch latest order & tickets from Whiskytix
-        const activeResNo = session.resNumber || (orderData && orderData.resNumber);
+        const activeResNo = session.resNumber || (orderData && (orderData.resNumber || orderData.orderNumber));
         if (activeResNo) {
           const cleanCode = activeResNo.replace(/^#/, '').trim();
-          fetch(`https://whiskytix-r1qq.vercel.app/api/checkout/order/${encodeURIComponent(cleanCode)}`)
+          const apiBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? 'http://localhost:4000'
+            : 'https://whiskytix-r1qq.vercel.app';
+          fetch(`${apiBase}/api/checkout/order/${encodeURIComponent(cleanCode)}`)
             .then((res) => (res.ok ? res.json() : null))
             .then((data) => {
               if (data && data.order) {
@@ -3267,29 +3350,10 @@ import Footer from '../components/Footer.astro';
                   showError(`Bestelling ${activeResNo} is niet voltooid of geannuleerd. Het portaal is alleen toegankelijk voor bezoekers met een voltooide ticketbestelling.`);
                   return;
                 }
-                const items = (vOrder.items || []).map((it: any) => ({
-                  id: it.id || it.ticketId || 'ticket',
-                  title: it.title || it.name || 'Entreeticket',
-                  qty: it.quantity || it.qty || 1,
-                  price: it.unitPriceCents ? it.unitPriceCents / 100 : it.price || 0,
-                  category: it.category || 'entree',
-                  timeslot: it.timeslot || it.time || '',
-                  delivery: it.delivery || '',
-                }));
-                orderData = {
+                orderData = normalizeOrderObject({
                   ...orderData,
-                  name: vOrder.customerName || orderData.name,
-                  email: vOrder.customerEmail || orderData.email,
-                  phone: vOrder.customerPhone || orderData.phone,
-                  resNumber: vOrder.orderNumber || orderData.resNumber,
-                  items: items.length > 0 ? items : orderData.items,
-                  tickets: vOrder.tickets || orderData.tickets || [],
-                  activeTickets: vOrder.activeTickets || orderData.activeTickets || [],
-                  cancelledTickets: vOrder.cancelledTickets || orderData.cancelledTickets || [],
-                  swappedTickets: vOrder.swappedTickets || orderData.swappedTickets || [],
-                  itemsSummary: vOrder.itemsSummary || orderData.itemsSummary || '',
-                  totalPrice: vOrder.totalCents ? (vOrder.totalCents / 100) : orderData.totalPrice,
-                };
+                  ...vOrder,
+                });
                 localStorage.setItem('wf_last_order', JSON.stringify(orderData));
                 updatePortalUI();
               }
@@ -3331,16 +3395,23 @@ import Footer from '../components/Footer.astro';
           // 1. If order number entered, check Whiskytix API
           if (rawResNo) {
             const cleanCode = rawResNo.replace(/^#/, '').trim();
-            try {
-              const res = await fetch(`https://whiskytix-r1qq.vercel.app/api/checkout/order/${encodeURIComponent(cleanCode)}`);
-              if (res.ok) {
-                const data = await res.json();
-                if (data && data.order) {
-                  verifiedOrder = data.order;
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const bases = isLocal
+              ? ['http://localhost:4000', 'https://whiskytix-r1qq.vercel.app']
+              : ['https://whiskytix-r1qq.vercel.app'];
+            for (const b of bases) {
+              try {
+                const res = await fetch(`${b}/api/checkout/order/${encodeURIComponent(cleanCode)}`);
+                if (res.ok) {
+                  const data = await res.json();
+                  if (data && data.order) {
+                    verifiedOrder = normalizeOrderObject(data.order);
+                    break;
+                  }
                 }
+              } catch (err) {
+                // Try next base
               }
-            } catch (err) {
-              console.warn('Whiskytix lookup niet bereikbaar, controleer lokale opslag:', err);
             }
           }
 
@@ -3349,15 +3420,17 @@ import Footer from '../components/Footer.astro';
             try {
               const localRaw = localStorage.getItem('wf_last_order');
               if (localRaw) {
-                const localData = JSON.parse(localRaw);
-                const localOrderNum = (localData.resNumber || '').replace(/^#/, '').trim().toLowerCase();
-                const searchOrderNum = rawResNo.replace(/^#/, '').trim().toLowerCase();
-                const localEmail = (localData.email || '').trim().toLowerCase();
+                const localData = normalizeOrderObject(JSON.parse(localRaw));
+                if (localData) {
+                  const localOrderNum = (localData.resNumber || localData.orderNumber || '').replace(/^#/, '').trim().toLowerCase();
+                  const searchOrderNum = rawResNo.replace(/^#/, '').trim().toLowerCase();
+                  const localEmail = (localData.email || localData.customerEmail || '').trim().toLowerCase();
 
-                if (searchOrderNum && (localOrderNum === searchOrderNum || localOrderNum.endsWith(searchOrderNum))) {
-                  verifiedOrder = localData;
-                } else if (!searchOrderNum && localEmail === email) {
-                  verifiedOrder = localData;
+                  if (searchOrderNum && (localOrderNum === searchOrderNum || localOrderNum.endsWith(searchOrderNum))) {
+                    verifiedOrder = localData;
+                  } else if (!searchOrderNum && localEmail === email) {
+                    verifiedOrder = localData;
+                  }
                 }
               }
             } catch (e) {}
@@ -3399,34 +3472,16 @@ import Footer from '../components/Footer.astro';
             };
 
             localStorage.setItem('wf_auth_session', JSON.stringify(sessionData));
+            sessionStorage.setItem('wf_auth_session', JSON.stringify(sessionData));
             localStorage.removeItem('wf_user_logged_out');
 
-            // Format orderData for portal
-            const items = (verifiedOrder.items || []).map((it: any) => ({
-              id: it.id || it.ticketId || 'ticket',
-              title: it.title || it.name || 'Entreeticket',
-              qty: it.quantity || it.qty || 1,
-              price: it.unitPriceCents ? (it.unitPriceCents / 100) : (it.price || 0),
-              category: it.category || 'entree',
-              timeslot: it.timeslot || it.time || '',
-              delivery: it.delivery || ''
-            }));
-
-            orderData = {
+            orderData = normalizeOrderObject({
+              ...verifiedOrder,
               name: custName,
               email: email,
-              phone: verifiedOrder.customerPhone || verifiedOrder.phone || '+31 6 12345678',
-              whiskyStyle: verifiedOrder.whiskyStyle || 'Single Malt Scotch',
-              items: items,
-              tickets: verifiedOrder.tickets || [],
-              activeTickets: verifiedOrder.activeTickets || [],
-              cancelledTickets: verifiedOrder.cancelledTickets || [],
-              swappedTickets: verifiedOrder.swappedTickets || [],
-              itemsSummary: verifiedOrder.itemsSummary || '',
               resNumber: fullResNumber,
-              isMember: fullResNumber.includes('WS'),
-              totalPrice: verifiedOrder.totalCents ? (verifiedOrder.totalCents / 100) : (verifiedOrder.totalPrice || 79.50)
-            };
+              orderNumber: fullResNumber,
+            });
 
             localStorage.setItem('wf_last_order', JSON.stringify(orderData));
 
@@ -3481,6 +3536,16 @@ import Footer from '../components/Footer.astro';
     window.addEventListener('load', checkAuthAndRender);
     window.addEventListener('storage', checkAuthAndRender);
 
+    // Auto-authenticate if ?email=...&order=... are passed in the URL (e.g. from the post-checkout confirmation link)
+    if (paramEmail && paramOrder && loginForm) {
+      const existingSession = getValidSession();
+      const cleanParamOrder = paramOrder.replace(/^#+/, '').trim().toLowerCase();
+      const existingOrder = (existingSession?.resNumber || '').replace(/^#+/, '').trim().toLowerCase();
+      if (!existingSession || existingOrder !== cleanParamOrder) {
+        loginForm.dispatchEvent(new Event('submit', { cancelable: true }));
+      }
+    }
+
     // 3. Profile Save Form Submission
     const profileEditForm = document.getElementById('profile-edit-form');
     const profileSuccessBanner = document.getElementById('profile-success-banner');
@@ -3513,55 +3578,61 @@ import Footer from '../components/Footer.astro';
 
     // 4. Interactive Stand Map Click Logic on Account Page (1-to-1 match with standhouders page)
     const exhibitorsData = [
-      { id: "1", name: "Distilleerderij de Bronckhorst", category: "dutch", brands: ["Nederlandse Whisky"], description: "Ambachtelijke Nederlandse single malt whisky, ter plaatse gedistilleerd in de Achterhoek." },
-      { id: "2", name: "Mitra", category: "world", brands: ["Merken volgen later"], description: "Mitra slijterijen presenteert een gevarieerde selectie van bekende en zeldzame whisky's." },
-      { id: "3", name: "Bresser en Timmer", category: "scotch", brands: ["Craft Spirits"], description: "Toonaangevende importeur van craft spirits. Stand 3 & 4." },
-      { id: "4", name: "Bresser en Timmer", category: "scotch", brands: ["Craft Spirits"], description: "Toonaangevende importeur van craft spirits. Stand 3 & 4." },
-      { id: "5", name: "Cley Whisky", category: "dutch", brands: ["Nederlandse Whisky (Rotterdam)"], description: "Rotterdamse craft distilleerderij die eigentijdse single malt en rye whisky's maakt met lokaal graan." },
-      { id: "6", name: "SMWS (Scotch Malt Whisky Society)", category: "world", brands: ["Whisky Club"], description: "De Schotse Malt Whisky Society biedt exclusieve single cask bottelingen voor clubleden." },
-      { id: "7", name: "De Monnik Dranken", category: "scotch", brands: ["Merken volgen later"], description: "Familiebedrijf en importeur met een prachtig portfolio aan Schotse single malts." },
-      { id: "8", name: "Whisky Import Nederland (WIN)", category: "independent", brands: ["Merken volgen later"], description: "Importeur van exclusieve onafhankelijke bottelingen." },
-      { id: "9", name: "Cane & Grain", category: "independent", brands: ["Merken volgen later"], description: "Onafhankelijke bottelingen en unieke single casks." },
-      { id: "10", name: "Anker Amsterdam Spirits", category: "world", brands: ["Merken volgen later"], description: "Groothandel en importeur van diverse dranken en spirits." },
-      { id: "11", name: "Diageo", category: "scotch", brands: ["Singleton", "Talisker", "Lagavulin"], description: "Klassieke Schotse single malts, van de zachte Singleton tot de intens rokerige Lagavulin." },
-      { id: "12", name: "Van Wees Holland", category: "independent", brands: ["Merken volgen later"], description: "Bekende importeur uit Amersfoort met een rijk aanbod aan onafhankelijke bottelingen." },
-      { id: "13", name: "Maltstock", category: "world", brands: ["Whisky Club", "Trail begeleiders"], description: "Het gezelligste whisky-weekend ter wereld, met proeverijen en trail-begeleiding." },
-      { id: "14", name: "Brouwers2Import", category: "world", brands: ["Merken volgen later"], description: "Importeur van diverse internationale whisky's en gedistilleerd." },
-      { id: "15", name: "Moët Hennessy", category: "scotch", brands: ["Ardbeg", "Glenmorangie"], description: "De ultieme Islay malts Ardbeg en de verfijnde Glenmorangie uit de hoogste ketels van Schotland." },
-      { id: "16", name: "Trade in Spirits", category: "world", brands: ["Merken volgen later"], description: "Importeur van diverse premium spirits." },
-      { id: "17", name: "International Whisky Society (IWS)", category: "world", brands: ["Whisky Club", "Festival Bottelings", "Glazen"], description: "De International Whisky Society viert het 25-jarig jubileum met exclusieve festivalbottelingen door de jaren heen!" },
-      { id: "18", name: "BUS Whisky", category: "dutch", brands: ["Nederlandse Whisky"], description: "Duurzame Nederlandse single malt whisky, lokaal verbouwd op de BUS boerderij." },
-      { id: "19", name: "Helvetia Spirits", category: "world", brands: ["Zwitserse Whisky"], description: "Ambachtelijke single malt whisky uit Zwitserland." },
-      { id: "20", name: "Helvetia Spirits", category: "world", brands: ["Zwitserse Whisky"], description: "Ambachtelijke single malt whisky uit Zwitserland." },
-      { id: "21", name: "The Chamberick", category: "dutch", brands: ["Nederlandse Whisky"], description: "Lokale Nederlandse whisky uit Kamerik." },
-      { id: "22", name: "Ben Becula Distillery", category: "scotch", brands: ["Ben Becula"], description: "Nieuwe distilleerderij van de Schotse Outer Hebrides." },
-      { id: "23", name: "Willem’s Whisky", category: "dutch", brands: ["Merken volgen later"], description: "Ambachtelijke Nederlandse whisky." },
-      { id: "24", name: "Het Anker België", category: "world", brands: ["Merken volgen later"], description: "Belgische whisky en bieren van stokerij Het Anker." },
-      { id: "25", name: "Bresser en Timmer (Proeftafel)", category: "scotch", brands: ["Merken volgen later"], description: "Extra proeftafel van Bresser en Timmer." },
-      { id: "27", name: "Kapel Zuid", category: "organisation", brands: ["Standruimte"], description: "Kapelruimte aan de zuidzijde van het kerkgebouw." },
-      { id: "28", name: "Bacardi", category: "world", brands: ["Teeling"], description: "Importeur van Teeling Irish Whiskey en andere premium merken." },
-      { id: "29", name: "Remy Cointreau", category: "scotch", brands: ["Bruichladdich"], description: "Progressieve Islay distilleerderij, producent van Bruichladdich, Port Charlotte en Octomore." },
-      { id: "31", name: "La Martiniquaise Benelux", category: "scotch", brands: ["Merken volgen later"], description: "Toegankelijke Speyside single malts met rijping op diverse vaten." },
-      { id: "32", name: "Dutch Whisky Teers", category: "independent", brands: ["Merken volgen later"], description: "Onafhankelijke bottelaars van bijzondere en zeldzame whisky's." },
-      { id: "34", name: "Barrel Tea", category: "catering", brands: ["Thee", "Gifts"], description: "Thee met de smaak van whisky, en diverse whisky-gerelateerde gifts." },
-      { id: "35", name: "Brugse Whisky Company", category: "world", brands: ["Belgische Whisky"], description: "Belgische single malt en rye whisky uit Brugge." },
-      { id: "36", name: "Perfect Dram", category: "independent", brands: ["Merken volgen later"], description: "Standruimte voor Perfect Dram." },
-      { id: "38", name: "Kapel Noord Stand", category: "organisation", brands: ["Standruimte"], description: "Standruimte in de kapel." },
-      { id: "39", name: "Worsten-stand", category: "catering", brands: ["Food"], description: "Uitgifte van worstenplateaus en hapjes." },
-      { id: "40", name: "Barrel Atelier", category: "catering", brands: ["Gifts"], description: "Meubels en accessoires gemaakt van gebruikte eikenhouten whiskyvaten." },
-      { id: "41", name: "Whisky Passion", category: "catering", brands: ["Boeken"], description: "Het bekende tijdschrift Whisky Passion en diverse whiskyboeken." },
-      { id: "42", name: "Kapel Noord (Tasting Room)", category: "organisation", brands: ["Tasting Room"], description: "Exclusieve tasting room in Kapel Noord." },
-      { id: "43", name: "Stokerij Sculte", category: "dutch", brands: ["Nederlandse Whisky"], description: "Bekroonde Nederlandse single malt whisky, gerijpt op Twents eiken." },
-      { id: "44", name: "De Monnik Dranken (Tafel B)", category: "scotch", brands: ["Merken volgen later"], description: "Extra tasting proeftafel van De Monnik Dranken." },
-      { id: "45", name: "Disaronno International", category: "world", brands: ["The Irishman", "Cotswolds"], description: "Importeur van The Irishman Irish Whiskey en Cotswolds single malt." },
-      { id: "46", name: "Maple & More", category: "world", brands: ["Whisky Likeur"], description: "Canadian Whisky Liqueur." },
-      { id: "47", name: "Koninklijke De Kuyper", category: "world", brands: ["Bowmore", "Laphroaig"], description: "De Kuyper Royal Distillers toont legendarische turfwhisky's." },
-      { id: "48", name: "Festivalslijterij (Stand 48)", category: "independent", brands: ["Festivalslijterij", "Bottelings"], description: "De officiële festivalslijterij waar u flessen kunt aanschaffen." },
-      { id: "O", name: "Organisatie & Infobalie", category: "organisation", brands: ["Infobalie", "Muntinname"], description: "Centrale organisatiebalie voor vragen, muntinname en programma." },
-      { id: "S", name: "Slijterij", category: "organisation", brands: ["Festivalslijterij"], description: "De officiële festivalslijterij." },
-      { id: "C", name: "Catering & Food Court", category: "catering", brands: ["Food", "Buitenruimte"], description: "Food court en uitgifte van warme maaltijden en snacks." },
-      { id: "U", name: "Uitgifte Glazen & Entree", category: "organisation", brands: ["Entree", "Glazen"], description: "Entree en uitgifte van festival proefglazen." }
+      { id: "1", name: "Distilleerderij de Bronckhorst", category: "dutch", categories: ["dutch"], brands: ["Nederlandse Whisky"], description: "Ambachtelijke Nederlandse single malt whisky, ter plaatse gedistilleerd in de Achterhoek." },
+      { id: "2", name: "Mitra", category: "world", categories: ["scotch", "world", "independent"], brands: ["Merken volgen later"], description: "Mitra slijterijen presenteert een gevarieerde selectie van bekende en zeldzame whisky's." },
+      { id: "3", name: "Bresser en Timmer", category: "scotch", categories: ["scotch", "world", "independent"], brands: ["Craft Spirits"], description: "Toonaangevende importeur van craft spirits. Stand 3 & 4." },
+      { id: "4", name: "Bresser en Timmer", category: "scotch", categories: ["scotch", "world", "independent"], brands: ["Craft Spirits"], description: "Toonaangevende importeur van craft spirits. Stand 3 & 4." },
+      { id: "5", name: "Cley Whisky", category: "dutch", categories: ["dutch"], brands: ["Nederlandse Whisky (Rotterdam)"], description: "Rotterdamse craft distilleerderij die eigentijdse single malt en rye whisky's maakt met lokaal graan." },
+      { id: "6", name: "SMWS (Scotch Malt Whisky Society)", category: "world", categories: ["scotch", "world", "independent"], brands: ["Whisky Club"], description: "De Schotse Malt Whisky Society biedt exclusieve single cask bottelingen voor clubleden." },
+      { id: "7", name: "De Monnik Dranken", category: "scotch", categories: ["scotch", "world", "independent"], brands: ["Merken volgen later"], description: "Familiebedrijf en importeur met een prachtig portfolio aan Schotse single malts." },
+      { id: "10", name: "Anker Amsterdam Spirits", category: "world", categories: ["scotch", "world", "independent"], brands: ["Merken volgen later"], description: "Groothandel en importeur van diverse dranken en spirits (Samengevoegde stand 10)." },
+      { id: "11", name: "Diageo", category: "scotch", categories: ["scotch"], brands: ["The Singleton", "Classic Malts Selection"], description: "Klassieke Schotse single malts uit het portfolio van Diageo." },
+      { id: "12", name: "Van Wees Holland", category: "independent", categories: ["scotch", "world", "independent"], brands: ["The Ultimate", "Merken volgen later"], description: "Bekende importeur uit Amersfoort met een rijk aanbod aan onafhankelijke bottelingen." },
+      { id: "13", name: "Maltstock", category: "world", categories: ["scotch", "world"], brands: ["Whisky Club", "Trail begeleiders"], description: "Het gezelligste whisky-weekend ter wereld, met proeverijen en trail-begeleiding." },
+      { id: "14", name: "Brouwers2Import", category: "world", categories: ["scotch", "world", "independent"], brands: ["Merken volgen later"], description: "Importeur van diverse internationale whisky's en gedistilleerd." },
+      { id: "X", mapSlot: "X", name: "Stand X (Middenblok Noord)", category: "scotch", categories: ["scotch", "world"], brands: ["Standhouder volgt"], description: "Gecombineerde eilandstand op het centrale middenblok." },
+      { id: "16", name: "Trade in Spirits", category: "world", categories: ["scotch", "world", "independent"], brands: ["Merken volgen later"], description: "Importeur van diverse premium spirits." },
+      { id: "17", name: "International Whisky Society (IWS)", category: "world", categories: ["scotch", "world", "independent", "organisation"], brands: ["Whisky Club", "Festival Bottelings", "Glazen"], description: "De International Whisky Society viert het 25-jarig jubileum met exclusieve festivalbottelingen door de jaren heen!" },
+      { id: "18", name: "BUS Whisky", category: "dutch", categories: ["dutch"], brands: ["Nederlandse Whisky"], description: "Duurzame Nederlandse single malt whisky, lokaal verbouwd op de BUS boerderij." },
+      { id: "20", name: "Helvetia Spirits", category: "world", categories: ["world"], brands: ["Zwitserse Whisky"], description: "Ambachtelijke single malt whisky uit Zwitserland." },
+      { id: "21", name: "The Chamberick", category: "dutch", categories: ["dutch"], brands: ["Nederlandse Whisky"], description: "Lokale Nederlandse whisky uit Kamerik." },
+      { id: "22", name: "Ben Becula Distillery", category: "scotch", categories: ["scotch"], brands: ["Ben Becula"], description: "Nieuwe distilleerderij van de Schotse Outer Hebrides." },
+      { id: "23", name: "Willem’s Whisky", category: "dutch", categories: ["dutch", "independent"], brands: ["Merken volgen later"], description: "Ambachtelijke Nederlandse whisky." },
+      { id: "24", name: "Het Anker België", category: "world", categories: ["world"], brands: ["Gouden Carolus"], description: "Belgische whisky en bieren van stokerij Het Anker." },
+      { id: "25", name: "Bresser en Timmer (Proeftafel)", category: "scotch", categories: ["scotch", "world"], brands: ["Merken volgen later"], description: "Extra proeftafel van Bresser en Timmer." },
+      { id: "27", name: "Kapel Zuid", category: "organisation", categories: ["organisation"], brands: ["Standruimte"], description: "Kapelruimte aan de zuidzijde van het kerkgebouw." },
+      { id: "28", name: "Bacardi", category: "world", categories: ["scotch", "world"], brands: ["Teeling", "Aberfeldy", "Craigellachie"], description: "Importeur van Teeling Irish Whiskey en Schotse single malts." },
+      { id: "29", name: "Remy Cointreau", category: "scotch", categories: ["scotch", "world"], brands: ["Bruichladdich", "Port Charlotte", "Octomore"], description: "Progressieve Islay distilleerderij, producent van Bruichladdich, Port Charlotte en Octomore." },
+      { id: "31", name: "La Martiniquaise Benelux", category: "scotch", categories: ["scotch", "world"], brands: ["Glen Moray", "Cutty Sark"], description: "Toegankelijke Speyside single malts met rijping op diverse vaten." },
+      { id: "32", name: "Dutch Whisky Teers", category: "independent", categories: ["scotch", "dutch", "independent"], brands: ["Merken volgen later"], description: "Onafhankelijke bottelaars van bijzondere en zeldzame whisky's." },
+      { id: "34", name: "Barrel Tea", category: "catering", categories: ["catering"], brands: ["Thee", "Gifts"], description: "Thee met de smaak van whisky, en diverse whisky-gerelateerde gifts." },
+      { id: "35", name: "Brugse Whisky Company", category: "world", categories: ["world", "independent"], brands: ["Belgische Whisky"], description: "Belgische single malt en rye whisky uit Brugge." },
+      { id: "36", name: "Perfect Dram", category: "independent", categories: ["scotch", "world", "independent"], brands: ["Merken volgen later"], description: "Standruimte voor Perfect Dram." },
+      { id: "38", name: "Kapel Noord Stand", category: "organisation", categories: ["organisation"], brands: ["Standruimte"], description: "Standruimte in de kapel." },
+      { id: "39", name: "Worsten-stand", category: "catering", categories: ["catering"], brands: ["Food"], description: "Uitgifte van worstenplateaus en hapjes." },
+      { id: "40", name: "Barrel Atelier", category: "catering", categories: ["catering"], brands: ["Gifts"], description: "Meubels en accessoires gemaakt van gebruikte eikenhouten whiskyvaten." },
+      { id: "41", name: "Whisky Passion", category: "catering", categories: ["catering"], brands: ["Boeken"], description: "Het bekende tijdschrift Whisky Passion en diverse whiskyboeken." },
+      { id: "42", name: "Kapel Noord (Tasting Room)", category: "organisation", categories: ["organisation"], brands: ["Tasting Room"], description: "Exclusieve tasting room in Kapel Noord." },
+      { id: "43", name: "Stokerij Sculte", category: "dutch", categories: ["dutch"], brands: ["Nederlandse Whisky"], description: "Bekroonde Nederlandse single malt whisky, gerijpt op Twents eiken." },
+      { id: "44", name: "De Monnik Dranken (Tafel B)", category: "scotch", categories: ["scotch", "world"], brands: ["Merken volgen later"], description: "Extra tasting proeftafel van De Monnik Dranken." },
+      { id: "45", name: "Disaronno International", category: "world", categories: ["world"], brands: ["The Irishman", "Cotswolds"], description: "Importeur van The Irishman Irish Whiskey en Cotswolds single malt." },
+      { id: "46", name: "Maple & More", category: "world", categories: ["world"], brands: ["Whisky Likeur"], description: "Canadian Whisky Liqueur." },
+      { id: "47", name: "Koninklijke De Kuyper", category: "world", categories: ["scotch", "world"], brands: ["Bowmore", "Laphroaig"], description: "De Kuyper Royal Distillers toont legendarische turfwhisky's." },
+      { id: "48", name: "Festivalslijterij (Stand 48)", category: "independent", categories: ["scotch", "world", "independent", "organisation"], brands: ["Festivalslijterij", "Bottelings"], description: "De officiële festivalslijterij waar u flessen kunt aanschaffen." },
+      { id: "O", name: "Organisatie & Infobalie", category: "organisation", categories: ["organisation"], brands: ["Infobalie", "Muntinname"], description: "Centrale organisatiebalie voor vragen, muntinname en programma." },
+      { id: "S", name: "Slijterij", category: "organisation", categories: ["organisation"], brands: ["Festivalslijterij"], description: "De officiële festivalslijterij." },
+      { id: "C", name: "Catering & Food Court", category: "catering", categories: ["catering"], brands: ["Food", "Buitenruimte"], description: "Food court en uitgifte van warme maaltijden en snacks." },
+      { id: "U", name: "Uitgifte Glazen & Entree", category: "organisation", categories: ["organisation"], brands: ["Entree", "Glazen"], description: "Entree en uitgifte van festival proefglazen." }
     ];
+
+    const CAT_LABELS_ACCOUNT: Record<string, string> = {
+      scotch: 'Schots',
+      dutch: 'Nederlands',
+      world: 'Wereld / Iers',
+      independent: 'Bottelaar',
+      catering: 'Catering & Lifestyle',
+      organisation: 'Organisatie'
+    };
 
     const accountStands = document.querySelectorAll('#account-church-map .svg-stand');
     const defaultState = document.getElementById('account-default-info-state');
@@ -3576,7 +3647,8 @@ import Footer from '../components/Footer.astro';
     accountStands.forEach(standNode => {
       standNode.addEventListener('click', () => {
         const sId = standNode.getAttribute('data-stand');
-        const match = exhibitorsData.find(e => e.id === sId);
+        const sSlot = standNode.getAttribute('data-map-slot');
+        const match = exhibitorsData.find(e => e.id === sId || (sSlot && e.mapSlot === sSlot));
 
         accountStands.forEach(s => s.classList.remove('selected-stand'));
         standNode.classList.add('selected-stand');
@@ -3587,12 +3659,38 @@ import Footer from '../components/Footer.astro';
 
           if (badgeEl) badgeEl.textContent = `STAND ${match.id}`;
           if (titleEl) titleEl.textContent = match.name;
-          if (catEl) catEl.textContent = match.category.toUpperCase();
+          if (catEl) {
+            const cats = Array.isArray(match.categories) && match.categories.length > 0 ? match.categories : [match.category];
+            catEl.textContent = cats.map(c => CAT_LABELS_ACCOUNT[c] || c).join(' • ').toUpperCase();
+          }
           if (descEl) descEl.textContent = match.description || "";
 
           if (brandsEl && match.brands) {
             brandsEl.innerHTML = match.brands.map(b => `<span class="addon-badge">${b}</span>`).join(' ');
           }
+        }
+      });
+    });
+
+    window.addEventListener('ghl:stands-updated', (e: any) => {
+      const liveStands = e.detail;
+      if (!Array.isArray(liveStands)) return;
+      liveStands.forEach((ls: any) => {
+        const slotKey = ls.mapSlot || ls.id;
+        const svgGroup = document.querySelector(`#account-church-map .svg-stand[data-map-slot="${slotKey}"], #account-church-map .svg-stand[data-stand="${ls.id}"]`);
+        if (svgGroup && ls.id) {
+          svgGroup.setAttribute('data-stand', ls.id);
+          const labelEl = svgGroup.querySelector('.svg-stand-id-label, text');
+          if (labelEl) labelEl.textContent = ls.id;
+        }
+        const existing = exhibitorsData.find(ex => ex.id === ls.id || (ls.mapSlot && ex.mapSlot === ls.mapSlot));
+        if (existing) {
+          existing.id = ls.id;
+          existing.name = ls.name || existing.name;
+          if (ls.category) existing.category = ls.category;
+          if (Array.isArray(ls.categories) && ls.categories.length > 0) existing.categories = ls.categories;
+          if (Array.isArray(ls.brands) && ls.brands.length > 0) existing.brands = ls.brands;
+          if (ls.description) existing.description = ls.description;
         }
       });
     });

@@ -1,0 +1,1062 @@
+---
+// src/pages/poster-tijdlijn.astro
+import Layout from '../layouts/Layout.astro';
+import LogoSvg from '../assets/Logo/Logo.svg?raw';
+---
+
+<Layout
+  title="A3 Poster Tijdlijn — 25 Jaar International Whisky Festival Den Haag"
+  description="Printklare A3 verticale tijdlijn poster van 25 jaar International Whisky Festival Den Haag (2000 - 2026)."
+>
+  <!-- Floating Screen Controls (Hidden when printing to A3 PDF) -->
+  <div class="poster-toolbar no-print">
+    <div class="toolbar-inner">
+      <div class="toolbar-left">
+        <a href="/" class="toolbar-back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          Terug naar Homepage
+        </a>
+        <a href="/poster-tijdlijn-v2" class="toolbar-back-link" style="background: #006448; border: 1px solid #caac8e;">
+          Bekijk Versie 2 (Vintage Papier &amp; Kader) &rarr;
+        </a>
+        <span class="toolbar-badge">VERSIE 1 (ORIGINEEL)</span>
+      </div>
+      <div class="toolbar-actions">
+        <button type="button" id="toggle-photo-style-btn" class="toolbar-btn toolbar-btn-outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+          <span>Fotostijl: Vintage Kader</span>
+        </button>
+        <button type="button" id="toggle-edit-btn" class="toolbar-btn toolbar-btn-outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+          <span>Verslepen &amp; Tekst Bewerken: UIT</span>
+        </button>
+        <button type="button" onclick="window.print()" class="toolbar-btn toolbar-btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          Print / Opslaan als A3 PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- A3 STAGE WRAPPER -->
+  <main class="poster-stage-wrapper">
+    <!-- A3 SHEET: Exact 1400 x 1980 coordinate space (= 297mm x 420mm ratio 1 : 1.41428) -->
+    <article class="a3-poster-sheet" id="a3-poster">
+      
+      <!-- Vintage Outer Frame & Corner Ornaments -->
+      <div class="poster-vintage-border" aria-hidden="true">
+        <div class="corner-ornament tl"></div>
+        <div class="corner-ornament tr"></div>
+        <div class="corner-ornament bl"></div>
+        <div class="corner-ornament br"></div>
+      </div>
+
+      <!-- 1. POSTER HEADER -->
+      <header class="poster-header">
+        <div class="header-logo-badge">
+          <Fragment set:html={LogoSvg} />
+        </div>
+        <div class="header-titles">
+          <span class="poster-kicker editable-node">HISTORISCHE TIJDLIJN &bull; GROTE KERK DEN HAAG &bull; 2000 &ndash; 2026</span>
+          <h1 class="poster-main-title editable-node">Het Ontstaan van het Festival</h1>
+          <p class="poster-subtitle editable-node">
+            Van één van de eerste drie whiskyfestivals ter wereld tot de 25ste jubileumeditie in het hart van Den Haag
+          </p>
+        </div>
+        <div class="header-jubilee-seal">
+          <div class="seal-ring">
+            <span class="seal-top">EST. 2000</span>
+            <strong class="seal-num">25</strong>
+            <span class="seal-bot">EDITIE 2026</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- 2. REFINED 3-BEND S-CURVE TIMELINE CANVAS (Exact 1316 x 1690 coordinate space) -->
+      <div class="poster-timeline-canvas" id="timeline-canvas">
+        
+        <!-- SVG Clean Editorial Line & Dynamic Pointer Lines -->
+        <svg class="timeline-svg-layer" id="timeline-svg" viewBox="0 0 1316 1690" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Subtle Champagne Gold Parallel Accent Aura -->
+          <path
+            d="M 120 215
+               C 400 215, 700 235, 980 235
+               C 1245 235, 1245 625, 980 625
+               C 700 625, 400 645, 335 645
+               C 70 645, 70 1035, 335 1035
+               C 600 1035, 700 1055, 980 1055
+               C 1245 1055, 1245 1445, 980 1445
+               C 750 1445, 550 1455, 380 1455"
+            stroke="#caac8e"
+            stroke-width="9"
+            stroke-linecap="round"
+            stroke-opacity="0.38"
+          />
+
+          <!-- Crisp, Single Editorial Heritage Line in Den Haag Green -->
+          <path
+            id="s-curve-main"
+            d="M 120 215
+               C 400 215, 700 235, 980 235
+               C 1245 235, 1245 625, 980 625
+               C 700 625, 400 645, 335 645
+               C 70 645, 70 1035, 335 1035
+               C 600 1035, 700 1055, 980 1055
+               C 1245 1055, 1245 1445, 980 1445
+               C 750 1445, 550 1455, 380 1455"
+            stroke="#006448"
+            stroke-width="3.5"
+            stroke-linecap="round"
+          />
+
+          <!-- Dynamic Pointer Lines & Anchor Dots Group (Computed by JS) -->
+          <g id="pointer-lines-group"></g>
+        </svg>
+
+        <!-- ====================================================
+             4 LARGE, HIGH-CLARITY FESTIVAL PHOTOS IN OPEN BAYS
+             ==================================================== -->
+        <!-- Photo 1: Left under 2000 (Het Eerste Festival 2000) -->
+        <figure class="poster-photo-card draggable-item" style="left: 25px; top: 280px; width: 280px;">
+          <div class="photo-inner" style="height: 185px;">
+            <img src="/timeline_2000_origin.png" alt="Het Eerste Whisky Festival 2000" />
+          </div>
+          <figcaption class="editable-node">2000 &bull; Het Eerste Whisky Festival</figcaption>
+        </figure>
+
+        <!-- Photo 2: Top Right above Bend 1 (De Grote Kerk Den Haag) -->
+        <figure class="poster-photo-card draggable-item" style="left: 1005px; top: 15px; width: 290px;">
+          <div class="photo-inner" style="height: 175px;">
+            <img src="/Afbeeldingen/2025/IWF2025-MilouvanderWillPhotography-211.jpg" alt="De Grote Kerk Den Haag" />
+          </div>
+          <figcaption class="editable-node">De Grote Kerk Den Haag &bull; Sinds 2001</figcaption>
+        </figure>
+
+        <!-- Photo 3: Right Bay below Bend 1 (Proefglazen & Drams) -->
+        <figure class="poster-photo-card draggable-item" style="left: 1025px; top: 675px; width: 270px;">
+          <div class="photo-inner" style="height: 185px;">
+            <img src="/Afbeeldingen/2025/InternationalWhiskyFestival-MilouvanderWillPhotography-132.jpg" alt="Exclusieve Drams en Proefglazen" />
+          </div>
+          <figcaption class="editable-node">Honderden Drams &amp; Single Casks</figcaption>
+        </figure>
+
+        <!-- Photo 4: Bottom Left below Bend 2 (De Haagsche Whisky Tram) -->
+        <figure class="poster-photo-card draggable-item" style="left: 25px; top: 1085px; width: 275px;">
+          <div class="photo-inner" style="height: 185px;">
+            <img src="/timeline_2018_tram.png" alt="De Haagsche Whisky Tram" />
+          </div>
+          <figcaption class="editable-node">2011 &bull; Dram in de Haagsche Whisky Tram</figcaption>
+        </figure>
+
+        <!-- ====================================================
+             13 EXACT CHRONOLOGICAL HOMEPAGE MILESTONES
+             ==================================================== -->
+
+        <!-- 1. 2000 (Pass 1 Left - Above Line) -->
+        <div
+          class="milestone-node draggable-item"
+          data-anchor-x="160"
+          data-anchor-y="216"
+          style="left: 25px; top: 22px; width: 430px;"
+        >
+          <div class="ms-header">
+            <span class="ms-year">2000</span>
+            <h2 class="ms-title editable-node">Het Eerste Whisky Festival</h2>
+          </div>
+          <p class="ms-desc editable-node">
+            Het eerste Whisky Festival in Nederland en Europa &mdash; en naar later bleek <strong>één van de eerste 3 whiskyfestivals ter wereld</strong> (naast San Francisco en Tokyo, waarvan Tokyo nog bestaat als <em>Whisky Live Japan</em>).
+          </p>
+        </div>
+
+        <!-- 2. 2001 (Pass 1 Center - Below Line) -->
+        <div
+          class="milestone-node draggable-item"
+          data-anchor-x="525"
+          data-anchor-y="225"
+          style="left: 350px; top: 285px; width: 365px;"
+        >
+          <div class="ms-header">
+            <span class="ms-year">2001</span>
+            <h2 class="ms-title editable-node">Verhuizing Grote Kerk &amp; IWS</h2>
+          </div>
+          <p class="ms-desc editable-node">
+            Verhuizing naar de <strong>Grote Kerk Den Haag</strong>. Oprichting <em>International Whisky Society</em> onder Stichting Celtische Cultuur.
+          </p>
+        </div>
+
+        <!-- 3. 2002 (Pass 1 Right - Above Line) -->
+        <div
+          class="milestone-node draggable-item"
+          data-anchor-x="835"
+          data-anchor-y="234"
+          style="left: 605px; top: 42px; width: 365px;"
+        >
+          <div class="ms-header">
+            <span class="ms-year">2002</span>
+            <h2 class="ms-title editable-node">Introductie Dram</h2>
+          </div>
+          <p class="ms-desc editable-node">
+            Introductie van de <strong>Dram</strong> als eigen betaalmiddel op de beursvloer voor bijzondere en exclusieve whisky's.
+          </p>
+        </div>
+
+        <!-- 4. 2003 (Bend 1 Right Apex - Inside Bend) -->
+        <div
+          class="milestone-node draggable-item"
+          data-anchor-x="1179"
+          data-anchor-y="430"
+          style="left: 760px; top: 365px; width: 355px;"
+        >
+          <div class="ms-header">
+            <span class="ms-year">2003</span>
+            <h2 class="ms-title editable-node">Verhuizing naar Leiden</h2>
+          </div>
+          <p class="ms-desc editable-node">
+            Verhuizing naar de Pieterskerk in Leiden.
+          </p>
+        </div>
+
+        <!-- 5. 2004 (Pass 2 Right-Center - Below Line) -->
+        <div
+          class="milestone-node draggable-item"
+          data-anchor-x="830"
+          data-anchor-y="629"
+          style="left: 645px; top: 690px; width: 350px;"
+        >
+          <div class="ms-header">
+            <span class="ms-year">2004</span>
+            <h2 class="ms-title editable-node">Gent &amp; Masterclasses</h2>
+          </div>
+          <p class="ms-desc editable-node">
+            Oprichting van het <strong>Gents Whisky Festival</strong> in Gent en introductie van verdiepende <strong>Masterclasses</strong> in Den Haag.
+          </p>
+        </div>
+
+        <!-- 6. 2009 (Pass 2 Left-Center - Above Line) -->
+        <div
+          class="milestone-node draggable-item"
+          data-anchor-x="460"
+          data-anchor-y="642"
+          style="left: 345px; top: 475px; width: 345px;"
+        >
+          <div class="ms-header">
+            <span class="ms-year">2009</span>
+            <h2 class="ms-title editable-node">Whisky Awards</h2>
+          </div>
+          <p class="ms-desc editable-node">
+            Introductie van de jaarlijkse <strong>Whisky Awards</strong> tijdens het festival.
+          </p>
+        </div>
+
+        <!-- 7. 2011 (Bend 2 Left Apex - Inside Bend) -->
+        <div
+          class="milestone-node draggable-item"
+          data-anchor-x="136"
+          data-anchor-y="840"
+          style="left: 205px; top: 780px; width: 390px;"
+        >
+          <div class="ms-header">
+            <span class="ms-year">2011</span>
+            <h2 class="ms-title editable-node">Terug in Den Haag &amp; Whisky Tram</h2>
+          </div>
+          <p class="ms-desc editable-node">
+            Terug naar de <strong>Grote Kerk in Den Haag</strong> (waar we nog steeds zitten) en introductie van de <strong>Whisky Tram (Dram in de Tram)</strong>.
+          </p>
+        </div>
+
+        <!-- 8. 2015 (Pass 3 Left-Center - Below Line) -->
+        <div
+          class="milestone-node draggable-item"
+          data-anchor-x="465"
+          data-anchor-y="1039"
+          style="left: 335px; top: 1100px; width: 350px;"
+        >
+          <div class="ms-header">
+            <span class="ms-year">2015</span>
+            <h2 class="ms-title editable-node">Introductie Slijterij</h2>
+          </div>
+          <p class="ms-desc editable-node">
+            Introductie van de eigen <strong>Festivalslijterij</strong> zodat bezoekers hun favoriete geproefde fles direct kunnen aanschaffen.
+          </p>
+        </div>
+
+        <!-- 9. 2017 (Pass 3 Right-Center - Above Line) -->
+        <div
+          class="milestone-node draggable-item"
+          data-anchor-x="795"
+          data-anchor-y="1050"
+          style="left: 640px; top: 880px; width: 345px;"
+        >
+          <div class="ms-header">
+            <span class="ms-year">2017</span>
+            <h2 class="ms-title editable-node">Tasting For Women Only</h2>
+          </div>
+          <p class="ms-desc editable-node">
+            De allereerste editie van de speciale <strong>Whisky Tasting For Women Only</strong>.
+          </p>
+        </div>
+
+        <!-- 10. 2022 (Bend 3 Right Apex - Inside Bend) -->
+        <div
+          class="milestone-node draggable-item"
+          data-anchor-x="1179"
+          data-anchor-y="1250"
+          style="left: 735px; top: 1185px; width: 380px;"
+        >
+          <div class="ms-header">
+            <span class="ms-year">2022</span>
+            <h2 class="ms-title editable-node">Toren-Tasting</h2>
+          </div>
+          <p class="ms-desc editable-node">
+            Introductie van de <strong>Toren-tasting</strong> in de Haagsche Toren: eerst een rondleiding, een dram op de top en daarna afdalen voor een bijzondere tasting.
+          </p>
+        </div>
+
+        <!-- 11. 2023 (Pass 4 Right - Below Line) -->
+        <div
+          class="milestone-node draggable-item"
+          data-anchor-x="890"
+          data-anchor-y="1447"
+          style="left: 915px; top: 1505px; width: 380px;"
+        >
+          <div class="ms-header">
+            <span class="ms-year">2023</span>
+            <h2 class="ms-title editable-node">Buitenterrein</h2>
+          </div>
+          <p class="ms-desc editable-node">
+            Introductie van het sfeervolle <strong>buitenterrein</strong> naast de Grote Kerk met foodtruck en extra lucht-ruimte.
+          </p>
+        </div>
+
+        <!-- 12. 2025 (Pass 4 Center - Above Line) -->
+        <div
+          class="milestone-node draggable-item"
+          data-anchor-x="630"
+          data-anchor-y="1452"
+          style="left: 335px; top: 1270px; width: 375px;"
+        >
+          <div class="ms-header">
+            <span class="ms-year">2025</span>
+            <h2 class="ms-title editable-node">Amsterdam &amp; Vatenmaken</h2>
+          </div>
+          <p class="ms-desc editable-node">
+            Oprichting <strong>WhiskyFest Amsterdam</strong> en introductie van de <strong>Vatenmaken workshop</strong> op het buitenterrein over het kuipersambacht en de invloed van hout op whisky.
+          </p>
+        </div>
+
+        <!-- 13. 2026 JUBILEE FINALE CARD (Pass 4 Left End) -->
+        <div
+          class="milestone-node milestone-jubilee-card draggable-item"
+          data-anchor-x="380"
+          data-anchor-y="1455"
+          style="left: 25px; top: 1500px; width: 840px;"
+        >
+          <div class="jubilee-card-header">
+            <span class="ms-year jubilee-year">2026</span>
+            <span class="jubilee-tag editable-node">JUBILEUMEDITIE &bull; 13, 14 &amp; 15 NOVEMBER 2026</span>
+          </div>
+          <h2 class="ms-title editable-node">25ste Editie International Whisky Festival</h2>
+          <p class="ms-desc editable-node">
+            Een kwart eeuw passie, vakmanschap en Schotse gastvrijheid onder de gewelven van de Grote Kerk in Den Haag.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- 3. POSTER FOOTER -->
+      <footer class="poster-footer">
+        <div class="footer-col-left editable-node">
+          <strong>INTERNATIONAL WHISKY FESTIVAL DEN HAAG</strong> &bull; GROTE KERK DEN HAAG (ROND DE GROTE KERK 12)
+        </div>
+        <div class="footer-col-right editable-node">
+          WWW.WHISKYFESTIVAL.NL &bull; STICHTING CELTISCHE CULTUUR
+        </div>
+      </footer>
+
+    </article>
+  </main>
+
+  <script is:inline>
+    (function() {
+      var poster = document.getElementById('a3-poster');
+      var canvas = document.getElementById('timeline-canvas');
+      var linesGroup = document.getElementById('pointer-lines-group');
+      var editBtn = document.getElementById('toggle-edit-btn');
+      var styleBtn = document.getElementById('toggle-photo-style-btn');
+      var editing = false;
+      var softBlend = false;
+
+      // Dynamically compute and draw SVG pointer lines from S-curve anchor (ax, ay)
+      // to the closest point on each milestone card's bounding box.
+      function updatePointerLines() {
+        if (!canvas || !linesGroup) return;
+        while (linesGroup.firstChild) {
+          linesGroup.removeChild(linesGroup.firstChild);
+        }
+
+        var nodes = canvas.querySelectorAll('.milestone-node[data-anchor-x]');
+        nodes.forEach(function(node) {
+          var ax = parseFloat(node.getAttribute('data-anchor-x') || '0');
+          var ay = parseFloat(node.getAttribute('data-anchor-y') || '0');
+          var isJubilee = node.classList.contains('milestone-jubilee-card');
+
+          var left = node.offsetLeft;
+          var top = node.offsetTop;
+          var width = node.offsetWidth;
+          var height = node.offsetHeight;
+
+          // Clamp anchor point to rectangle [left, left+width] x [top, top+height]
+          var tx = Math.max(left + 12, Math.min(ax, left + width - 12));
+          var ty = Math.max(top + 4, Math.min(ay, top + height - 4));
+
+          var svgNS = 'http://www.w3.org/2000/svg';
+
+          // Fine Pointer Line
+          var line = document.createElementNS(svgNS, 'line');
+          line.setAttribute('x1', String(ax));
+          line.setAttribute('y1', String(ay));
+          line.setAttribute('x2', String(tx));
+          line.setAttribute('y2', String(ty));
+          line.setAttribute('stroke', isJubilee ? '#006448' : '#1D1C1A');
+          line.setAttribute('stroke-width', isJubilee ? '2.5' : '1.75');
+          line.setAttribute('stroke-dasharray', isJubilee ? 'none' : '3 3');
+          linesGroup.appendChild(line);
+
+          // Small target dot at the text card edge
+          var endDot = document.createElementNS(svgNS, 'circle');
+          endDot.setAttribute('cx', String(tx));
+          endDot.setAttribute('cy', String(ty));
+          endDot.setAttribute('r', '3.5');
+          endDot.setAttribute('fill', '#006448');
+          linesGroup.appendChild(endDot);
+
+          // Heritage Anchor Ring on the S-Curve
+          var outerRing = document.createElementNS(svgNS, 'circle');
+          outerRing.setAttribute('cx', String(ax));
+          outerRing.setAttribute('cy', String(ay));
+          outerRing.setAttribute('r', isJubilee ? '11' : '7.5');
+          outerRing.setAttribute('fill', '#FAF7F2');
+          outerRing.setAttribute('stroke', '#006448');
+          outerRing.setAttribute('stroke-width', isJubilee ? '3.5' : '2.5');
+          linesGroup.appendChild(outerRing);
+
+          var innerDot = document.createElementNS(svgNS, 'circle');
+          innerDot.setAttribute('cx', String(ax));
+          innerDot.setAttribute('cy', String(ay));
+          innerDot.setAttribute('r', isJubilee ? '5' : '3.2');
+          innerDot.setAttribute('fill', '#006448');
+          linesGroup.appendChild(innerDot);
+        });
+      }
+
+      updatePointerLines();
+      window.addEventListener('load', updatePointerLines);
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(updatePointerLines);
+      }
+
+      // Toggle Photo Style (Vintage Frame vs Soft Parchment Blend)
+      if (styleBtn && poster) {
+        styleBtn.addEventListener('click', function() {
+          softBlend = !softBlend;
+          poster.classList.toggle('photo-style-blend', softBlend);
+          var span = styleBtn.querySelector('span');
+          if (span) {
+            span.textContent = softBlend ? 'Fotostijl: Perkament Blend' : 'Fotostijl: Vintage Kader';
+          }
+        });
+      }
+
+      // Toggle Edit & Drag Mode
+      if (editBtn && poster) {
+        editBtn.addEventListener('click', function() {
+          editing = !editing;
+          var editNodes = poster.querySelectorAll('.editable-node');
+          editNodes.forEach(function(el) {
+            el.setAttribute('contenteditable', editing ? 'true' : 'false');
+          });
+          poster.classList.toggle('is-editing', editing);
+          var span = editBtn.querySelector('span');
+          if (span) {
+            span.textContent = editing
+              ? 'Verslepen & Tekst Bewerken: AAN'
+              : 'Verslepen & Tekst Bewerken: UIT';
+          }
+          updatePointerLines();
+        });
+      }
+
+      // Interactive Drag-and-Drop for milestone cards and photo cards when in Edit Mode
+      var activeDrag = null;
+      var startX = 0;
+      var startY = 0;
+      var initialLeft = 0;
+      var initialTop = 0;
+
+      if (canvas) {
+        canvas.addEventListener('mousedown', function(e) {
+          if (!editing) return;
+          var target = e.target.closest('.draggable-item');
+          if (!target) return;
+          if (e.target.isContentEditable && document.activeElement === e.target) {
+            return;
+          }
+          activeDrag = target;
+          startX = e.clientX;
+          startY = e.clientY;
+          initialLeft = target.offsetLeft;
+          initialTop = target.offsetTop;
+          target.classList.add('is-dragging');
+        });
+
+        window.addEventListener('mousemove', function(e) {
+          if (!activeDrag) return;
+          var dx = e.clientX - startX;
+          var dy = e.clientY - startY;
+          activeDrag.style.left = Math.round(initialLeft + dx) + 'px';
+          activeDrag.style.top = Math.round(initialTop + dy) + 'px';
+          updatePointerLines();
+        });
+
+        window.addEventListener('mouseup', function() {
+          if (activeDrag) {
+            activeDrag.classList.remove('is-dragging');
+            activeDrag = null;
+            updatePointerLines();
+          }
+        });
+
+        canvas.addEventListener('input', function() {
+          updatePointerLines();
+        });
+      }
+    })();
+  </script>
+</Layout>
+
+<style>
+  /* ----------------------------------------------------
+     SCREEN TOOLBAR & STAGE
+     ---------------------------------------------------- */
+  .poster-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    background: #1D1C1A;
+    color: #FAF7F2;
+    border-bottom: 2px solid #006448;
+    padding: 0.75rem 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  .toolbar-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .toolbar-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: #FAF7F2;
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.4rem 0.75rem;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    transition: background 0.2s ease;
+  }
+
+  .toolbar-back-link:hover {
+    background: rgba(255, 255, 255, 0.16);
+  }
+
+  .toolbar-badge {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #caac8e;
+    border: 1px solid rgba(202, 172, 142, 0.4);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+  }
+
+  .toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .toolbar-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.84rem;
+    font-weight: 800;
+    padding: 0.55rem 1.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .toolbar-btn-outline {
+    background: transparent;
+    color: #FAF7F2;
+    border: 1.5px solid rgba(250, 247, 242, 0.35);
+  }
+
+  .toolbar-btn-outline:hover {
+    border-color: #caac8e;
+    color: #caac8e;
+  }
+
+  .toolbar-btn-primary {
+    background: #006448;
+    color: #FFFFFF;
+    border: 1.5px solid #caac8e;
+    box-shadow: 2px 2px 0px #000000;
+  }
+
+  .toolbar-btn-primary:hover {
+    background: #004D37;
+  }
+
+  .poster-stage-wrapper {
+    background: #2A2927;
+    min-height: calc(100vh - 60px);
+    padding: 2.5rem 1.5rem 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow-x: auto;
+  }
+
+  /* ----------------------------------------------------
+     A3 SHEET: Exact 1400px x 1980px (= 297mm x 420mm ratio)
+     ---------------------------------------------------- */
+  .a3-poster-sheet {
+    position: relative;
+    width: 1400px;
+    height: 1980px;
+    min-width: 1400px;
+    min-height: 1980px;
+    background-color: #FAF7F2;
+    background-image:
+      radial-gradient(rgba(0, 100, 72, 0.055) 1px, transparent 0),
+      radial-gradient(rgba(202, 172, 142, 0.14) 1px, #FAF7F2 0);
+    background-size: 28px 28px;
+    background-position: 0 0, 14px 14px;
+    color: #1D1C1A;
+    box-shadow: 0 25px 75px rgba(0, 0, 0, 0.6);
+    padding: 36px 42px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  /* Vintage Frame Border */
+  .poster-vintage-border {
+    position: absolute;
+    inset: 16px;
+    border: 3.5px solid #1D1C1A;
+    outline: 1.5px solid #006448;
+    outline-offset: -8px;
+    pointer-events: none;
+    z-index: 25;
+  }
+
+  .corner-ornament {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border: 3px solid #006448;
+    background: #FAF7F2;
+  }
+  .corner-ornament.tl { top: -5px; left: -5px; }
+  .corner-ornament.tr { top: -5px; right: -5px; }
+  .corner-ornament.bl { bottom: -5px; left: -5px; }
+  .corner-ornament.br { bottom: -5px; right: -5px; }
+
+  /* ----------------------------------------------------
+     1. POSTER HEADER
+     ---------------------------------------------------- */
+  .poster-header {
+    position: relative;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 140px 1fr 140px;
+    align-items: center;
+    gap: 1.5rem;
+    padding-bottom: 18px;
+    border-bottom: 3px solid #1D1C1A;
+  }
+
+  .header-logo-badge {
+    width: 128px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header-logo-badge :global(svg) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .header-titles {
+    text-align: center;
+  }
+
+  .poster-kicker {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #006448;
+    background: #d8e7e2;
+    padding: 0.28rem 1rem;
+    border-radius: 99px;
+    border: 1.5px solid #006448;
+    margin-bottom: 0.45rem;
+  }
+
+  .poster-main-title {
+    font-family: var(--font-display);
+    font-size: 3.55rem;
+    line-height: 1;
+    color: #006448;
+    letter-spacing: 0.03em;
+    margin: 0 0 0.35rem;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 0px #FAF7F2, 3.5px 3.5px 0px rgba(29, 28, 26, 0.16);
+  }
+
+  .poster-subtitle {
+    font-family: var(--font-sans);
+    font-size: 1.04rem;
+    font-weight: 600;
+    color: #4c5752;
+    margin: 0;
+  }
+
+  .header-jubilee-seal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .seal-ring {
+    width: 108px;
+    height: 108px;
+    border-radius: 50%;
+    background: #006448;
+    color: #FAF7F2;
+    border: 3px solid #1D1C1A;
+    box-shadow: 3.5px 3.5px 0px #1D1C1A;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1;
+    padding: 8px;
+  }
+
+  .seal-top,
+  .seal-bot {
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: #caac8e;
+  }
+
+  .seal-num {
+    font-family: var(--font-display);
+    font-size: 2.55rem;
+    color: #FFFFFF;
+    margin: 3px 0;
+  }
+
+  /* ----------------------------------------------------
+     2. TIMELINE CANVAS & NODES (Exact 1316px inner width, 1690px height)
+     ---------------------------------------------------- */
+  .poster-timeline-canvas {
+    position: relative;
+    width: 1316px;
+    height: 1690px;
+    z-index: 5;
+  }
+
+  .timeline-svg-layer {
+    position: absolute;
+    inset: 0;
+    width: 1316px;
+    height: 1690px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* Milestone Text Cards */
+  .milestone-node {
+    position: absolute;
+    z-index: 8;
+    text-align: left;
+    background: rgba(250, 247, 242, 0.95);
+    border-left: 4px solid #006448;
+    padding: 0.65rem 0.95rem;
+    border-radius: 0 6px 6px 0;
+    box-shadow: 0 3px 12px rgba(29, 28, 26, 0.06);
+    box-sizing: border-box;
+  }
+
+  .ms-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.65rem;
+    margin-bottom: 0.25rem;
+    flex-wrap: wrap;
+  }
+
+  .ms-year {
+    font-family: var(--font-display);
+    font-size: 2.1rem;
+    line-height: 1;
+    color: #006448;
+    letter-spacing: 0.03em;
+    flex-shrink: 0;
+  }
+
+  .ms-title {
+    font-family: var(--font-sans);
+    font-size: 1.12rem;
+    font-weight: 800;
+    color: #1D1C1A;
+    text-transform: none;
+    letter-spacing: -0.01em;
+    line-height: 1.22;
+    margin: 0;
+  }
+
+  .ms-desc {
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    line-height: 1.45;
+    color: #2c322f;
+    margin: 0;
+  }
+
+  .ms-desc strong {
+    color: #1D1C1A;
+    font-weight: 800;
+  }
+
+  /* 2026 Jubilee Finale Highlight Card */
+  .milestone-jubilee-card {
+    background: #006448;
+    color: #FAF7F2;
+    padding: 1.1rem 1.45rem;
+    border-radius: 8px;
+    border: 2.5px solid #1D1C1A;
+    box-shadow: 5px 5px 0px #1D1C1A;
+  }
+
+  .jubilee-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .jubilee-year {
+    color: #caac8e !important;
+    font-size: 2.35rem !important;
+    margin: 0 !important;
+  }
+
+  .jubilee-tag {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    background: rgba(255, 255, 255, 0.16);
+    color: #FAF7F2;
+    padding: 0.28rem 0.75rem;
+    border-radius: 4px;
+  }
+
+  .milestone-jubilee-card .ms-title {
+    color: #FFFFFF;
+    font-size: 1.32rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .milestone-jubilee-card .ms-desc {
+    color: rgba(250, 247, 242, 0.92);
+    font-size: 0.96rem;
+  }
+
+  /* ----------------------------------------------------
+     4 LARGE, CRISP FESTIVAL PHOTO CARDS
+     ---------------------------------------------------- */
+  .poster-photo-card {
+    position: absolute;
+    z-index: 6;
+    background: #FFFFFF;
+    border: 2.5px solid #1D1C1A;
+    box-shadow: 5px 5px 0px #1D1C1A;
+    padding: 8px 8px 6px;
+    border-radius: 6px;
+    margin: 0;
+    box-sizing: border-box;
+    transition: box-shadow 0.2s ease, background 0.2s ease, border 0.2s ease;
+  }
+
+  .poster-photo-card .photo-inner {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 3px;
+    background: #e4d5c4;
+  }
+
+  .poster-photo-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: contrast(1.04) saturate(1.04);
+  }
+
+  .poster-photo-card figcaption {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #1D1C1A;
+    text-align: center;
+    padding-top: 6px;
+    letter-spacing: 0.02em;
+  }
+
+  /* Alternative Photo Style: Soft Parchment Blend */
+  .a3-poster-sheet.photo-style-blend .poster-photo-card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .a3-poster-sheet.photo-style-blend .poster-photo-card .photo-inner {
+    border-radius: 12px;
+    mask-image: radial-gradient(ellipse 92% 88% at 50% 50%, #000 68%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 92% 88% at 50% 50%, #000 68%, transparent 100%);
+  }
+
+  .a3-poster-sheet.photo-style-blend .poster-photo-card figcaption {
+    background: rgba(250, 247, 242, 0.9);
+    display: inline-block;
+    width: 100%;
+    padding: 3px 6px;
+    border-radius: 4px;
+    color: #006448;
+  }
+
+  /* Interactive Edit & Drag State */
+  .a3-poster-sheet.is-editing .draggable-item {
+    outline: 2px dashed #006448;
+    outline-offset: 3px;
+    cursor: grab;
+  }
+
+  .a3-poster-sheet.is-editing .draggable-item.is-dragging {
+    cursor: grabbing;
+    z-index: 50;
+    box-shadow: 0 14px 32px rgba(0, 100, 72, 0.28);
+  }
+
+  /* ----------------------------------------------------
+     3. POSTER FOOTER
+     ---------------------------------------------------- */
+  .poster-footer {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 2.5px solid #1D1C1A;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #4c5752;
+  }
+
+  .poster-footer strong {
+    color: #006448;
+    font-weight: 800;
+  }
+
+  /* ----------------------------------------------------
+     EXACT A3 PRINT MEDIA QUERY
+     ---------------------------------------------------- */
+  @media print {
+    @page {
+      size: A3 portrait;
+      margin: 0;
+    }
+
+    :global(html),
+    :global(body) {
+      width: 297mm !important;
+      height: 420mm !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      background: #FAF7F2 !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    .no-print {
+      display: none !important;
+    }
+
+    .poster-stage-wrapper {
+      padding: 0 !important;
+      margin: 0 !important;
+      background: none !important;
+      min-height: 0 !important;
+      display: block !important;
+      overflow: visible !important;
+    }
+
+    .a3-poster-sheet {
+      width: 1400px !important;
+      height: 1980px !important;
+      zoom: 0.801;
+      box-shadow: none !important;
+      margin: 0 !important;
+    }
+  }
+</style>
