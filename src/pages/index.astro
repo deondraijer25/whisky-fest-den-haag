@@ -6002,16 +6002,41 @@ const tickets = await getTickets('den_haag');
         return;
       }
 
-      if (code === "NEW10") {
-        activePromoCode = code;
-        activePromoType = "percentage";
-        activePromoValue = 10;
-        promoMsg.style.display = "block";
-        promoMsg.style.color = "var(--success-green)";
-        promoMsg.textContent = "✓ Kortingscode NEW10 toegepast: 10% korting verwerkt.";
-        recalcModalTotal();
-        return;
-      } else if (code.startsWith("WS-") || code === "IWS" || /^WS\d+/i.test(code)) {
+      // 1. Validate live against Whiskytix coupon database first (supports localhost + production)
+      const isLocalDev = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+      const validateBases = isLocalDev
+        ? ["http://localhost:4000", "https://whiskytix-r1qq.vercel.app"]
+        : ["https://whiskytix-r1qq.vercel.app"];
+
+      let serverRejectionMsg = "";
+      for (const base of validateBases) {
+        try {
+          const res = await fetch(`${base}/api/coupons/validate`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code, festivalId: "denhaag" })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.valid && !(code.startsWith("WS-") && /^WS-\d+$/i.test(code))) {
+              activePromoCode = data.code || code;
+              activePromoType = data.type === "percentage" ? "percentage" : "fixed_amount";
+              activePromoValue = Number(data.value) || 0;
+              promoMsg.style.display = "block";
+              promoMsg.style.color = "var(--success-green)";
+              promoMsg.textContent = data.message || `✓ Kortingscode ${activePromoCode} toegepast.`;
+              recalcModalTotal();
+              return;
+            } else if (data && !data.valid && data.message) {
+              serverRejectionMsg = data.message;
+            }
+            break;
+          }
+        } catch {}
+      }
+
+      // 2. Built-in IWS membership & gift voucher fallback
+      if (code.startsWith("WS-") || code === "IWS" || /^WS\d+/i.test(code)) {
         const normalizedCode = code.startsWith("WS-") || code === "IWS" ? code : `WS-${code.replace(/^WS/i, '')}`;
         sessionStorage.setItem("wf_iws_code", normalizedCode);
         unlockedIwsCode = normalizedCode;
@@ -6039,34 +6064,13 @@ const tickets = await getTickets('den_haag');
         return;
       }
 
-      try {
-        const res = await fetch("https://whiskytix-r1qq.vercel.app/api/coupons/validate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code, festivalId: "denhaag" })
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.valid) {
-            activePromoCode = data.code || code;
-            activePromoType = data.type === "percentage" ? "percentage" : "fixed_amount";
-            activePromoValue = Number(data.value) || 0;
-            promoMsg.style.display = "block";
-            promoMsg.style.color = "var(--success-green)";
-            promoMsg.textContent = data.message || `✓ Kortingscode ${activePromoCode} toegepast.`;
-            recalcModalTotal();
-            return;
-          }
-        }
-      } catch {}
-
       promoDiscount = 0;
       activePromoCode = "";
       activePromoType = "";
       activePromoValue = 0;
       promoMsg.style.display = "block";
       promoMsg.style.color = "#d9534f";
-      promoMsg.textContent = "✗ Ongeldige code. Probeer het opnieuw.";
+      promoMsg.textContent = serverRejectionMsg || "✗ Ongeldige code. Probeer het opnieuw.";
       recalcModalTotal();
     });
   }
