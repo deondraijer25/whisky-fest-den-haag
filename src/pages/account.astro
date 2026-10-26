@@ -4428,24 +4428,50 @@ import Footer from '../components/Footer.astro';
     window.addEventListener('ghl:stands-updated', (e: any) => {
       const liveStands = e.detail;
       if (!Array.isArray(liveStands)) return;
-      liveStands.forEach((ls: any) => {
-        const slotKey = ls.mapSlot || ls.id;
-        const svgGroup = document.querySelector(`#account-church-map .svg-stand[data-map-slot="${slotKey}"], #account-church-map .svg-stand[data-stand="${ls.id}"]`);
-        if (svgGroup && ls.id) {
-          svgGroup.setAttribute('data-stand', ls.id);
+      liveStands.forEach((r: any) => {
+        const p = r.properties || r;
+        const standId = String(p.stand_id || r.id || '').trim();
+        const slotKey = String(p.map_slot || p.mapSlot || (standId === '19' ? 'X' : standId) || '').trim();
+        if (!standId) return;
+
+        const svgGroup = document.querySelector(`#account-church-map .svg-stand[data-stand="${standId}"], #account-church-map .svg-stand[data-map-slot="${slotKey}"]`);
+        if (svgGroup) {
+          svgGroup.setAttribute('data-stand', standId);
           const labelEl = svgGroup.querySelector('.svg-stand-id-label, text');
-          if (labelEl) labelEl.textContent = ls.id;
+          if (labelEl) labelEl.textContent = standId;
         }
-        const existing = exhibitorsData.find(ex => ex.id === ls.id || (ls.mapSlot && ex.mapSlot === ls.mapSlot));
+
+        const brandsArr = Array.isArray(p.brands)
+          ? p.brands
+          : (typeof p.brands === 'string' && p.brands.trim() !== ''
+              ? p.brands.split(',').map((b: string) => b.trim()).filter(Boolean)
+              : null);
+        const descText = p.stand_description !== undefined ? p.stand_description : p.description;
+
+        let existing = exhibitorsData.find(ex => ex.id === standId || (slotKey && ex.mapSlot === slotKey));
         if (existing) {
-          existing.id = ls.id;
-          existing.name = ls.name || existing.name;
-          if (ls.category) existing.category = ls.category;
-          if (Array.isArray(ls.categories) && ls.categories.length > 0) existing.categories = ls.categories;
-          if (Array.isArray(ls.brands) && ls.brands.length > 0) existing.brands = ls.brands;
-          if (ls.description) existing.description = ls.description;
+          existing.id = standId;
+          if (p.exhibitor_name || p.name) existing.name = p.exhibitor_name || p.name;
+          if (p.category) {
+            existing.category = p.category;
+            existing.categories = [p.category];
+          }
+          if (brandsArr) existing.brands = brandsArr;
+          if (descText !== undefined) existing.description = descText;
+        } else {
+          exhibitorsData.push({
+            id: standId,
+            mapSlot: slotKey,
+            name: p.exhibitor_name || p.name || 'Standhouder',
+            category: p.category || 'world',
+            categories: [p.category || 'world'],
+            brands: brandsArr || [],
+            description: descText || '',
+            isNotOnMap: false
+          });
         }
       });
+    });
     });
   });
 </script>

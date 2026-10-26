@@ -1476,15 +1476,40 @@ const exhibitors = await getStandhouders('den_haag');
     });
   });
 
-  // --- Live Leadfabriek CRM (GHL) Stand Sync (Allows renaming Stand "X" or updating stands dynamically) ---
+  // --- Live Leadfabriek CRM (GHL) Stand Sync (Real-time sync for name, description, brands, category, add & delete) ---
+  function parseClientBool(val) {
+    if (typeof val === 'boolean') return val;
+    if (typeof val === 'string') {
+      const s = val.trim().toLowerCase();
+      return s === 'ja' || s === 'true' || s === '1' || s === 'yes';
+    }
+    return Boolean(val);
+  }
+
+  function renderCategoryTagsHtml(cats) {
+    return cats.map(cat => {
+      const label = cat === 'scotch' ? 'Schots' :
+                    cat === 'dutch' ? 'Nederlands' :
+                    cat === 'independent' ? 'Onafhankelijke Bottelaar' :
+                    cat === 'world' ? 'Wereld' :
+                    cat === 'catering' ? 'Catering' : 'Organisatie';
+      return `<span class="category-tag tag-${cat}">${label}</span>`;
+    }).join('');
+  }
+
   function syncGhlStandsOnPage(records) {
     if (!Array.isArray(records) || records.length === 0) return;
+
+    const seenIds = new Set();
+    const gridEl = document.getElementById('directory-grid');
 
     records.forEach(r => {
       const p = r.properties || r;
       const newStandId = String(p.stand_id || p.id || '').trim();
-      const mapSlot = String(p.map_slot || p.mapSlot || newStandId || '').trim();
+      const mapSlot = String(p.map_slot || p.mapSlot || (newStandId === '19' ? 'X' : newStandId) || '').trim();
       if (!newStandId && !mapSlot) return;
+
+      seenIds.add(newStandId);
 
       const rawCat = p.categories || p.category || '';
       const validCats = ['scotch', 'dutch', 'independent', 'world', 'catering', 'organisation'];
@@ -1498,22 +1523,26 @@ const exhibitors = await getStandhouders('den_haag');
             ? p.brands.split(',').map(b => b.trim()).filter(Boolean)
             : null);
 
-      // Find matching exhibitor by mapSlot or standId
-      let targetExh = exhibitors.find(e => (mapSlot && (e.mapSlot === mapSlot || e.id === mapSlot)) || (newStandId && e.id === newStandId));
+      const descText = p.stand_description !== undefined ? p.stand_description : p.description;
+      const isNotOnMapVal = p.is_not_on_map !== undefined ? parseClientBool(p.is_not_on_map) : undefined;
+
+      // Find matching exhibitor by standId or mapSlot
+      let targetExh = exhibitors.find(e => (newStandId && e.id === newStandId) || (mapSlot && (e.mapSlot === mapSlot || e.id === mapSlot)));
       if (targetExh) {
         const oldId = targetExh.id;
         if (newStandId) targetExh.id = newStandId;
         if (mapSlot) targetExh.mapSlot = mapSlot;
         if (p.exhibitor_name || p.name) targetExh.name = p.exhibitor_name || p.name;
-        if (p.description) targetExh.description = p.description;
+        if (descText !== undefined) targetExh.description = descText;
         if (brandsArr) targetExh.brands = brandsArr;
+        if (isNotOnMapVal !== undefined) targetExh.isNotOnMap = isNotOnMapVal;
         if (parsedCats.length > 0) {
           targetExh.category = parsedCats[0];
           targetExh.categories = parsedCats;
         }
 
-        // Update SVG stand label & data-stand if mapSlot (e.g. "X") was given a new stand_id in GHL
-        const svgNode = document.querySelector(`.svg-stand[data-map-slot="${mapSlot}"]`) || document.querySelector(`.svg-stand[data-stand="${oldId}"]`);
+        // Update SVG stand label & data-stand if mapSlot was given a new stand_id in GHL
+        const svgNode = document.querySelector(`.svg-stand[data-stand="${oldId}"]`) || document.querySelector(`.svg-stand[data-map-slot="${mapSlot}"]`);
         if (svgNode && newStandId) {
           svgNode.setAttribute('data-stand', newStandId);
           const numText = svgNode.querySelector('.stand-num');
@@ -1521,15 +1550,18 @@ const exhibitors = await getStandhouders('den_haag');
         }
 
         // Update Directory Card DOM
-        const cardNode = document.querySelector(`.directory-item-card[data-map-slot="${mapSlot}"]`) || document.querySelector(`.directory-item-card[data-id="${oldId}"]`);
+        const cardNode = document.querySelector(`.directory-item-card[data-id="${oldId}"]`) || document.querySelector(`.directory-item-card[data-map-slot="${mapSlot}"]`);
         if (cardNode) {
           cardNode.setAttribute('data-id', targetExh.id);
           cardNode.setAttribute('data-name', targetExh.name.toLowerCase());
           cardNode.setAttribute('data-brands', targetExh.brands.join(' ').toLowerCase());
           const allCats = (targetExh.categories && targetExh.categories.length > 0) ? targetExh.categories : [targetExh.category];
+          cardNode.setAttribute('data-cat', targetExh.category);
           cardNode.setAttribute('data-cats', allCats.join(','));
           const standNumEl = cardNode.querySelector('.card-stand-number');
-          if (standNumEl && !targetExh.isNotOnMap) standNumEl.textContent = `Stand ${targetExh.id}`;
+          if (standNumEl) standNumEl.textContent = targetExh.isNotOnMap ? 'Niet op plattegrond' : `Stand ${targetExh.id}`;
+          const catTagsEl = cardNode.querySelector('.card-category-tags');
+          if (catTagsEl) catTagsEl.innerHTML = renderCategoryTagsHtml(allCats);
           const h4El = cardNode.querySelector('h4');
           if (h4El) h4El.textContent = targetExh.name;
           const pEl = cardNode.querySelector('.card-body-content p');
@@ -1537,10 +1569,80 @@ const exhibitors = await getStandhouders('den_haag');
           const bEl = cardNode.querySelector('.card-brands-row');
           if (bEl) bEl.innerHTML = `<strong>Merken:</strong> ${targetExh.brands.join(', ')}`;
           const locBtn = cardNode.querySelector('.btn-locate-stand');
-          if (locBtn) locBtn.setAttribute('data-target', targetExh.id);
+          if (locBtn) {
+            locBtn.setAttribute('data-target', targetExh.id);
+            locBtn.style.display = targetExh.isNotOnMap ? 'none' : '';
+          }
         }
+      } else if (gridEl && newStandId) {
+        // Brand-new standhouder added in GHL: create and insert dynamically
+        const primaryCat = parsedCats[0] || 'world';
+        const allCats = parsedCats.length > 0 ? parsedCats : [primaryCat];
+        const newExh = {
+          id: newStandId,
+          mapSlot: mapSlot || newStandId,
+          name: p.exhibitor_name || p.name || 'Standhouder',
+          category: primaryCat,
+          categories: allCats,
+          brands: brandsArr || [],
+          description: descText || '',
+          isNotOnMap: Boolean(isNotOnMapVal)
+        };
+        exhibitors.push(newExh);
+
+        const newCard = document.createElement('div');
+        newCard.className = 'directory-item-card';
+        newCard.setAttribute('data-id', newExh.id);
+        newCard.setAttribute('data-map-slot', newExh.mapSlot);
+        newCard.setAttribute('data-cat', newExh.category);
+        newCard.setAttribute('data-cats', allCats.join(','));
+        newCard.setAttribute('data-name', newExh.name.toLowerCase());
+        newCard.setAttribute('data-brands', newExh.brands.join(' ').toLowerCase());
+        newCard.innerHTML = `
+          <div class="card-top-header" style="flex-wrap: wrap; gap: 0.4rem;">
+            <span class="card-stand-number">${newExh.isNotOnMap ? 'Niet op plattegrond' : 'Stand ' + newExh.id}</span>
+            <div class="card-category-tags" style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end;">
+              ${renderCategoryTagsHtml(allCats)}
+            </div>
+          </div>
+          <div class="card-body-content">
+            <h4>${newExh.name}</h4>
+            <p>${newExh.description}</p>
+            <div class="card-brands-row">
+              <strong>Merken:</strong> ${newExh.brands.join(', ')}
+            </div>
+          </div>
+          <div class="card-action-footer">
+            ${!newExh.isNotOnMap ? `<button type="button" class="btn-locate-stand" data-target="${newExh.id}">Toon op plattegrond &rarr;</button>` : ''}
+          </div>
+        `;
+        newCard.addEventListener('click', (e) => {
+          if (e.target.classList.contains('btn-locate-stand')) return;
+          selectStand(newExh.id);
+        });
+        const locBtn = newCard.querySelector('.btn-locate-stand');
+        if (locBtn) {
+          locBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            selectStand(newExh.id);
+            document.querySelector('.map-visual-container').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          });
+        }
+        gridEl.appendChild(newCard);
       }
     });
+
+    // Prune deleted standhouders if full list (>10 records) was returned from GHL
+    if (records.length >= 10) {
+      for (let i = exhibitors.length - 1; i >= 0; i--) {
+        const ex = exhibitors[i];
+        if (!seenIds.has(ex.id)) {
+          const cardNode = document.querySelector(`.directory-item-card[data-id="${ex.id}"]`);
+          if (cardNode) cardNode.remove();
+          exhibitors.splice(i, 1);
+        }
+      }
+    }
 
     filterAndSearch();
     if (selectedStandId) {
