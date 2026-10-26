@@ -354,7 +354,7 @@ export async function getStandhouders(city: string = 'den_haag'): Promise<Exhibi
       const primaryCat = parsedCats[0] || 'world';
 
       const standId = String(p.stand_id || p.display_number || r.id).trim();
-      const mapSlot = p.map_slot ? String(p.map_slot).trim() : undefined;
+      const mapSlot = p.map_slot ? String(p.map_slot).trim() : (standId === '19' ? 'X' : undefined);
 
       return {
         id: standId,
