@@ -1,0 +1,19 @@
+---
+// src/pages/masterclasses.astro
+// Directe doorverwijzing voor QR-code & korte URL (/masterclasses -> /?cat=masterclass#sessies)
+---
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Masterclasses | International Whisky Festival Den Haag</title>
+    <meta http-equiv="refresh" content="0; url=/?cat=masterclass#sessies" />
+    <link rel="canonical" href="https://www.whiskyfestival.nl/?cat=masterclass#sessies" />
+    <script is:inline>
+      window.location.replace('/?cat=masterclass#sessies');
+    </script>
+  </head>
+  <body style="background:#FAF7F2;color:#171614;font-family:sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;">
+    <p>U wordt doorgestuurd naar de Masterclasses&hellip; <a href="/?cat=masterclass#sessies" style="color:#006448;font-weight:700;">Klik hier als u niet automatisch wordt doorgestuurd</a>.</p>
+  </body>
+</html>

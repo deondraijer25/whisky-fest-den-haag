@@ -1,0 +1,19 @@
+{
+  "redirects": [
+    {
+      "source": "/masterclasses",
+      "destination": "/?cat=masterclass#sessies",
+      "permanent": false
+    },
+    {
+      "source": "/masterclass",
+      "destination": "/?cat=masterclass#sessies",
+      "permanent": false
+    },
+    {
+      "source": "/proeverijen",
+      "destination": "/?cat=masterclass#sessies",
+      "permanent": false
+    }
+  ]
+}
