@@ -1586,7 +1586,7 @@ const tickets = await getTickets('den_haag');
                         type="text"
                         id="iws-shop-code-input"
                         class="receipt-iws-input"
-                        placeholder="Bijv. WS-12345"
+                        placeholder="Lidnr. (bijv. 271 of WS-271)"
                         aria-label="IWS Lidnummer"
                       />
                       <button type="button" class="receipt-iws-apply-btn" id="iws-shop-apply-btn">Toepassen</button>
@@ -1603,8 +1603,8 @@ const tickets = await getTickets('den_haag');
                     <span class="calc-val" id="receipt-subtotal">&euro;0,00</span>
                   </div>
                   <div class="calc-row" id="receipt-iws-discount-row" style="display: none; color: #006448; font-weight: 700;">
-                    <span class="calc-label">IWS Ledenkorting:</span>
-                    <span class="calc-val" id="receipt-iws-discount">- &euro;5,00</span>
+                    <span class="calc-label">IWS Ledenkorting (1x gratis ticket):</span>
+                    <span class="calc-val" id="receipt-iws-discount">- &euro;55,00</span>
                   </div>
                   <div class="calc-row">
                     <span class="calc-label">Administratiekosten:</span>
@@ -5189,22 +5189,19 @@ const tickets = await getTickets('den_haag');
   const totalEl = document.getElementById("receipt-total");
   const checkoutBtn = document.getElementById("checkout-trigger-btn") as HTMLButtonElement;
 
+  let unlockedIwsDiscountAmount = 55.00;
   function getIwsCartDiscount(forceActive: boolean = false): number {
     const activeCode = forceActive ? "IWS" : (sessionStorage.getItem("wf_iws_code") || "");
     if (!activeCode) return 0;
-    let hasEntree = false;
-    let hasBotteling = false;
     let subtotal = 0;
     Object.keys(cart).forEach(id => {
       const item = cart[id];
       if (item && item.qty > 0) {
         subtotal += item.price * item.qty;
-        if (!item.category || item.category === "entree") hasEntree = true;
-        if (item.category === "botteling") hasBotteling = true;
       }
     });
-    const discount = (hasEntree ? 5.00 : 0) + (hasBotteling ? 5.00 : 0);
-    return Math.min(subtotal, discount);
+    if (subtotal <= 0) return 0;
+    return Math.min(subtotal, unlockedIwsDiscountAmount || 55.00);
   }
 
   function updateShop(syncSave: boolean = true) {
@@ -6018,41 +6015,37 @@ const tickets = await getTickets('den_haag');
           });
           if (res.ok) {
             const data = await res.json();
-            if (data && data.valid && !(code.startsWith("WS-") && /^WS-\d+$/i.test(code))) {
+            if (data && data.valid) {
               activePromoCode = data.code || code;
               activePromoType = data.type === "percentage" ? "percentage" : "fixed_amount";
               activePromoValue = Number(data.value) || 0;
+              if (data.isIwsMember) {
+                unlockedIwsCode = activePromoCode;
+                unlockedIwsDiscountAmount = activePromoValue || 55.00;
+                sessionStorage.setItem("wf_iws_code", unlockedIwsCode);
+                if (iwsCodeInput) iwsCodeInput.value = unlockedIwsCode;
+                applyIwsUnlockToCards(data.message);
+              }
               promoMsg.style.display = "block";
               promoMsg.style.color = "var(--success-green)";
               promoMsg.textContent = data.message || `✓ Kortingscode ${activePromoCode} toegepast.`;
+              updateShop();
               recalcModalTotal();
               return;
             } else if (data && !data.valid && data.message) {
               serverRejectionMsg = data.message;
+              if (data.isIwsMember) {
+                unlockedIwsCode = "";
+                sessionStorage.removeItem("wf_iws_code");
+                updateShop();
+              }
             }
             break;
           }
         } catch {}
       }
 
-      // 2. Built-in IWS membership & gift voucher fallback
-      if (code.startsWith("WS-") || code === "IWS" || /^WS\d+/i.test(code)) {
-        const normalizedCode = code.startsWith("WS-") || code === "IWS" ? code : `WS-${code.replace(/^WS/i, '')}`;
-        sessionStorage.setItem("wf_iws_code", normalizedCode);
-        unlockedIwsCode = normalizedCode;
-        const iwsAmt = getIwsCartDiscount(true) || 5.00;
-        activePromoCode = normalizedCode;
-        activePromoType = "fixed_amount";
-        activePromoValue = iwsAmt;
-        promoDiscount = iwsAmt;
-        promoMsg.style.display = "block";
-        promoMsg.style.color = "var(--success-green)";
-        promoMsg.textContent = `✓ IWS-lidmaatschap gevalideerd: €${iwsAmt.toFixed(2).replace('.', ',')} ledenkorting toegepast.`;
-        applyIwsUnlockToCards();
-        updateShop();
-        recalcModalTotal();
-        return;
-      } else if (code === "GIFT-50" || code === "CADEAU-50") {
+      if (!serverRejectionMsg && (code === "GIFT-50" || code === "CADEAU-50")) {
         activePromoCode = code;
         activePromoType = "fixed_amount";
         activePromoValue = 50.00;
@@ -6070,7 +6063,7 @@ const tickets = await getTickets('den_haag');
       activePromoValue = 0;
       promoMsg.style.display = "block";
       promoMsg.style.color = "#d9534f";
-      promoMsg.textContent = serverRejectionMsg || "✗ Ongeldige code. Probeer het opnieuw.";
+      promoMsg.textContent = serverRejectionMsg || "✗ Ongeldige code of lidnummer. Probeer het opnieuw.";
       recalcModalTotal();
     });
   }
@@ -6959,7 +6952,7 @@ const tickets = await getTickets('den_haag');
     return now <= new Date('2027-10-29T23:59:59');
   }
 
-  function applyIwsUnlockToCards() {
+  function applyIwsUnlockToCards(customMsg?: string) {
     if (!unlockedIwsCode) return;
     const soldOutEntreeCards = document.querySelectorAll('.ticket-stub[data-category="entree"]');
     let vipBlocked = false;
@@ -7002,34 +6995,25 @@ const tickets = await getTickets('den_haag');
       iwsToggleIcon.textContent = '✓';
     }
     if (iwsFormRow) {
-      iwsFormRow.style.display = 'none';
+      iwsFormRow.style.display = 'block';
     }
 
     if (iwsFeedback) {
       iwsFeedback.style.display = 'block';
       iwsFeedback.style.color = '#006448';
       const vipNote = vipBlocked ? ' (VIP-sessie was t/m 1 mrt boekbaar).' : '';
-      iwsFeedback.textContent = `✓ Lidnummer ${unlockedIwsCode} actief (-€ 5,00 korting & ledenvoorraad).${vipNote}`;
+      iwsFeedback.textContent =
+        customMsg || `✓ IWS-lid ${unlockedIwsCode} actief: 1x gratis ticket (-€ 55,00).${vipNote}`;
     }
 
     updateShop();
   }
 
-  // Auto-detect if logged in as IWS member via wf_auth_session
+  // Re-validate stored IWS session on load against live Conscribo & Cross-Festival Claim API
   (function checkAutoIwsSession() {
-    try {
-      const rawSession = localStorage.getItem('wf_auth_session') || sessionStorage.getItem('wf_auth_session');
-      if (rawSession) {
-        const parsed = JSON.parse(rawSession);
-        if (parsed && parsed.resNumber && String(parsed.resNumber).toUpperCase().includes('WS')) {
-          unlockedIwsCode = unlockedIwsCode || 'WS-MEMBER';
-          sessionStorage.setItem('wf_iws_code', unlockedIwsCode);
-        }
-      }
-    } catch (e) {}
     if (unlockedIwsCode) {
       if (iwsCodeInput) iwsCodeInput.value = unlockedIwsCode;
-      applyIwsUnlockToCards();
+      void validateAndActivateIwsCode(unlockedIwsCode, iwsFeedback);
     }
   })();
 
@@ -7044,35 +7028,79 @@ const tickets = await getTickets('den_haag');
     });
   }
 
-  function validateAndActivateIwsCode(rawInput: string, feedbackEl?: HTMLElement | null): boolean {
+  async function validateAndActivateIwsCode(
+    rawInput: string,
+    feedbackEl?: HTMLElement | null
+  ): Promise<boolean> {
     const rawVal = rawInput.trim().toUpperCase();
     if (!rawVal) {
       if (feedbackEl) {
         feedbackEl.style.display = 'block';
         feedbackEl.style.color = '#A82828';
-        feedbackEl.textContent = 'Voer uw IWS-lidnummer in (bijv. WS-12345).';
+        feedbackEl.textContent = 'Voer uw IWS-lidnummer in (bijv. 271 of WS-271).';
       }
       return false;
     }
-    if (rawVal.startsWith('WS-') || rawVal === 'IWS' || /^WS\d+/i.test(rawVal)) {
-      unlockedIwsCode = rawVal.startsWith('WS-') || rawVal === 'IWS' ? rawVal : `WS-${rawVal.replace(/^WS/i, '')}`;
-      sessionStorage.setItem('wf_iws_code', unlockedIwsCode);
-      if (iwsCodeInput) iwsCodeInput.value = unlockedIwsCode;
-      applyIwsUnlockToCards();
-      return true;
-    } else {
-      if (feedbackEl) {
-        feedbackEl.style.display = 'block';
-        feedbackEl.style.color = '#A82828';
-        feedbackEl.textContent = 'Ongeldig lidnummer. Gebruik uw WS-... code.';
-      }
-      return false;
+
+    const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const validateBases = isLocalDev
+      ? ['http://localhost:4000', 'https://whiskytix-r1qq.vercel.app']
+      : ['https://whiskytix-r1qq.vercel.app'];
+
+    for (const base of validateBases) {
+      try {
+        const res = await fetch(`${base}/api/coupons/validate`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: rawVal, festivalId: 'denhaag' }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.valid) {
+            unlockedIwsCode = data.code || rawVal;
+            unlockedIwsDiscountAmount = Number(data.value) || 55.00;
+            sessionStorage.setItem('wf_iws_code', unlockedIwsCode);
+            if (iwsCodeInput) iwsCodeInput.value = unlockedIwsCode;
+            if (feedbackEl && feedbackEl !== iwsFeedback) {
+              feedbackEl.style.display = 'block';
+              feedbackEl.style.color = '#006448';
+              feedbackEl.textContent = data.message || `✓ 1x gratis ticket (-€ 55,00) geactiveerd.`;
+            }
+            applyIwsUnlockToCards(data.message);
+            return true;
+          } else {
+            unlockedIwsCode = '';
+            sessionStorage.removeItem('wf_iws_code');
+            const errMsg = data?.message || '✗ Ongeldig of reeds gebruikt IWS-lidnummer.';
+            if (feedbackEl) {
+              feedbackEl.style.display = 'block';
+              feedbackEl.style.color = '#A82828';
+              feedbackEl.textContent = errMsg;
+            }
+            if (iwsFeedback && feedbackEl !== iwsFeedback) {
+              if (iwsFormRow) iwsFormRow.style.display = 'block';
+              iwsFeedback.style.display = 'block';
+              iwsFeedback.style.color = '#A82828';
+              iwsFeedback.textContent = errMsg;
+            }
+            updateShop();
+            return false;
+          }
+        }
+      } catch {}
     }
+
+    if (feedbackEl) {
+      feedbackEl.style.display = 'block';
+      feedbackEl.style.color = '#A82828';
+      feedbackEl.textContent = '✗ Kon lidnummer momenteel niet verifiëren.';
+    }
+    return false;
   }
 
   function handleIwsUnlockSubmit() {
     if (!iwsCodeInput) return;
-    validateAndActivateIwsCode(iwsCodeInput.value, iwsFeedback);
+    void validateAndActivateIwsCode(iwsCodeInput.value, iwsFeedback);
   }
 
   if (iwsApplyBtn) {
@@ -7088,7 +7116,7 @@ const tickets = await getTickets('den_haag');
   }
 
   // Delegated click & enter handler for sold-out TicketStub inline IWS unlock
-  document.addEventListener('click', (e) => {
+  document.addEventListener('click', async (e) => {
     const target = e.target as HTMLElement;
     const stubUnlockBtn = target.closest('.js-open-iws-unlock') as HTMLElement | null;
     if (stubUnlockBtn) {
@@ -7109,26 +7137,26 @@ const tickets = await getTickets('den_haag');
     if (stubSubmitBtn) {
       e.preventDefault();
       e.stopPropagation();
+      const stubEnd = stubSubmitBtn.closest('.ticket-stub-end');
       const inlineForm = stubSubmitBtn.closest('.iws-stub-inline-form');
       const inp = inlineForm?.querySelector('.iws-stub-input') as HTMLInputElement | null;
+      const stubFeedback = stubEnd?.querySelector('.iws-stub-feedback') as HTMLElement | null;
       if (inp) {
-        const ok = validateAndActivateIwsCode(inp.value);
-        if (!ok) {
-          inp.style.borderColor = '#A82828';
-        }
+        const ok = await validateAndActivateIwsCode(inp.value, stubFeedback);
+        inp.style.borderColor = ok ? '#006448' : '#A82828';
       }
     }
   });
 
-  document.addEventListener('keydown', (e) => {
+  document.addEventListener('keydown', async (e) => {
     const target = e.target as HTMLElement;
     if (target && target.classList.contains('iws-stub-input') && e.key === 'Enter') {
       e.preventDefault();
       const inp = target as HTMLInputElement;
-      const ok = validateAndActivateIwsCode(inp.value);
-      if (!ok) {
-        inp.style.borderColor = '#A82828';
-      }
+      const stubEnd = inp.closest('.ticket-stub-end');
+      const stubFeedback = stubEnd?.querySelector('.iws-stub-feedback') as HTMLElement | null;
+      const ok = await validateAndActivateIwsCode(inp.value, stubFeedback);
+      inp.style.borderColor = ok ? '#006448' : '#A82828';
     }
   });
 

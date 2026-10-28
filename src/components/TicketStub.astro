@@ -185,9 +185,10 @@ const titleSizeClass =
               IWS-lid? Bestel hier &rarr;
             </button>
             <div class="iws-stub-inline-form" style="display: none;">
-              <input type="text" class="iws-stub-input" placeholder="Lidnr. (WS-...)" aria-label="IWS Lidnummer" />
+              <input type="text" class="iws-stub-input" placeholder="Lidnr. (bijv. 271)" aria-label="IWS Lidnummer" />
               <button type="button" class="iws-stub-submit-btn">OK</button>
             </div>
+            <p class="iws-stub-feedback" style="display: none;"></p>
             <div class="qty-selector iws-member-qty-selector">
               <button type="button" class="qty-btn minus-btn" aria-label="Aantal verlagen" data-action="minus">&minus;</button>
               <span class="qty-val" id={"qty-" + id}>0</span>
@@ -907,9 +908,21 @@ const titleSizeClass =
     cursor: pointer !important;
   }
 
+  .iws-stub-feedback {
+    margin: 0.25rem auto 0 !important;
+    max-width: 145px !important;
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif) !important;
+    font-size: 0.65rem !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+    text-align: center !important;
+    color: #A82828 !important;
+  }
+
   .ticket-stub.iws-unlocked .sold-out-box,
   .ticket-stub.iws-unlocked .iws-stub-unlock-btn,
-  .ticket-stub.iws-unlocked .iws-stub-inline-form {
+  .ticket-stub.iws-unlocked .iws-stub-inline-form,
+  .ticket-stub.iws-unlocked .iws-stub-feedback {
     display: none !important;
   }
 
