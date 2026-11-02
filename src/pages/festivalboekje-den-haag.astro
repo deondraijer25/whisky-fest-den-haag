@@ -219,11 +219,23 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
               <p class="p6-lindores-desc editable-node">
                 In 2027 worden er <strong>2 vaten van de Lindores Abbey Distilleerderij</strong> gebotteld, speciaal voor het International Whisky Festival. Het zijn 2 totaal verschillende vaten:
               </p>
+            </div>
 
-              <div class="p6-casks-duo">
+            <!-- 2 Flessen (uit de Google Sheet) staand achter de 2 naar beneden gehaalde bannertjes -->
+            <div class="p6-casks-duo">
+              <div class="p6-cask-bottle-col">
+                <div class="p6-bottle-stage">
+                  <img src="/images/boekje/amrut-vat-a-9318.png" alt="Fles Vat A" class="p6-bottle-img" />
+                </div>
                 <div class="p6-cask-pill">
                   <span class="p6-cask-tag editable-node">VAT A &bull; SINGLE CASK</span>
                   <strong class="p6-cask-title editable-node">Lindores Abbey Single Cask Woodford Reserve ASB</strong>
+                </div>
+              </div>
+
+              <div class="p6-cask-bottle-col">
+                <div class="p6-bottle-stage">
+                  <img src="/images/boekje/amrut-vat-b-3464.png" alt="Fles Vat B" class="p6-bottle-img" />
                 </div>
                 <div class="p6-cask-pill">
                   <span class="p6-cask-tag editable-node">VAT B &bull; SINGLE CASK</span>
@@ -1454,7 +1466,7 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
     z-index: 2;
     width: 100%;
     height: 100%;
-    padding: 4.5mm 5.5mm 7mm 8mm; /* 7mm onder = 3mm onder-bleed + 4mm safe zone */
+    padding: 4mm 5.5mm 6.5mm 8mm; /* 6.5mm onder = 3mm onder-bleed + 3.5mm safe zone */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -1464,7 +1476,8 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
   .p6-lindores-top {
     display: flex;
     flex-direction: column;
-    gap: 1.8mm;
+    gap: 1.2mm;
+    flex-shrink: 0;
   }
 
   .p6-lindores-title-row {
@@ -1476,17 +1489,17 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
 
   .p6-gold-eyebrow {
     font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 2.1mm;
+    font-size: 2.05mm;
     font-weight: 800;
     letter-spacing: 0.08em;
     color: #caac8e;
     display: block;
-    margin-bottom: 0.4mm;
+    margin-bottom: 0.3mm;
   }
 
   .p6-heading-white {
     font-family: var(--font-display, 'Bebas Neue', Impact, sans-serif);
-    font-size: 8.4mm;
+    font-size: 8.2mm;
     line-height: 0.94;
     letter-spacing: 0.02em;
     color: #FAF7F2;
@@ -1510,8 +1523,8 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
 
   .p6-lindores-desc {
     font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 2.3mm;
-    line-height: 1.36;
+    font-size: 2.25mm;
+    line-height: 1.32;
     color: #FAF7F2;
     margin: 0;
   }
@@ -1521,20 +1534,61 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
     font-weight: 800;
   }
 
+  /* 2 Flessen staand achter de naar beneden gehaalde bannertjes */
   .p6-casks-duo {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2.2mm;
+    gap: 2.5mm;
+    flex: 1;
+    align-items: end;
+    margin: 0.5mm 0 2mm;
+    min-height: 0;
+  }
+
+  .p6-cask-bottle-col {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .p6-bottle-stage {
+    position: absolute;
+    top: -1.5mm;
+    bottom: 6mm; /* Laat de onderkant van de fles achter het bannertje doorlopen! */
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .p6-bottle-img {
+    height: 49mm;
+    width: auto;
+    max-width: none;
+    object-fit: contain;
+    filter: drop-shadow(0 3mm 5mm rgba(0, 0, 0, 0.65));
   }
 
   .p6-cask-pill {
-    background: rgba(250, 247, 242, 0.1);
-    border: 0.35mm solid rgba(202, 172, 142, 0.65);
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    box-sizing: border-box;
+    background: rgba(6, 26, 16, 0.92);
+    backdrop-filter: blur(4px);
+    border: 0.4mm solid #caac8e;
     border-radius: 1.8mm;
     padding: 1.8mm 2.2mm;
+    box-shadow: 0.9mm 0.9mm 0 #171614;
     display: flex;
     flex-direction: column;
-    gap: 0.4mm;
+    gap: 0.35mm;
   }
 
   .p6-cask-tag {
@@ -1547,22 +1601,25 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
 
   .p6-cask-title {
     font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 2.25mm;
+    font-size: 2.22mm;
     font-weight: 800;
-    line-height: 1.22;
+    line-height: 1.2;
     color: #FAF7F2;
   }
 
   /* Gouden Kaart onderin Pagina 6 (exact in dezelfde stijl als de VAT A / VAT B kaarten ernaast!) */
   .p6-gold-offset-card {
+    position: relative;
+    z-index: 3;
+    flex-shrink: 0;
     background: #caac8e;
     color: #171614;
     border-radius: 2.4mm;
-    padding: 2.6mm 3.2mm;
+    padding: 2.3mm 3mm;
     box-shadow: 1.2mm 1.2mm 0 #171614;
     display: flex;
     flex-direction: column;
-    gap: 1.6mm;
+    gap: 1.3mm;
   }
 
   .p6-gift-row {
