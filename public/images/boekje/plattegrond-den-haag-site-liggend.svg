@@ -1,0 +1,328 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1030 500" width="1030" height="500" font-family="'Plus Jakarta Sans', Arial, Helvetica, sans-serif">
+  <!-- Subtle background -->
+  <rect width="1030" height="500" fill="none" />
+  
+  <!-- Church Outer Walls Silhouette (gothic outline) -->
+  <path d="M 140 150 
+           L 140 80 Q 140 70 150 70 L 640 70 L 640 20 Q 640 10 650 10 L 760 10 Q 770 10 770 20 L 770 70 L 820 70 
+           L 860 90 L 900 130 L 920 180 L 930 250 L 920 320 L 900 370 L 860 410 L 820 430 L 770 430 L 770 480 Q 770 490 760 490 L 650 490 Q 640 490 640 480 L 640 430 L 250 430 L 250 480 Q 250 490 240 490 L 150 490 Q 140 490 140 480 L 140 430 L 140 350
+           L 90 350 L 50 310 L 30 250 L 50 190 L 90 150 Z" 
+        fill="#d8e7e2" stroke="#1D1C1A" stroke-width="2.5" stroke-linejoin="round" />
+
+  <!-- Interior Architecture Zones -->
+  <!-- Hoogkoor (High Choir) Area -->
+  <rect x="670" y="150" width="180" height="200" fill="#EBE4D5" stroke="#c1d4ce" stroke-width="1.5" stroke-dasharray="4 4" />
+  <text x="760" y="255" font-style="italic" font-size="17.6" fill="#4c5752" opacity="0.25" text-anchor="middle">Hoogkoor</text>
+  
+  <!-- Kooromgang (Ambulatory) Arch Guide -->
+  <path d="M 670 80 A 170 170 0 0 1 890 250 A 170 170 0 0 1 670 420" fill="none" stroke="#c1d4ce" stroke-width="1" stroke-dasharray="6 6" />
+
+  <!-- Structural Pillars (Gothic columns) -->
+  <g fill="#8ba198" stroke="#1D1C1A" stroke-width="1" opacity="0.9">
+    <!-- Row Top -->
+    <circle cx="200" cy="140" r="10" />
+    <circle cx="280" cy="140" r="10" />
+    <circle cx="360" cy="140" r="10" />
+    <circle cx="440" cy="140" r="10" />
+    <circle cx="520" cy="140" r="10" />
+    <circle cx="600" cy="140" r="10" />
+    
+    <!-- Row Bottom -->
+    <circle cx="200" cy="360" r="10" />
+    <circle cx="280" cy="360" r="10" />
+    <circle cx="360" cy="360" r="10" />
+    <circle cx="440" cy="360" r="10" />
+    <circle cx="520" cy="360" r="10" />
+    <circle cx="600" cy="360" r="10" />
+
+    <!-- Choir pillars -->
+    <circle cx="670" cy="150" r="8" />
+    <circle cx="720" cy="115" r="8" />
+    <circle cx="780" cy="100" r="8" />
+    <circle cx="840" cy="115" r="8" />
+    <circle cx="890" cy="150" r="8" />
+    
+    <circle cx="670" cy="350" r="8" />
+    <circle cx="720" cy="385" r="8" />
+    <circle cx="780" cy="400" r="8" />
+    <circle cx="840" cy="385" r="8" />
+    <circle cx="890" cy="350" r="8" />
+  </g>
+
+  <!-- EXTERNAL ANNOTATIONS & ZONES -->
+  <!-- Top-Right: Buitenruimte / Food Trucks / Vaten-Maker -->
+  <g>
+    <path d="M 833 116 Q 848 78 866 56 M 866 56 L 853 59 M 866 56 L 864 69" stroke="#006448" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+    <text x="850" y="22" font-size="11" font-weight="800" fill="#006448">Workshop ruimte "Vaten-Maker"</text>
+    <text x="850" y="36" font-size="11" font-weight="800" fill="#006448">Food trucks</text>
+    <text x="850" y="50" font-size="12" font-weight="900" fill="#b57402">Buitenterrein</text>
+  </g>
+
+  <!-- Left Main Entrance: Ingang & Uitgang + Garderobe -->
+  <g>
+    <text x="10" y="162" font-size="11.5" font-weight="900" fill="#006448">Ingang &amp; Uitgang</text>
+    <text x="10" y="176" font-size="10.5" font-weight="800" fill="#1D1C1A">Garderobe</text>
+    <path d="M 8 250 L 44 250 M 37 244 L 44 250 L 37 256 M 15 244 L 8 250 L 15 256" stroke="#006448" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+  </g>
+
+  <!-- Bottom-Left: Nutshuis -->
+  <g>
+    <text x="15" y="425" font-size="13" font-weight="900" fill="#1D1C1A">Nutshuis</text>
+    <text x="15" y="440" font-size="11" font-weight="800" fill="#1D1C1A">ALLE masterclasses</text>
+    <text x="15" y="453" font-size="9.5" font-weight="600" fill="#4c5752">m.u.v. Toren-tastings en Warehouse tastings</text>
+  </g>
+
+  <!-- ============================================== -->
+  <!-- STANDS GRAPHICAL BLOCKS -->
+  <!-- ============================================== -->
+  
+  <!-- LEFT AREA (Main Entrance & Stand U) -->
+  <g>
+    <rect x="52" y="210" width="58" height="80" rx="4" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="81" y="255" font-size="13.6" font-weight="800" fill="#1D1C1A" text-anchor="middle">U</text>
+  </g>
+
+  <!-- Entrance Text Labels (Above and Below Corridor) -->
+  <text x="81" y="198" font-size="10.5" font-weight="900" fill="#1D1C1A" text-anchor="middle">Uitgifte glazen +</text>
+  <text x="81" y="308" font-size="10.5" font-weight="900" fill="#1D1C1A" text-anchor="middle">Festival botteling</text>
+
+  <!-- Entrance Corridor Arrow pointing into the Schip -->
+  <g>
+    <path d="M 120 250 L 138 250 M 132 245 L 138 250 L 132 255" stroke="#1D1C1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+  </g>
+
+  <!-- Stands 1 & 2 (Left wall above entrance passage) -->
+  <g>
+    <rect x="155" y="155" width="22" height="28" rx="2" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="166" y="173" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">2</text>
+  </g>
+  <g>
+    <rect x="155" y="188" width="22" height="28" rx="2" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="166" y="206" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">1</text>
+  </g>
+
+  <!-- Stand 13 (Left wall below entrance passage) -->
+  <g>
+    <rect x="155" y="260" width="22" height="28" rx="2" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="166" y="278" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">13</text>
+  </g>
+
+  <g>
+    <rect x="145" y="305" width="45" height="45" rx="4" fill="#FFF3CD" stroke="#856404" stroke-width="1.8" />
+    <text x="167" y="332" font-size="12" font-weight="800" fill="#856404" text-anchor="middle">C</text>
+  </g>
+
+  <!-- Main Nave: Top Row (Stands 3, 4, 5, 6) -->
+  <g>
+    <rect x="155" y="85" width="85" height="45" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="197" y="112" font-size="13.6" font-weight="800" fill="#1D1C1A" text-anchor="middle">3</text>
+  </g>
+  <g>
+    <rect x="250" y="85" width="130" height="72" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="315" y="126" font-size="13.6" font-weight="800" fill="#1D1C1A" text-anchor="middle">4</text>
+  </g>
+  <g>
+    <rect x="410" y="85" width="50" height="35" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="435" y="107" font-size="13.6" font-weight="800" fill="#1D1C1A" text-anchor="middle">5</text>
+  </g>
+
+  <!-- Stand 6 is split into three table modules -->
+  <g>
+    <rect x="525" y="85" width="22" height="35" rx="2" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="536" y="107" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">6</text>
+  </g>
+  <g>
+    <rect x="552" y="85" width="22" height="35" rx="2" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="563" y="107" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">6</text>
+  </g>
+  <g>
+    <rect x="579" y="85" width="22" height="35" rx="2" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="590" y="107" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">6</text>
+  </g>
+
+  <!-- Main Nave: Middle-Left (Stand 12 compact below Stand 4, Stands 14, 15, 22, 21, 20) -->
+  <g>
+    <rect x="250" y="185" width="130" height="38" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="315" y="209" font-size="13.6" font-weight="800" fill="#1D1C1A" text-anchor="middle">12</text>
+  </g>
+
+  <g>
+    <rect x="250" y="285" width="65" height="35" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="282" y="307" font-size="13.6" font-weight="800" fill="#1D1C1A" text-anchor="middle">14</text>
+  </g>
+  <g>
+    <rect x="315" y="285" width="65" height="35" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="347" y="307" font-size="13.6" font-weight="800" fill="#1D1C1A" text-anchor="middle">15</text>
+  </g>
+
+  <g>
+    <rect x="250" y="325" width="40" height="30" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="270" y="345" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">22</text>
+  </g>
+  <g>
+    <rect x="290" y="325" width="40" height="30" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="310" y="345" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">21</text>
+  </g>
+  <g>
+    <rect x="330" y="325" width="50" height="30" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="355" y="345" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">20</text>
+  </g>
+
+  <!-- Main Nave: Middle-Center (Stand 11 & Merged Stand 10) -->
+  <g>
+    <rect x="440" y="170" width="80" height="70" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="480" y="210" font-size="13.6" font-weight="800" fill="#1D1C1A" text-anchor="middle">11</text>
+  </g>
+  <g>
+    <rect x="525" y="170" width="75" height="70" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="562" y="210" font-size="13.6" font-weight="800" fill="#1D1C1A" text-anchor="middle">10</text>
+  </g>
+
+  <!-- Organisatie block: O (top-left), 16 (bottom-left), 17 (top-right), 18 (bottom-right) -->
+  <g>
+    <rect x="395" y="285" width="45" height="34" rx="3" fill="#d0e1db" stroke="#006448" stroke-width="1.8" />
+    <text x="417" y="307" font-size="12" font-weight="800" fill="#006448" text-anchor="middle">O</text>
+  </g>
+  <g>
+    <rect x="395" y="322" width="45" height="34" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="417" y="343" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">16</text>
+  </g>
+  <g>
+    <rect x="443" y="285" width="45" height="34" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="465" y="307" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">17</text>
+  </g>
+  <g>
+    <rect x="443" y="322" width="45" height="34" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="465" y="343" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">18</text>
+  </g>
+  
+  <!-- Merged central tasting island stand: Stand 19 -->
+  <g>
+    <rect x="500" y="285" width="130" height="71" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="565" y="325" font-size="13.6" font-weight="800" fill="#1D1C1A" text-anchor="middle">19</text>
+  </g>
+
+  <!-- Main Nave: Bottom Row (Stands 23, 24, S, 25, 26, 27, 28) -->
+  <g>
+    <rect x="250" y="375" width="75" height="35" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="287" y="397" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">23</text>
+  </g>
+  <g>
+    <rect x="330" y="375" width="50" height="35" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="355" y="397" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">24</text>
+  </g>
+
+  <g>
+    <rect x="260" y="420" width="110" height="60" rx="4" fill="#d0e1db" stroke="#006448" stroke-width="1.8" />
+    <text x="315" y="455" font-size="13.6" font-weight="800" fill="#006448" text-anchor="middle">S</text>
+  </g>
+
+  <g>
+    <rect x="400" y="375" width="45" height="35" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="422" y="397" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">25</text>
+  </g>
+  <g>
+    <rect x="450" y="375" width="45" height="35" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="472" y="397" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">26</text>
+  </g>
+  <g>
+    <rect x="500" y="375" width="45" height="35" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="522" y="397" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">27</text>
+  </g>
+  <g>
+    <rect x="550" y="375" width="45" height="35" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="572" y="397" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">28</text>
+  </g>
+
+  <!-- EAST AREA: Chapels & Ambulatory (Choir area) -->
+  <!-- Kapel Noord (Stand 42) -->
+  <g>
+    <rect x="645" y="20" width="90" height="60" rx="4" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="690" y="55" font-size="13.6" font-weight="800" fill="#1D1C1A" text-anchor="middle">42</text>
+  </g>
+  <!-- Kapel Zuid (Stand 29) -->
+  <g>
+    <rect x="645" y="420" width="90" height="60" rx="4" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="690" y="455" font-size="13.6" font-weight="800" fill="#1D1C1A" text-anchor="middle">29</text>
+  </g>
+
+  <!-- Hoogkoor center (Stand 44) -->
+  <g>
+    <rect x="700" y="190" width="120" height="120" rx="6" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="760" y="255" font-size="13.6" font-weight="800" fill="#1D1C1A" text-anchor="middle">44</text>
+  </g>
+
+  <!-- Inner ambulatory stands (43, 45, 46, 47, 48) -->
+  <g>
+    <rect x="795" y="150" width="30" height="30" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="810" y="170" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">43</text>
+  </g>
+  <g>
+    <rect x="830" y="170" width="30" height="30" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="845" y="190" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">45</text>
+  </g>
+  <g>
+    <rect x="845" y="210" width="30" height="80" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="860" y="255" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">46</text>
+  </g>
+  <g>
+    <rect x="830" y="300" width="30" height="30" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="845" y="320" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">47</text>
+  </g>
+  <g>
+    <rect x="795" y="320" width="30" height="30" rx="3" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="810" y="340" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">48</text>
+  </g>
+
+  <!-- Outer Curved Wall Ambulatory: Top-Right (41, 40, 39, 38) -->
+  <g>
+    <rect x="680" y="85" width="35" height="28" rx="2" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="697" y="103" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">41</text>
+  </g>
+  <g>
+    <rect x="720" y="85" width="35" height="28" rx="2" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="737" y="103" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">40</text>
+  </g>
+  <g>
+    <rect x="760" y="85" width="35" height="28" rx="2" fill="#FFF3CD" stroke="#856404" stroke-width="1.8" />
+    <text x="777" y="103" font-size="12" font-weight="800" fill="#856404" text-anchor="middle">39</text>
+  </g>
+  <g>
+    <rect x="798" y="85" width="34" height="28" rx="2" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="815" y="103" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">38</text>
+  </g>
+
+  <!-- Outer Curved Wall: Right curving down (37, 36, 35, 34, 33, 32, 31, 30) -->
+  <g>
+    <rect x="844" y="110" width="35" height="28" rx="2" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="861" y="128" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">37</text>
+  </g>
+  <g>
+    <rect x="865" y="145" width="35" height="28" rx="2" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="882" y="163" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">36</text>
+  </g>
+  <g>
+    <rect x="880" y="190" width="28" height="38" rx="2" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="894" y="214" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">35</text>
+  </g>
+  <g>
+    <rect x="880" y="265" width="28" height="38" rx="2" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="894" y="289" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">34</text>
+  </g>
+  <g>
+    <rect x="865" y="325" width="35" height="28" rx="2" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="882" y="343" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">33</text>
+  </g>
+  <g>
+    <rect x="838" y="365" width="35" height="28" rx="2" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="855" y="383" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">32</text>
+  </g>
+  <g>
+    <rect x="800" y="385" width="40" height="28" rx="2" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="820" y="403" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">31</text>
+  </g>
+  <g>
+    <rect x="755" y="385" width="40" height="28" rx="2" fill="#FCFAF7" stroke="#1D1C1A" stroke-width="1.8" />
+    <text x="775" y="403" font-size="12" font-weight="800" fill="#1D1C1A" text-anchor="middle">30</text>
+  </g>
+</svg>

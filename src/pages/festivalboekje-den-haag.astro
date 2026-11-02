@@ -1,0 +1,1784 @@
+---
+// src/pages/festivalboekje-den-haag.astro
+// Drukklare 8-Pagina Wikkelvouwfolder (HelloPrint A5 Roll Fold Portrait: 589mm x 216mm incl. 3mm bleed, netto 583mm x 210mm)
+// Behoudt Pagina 1, 8, 7 (op Vel 1) en Pagina 2 (op Vel 2) 1-op-1 uit de geüploade Canva PDF (/images/boekje/canva-basis-boekje.pdf)
+// En vult Pagina 3 (Liggend Standhouders in 3 kolommen), Pagina 4 & 5 (Masterclasses + Amsterdam 2027) en Pagina 6 (Activiteiten + Lindores Abbey 2027) in.
+import Layout from '../layouts/Layout.astro';
+import rawLogoAmsterdamWit from '../assets/LogosAll/logo-wit-amsterdam.svg?raw';
+import {
+  STANDHOUDERS_BOEKJE_2026,
+  FACILITEITEN_BOEKJE_2026,
+  MASTERCLASSES_PAGINA_6,
+  MASTERCLASSES_PAGINA_7,
+} from '../data/boekjeDenHaagData';
+
+// Verdeel de 45 genummerde stands (01 t/m 48, incl. 17 = Rampur Indian Single Malt) in 3 gelijke kolommen van 15 stands
+const col1Stands = STANDHOUDERS_BOEKJE_2026.slice(0, 15);
+const col2Stands = STANDHOUDERS_BOEKJE_2026.slice(15, 30);
+const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
+---
+
+<Layout
+  title="Drukklare 8-Pagina Wikkelvouwfolder A5 (HelloPrint 589x216mm) | International Whisky Festival Den Haag 2026"
+  description="Drukklare A5 Roll Fold Portrait wikkelvouwfolder (8 pagina's op 2 drukvellen: 589x216mm incl. 3mm afloop) voor HelloPrint."
+>
+  <!-- Top Screen-Only Control Bar (Verborgen bij Print / PDF Export) -->
+  <div class="boekje-toolbar no-print">
+    <div class="toolbar-inner">
+      <div class="toolbar-left">
+        <a href="#vel-2-binnenzijde" class="toolbar-nav-pill">Vel 2: Binnenzijde (P2 &bull; P3 &bull; P4 &bull; P5)</a>
+        <a href="#vel-1-buitenzijde" class="toolbar-nav-pill">Vel 1: Buitenzijde (P6 &bull; P7 &bull; P8 &bull; P1)</a>
+        <span class="toolbar-spec-badge">HELLOPRINT 589 &times; 216 MM &bull; P3 LIGGEND (3 KOLOMMEN) + P4/P5 MASTERCLASSES + P6 ACTIVITEITEN</span>
+      </div>
+
+      <div class="toolbar-actions">
+        <button type="button" id="toggle-p3-theme-btn" class="toolbar-btn toolbar-btn-outline">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+          </svg>
+          <span id="p3-theme-label">P3 Thema: Licht (Passend bij Plattegrond)</span>
+        </button>
+
+        <button type="button" id="toggle-guides-btn" class="toolbar-btn toolbar-btn-outline">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+            <line x1="9" y1="3" x2="9" y2="21"></line>
+            <line x1="15" y1="3" x2="15" y2="21"></line>
+          </svg>
+          <span id="guides-label">Hulplijnen: AAN</span>
+        </button>
+
+        <button type="button" id="toggle-edit-btn" class="toolbar-btn toolbar-btn-outline">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 20h9"></path>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+          </svg>
+          <span id="edit-label">Tekst Bewerken: UIT</span>
+        </button>
+
+        <a href="/images/boekje/canva-pagina-3-standhouders-liggend.png" download class="toolbar-btn toolbar-btn-outline">
+          <span>Download P3 PNG</span>
+        </a>
+        <a href="/images/boekje/canva-pagina-4-masterclasses-deel1.png" download class="toolbar-btn toolbar-btn-outline">
+          <span>Download P4 PNG</span>
+        </a>
+        <a href="/images/boekje/canva-pagina-5-masterclasses-deel2.png" download class="toolbar-btn toolbar-btn-outline">
+          <span>Download P5 PNG</span>
+        </a>
+        <a href="/images/boekje/canva-pagina-6-activiteiten-2027.png" download class="toolbar-btn toolbar-btn-outline">
+          <span>Download P6 PNG</span>
+        </a>
+
+        <button type="button" onclick="window.print()" class="toolbar-btn toolbar-btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          <span>Exporteer Complete PDF (589 &times; 216 mm)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <main class="boekje-stage-wrapper show-guides" id="boekje-stage">
+
+    <!-- =========================================================================
+         DRUKVEL 1 (BUITENZIJDE): PAGINA 6 (142mm) | PAGINA 7 (145mm) | PAGINA 8 (148mm) | PAGINA 1 / COVER (148mm)
+         Pagina 7, 8 en 1 komen 1-op-1 uit de geüploade PDF (/images/boekje/canva-basis-boekje.pdf);
+         Pagina 6 (links: 0 t/m 145mm) is nieuw opgemaakt met Overige Activiteiten 2026 + Lindores Abbey 2027.
+         ========================================================================= -->
+    <div class="sheet-caption no-print" id="vel-1-buitenzijde">
+      <span>DRUKVEL 1 VAN 2 (BUITENZIJDE) &mdash; LINKS: PAGINA 6 (NIEUW: ACTIVITEITEN + LINDORES 2027) &bull; RECHTS: PAGINA 7, 8 &amp; 1 (BEHOUDEN UIT PDF)</span>
+      <span>BRUTO: 589 &times; 216 MM (LIJNEN OP: 3 &bull; 145 &bull; 290 &bull; 438 &bull; 586 MM)</span>
+    </div>
+
+    <section class="helloprint-sheet sheet-outside" id="sheet-vel-1" aria-label="Drukvel 1: Buitenzijde">
+      <!-- 0. Originele Geüploade PDF Pagina 1 (Vel 1 met P7, P8 en P1) -->
+      <div class="pdf-sheet-bg" aria-hidden="true">
+        <canvas class="pdf-canvas" id="pdf-canvas-page1" width="2226" height="816"></canvas>
+        <img class="pdf-print-img" id="pdf-img-page1" alt="" />
+      </div>
+
+      <!-- HelloPrint Overlay Guides (3 - 145 - 290 - 438 - 586 mm) -->
+      <div class="hp-guides-overlay no-print" aria-hidden="true">
+        <div class="hp-trim-box"></div>
+        <div class="hp-fold-line" style="left: 145mm;"><span>VOUW 1 (145 mm)</span></div>
+        <div class="hp-fold-line" style="left: 290mm;"><span>VOUW 2 (290 mm)</span></div>
+        <div class="hp-fold-line" style="left: 438mm;"><span>VOUW 3 (438 mm)</span></div>
+        <div class="hp-panel-badge" style="left: 74mm;">PAGINA 6 &bull; 142 mm (NIEUW)</div>
+        <div class="hp-panel-badge" style="left: 217.5mm;">PAGINA 7 &bull; 145 mm (BEHOUDEN)</div>
+        <div class="hp-panel-badge" style="left: 364mm;">PAGINA 8 &bull; 148 mm (BEHOUDEN)</div>
+        <div class="hp-panel-badge" style="left: 512mm;">PAGINA 1 &bull; 148 mm (BEHOUDEN)</div>
+      </div>
+
+      <!-- =====================================================================
+           PAGINA 6 (x: 0mm t/m 145mm = 3mm bleed links + 142mm netto):
+           BOVENSTE HELFT (0–100mm, licht): OVERIGE ACTIVITEITEN TIJDENS HET FESTIVAL 2026 (5 ITEMS)
+           ONDERSTE HELFT (100–216mm, donkergroen uitgelijnd met VAT B): FESTIVAL BOTTELING 2027 (LINDORES ABBEY)
+           ===================================================================== -->
+      <div class="overlay-panel panel-p6-new" id="panel-pagina-6">
+        <!-- Bovenste helft (0 t/m 100mm): Licht vlak aansluitend op VAT A ernaast -->
+        <div class="p6-top-half">
+          <div class="p6-top-header">
+            <span class="p6-eyebrow editable-node">HAAL ALLES UIT UW BEZOEK</span>
+            <h2 class="p6-heading-green editable-node">OVERIGE ACTIVITEITEN</h2>
+          </div>
+
+          <ul class="p6-activities-stack">
+            <li class="p6-act-card">
+              <span class="p6-act-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <ellipse cx="12" cy="5" rx="7" ry="2.5"></ellipse>
+                  <path d="M5 5v14c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5V5"></path>
+                  <path d="M5 12c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5"></path>
+                </svg>
+              </span>
+              <div class="p6-act-body">
+                <strong class="editable-node">Vatenmaker-workshops (Buitenterrein B)</strong>
+                <span class="editable-node">Sluit aan bij &eacute;&eacute;n van de vatenmaker-workshops op het buitenterrein.</span>
+              </div>
+            </li>
+
+            <li class="p6-act-card">
+              <span class="p6-act-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M8 2h8l1.5 7.5a5.5 5.5 0 0 1-11 0L8 2z"></path>
+                  <line x1="12" y1="15" x2="12" y2="21"></line>
+                  <line x1="8" y1="21" x2="16" y2="21"></line>
+                </svg>
+              </span>
+              <div class="p6-act-body">
+                <strong class="editable-node">Warehouse-tasting bij Cley (Stand 5)</strong>
+                <span class="editable-node">Beleef een exclusieve warehouse-tasting bij Cley op stand nummer 5.</span>
+              </div>
+            </li>
+
+            <li class="p6-act-card">
+              <span class="p6-act-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <rect x="4" y="3" width="16" height="15" rx="2"></rect>
+                  <path d="M4 11h16"></path>
+                  <path d="M8 15h.01"></path>
+                  <path d="M16 15h.01"></path>
+                  <path d="M6 18l-2 3"></path>
+                  <path d="M18 18l2 3"></path>
+                </svg>
+              </span>
+              <div class="p6-act-body">
+                <strong class="editable-node">Haagsche Whiskytram (10 Ritten)</strong>
+                <span class="editable-node">Rij mee in 1 van de 10 karakteristieke tramritten door Den Haag.</span>
+              </div>
+            </li>
+
+            <li class="p6-act-card">
+              <span class="p6-act-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <circle cx="12" cy="12" r="9"></circle>
+                  <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                </svg>
+              </span>
+              <div class="p6-act-body">
+                <strong class="editable-node">Whisky Trail / Rondleiding (Info O)</strong>
+                <span class="editable-node">Boek een begeleide trail/rondleiding bij de informatiestand (O).</span>
+              </div>
+            </li>
+
+            <li class="p6-act-card">
+              <span class="p6-act-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M10 2h4v4l3 4v10a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V10l3-4V2z"></path>
+                  <line x1="7" y1="14" x2="17" y2="14"></line>
+                </svg>
+              </span>
+              <div class="p6-act-body">
+                <strong class="editable-node">Festival Slijterij (Stand S)</strong>
+                <span class="editable-node">Proef en reserveer een festival botteling of andere flessen in de Slijterij (S).</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Onderste helft (100 t/m 216mm): Donkergroen blok exact uitgelijnd met VAT B ernaast -->
+        <div class="p6-bottom-half">
+          <img src="/images/boekje/barrels-arch-bg.jpg" alt="" class="p6-barrels-bg" />
+          <div class="p6-green-overlay"></div>
+
+          <div class="p6-bottom-inner">
+            <div class="p6-lindores-top">
+              <div class="p6-lindores-title-row">
+                <div>
+                  <span class="p6-gold-eyebrow editable-node">AANKONDIGING VOOR 2027</span>
+                  <h2 class="p6-heading-white editable-node">FESTIVAL BOTTELING 2027</h2>
+                </div>
+                <span class="p6-tilted-badge editable-node">PRIMEUR 2027</span>
+              </div>
+
+              <p class="p6-lindores-desc editable-node">
+                In 2027 worden er <strong>2 vaten van de Lindores Abbey Distilleerderij</strong> gebotteld, speciaal voor het International Whisky Festival. Het zijn 2 totaal verschillende vaten:
+              </p>
+
+              <div class="p6-casks-duo">
+                <div class="p6-cask-pill">
+                  <span class="p6-cask-tag editable-node">VAT A &bull; SINGLE CASK</span>
+                  <strong class="p6-cask-title editable-node">Lindores Abbey Single Cask Woodford Reserve ASB</strong>
+                </div>
+                <div class="p6-cask-pill">
+                  <span class="p6-cask-tag editable-node">VAT B &bull; SINGLE CASK</span>
+                  <strong class="p6-cask-title editable-node">Lindores Abbey Single Cask PX STR</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Gouden Actie-Kaart (exact dezelfde stijl + zwarte schaduwrand als bij VAT A / VAT B) -->
+            <div class="p6-gold-offset-card">
+              <div class="p6-gift-row">
+                <span class="p6-gift-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <polyline points="20 12 20 22 4 22 4 12"></polyline>
+                    <rect x="2" y="7" width="20" height="5"></rect>
+                    <line x1="12" y1="22" x2="12" y2="7"></line>
+                    <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                    <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+                  </svg>
+                </span>
+                <p class="p6-gift-copy editable-node">
+                  Bij aankoop van <strong>2 flessen</strong> krijgt u een overheerlijk cadeautje waarin de Lindores Abbey is verwerkt <strong>t.w.v. &euro; 10,00</strong>!
+                </p>
+              </div>
+              <div class="p6-gold-footer">
+                <span class="p6-loc-pin">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                  <span class="editable-node">Reserveer snel in de Slijterij (S)</span>
+                </span>
+                <span class="p6-limit-note editable-node">ZEER BEPERKTE OPLAGE PER VAT</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         DRUKVEL 2 (BINNENZIJDE): PAGINA 2 (148mm) | PAGINA 3 (148mm) | PAGINA 4 (145mm) | PAGINA 5 (142mm)
+         Pagina 2 (links: 0 t/m 151mm) komt 1-op-1 uit de geüploade PDF (Liggende Plattegrond Grote Kerk);
+         Pagina 3 (151–299mm) bevat Liggend (-90°) alle Standhouders in 3 kolommen;
+         Pagina 4 (299–444mm) en Pagina 5 (444–589mm) bevatten de Masterclasses + Amsterdam 2027.
+         ========================================================================= -->
+    <div class="sheet-caption no-print" id="vel-2-binnenzijde" style="margin-top: 2.5rem;">
+      <span>DRUKVEL 2 VAN 2 (BINNENZIJDE) &mdash; P2: PLATTEGROND (UIT PDF) &bull; P3: STANDHOUDERS LIGGEND (3 KOLOMMEN) &bull; P4 &amp; P5: MASTERCLASSES</span>
+      <span>BRUTO: 589 &times; 216 MM (LIJNEN OP: 3 &bull; 151 &bull; 299 &bull; 444 &bull; 586 MM)</span>
+    </div>
+
+    <section class="helloprint-sheet sheet-inside" id="sheet-vel-2" aria-label="Drukvel 2: Binnenzijde">
+      <!-- 0. Originele Geüploade PDF Pagina 2 (Vel 2 met de liggende plattegrond op Pagina 2) -->
+      <div class="pdf-sheet-bg" aria-hidden="true">
+        <canvas class="pdf-canvas" id="pdf-canvas-page2" width="2226" height="816"></canvas>
+        <img class="pdf-print-img" id="pdf-img-page2" alt="" />
+      </div>
+
+      <!-- HelloPrint Overlay Guides (3 - 151 - 299 - 444 - 586 mm) -->
+      <div class="hp-guides-overlay no-print" aria-hidden="true">
+        <div class="hp-trim-box"></div>
+        <div class="hp-fold-line" style="left: 151mm;"><span>VOUW 1 (151 mm)</span></div>
+        <div class="hp-fold-line" style="left: 299mm;"><span>VOUW 2 (299 mm)</span></div>
+        <div class="hp-fold-line" style="left: 444mm;"><span>VOUW 3 (444 mm)</span></div>
+        <div class="hp-panel-badge" style="left: 77mm;">PAGINA 2 &bull; 148 mm (BEHOUDEN)</div>
+        <div class="hp-panel-badge" style="left: 225mm;">PAGINA 3 &bull; 148 mm (LIGGEND 3 KOL.)</div>
+        <div class="hp-panel-badge" style="left: 371.5mm;">PAGINA 4 &bull; 145 mm (MASTERCLASSES 1)</div>
+        <div class="hp-panel-badge" style="left: 515mm;">PAGINA 5 &bull; 142 mm (MASTERCLASSES 2)</div>
+      </div>
+
+      <!-- =====================================================================
+           PAGINA 3 (x: 151mm t/m 299mm = 148mm breed x 216mm hoog):
+           LIGGEND (-90° GEDRAAID, ZODAT HIJ SAMEN MET DE PLATTEGROND OP PAGINA 2 LEEST!)
+           ALLE STANDHOUDERS (01 T/M 48, INCL. 17 = RAMPUR INDIAN SINGLE MALT) IN 3 KOLOMMEN
+           + ONDERAAN DE 6 FACILITEITEN (S, U, G, C, O, B)
+           ===================================================================== -->
+      <div class="overlay-panel panel-p3-landscape p3-light-mode" id="panel-pagina-3">
+        <!-- Het geroteerde liggende vlak (216mm breed x 148mm hoog na -90° rotatie) -->
+        <div class="p3-rotated-canvas">
+          <div class="p3-landscape-safe">
+            <!-- Bovenbalk (in liggende weergave) -->
+            <header class="p3-landscape-header">
+              <div class="p3-header-left">
+                <h2 class="p3-main-title editable-node">STANDHOUDERS &amp; PLATTEGROND INDEX</h2>
+                <span class="p3-sub-title editable-node">GROTE KERK DEN HAAG &bull; 13, 14 &amp; 15 NOVEMBER 2026</span>
+              </div>
+              <div class="p3-header-badge editable-node">
+                STAND 01 T/M 48 + FACILITEITEN
+              </div>
+            </header>
+
+            <!-- 3 Kolommen met elk 15 genummerde stands (Totaal 45 stands: 01–06 en 10–48) -->
+            <div class="p3-three-cols-grid">
+              <!-- Kolom 1: 01 t/m 18 -->
+              <div class="p3-stand-col">
+                {col1Stands.map((st) => (
+                  <div class="p3-stand-row">
+                    <span class="p3-stand-num editable-node">{st.id}</span>
+                    <span class="p3-stand-name editable-node">{st.name}</span>
+                  </div>
+                ))}
+              </div>
+
+              <!-- Kolom 2: 19 t/m 33 -->
+              <div class="p3-stand-col">
+                {col2Stands.map((st) => (
+                  <div class="p3-stand-row">
+                    <span class="p3-stand-num editable-node">{st.id}</span>
+                    <span class="p3-stand-name editable-node">{st.name}</span>
+                  </div>
+                ))}
+              </div>
+
+              <!-- Kolom 3: 34 t/m 48 -->
+              <div class="p3-stand-col">
+                {col3Stands.map((st) => (
+                  <div class="p3-stand-row">
+                    <span class="p3-stand-num editable-node">{st.id}</span>
+                    <span class="p3-stand-name editable-node">{st.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <!-- Onderbalk met de 6 Faciliteiten (S, U, G, C, O, B) over de volle breedte -->
+            <footer class="p3-facilities-bar">
+              <div class="p3-fac-bar-label editable-node">FACILITEITEN:</div>
+              <div class="p3-fac-items-row">
+                {FACILITEITEN_BOEKJE_2026.map((fac) => (
+                  <div class="p3-fac-chip">
+                    <span class="p3-fac-letter editable-node">{fac.id}</span>
+                    <span class="p3-fac-desc editable-node">{fac.name}</span>
+                  </div>
+                ))}
+              </div>
+            </footer>
+          </div>
+        </div>
+      </div>
+
+      <!-- =====================================================================
+           PAGINA 4 (x: 299mm t/m 444mm = 145mm breed x 216mm hoog):
+           MASTERCLASSES DEEL 1 (Vrijdagmiddag, Vrijdagavond & Zaterdagmiddag = 24 stuks, ZONDER Cley)
+           ===================================================================== -->
+      <div class="overlay-panel panel-p4-mc1 theme-darkgreen" id="panel-pagina-4">
+        <div class="panel-safe-inner">
+          <header class="mc-panel-header">
+            <h2 class="gent-section-title editable-node">MASTERCLASSES</h2>
+            <span class="mc-header-sub editable-node">VRIJDAG 13 &amp; ZATERDAGMIDDAG 14 NOV &bull; NUTSHUIS &amp; TOREN</span>
+          </header>
+
+          <div class="mc-pills-stack mc-stack-24">
+            {MASTERCLASSES_PAGINA_6.map((mc) => (
+              <div class="gent-mc-pill">
+                <div class="mc-pill-left">
+                  <svg class="mc-icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <polyline points="12 7 12 12 15 14"></polyline>
+                  </svg>
+                  <span class="mc-pill-time editable-node">{mc.dagKort} &middot; {mc.tijd}</span>
+                </div>
+                <div class="mc-pill-right">
+                  <svg class="mc-icon-glass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M8 2h8l1.5 7.5a5.5 5.5 0 0 1-11 0L8 2z"></path>
+                    <line x1="12" y1="15" x2="12" y2="21"></line>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                  </svg>
+                  <span class="mc-pill-title editable-node">{mc.titel}</span>
+                  <span class="mc-pill-price editable-node">{mc.prijs}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- =====================================================================
+           PAGINA 5 (x: 444mm t/m 589mm = 142mm netto + 3mm bleed rechts = 145mm breed x 216mm hoog):
+           BOVENIN: MASTERCLASSES DEEL 2 (Zaterdagavond & Zondagmiddag = 12 stuks)
+           ONDERIN: ADVERTENTIE WHISKYFEST AMSTERDAM 16 JANUARI 2027 (DE HALLEN AMSTERDAM)
+           ===================================================================== -->
+      <div class="overlay-panel panel-p5-mc2 theme-darkgreen" id="panel-pagina-5">
+        <div class="panel-safe-inner split-panel-col">
+          <!-- Bovenste helft: Masterclasses Deel 2 (Zaterdagavond & Zondagmiddag) -->
+          <div class="p7-top-mc">
+            <header class="mc-panel-header">
+              <h2 class="gent-section-title editable-node">MASTERCLASSES</h2>
+              <span class="mc-header-sub editable-node">ZATERDAGAVOND 14 &amp; ZONDAG 15 NOV &bull; MELDEN: 10 MIN VOORAF</span>
+            </header>
+
+            <div class="mc-pills-stack mc-stack-12">
+              {MASTERCLASSES_PAGINA_7.map((mc) => (
+                <div class="gent-mc-pill">
+                  <div class="mc-pill-left">
+                    <svg class="mc-icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                      <circle cx="12" cy="12" r="9"></circle>
+                      <polyline points="12 7 12 12 15 14"></polyline>
+                    </svg>
+                    <span class="mc-pill-time editable-node">{mc.dagKort} &middot; {mc.tijd}</span>
+                  </div>
+                  <div class="mc-pill-right">
+                    <svg class="mc-icon-glass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M8 2h8l1.5 7.5a5.5 5.5 0 0 1-11 0L8 2z"></path>
+                      <line x1="12" y1="15" x2="12" y2="21"></line>
+                      <line x1="8" y1="21" x2="16" y2="21"></line>
+                    </svg>
+                    <span class="mc-pill-title editable-node">{mc.titel}</span>
+                    <span class="mc-pill-price editable-node">{mc.prijs}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Onderste helft: Advertentie WhiskyFest Amsterdam 16 januari 2027 in De Hallen Amsterdam -->
+          <div class="p7-bottom-amsterdam-ad">
+            <div class="amsterdam-ad-card">
+              <div class="ams-ad-bg-photo" aria-hidden="true"></div>
+              <div class="ams-ad-overlay" aria-hidden="true"></div>
+
+              <div class="ams-ad-content">
+                <div class="ams-ad-top-row">
+                  <div class="ams-ad-badges">
+                    <span class="ams-pill-tag editable-node">ZATERDAG 16 JANUARI 2027</span>
+                    <span class="ams-pill-urgent editable-node">NOG ENKELE TICKETS</span>
+                  </div>
+                  <div class="ams-logo-wrap" set:html={rawLogoAmsterdamWit} />
+                </div>
+
+                <h3 class="ams-ad-headline editable-node">
+                  WHISKYFEST AMSTERDAM
+                </h3>
+                <p class="ams-ad-venue editable-node">
+                  IN DE HALLEN AMSTERDAM
+                </p>
+                <p class="ams-ad-desc editable-node">
+                  Ontdek een sfeervolle editie met <strong>20 toonaangevende standhouders</strong> in het karakteristieke hart van De Hallen Amsterdam. Perfect voor een compleet dagje uit met een hapje en bijzondere drams!
+                </p>
+
+                <div class="ams-ad-footer-bar">
+                  <div class="ams-usps">
+                    <span class="editable-node">20 Standhouders</span>
+                    <span class="ams-dot">&bull;</span>
+                    <span class="editable-node">De Hallen Amsterdam</span>
+                    <span class="ams-dot">&bull;</span>
+                    <span class="editable-node">16 Jan 2027</span>
+                  </div>
+                  <span class="ams-cta-badge editable-node">WHISKYFESTAMSTERDAM.NL</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+</Layout>
+
+<style is:inline>
+  /* =========================================================================
+     GLOBAL PRINT & STAGE CONFIGURATION (HELLOPRINT 589 x 216 MM INCL. 3MM BLEED)
+     ========================================================================= */
+  @page {
+    size: 589mm 216mm;
+    margin: 0;
+  }
+
+  header.site-header,
+  footer.site-footer,
+  .mobile-cart-drawer,
+  .sticky-mobile-bar,
+  .preloader-overlay,
+  #coin-preloader {
+    display: none !important;
+  }
+
+  body {
+    background: #121312 !important;
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* =========================================================================
+     SCREEN-ONLY TOOLBAR
+     ========================================================================= */
+  .boekje-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background: #171614;
+    border-bottom: 2px solid #006448;
+    padding: 0.65rem 1.15rem;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+  }
+
+  .toolbar-inner {
+    max-width: 2226px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+  }
+
+  .toolbar-nav-pill {
+    color: #FAF7F2;
+    text-decoration: none;
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 0.76rem;
+    font-weight: 700;
+    padding: 0.36rem 0.7rem;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    transition: background 0.15s ease;
+  }
+
+  .toolbar-nav-pill:hover {
+    background: rgba(255, 255, 255, 0.16);
+  }
+
+  .toolbar-spec-badge {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: #caac8e;
+    border: 1px solid rgba(202, 172, 142, 0.4);
+    padding: 0.26rem 0.55rem;
+    border-radius: 4px;
+  }
+
+  .toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+  }
+
+  .toolbar-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 0.4rem 0.75rem;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .toolbar-btn-outline {
+    background: transparent;
+    color: #FAF7F2;
+    border: 1.5px solid rgba(250, 247, 242, 0.35);
+  }
+
+  .toolbar-btn-outline:hover {
+    border-color: #caac8e;
+    color: #caac8e;
+  }
+
+  .toolbar-btn-primary {
+    background: #006448;
+    color: #FAF7F2;
+    border: 1.5px solid #006448;
+  }
+
+  .toolbar-btn-primary:hover {
+    background: #004d37;
+  }
+
+  /* =========================================================================
+     STAGE & SHEET DIMENSIONS (589mm x 216mm)
+     ========================================================================= */
+  .boekje-stage-wrapper {
+    padding: 1.5rem 1.5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: auto;
+  }
+
+  .sheet-caption {
+    width: 589mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    color: #caac8e;
+    margin-bottom: 0.5rem;
+    padding: 0 0.25rem;
+  }
+
+  .helloprint-sheet {
+    position: relative;
+    width: 589mm;
+    height: 216mm;
+    background: #FFFFFF;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
+    overflow: hidden;
+    box-sizing: border-box;
+    flex-shrink: 0;
+  }
+
+  /* Geüploade PDF Achtergrondlaag */
+  .pdf-sheet-bg {
+    position: absolute;
+    inset: 0;
+    width: 589mm;
+    height: 216mm;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .pdf-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .pdf-print-img {
+    display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+  }
+
+  /* Overlay Panels op de exacte vouw-coördinaten */
+  .overlay-panel {
+    position: absolute;
+    top: 0;
+    height: 216mm;
+    box-sizing: border-box;
+    z-index: 10;
+    overflow: hidden;
+  }
+
+  .panel-safe-inner {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+  }
+
+  .theme-darkgreen {
+    background: linear-gradient(165deg, #061A10 0%, #0E3823 55%, #082416 100%);
+    color: #FAF7F2;
+  }
+
+  /* =========================================================================
+     HELLOPRINT GUIDES OVERLAY
+     ========================================================================= */
+  .hp-guides-overlay {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    pointer-events: none;
+  }
+
+  .show-guides .hp-guides-overlay {
+    display: block;
+  }
+
+  .hp-trim-box {
+    position: absolute;
+    top: 3mm;
+    bottom: 3mm;
+    left: 3mm;
+    right: 3mm;
+    border: 1.5px dashed rgba(147, 51, 234, 0.75);
+  }
+
+  .hp-fold-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    border-left: 1.5px dashed rgba(147, 51, 234, 0.85);
+  }
+
+  .hp-fold-line span {
+    position: absolute;
+    top: 4mm;
+    left: 2mm;
+    background: rgba(126, 34, 206, 0.9);
+    color: #ffffff;
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 8px;
+    font-weight: 800;
+    padding: 1.5px 5px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .hp-panel-badge {
+    position: absolute;
+    bottom: 4.2mm;
+    transform: translateX(-50%);
+    background: rgba(23, 22, 20, 0.85);
+    color: #caac8e;
+    border: 1px solid rgba(202, 172, 142, 0.55);
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 99px;
+    letter-spacing: 0.05em;
+  }
+
+  /* =========================================================================
+     STAP 1A: PAGINA 3 — LIGGEND (-90°) ALLE STANDHOUDERS IN 3 KOLOMMEN
+     (Positie op Vel 2: left: 151mm, width: 148mm, height: 216mm)
+     ========================================================================= */
+  .panel-p3-landscape {
+    left: 151mm;
+    width: 148mm;
+    height: 216mm;
+  }
+
+  /* Het liggende canvas van 216mm breed bij 148mm hoog, gecentreerd en -90° gedraaid zodat het meedraait met Pagina 2 */
+  .p3-rotated-canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 216mm;
+    height: 148mm;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    box-sizing: border-box;
+    padding: 5.5mm 8mm; /* 3mm links/rechts op geroteerd vlak = boven/onder bleed op het drukvel! */
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Licht thema (Standaard: sluit naadloos aan bij de witte/lichtgroene plattegrond op Pagina 2) */
+  .p3-light-mode .p3-rotated-canvas {
+    background: #FAF7F2;
+    color: #171614;
+    border-bottom: 0.4mm solid #c1d4ce;
+  }
+
+  /* Donkergroen thema (Optioneel via toggle knop) */
+  .p3-dark-mode .p3-rotated-canvas {
+    background: linear-gradient(165deg, #061A10 0%, #0E3823 55%, #082416 100%);
+    color: #FAF7F2;
+  }
+
+  .p3-landscape-safe {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+
+  .p3-landscape-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 2mm;
+    border-bottom: 0.5mm solid #006448;
+    margin-bottom: 2mm;
+  }
+
+  .p3-dark-mode .p3-landscape-header {
+    border-bottom-color: rgba(202, 172, 142, 0.5);
+  }
+
+  .p3-header-left {
+    display: flex;
+    align-items: baseline;
+    gap: 3mm;
+  }
+
+  .p3-main-title {
+    font-family: var(--font-display, 'Bebas Neue', Impact, sans-serif);
+    font-size: 7.4mm;
+    line-height: 0.95;
+    letter-spacing: 0.03em;
+    color: #006448;
+    margin: 0;
+  }
+
+  .p3-dark-mode .p3-main-title {
+    color: #FAF7F2;
+  }
+
+  .p3-sub-title {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.35mm;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: #4c5752;
+  }
+
+  .p3-dark-mode .p3-sub-title {
+    color: #caac8e;
+  }
+
+  .p3-header-badge {
+    background: #006448;
+    color: #FAF7F2;
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.15mm;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    padding: 1mm 2.8mm;
+    border-radius: 1.2mm;
+  }
+
+  .p3-dark-mode .p3-header-badge {
+    background: #caac8e;
+    color: #061A10;
+  }
+
+  /* 3 Kolommen Grid (15 rijen per kolom) */
+  .p3-three-cols-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4.5mm;
+    flex: 1;
+    align-items: stretch;
+  }
+
+  .p3-stand-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 0.3mm solid #c1d4ce;
+    padding-right: 3.5mm;
+  }
+
+  .p3-stand-col:last-child {
+    border-right: none;
+    padding-right: 0;
+  }
+
+  .p3-dark-mode .p3-stand-col {
+    border-right-color: rgba(202, 172, 142, 0.3);
+  }
+
+  .p3-stand-row {
+    display: flex;
+    align-items: center;
+    gap: 1.8mm;
+    padding: 0.65mm 0;
+    border-bottom: 0.22mm solid rgba(139, 161, 152, 0.45);
+  }
+
+  .p3-dark-mode .p3-stand-row {
+    border-bottom-color: rgba(202, 172, 142, 0.25);
+  }
+
+  .p3-stand-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 5.2mm;
+    height: 4.1mm;
+    background: #d8e7e2;
+    color: #004d37;
+    border: 0.25mm solid #006448;
+    border-radius: 0.9mm;
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.25mm;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+
+  .p3-dark-mode .p3-stand-num {
+    background: rgba(202, 172, 142, 0.18);
+    color: #caac8e;
+    border-color: rgba(202, 172, 142, 0.55);
+  }
+
+  .p3-stand-name {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.45mm;
+    font-weight: 700;
+    color: #171614;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.15;
+  }
+
+  .p3-dark-mode .p3-stand-name {
+    color: #FAF7F2;
+    font-weight: 600;
+  }
+
+  /* Onderbalk Faciliteiten (S, U, G, C, O, B) */
+  .p3-facilities-bar {
+    margin-top: 2.2mm;
+    background: #d8e7e2;
+    border: 0.35mm solid #006448;
+    border-radius: 1.8mm;
+    padding: 1.6mm 2.8mm;
+    display: flex;
+    align-items: center;
+    gap: 2.5mm;
+  }
+
+  .p3-dark-mode .p3-facilities-bar {
+    background: rgba(202, 172, 142, 0.14);
+    border-color: rgba(202, 172, 142, 0.55);
+  }
+
+  .p3-fac-bar-label {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.15mm;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    color: #004d37;
+    flex-shrink: 0;
+  }
+
+  .p3-dark-mode .p3-fac-bar-label {
+    color: #caac8e;
+  }
+
+  .p3-fac-items-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2mm 3mm;
+    flex: 1;
+  }
+
+  .p3-fac-chip {
+    display: flex;
+    align-items: center;
+    gap: 1.3mm;
+    min-width: 0;
+  }
+
+  .p3-fac-letter {
+    width: 3.8mm;
+    height: 3.8mm;
+    border-radius: 0.8mm;
+    background: #006448;
+    color: #FAF7F2;
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.15mm;
+    font-weight: 900;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .p3-dark-mode .p3-fac-letter {
+    background: #caac8e;
+    color: #061A10;
+  }
+
+  .p3-fac-desc {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.05mm;
+    font-weight: 700;
+    color: #171614;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .p3-dark-mode .p3-fac-desc {
+    color: #FAF7F2;
+  }
+
+  /* =========================================================================
+     STAP 1B: PAGINA 4 (x: 299mm, width: 145mm) & PAGINA 5 (x: 444mm, width: 145mm)
+     MASTERCLASSES DEEL 1 & DEEL 2 + WHISKYFEST AMSTERDAM 2027
+     ========================================================================= */
+  .panel-p4-mc1 {
+    left: 299mm;
+    width: 145mm;
+    padding: 7mm 5mm;
+  }
+
+  .panel-p5-mc2 {
+    left: 444mm;
+    width: 145mm; /* 142mm netto + 3mm rechter bleed */
+    padding: 7mm 7.5mm 7mm 5mm;
+  }
+
+  .gent-section-title {
+    font-family: var(--font-display, 'Bebas Neue', Impact, sans-serif);
+    font-size: 8.6mm;
+    line-height: 0.95;
+    letter-spacing: 0.03em;
+    color: #FAF7F2;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .mc-panel-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 2mm;
+    margin-bottom: 2.2mm;
+    padding-bottom: 1.2mm;
+    border-bottom: 0.35mm solid rgba(202, 172, 142, 0.35);
+  }
+
+  .mc-header-sub {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.15mm;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #caac8e;
+    text-align: right;
+  }
+
+  .mc-pills-stack {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+  }
+
+  .mc-stack-24 {
+    gap: 0.95mm;
+  }
+
+  .mc-stack-12 {
+    gap: 1.15mm;
+  }
+
+  .gent-mc-pill {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #caac8e;
+    color: #171614;
+    border-radius: 1.8mm;
+    padding: 1.05mm 2.4mm;
+    gap: 2mm;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.22);
+  }
+
+  .mc-pill-left {
+    display: flex;
+    align-items: center;
+    gap: 1.2mm;
+    flex-shrink: 0;
+    width: 34mm;
+  }
+
+  .mc-icon-clock {
+    width: 2.8mm;
+    height: 2.8mm;
+    color: #004d37;
+    flex-shrink: 0;
+  }
+
+  .mc-pill-time {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.35mm;
+    font-weight: 800;
+    color: #061A10;
+    white-space: nowrap;
+  }
+
+  .mc-pill-right {
+    display: flex;
+    align-items: center;
+    gap: 1.3mm;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .mc-icon-glass {
+    width: 2.7mm;
+    height: 2.7mm;
+    color: #004d37;
+    flex-shrink: 0;
+  }
+
+  .mc-pill-title {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.35mm;
+    font-weight: 600;
+    color: #171614;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+  }
+
+  .mc-pill-price {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.25mm;
+    font-weight: 800;
+    color: #004d37;
+    flex-shrink: 0;
+  }
+
+  /* Split layout op Pagina 5 */
+  .split-panel-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 3mm;
+    height: 100%;
+  }
+
+  .p7-top-mc {
+    display: flex;
+    flex-direction: column;
+    flex: 1.12;
+  }
+
+  .p7-bottom-amsterdam-ad {
+    flex: 0.88;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .amsterdam-ad-card {
+    position: relative;
+    flex: 1;
+    border-radius: 3mm;
+    overflow: hidden;
+    border: 0.45mm solid #caac8e;
+    background: #171614;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3.6mm 4mm;
+    box-sizing: border-box;
+  }
+
+  .ams-ad-bg-photo {
+    position: absolute;
+    inset: 0;
+    background-image: url('/Afbeeldingen/2025/InternationalWhiskyFestival-MilouvanderWillPhotography-158.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.26;
+  }
+
+  .ams-ad-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(145deg, rgba(23, 22, 20, 0.94) 0%, rgba(6, 26, 16, 0.86) 100%);
+  }
+
+  .ams-ad-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .ams-ad-top-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2mm;
+  }
+
+  .ams-ad-badges {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2mm;
+  }
+
+  .ams-pill-tag {
+    display: inline-block;
+    background: #caac8e;
+    color: #171614;
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.3mm;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    padding: 0.8mm 2.2mm;
+    border-radius: 1mm;
+    width: fit-content;
+  }
+
+  .ams-pill-urgent {
+    display: inline-block;
+    background: rgba(202, 172, 142, 0.18);
+    color: #e4d5c4;
+    border: 0.3mm solid #caac8e;
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.05mm;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    padding: 0.6mm 2mm;
+    border-radius: 1mm;
+    width: fit-content;
+  }
+
+  .ams-logo-wrap {
+    width: 17mm;
+    height: 17mm;
+    flex-shrink: 0;
+  }
+
+  .ams-logo-wrap svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .ams-ad-headline {
+    font-family: var(--font-display, 'Bebas Neue', Impact, sans-serif);
+    font-size: 6.8mm;
+    line-height: 0.95;
+    letter-spacing: 0.03em;
+    color: #FAF7F2;
+    margin: 1mm 0 0;
+  }
+
+  .ams-ad-venue {
+    font-family: var(--font-display, 'Bebas Neue', Impact, sans-serif);
+    font-size: 4.3mm;
+    letter-spacing: 0.05em;
+    color: #caac8e;
+    margin: 0;
+  }
+
+  .ams-ad-desc {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.45mm;
+    line-height: 1.38;
+    color: #FAF7F2;
+    margin: 1mm 0;
+  }
+
+  .ams-ad-desc strong {
+    color: #caac8e !important;
+    font-weight: 800;
+  }
+
+  .ams-ad-footer-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2mm;
+    padding-top: 1.6mm;
+    border-top: 0.3mm solid rgba(202, 172, 142, 0.35);
+  }
+
+  .ams-usps {
+    display: flex;
+    align-items: center;
+    gap: 1.2mm;
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.15mm;
+    font-weight: 700;
+    color: #e4d5c4;
+  }
+
+  .ams-cta-badge {
+    background: #006448;
+    color: #FAF7F2;
+    border: 0.3mm solid #caac8e;
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.15mm;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    padding: 0.9mm 2.2mm;
+    border-radius: 1.2mm;
+  }
+
+  /* =========================================================================
+     STAP 2: PAGINA 6 OP VEL 1 (x: 0mm t/m 145mm = 3mm linker-bleed + 142mm netto)
+     BOVEN (0–99.8mm): OVERIGE ACTIVITEITEN 2026 (OP #F8F4EC PARELWIT)
+     ONDER (99.8–216mm): FESTIVAL BOTTELING 2027 LINDORES ABBEY (UITGELIJND MET VAT B)
+     ========================================================================= */
+  .panel-p6-new {
+    left: 0;
+    width: 145mm;
+    height: 216mm;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .p6-top-half {
+    height: 108.26mm; /* Exact gelijk aan de bovenrand van het donkergroene VAT B blok op Pagina 7! */
+    background: #FAF7F2;
+    padding: 7mm 5.5mm 3.5mm 8mm; /* 3mm linker bleed + 5mm safe margin = 8mm links */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .p6-top-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4mm;
+  }
+
+  .p6-eyebrow {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.15mm;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #006448;
+  }
+
+  .p6-heading-green {
+    font-family: var(--font-display, 'Bebas Neue', Impact, sans-serif);
+    font-size: 8.6mm;
+    line-height: 0.94;
+    letter-spacing: 0.02em;
+    color: #006448;
+    margin: 0;
+  }
+
+  .p6-activities-stack {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    margin-top: 1.6mm;
+    gap: 1.25mm;
+  }
+
+  .p6-act-card {
+    display: flex;
+    align-items: center;
+    gap: 2.4mm;
+    background: #FAF7F2;
+    border: 0.3mm solid #c1d4ce;
+    border-left: 1.1mm solid #006448;
+    border-radius: 1.6mm;
+    padding: 1.35mm 2.4mm;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  .p6-act-icon {
+    width: 6mm;
+    height: 6mm;
+    border-radius: 50%;
+    background: #006448;
+    color: #FAF7F2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .p6-act-icon svg {
+    width: 3.4mm;
+    height: 3.4mm;
+  }
+
+  .p6-act-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15mm;
+    min-width: 0;
+  }
+
+  .p6-act-body strong {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.35mm;
+    font-weight: 800;
+    color: #061A10;
+    line-height: 1.15;
+  }
+
+  .p6-act-body span {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.08mm;
+    color: #4c5752;
+    line-height: 1.22;
+  }
+
+  /* Onderste helft Pagina 6 (107.74mm hoog, exact uitgelijnd met VAT B!) */
+  .p6-bottom-half {
+    position: relative;
+    height: 107.74mm;
+    background: #061A10;
+    overflow: hidden;
+    box-sizing: border-box;
+    border-right: 0.4mm solid rgba(202, 172, 142, 0.35);
+  }
+
+  .p6-barrels-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.28;
+  }
+
+  .p6-green-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, rgba(6, 26, 16, 0.86) 0%, rgba(14, 56, 35, 0.88) 55%, rgba(0, 77, 55, 0.94) 100%);
+  }
+
+  .p6-bottom-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    padding: 4.5mm 5.5mm 7mm 8mm; /* 7mm onder = 3mm onder-bleed + 4mm safe zone */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .p6-lindores-top {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8mm;
+  }
+
+  .p6-lindores-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2mm;
+  }
+
+  .p6-gold-eyebrow {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.1mm;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #caac8e;
+    display: block;
+    margin-bottom: 0.4mm;
+  }
+
+  .p6-heading-white {
+    font-family: var(--font-display, 'Bebas Neue', Impact, sans-serif);
+    font-size: 8.4mm;
+    line-height: 0.94;
+    letter-spacing: 0.02em;
+    color: #FAF7F2;
+    margin: 0;
+  }
+
+  .p6-tilted-badge {
+    display: inline-block;
+    background: #FAF7F2;
+    color: #006448;
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.05mm;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    padding: 0.9mm 2.4mm;
+    border-radius: 0.8mm;
+    transform: rotate(5deg);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.28);
+    flex-shrink: 0;
+  }
+
+  .p6-lindores-desc {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.3mm;
+    line-height: 1.36;
+    color: #FAF7F2;
+    margin: 0;
+  }
+
+  .p6-lindores-desc strong {
+    color: #caac8e !important;
+    font-weight: 800;
+  }
+
+  .p6-casks-duo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.2mm;
+  }
+
+  .p6-cask-pill {
+    background: rgba(250, 247, 242, 0.1);
+    border: 0.35mm solid rgba(202, 172, 142, 0.65);
+    border-radius: 1.8mm;
+    padding: 1.8mm 2.2mm;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4mm;
+  }
+
+  .p6-cask-tag {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 1.9mm;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: #caac8e;
+  }
+
+  .p6-cask-title {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.25mm;
+    font-weight: 800;
+    line-height: 1.22;
+    color: #FAF7F2;
+  }
+
+  /* Gouden Kaart onderin Pagina 6 (exact in dezelfde stijl als de VAT A / VAT B kaarten ernaast!) */
+  .p6-gold-offset-card {
+    background: #caac8e;
+    color: #171614;
+    border-radius: 2.4mm;
+    padding: 2.6mm 3.2mm;
+    box-shadow: 1.2mm 1.2mm 0 #171614;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6mm;
+  }
+
+  .p6-gift-row {
+    display: flex;
+    align-items: center;
+    gap: 2.2mm;
+  }
+
+  .p6-gift-icon {
+    width: 6.2mm;
+    height: 6.2mm;
+    border-radius: 50%;
+    background: #006448;
+    color: #FAF7F2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .p6-gift-icon svg {
+    width: 3.5mm;
+    height: 3.5mm;
+  }
+
+  .p6-gift-copy {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.25mm;
+    line-height: 1.28;
+    color: #171614;
+    margin: 0;
+  }
+
+  .p6-gift-copy strong {
+    color: #061A10 !important;
+    font-weight: 900;
+  }
+
+  .p6-gold-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1.2mm;
+    border-top: 0.25mm solid rgba(23, 22, 20, 0.22);
+  }
+
+  .p6-loc-pin {
+    display: inline-flex;
+    align-items: center;
+    gap: 1mm;
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 2.15mm;
+    font-weight: 800;
+    color: #FAF7F2;
+  }
+
+  .p6-loc-pin svg {
+    width: 3.2mm;
+    height: 3.2mm;
+    color: #FAF7F2;
+  }
+
+  .p6-limit-note {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 1.95mm;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    color: #004d37;
+  }
+
+  /* =========================================================================
+     EDITABLE NODE HIGHLIGHTING & PRINT MEDIA QUERY
+     ========================================================================= */
+  .editable-node[contenteditable="true"] {
+    outline: 1.5px dashed #caac8e;
+    outline-offset: 2px;
+    cursor: text;
+  }
+
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+
+    body {
+      background: #FFFFFF !important;
+    }
+
+    .boekje-stage-wrapper {
+      padding: 0 !important;
+      margin: 0 !important;
+      display: block !important;
+    }
+
+    .helloprint-sheet {
+      box-shadow: none !important;
+      margin: 0 !important;
+      page-break-after: always !important;
+      break-after: page !important;
+    }
+
+    .helloprint-sheet:last-of-type {
+      page-break-after: avoid !important;
+      break-after: avoid !important;
+    }
+
+    .pdf-canvas {
+      display: none !important;
+    }
+
+    .pdf-print-img {
+      display: block !important;
+    }
+  }
+</style>
+
+<script type="module" is:inline>
+  import * as pdfjsLib from '/pdfjs/pdf.min.mjs';
+  pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdfjs/pdf.worker.min.mjs';
+
+  // 1. Render beide pagina's van de geüploade Canva PDF (/images/boekje/canva-basis-boekje.pdf) op hoge resolutie
+  async function renderCanvaBasisPdf() {
+    try {
+      const loadingTask = pdfjsLib.getDocument('/images/boekje/canva-basis-boekje.pdf');
+      const pdf = await loadingTask.promise;
+
+      const pagesConfig = [
+        { pageNum: 1, canvasId: 'pdf-canvas-page1', imgId: 'pdf-img-page1' },
+        { pageNum: 2, canvasId: 'pdf-canvas-page2', imgId: 'pdf-img-page2' },
+      ];
+
+      for (const cfg of pagesConfig) {
+        const page = await pdf.getPage(cfg.pageNum);
+        const unscaledVp = page.getViewport({ scale: 1 });
+        const targetW = 2226 * 2;
+        const targetH = 816 * 2;
+
+        const offCanvas = document.createElement('canvas');
+        offCanvas.width = targetW;
+        offCanvas.height = targetH;
+        const offCtx = offCanvas.getContext('2d');
+
+        const scaleX = targetW / unscaledVp.width;
+        const scaleY = targetH / unscaledVp.height;
+        const viewport = page.getViewport({ scale: Math.max(scaleX, scaleY) });
+
+        await page.render({
+          canvasContext: offCtx,
+          viewport,
+        }).promise;
+
+        const canvasEl = document.getElementById(cfg.canvasId);
+        if (canvasEl) {
+          canvasEl.width = 2226;
+          canvasEl.height = 816;
+          const ctx = canvasEl.getContext('2d');
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+          ctx.drawImage(offCanvas, 0, 0, 2226, 816);
+        }
+
+        const imgEl = document.getElementById(cfg.imgId);
+        if (imgEl) {
+          imgEl.src = offCanvas.toDataURL('image/jpeg', 0.96);
+        }
+      }
+    } catch (err) {
+      console.error('Fout bij laden van /images/boekje/canva-basis-boekje.pdf:', err);
+    }
+  }
+
+  renderCanvaBasisPdf();
+
+  // 2. Toggle P3 Thema (Licht vs Donkergroen)
+  const p3Btn = document.getElementById('toggle-p3-theme-btn');
+  const p3Label = document.getElementById('p3-theme-label');
+  const p3Panel = document.getElementById('panel-pagina-3');
+
+  if (p3Btn && p3Label && p3Panel) {
+    p3Btn.addEventListener('click', () => {
+      const isDark = p3Panel.classList.toggle('p3-dark-mode');
+      p3Panel.classList.toggle('p3-light-mode', !isDark);
+      p3Label.textContent = isDark
+        ? 'P3 Thema: Donkergroen (Passend bij Masterclasses)'
+        : 'P3 Thema: Licht (Passend bij Plattegrond)';
+    });
+  }
+
+  // 3. Toggle HelloPrint Hulplijnen
+  const stage = document.getElementById('boekje-stage');
+  const guidesBtn = document.getElementById('toggle-guides-btn');
+  const guidesLabel = document.getElementById('guides-label');
+
+  if (guidesBtn && stage && guidesLabel) {
+    guidesBtn.addEventListener('click', () => {
+      const active = stage.classList.toggle('show-guides');
+      guidesLabel.textContent = active ? 'Hulplijnen: AAN' : 'Hulplijnen: UIT';
+    });
+  }
+
+  // 4. Toggle Tekst Bewerken
+  const editBtn = document.getElementById('toggle-edit-btn');
+  const editLabel = document.getElementById('edit-label');
+  let isEditing = false;
+
+  if (editBtn && editLabel) {
+    editBtn.addEventListener('click', () => {
+      isEditing = !isEditing;
+      document.querySelectorAll('.editable-node').forEach((el) => {
+        if (isEditing) {
+          el.setAttribute('contenteditable', 'true');
+        } else {
+          el.removeAttribute('contenteditable');
+        }
+      });
+      editLabel.textContent = isEditing ? 'Tekst Bewerken: AAN' : 'Tekst Bewerken: UIT';
+    });
+  }
+</script>

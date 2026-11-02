@@ -230,18 +230,16 @@ export const EXHIBITORS_DEN_HAAG: ExhibitorItem[] = [
   },
   {
     "id": "17",
-    "name": "Festival Botteling stand",
-    "category": "organisation",
+    "name": "Rampur Indian Single Malt",
+    "category": "world",
     "categories": [
-      "organisation",
-      "scotch"
+      "world"
     ],
     "brands": [
-      "Festival Bottelingen",
-      "Lindores Abbey Single Cask",
-      "Glazen & Gifts"
+      "Rampur Indian Single Malt",
+      "Indiase Single Malt Whisky"
     ],
-    "description": "De officiële stand voor de exclusieve International Whisky Festival Den Haag bottelingen, festivalglazen en verzamelitems.",
+    "description": "Gerenommeerde Indiase single malt whisky, gerijpt aan de voet van de Himalaya.",
     "isNotOnMap": false
   },
   {
