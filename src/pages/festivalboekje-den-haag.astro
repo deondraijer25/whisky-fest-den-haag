@@ -25,20 +25,20 @@ const VAT_A_VALUES = [0.54, 0.39, 0.33, 1.0, 0.54, 0.54, 0.90, 0.35, 1.0, 0.50, 
 const VAT_B_VALUES = [0.89, 0.72, 0.89, 0.50, 0.69, 0.90, 0.37, 0.87, 0.50, 0.69, 0.51];
 
 function buildFlavorRadarSvg(values: number[], theme: 'light' | 'dark'): string {
-  const cx = 160;
-  const cy = 148;
-  const R = 92;
+  const cx = 165;
+  const cy = 152;
+  const R = 104;
   const N = FLAVOR_LABELS.length;
-  const ringStroke = theme === 'light' ? 'rgba(23, 22, 20, 0.25)' : 'rgba(250, 247, 242, 0.35)';
-  const spokeStroke = theme === 'light' ? 'rgba(23, 22, 20, 0.7)' : 'rgba(250, 247, 242, 0.75)';
-  const polyFill = theme === 'light' ? 'rgba(235, 162, 122, 0.7)' : 'rgba(235, 162, 122, 0.8)';
+  const ringStroke = theme === 'light' ? 'rgba(23, 22, 20, 0.28)' : 'rgba(250, 247, 242, 0.38)';
+  const spokeStroke = theme === 'light' ? 'rgba(23, 22, 20, 0.75)' : 'rgba(250, 247, 242, 0.8)';
+  const polyFill = theme === 'light' ? 'rgba(235, 162, 122, 0.72)' : 'rgba(235, 162, 122, 0.82)';
   const polyStroke = theme === 'light' ? '#171614' : '#FAF7F2';
   const labelColor = theme === 'light' ? '#171614' : '#FAF7F2';
 
   let rings = '';
   for (let r = 1; r <= 5; r++) {
     const rad = (R * r) / 5;
-    rings += `<circle cx="${cx}" cy="${cy}" r="${rad.toFixed(1)}" fill="none" stroke="${ringStroke}" stroke-width="0.9" stroke-dasharray="1.8 1.8" />`;
+    rings += `<circle cx="${cx}" cy="${cy}" r="${rad.toFixed(1)}" fill="none" stroke="${ringStroke}" stroke-width="1" stroke-dasharray="2 2" />`;
   }
 
   let spokes = '';
@@ -49,28 +49,28 @@ function buildFlavorRadarSvg(values: number[], theme: 'light' | 'dark'): string 
     const angle = -Math.PI / 2 + (i * 2 * Math.PI) / N;
     const xEnd = cx + R * Math.cos(angle);
     const yEnd = cy + R * Math.sin(angle);
-    spokes += `<line x1="${cx}" y1="${cy}" x2="${xEnd.toFixed(1)}" y2="${yEnd.toFixed(1)}" stroke="${spokeStroke}" stroke-width="1.15" />`;
+    spokes += `<line x1="${cx}" y1="${cy}" x2="${xEnd.toFixed(1)}" y2="${yEnd.toFixed(1)}" stroke="${spokeStroke}" stroke-width="1.3" />`;
 
     const val = values[i] ?? 0.5;
     const px = cx + R * val * Math.cos(angle);
     const py = cy + R * val * Math.sin(angle);
     pts.push(`${px.toFixed(1)},${py.toFixed(1)}`);
 
-    const labelDist = R + 13;
+    const labelDist = R + 14;
     const lx = cx + labelDist * Math.cos(angle);
     const ly = cy + labelDist * Math.sin(angle);
     let anchor = 'middle';
     if (Math.cos(angle) > 0.25) anchor = 'start';
     else if (Math.cos(angle) < -0.25) anchor = 'end';
 
-    const dy = Math.sin(angle) > 0.7 ? 5 : Math.sin(angle) < -0.7 ? -2 : 3;
-    labels += `<text x="${lx.toFixed(1)}" y="${(ly + dy).toFixed(1)}" text-anchor="${anchor}" fill="${labelColor}" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="9.5" font-weight="700">${FLAVOR_LABELS[i]}</text>`;
+    const dy = Math.sin(angle) > 0.7 ? 6 : Math.sin(angle) < -0.7 ? -2 : 3.5;
+    labels += `<text x="${lx.toFixed(1)}" y="${(ly + dy).toFixed(1)}" text-anchor="${anchor}" fill="${labelColor}" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="11.5" font-weight="800">${FLAVOR_LABELS[i]}</text>`;
   }
 
-  return `<svg viewBox="0 0 330 295" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+  return `<svg viewBox="0 0 345 305" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
     ${rings}
     ${spokes}
-    <polygon points="${pts.join(' ')}" fill="${polyFill}" stroke="${polyStroke}" stroke-width="1.6" stroke-linejoin="round" />
+    <polygon points="${pts.join(' ')}" fill="${polyFill}" stroke="${polyStroke}" stroke-width="1.8" stroke-linejoin="round" />
     ${labels}
   </svg>`;
 }
@@ -328,7 +328,7 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
 
       <!-- =====================================================================
            PAGINA 7 (x: 145mm t/m 290mm = 145mm breed x 216mm hoog):
-           FESTIVAL BOTTELING OP 1 HELE PAGINA (1 FLES + SMAAKPALET PER HELFT)
+           FESTIVAL BOTTELING OP 1 HELE PAGINA (1 FLES + GROOT GECENTREERD SMAAKPALET PER HELFT)
            BOVENSTE HELFT (0–108.26mm, licht): VAT A (#9318 - First Fill Bourbon Barrel - 116 flessen)
            ONDERSTE HELFT (108.26–216mm, donkergroen): VAT B (#3464 - Refill Bourbon Barrel - 118 flessen)
            ===================================================================== -->
@@ -340,10 +340,10 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
             <div class="p7-title-group p7-title-left">
               <h2 class="p7-vat-heading p7-heading-green editable-node">VAT A</h2>
               <p class="p7-avail-sub p7-sub-dark editable-node">116 flessen beschikbaar</p>
-              <span class="p7-cask-spec p7-spec-light editable-node">First Fill Bourbon &bull; 60% Cask Strength</span>
+              <span class="p7-cask-spec p7-spec-light editable-node">First Fill Bourbon &bull; 60% ABV</span>
             </div>
 
-            <!-- Midden: Smaakpalet Vat A -->
+            <!-- Midden: Groot Gecentreerd Smaakpalet Vat A -->
             <div class="p7-radar-box p7-radar-vat-a" set:html={radarSvgVatA} />
 
             <!-- Rechterzijde: Haarscherpe Donkere Fles (#9318) achter de gouden kaart -->
@@ -352,16 +352,18 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
             </div>
           </div>
 
-          <!-- Gouden Banner onderaan bovenste helft (exact zoals jouw ontwerp met schuin lint GELIMITEERD) -->
+          <!-- Gouden Banner onderaan bovenste helft met strakke luxe GELIMITEERD badge -->
           <div class="p7-banner-wrap">
-            <div class="p7-ribbon p7-ribbon-left">
-              <span class="editable-node">GELIMITEERD</span>
-            </div>
             <div class="p7-gold-card p7-card-vat-a">
-              <div class="p7-card-top-right">
-                <strong class="p7-card-brand editable-node">AMRUT SINGLE MALT</strong>
-                <span class="p7-card-cask editable-node">Single Cask #9318</span>
-                <span class="p7-card-edition editable-node">Whisky Live The Hague 2026</span>
+              <div class="p7-card-header-row">
+                <div class="p7-lim-stamp">
+                  <span class="p7-lim-dot"></span>
+                  <span class="editable-node">GELIMITEERD &bull; 116 FLESSEN</span>
+                </div>
+                <div class="p7-card-top-right">
+                  <strong class="p7-card-brand editable-node">AMRUT SINGLE MALT</strong>
+                  <span class="p7-card-cask editable-node">Single Cask #9318 &bull; Whisky Live The Hague 2026</span>
+                </div>
               </div>
               <div class="p7-card-bottom-row">
                 <span class="p7-card-price editable-node">&euro; 85,00</span>
@@ -388,27 +390,29 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
               <img src="/images/boekje/amrut-vat-b-3464-hq.png" alt="Amrut Single Malt Vat B #3464" class="p7-hq-bottle" />
             </div>
 
-            <!-- Midden: Smaakpalet Vat B (vrij van fles en lint!) -->
+            <!-- Midden: Groot Gecentreerd Smaakpalet Vat B -->
             <div class="p7-radar-box p7-radar-vat-b" set:html={radarSvgVatB} />
 
             <!-- Rechterzijde: Titel VAT B + 118 flessen -->
             <div class="p7-title-group p7-title-right">
               <h2 class="p7-vat-heading p7-heading-white editable-node">VAT B</h2>
               <p class="p7-avail-sub p7-sub-white editable-node">118 flessen beschikbaar</p>
-              <span class="p7-cask-spec p7-spec-dark editable-node">Refill Bourbon &bull; 60% Cask Strength</span>
+              <span class="p7-cask-spec p7-spec-dark editable-node">Refill Bourbon &bull; 60% ABV</span>
             </div>
           </div>
 
           <!-- Gouden Banner onderaan onderste helft (exact op de 8.5mm onderlijn i.v.m. 3mm snijverlies) -->
           <div class="p7-banner-wrap">
-            <div class="p7-ribbon p7-ribbon-right">
-              <span class="editable-node">GELIMITEERD</span>
-            </div>
             <div class="p7-gold-card p7-card-vat-b">
-              <div class="p7-card-top-left">
-                <strong class="p7-card-brand editable-node">AMRUT SINGLE MALT</strong>
-                <span class="p7-card-cask editable-node">Single Cask #3464</span>
-                <span class="p7-card-edition editable-node">Whisky Live The Hague 2026</span>
+              <div class="p7-card-header-row">
+                <div class="p7-card-top-left">
+                  <strong class="p7-card-brand editable-node">AMRUT SINGLE MALT</strong>
+                  <span class="p7-card-cask editable-node">Single Cask #3464 &bull; Whisky Live The Hague 2026</span>
+                </div>
+                <div class="p7-lim-stamp">
+                  <span class="p7-lim-dot"></span>
+                  <span class="editable-node">GELIMITEERD &bull; 118 FLESSEN</span>
+                </div>
               </div>
               <div class="p7-card-bottom-row">
                 <span class="p7-card-loc">
@@ -1971,23 +1975,25 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
     border: 0.25mm solid #caac8e;
   }
 
-  /* Smaakpalet Radar Box (exact vrij gepositioneerd tussen titel, fles en GELIMITEERD lint!) */
+  /* Groot Gecentreerd Smaakpalet Radar Box (exact in het midden van de helft, vrij van titel en fles!) */
   .p7-radar-box {
     position: absolute;
-    width: 45mm;
-    height: 41mm;
+    width: 60mm;
+    height: 53mm;
     z-index: 3;
     pointer-events: none;
   }
 
   .p7-radar-vat-a {
-    left: 24mm;
-    bottom: 1.5mm;
+    left: 48%;
+    transform: translateX(-50%);
+    bottom: 0mm;
   }
 
   .p7-radar-vat-b {
-    left: 38mm;
-    bottom: 1.5mm;
+    left: 52%;
+    transform: translateX(-50%);
+    bottom: 0mm;
   }
 
   /* Haarscherpe Fles Rechts (VAT A) & Links (VAT B) staand achter de gouden kaart */
@@ -1995,7 +2001,7 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
     position: absolute;
     top: -6mm;
     bottom: -6mm;
-    width: 44mm;
+    width: 40mm;
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -2004,11 +2010,11 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
   }
 
   .p7-bottle-right {
-    right: -1mm;
+    right: -3mm;
   }
 
   .p7-bottle-left {
-    left: -1mm;
+    left: -3mm;
   }
 
   .p7-hq-bottle {
@@ -2019,7 +2025,7 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
     filter: drop-shadow(0 3mm 6mm rgba(0, 0, 0, 0.38));
   }
 
-  /* Gouden Kaart onderaan elke helft met schuin GELIMITEERD lint */
+  /* Gouden Kaart onderaan elke helft met strak geïntegreerde GELIMITEERD badge */
   .p7-banner-wrap {
     position: relative;
     z-index: 4;
@@ -2040,12 +2046,44 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
     box-sizing: border-box;
   }
 
+  .p7-card-header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2.5mm;
+  }
+
+  .p7-lim-stamp {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.3mm;
+    background: #061A10;
+    color: #FAF7F2;
+    border: 0.3mm solid #006448;
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 2.15mm;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    padding: 0.9mm 2.4mm;
+    border-radius: 1.4mm;
+    box-shadow: 0.5mm 0.5mm 0 rgba(0, 0, 0, 0.35);
+    flex-shrink: 0;
+  }
+
+  .p7-lim-dot {
+    width: 1.5mm;
+    height: 1.5mm;
+    border-radius: 50%;
+    background: #caac8e;
+    flex-shrink: 0;
+  }
+
   .p7-card-top-right {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     text-align: right;
-    gap: 0.25mm;
+    gap: 0.3mm;
   }
 
   .p7-card-top-left {
@@ -2053,7 +2091,7 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
-    gap: 0.25mm;
+    gap: 0.3mm;
   }
 
   .p7-card-brand {
@@ -2068,9 +2106,9 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
   .p7-card-cask,
   .p7-card-edition {
     font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
-    font-size: 2.35mm;
-    font-weight: 600;
-    color: #006448;
+    font-size: 2.25mm;
+    font-weight: 700;
+    color: #004d37;
     line-height: 1.2;
   }
 
@@ -2079,6 +2117,8 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
     align-items: center;
     justify-content: space-between;
     gap: 3mm;
+    padding-top: 0.8mm;
+    border-top: 0.25mm solid rgba(6, 26, 16, 0.14);
   }
 
   .p7-card-price {
@@ -2104,32 +2144,6 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
     height: 4.5mm;
     color: #FAF7F2;
     flex-shrink: 0;
-  }
-
-  /* Schuin wit lint "GELIMITEERD" */
-  .p7-ribbon {
-    position: absolute;
-    top: -3.5mm;
-    z-index: 5;
-    background: #FFFFFF;
-    color: #006448;
-    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
-    font-size: 3mm;
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    padding: 1.2mm 5.5mm;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-    clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%, 8% 50%);
-  }
-
-  .p7-ribbon-left {
-    left: -5mm;
-    transform: rotate(-30deg);
-  }
-
-  .p7-ribbon-right {
-    right: -5mm;
-    transform: rotate(30deg);
   }
 
   /* =========================================================================
