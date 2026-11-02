@@ -459,24 +459,28 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
       </div>
 
       <!-- =====================================================================
+           PAGINA 2 (x: 0mm t/m 151mm = 3mm linker-bleed + 148mm netto):
+           LICHTE ACHTERGRONDKLEUR (#FAF7F2) + TITEL "PLATTEGROND" (-90° GEDRAAID)
+           ===================================================================== -->
+      <div class="overlay-panel panel-p2-map" id="panel-pagina-2">
+        <div class="p2-parchment-tint" aria-hidden="true"></div>
+        <div class="p2-rotated-header">
+          <h2 class="p2-main-title editable-node">PLATTEGROND</h2>
+        </div>
+      </div>
+
+      <!-- =====================================================================
            PAGINA 3 (x: 151mm t/m 299mm = 148mm breed x 216mm hoog):
            LIGGEND (-90° GEDRAAID, ZODAT HIJ SAMEN MET DE PLATTEGROND OP PAGINA 2 LEEST!)
-           ALLE STANDHOUDERS (01 T/M 48, INCL. 17 = RAMPUR INDIAN SINGLE MALT) IN 3 KOLOMMEN
-           + ONDERAAN DE 6 FACILITEITEN (S, U, G, C, O, B)
+           ALLEEN DE STRAKKE TITEL "STANDHOUDERS" + 3 KOLOMMEN (01 T/M 48) + FACILITEITEN
            ===================================================================== -->
       <div class="overlay-panel panel-p3-landscape p3-light-mode" id="panel-pagina-3">
         <!-- Het geroteerde liggende vlak (216mm breed x 148mm hoog na -90° rotatie) -->
         <div class="p3-rotated-canvas">
           <div class="p3-landscape-safe">
-            <!-- Bovenbalk (in liggende weergave) -->
+            <!-- Bovenbalk (in liggende weergave — zonder overbodige ondertitels/groene pil!) -->
             <header class="p3-landscape-header">
-              <div class="p3-header-left">
-                <h2 class="p3-main-title editable-node">STANDHOUDERS &amp; PLATTEGROND INDEX</h2>
-                <span class="p3-sub-title editable-node">GROTE KERK DEN HAAG &bull; 13, 14 &amp; 15 NOVEMBER 2026</span>
-              </div>
-              <div class="p3-header-badge editable-node">
-                STAND 01 T/M 48 + FACILITEITEN
-              </div>
+              <h2 class="p3-main-title editable-node">STANDHOUDERS</h2>
             </header>
 
             <!-- 3 Kolommen met elk 15 genummerde stands (Totaal 45 stands: 01–06 en 10–48) -->
@@ -530,13 +534,13 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
 
       <!-- =====================================================================
            PAGINA 4 (x: 299mm t/m 444mm = 145mm breed x 216mm hoog):
-           MASTERCLASSES DEEL 1 (Vrijdagmiddag, Vrijdagavond & Zaterdagmiddag = 24 stuks, ZONDER Cley)
+           OP LICHTE ACHTERGROND (#FAF7F2): MASTERCLASSES DEEL 1 (24 STUKS)
            ===================================================================== -->
-      <div class="overlay-panel panel-p4-mc1 theme-darkgreen" id="panel-pagina-4">
+      <div class="overlay-panel panel-p4-mc1 theme-light-parchment" id="panel-pagina-4">
         <div class="panel-safe-inner">
           <header class="mc-panel-header">
             <h2 class="gent-section-title editable-node">MASTERCLASSES</h2>
-            <span class="mc-header-sub editable-node">VRIJDAG 13 &amp; ZATERDAGMIDDAG 14 NOV &bull; NUTSHUIS &amp; TOREN</span>
+            <span class="mc-header-sub editable-node">VR 13 &amp; ZA-MIDDAG 14 NOV &bull; NUTSHUIS &amp; TOREN</span>
           </header>
 
           <div class="mc-pills-stack mc-stack-24">
@@ -566,16 +570,17 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
 
       <!-- =====================================================================
            PAGINA 5 (x: 444mm t/m 589mm = 142mm netto + 3mm bleed rechts = 145mm breed x 216mm hoog):
+           OP LICHTE ACHTERGROND (#FAF7F2):
            BOVENIN: MASTERCLASSES DEEL 2 (Zaterdagavond & Zondagmiddag = 12 stuks)
-           ONDERIN: ADVERTENTIE WHISKYFEST AMSTERDAM 16 JANUARI 2027 (DE HALLEN AMSTERDAM)
+           ONDERIN: LUXE WHISKYFEST AMSTERDAM 2027 BANNER (IN DE STIJL VAN VEL 1!)
            ===================================================================== -->
-      <div class="overlay-panel panel-p5-mc2 theme-darkgreen" id="panel-pagina-5">
+      <div class="overlay-panel panel-p5-mc2 theme-light-parchment" id="panel-pagina-5">
         <div class="panel-safe-inner split-panel-col">
           <!-- Bovenste helft: Masterclasses Deel 2 (Zaterdagavond & Zondagmiddag) -->
           <div class="p7-top-mc">
             <header class="mc-panel-header">
               <h2 class="gent-section-title editable-node">MASTERCLASSES</h2>
-              <span class="mc-header-sub editable-node">ZATERDAGAVOND 14 &amp; ZONDAG 15 NOV &bull; MELDEN: 10 MIN VOORAF</span>
+              <span class="mc-header-sub editable-node">ZA-AVOND 14 &amp; ZO 15 NOV &bull; MELDEN: 10 MIN VOORAF</span>
             </header>
 
             <div class="mc-pills-stack mc-stack-12">
@@ -602,40 +607,60 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
             </div>
           </div>
 
-          <!-- Onderste helft: Advertentie WhiskyFest Amsterdam 16 januari 2027 in De Hallen Amsterdam -->
+          <!-- Onderste helft: Vernieuwde WhiskyFest Amsterdam 2027 Banner (Passend bij de lichte #FAF7F2 stijl & Gouden Kaarten van Vel 1) -->
           <div class="p7-bottom-amsterdam-ad">
-            <div class="amsterdam-ad-card">
-              <div class="ams-ad-bg-photo" aria-hidden="true"></div>
-              <div class="ams-ad-overlay" aria-hidden="true"></div>
-
-              <div class="ams-ad-content">
-                <div class="ams-ad-top-row">
-                  <div class="ams-ad-badges">
-                    <span class="ams-pill-tag editable-node">ZATERDAG 16 JANUARI 2027</span>
-                    <span class="ams-pill-urgent editable-node">NOG ENKELE TICKETS</span>
-                  </div>
-                  <div class="ams-logo-wrap" set:html={rawLogoAmsterdamWit} />
+            <div class="ams-gold-showcase-card">
+              <!-- Donkergroene Header-Balk met Logo & Datum -->
+              <div class="ams-showcase-header">
+                <div class="ams-header-text">
+                  <span class="ams-date-pill editable-node">ZATERDAG 16 JANUARI 2027 &bull; DE HALLEN AMSTERDAM</span>
+                  <h3 class="ams-showcase-title editable-node">WHISKYFEST AMSTERDAM</h3>
                 </div>
+                <div class="ams-logo-stamp" set:html={rawLogoAmsterdamWit} />
+              </div>
 
-                <h3 class="ams-ad-headline editable-node">
-                  WHISKYFEST AMSTERDAM
-                </h3>
-                <p class="ams-ad-venue editable-node">
-                  IN DE HALLEN AMSTERDAM
-                </p>
-                <p class="ams-ad-desc editable-node">
-                  Ontdek een sfeervolle editie met <strong>20 toonaangevende standhouders</strong> in het karakteristieke hart van De Hallen Amsterdam. Perfect voor een compleet dagje uit met een hapje en bijzondere drams!
+              <!-- Middenstuk: Beschrijving + 3 Checkmark USPs (zoals Pagina 8) -->
+              <div class="ams-showcase-body">
+                <p class="ams-showcase-copy editable-node">
+                  Ontdek een sfeervolle nieuwe editie met <strong>20+ toonaangevende standhouders</strong> in het karakteristieke hart van De Hallen Amsterdam. Perfect voor een compleet dagje uit vol bijzondere drams!
                 </p>
 
-                <div class="ams-ad-footer-bar">
-                  <div class="ams-usps">
-                    <span class="editable-node">20 Standhouders</span>
-                    <span class="ams-dot">&bull;</span>
-                    <span class="editable-node">De Hallen Amsterdam</span>
-                    <span class="ams-dot">&bull;</span>
-                    <span class="editable-node">16 Jan 2027</span>
+                <div class="ams-usp-checks">
+                  <div class="ams-usp-item">
+                    <span class="ams-check-circle">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </span>
+                    <span class="editable-node">20+ Standhouders</span>
                   </div>
-                  <span class="ams-cta-badge editable-node">WHISKYFESTAMSTERDAM.NL</span>
+                  <div class="ams-usp-item">
+                    <span class="ams-check-circle">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </span>
+                    <span class="editable-node">De Hallen Amsterdam</span>
+                  </div>
+                  <div class="ams-usp-item">
+                    <span class="ams-check-circle">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </span>
+                    <span class="editable-node">Middag &amp; Avondsessie</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Onderbalk: Locatie / URL + Directe Call-to-Action -->
+              <div class="ams-showcase-footer">
+                <div class="ams-footer-left">
+                  <span class="ams-urgent-tag editable-node">LAATSTE TICKETS BESCHIKBAAR</span>
+                  <span class="ams-domain-text editable-node">Bestel direct via <strong>whiskyfestamsterdam.nl</strong></span>
+                </div>
+                <div class="ams-cta-pill editable-node">
+                  WHISKYFESTAMSTERDAM.NL &rarr;
                 </div>
               </div>
             </div>
@@ -857,6 +882,51 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
     color: #FAF7F2;
   }
 
+  .theme-light-parchment {
+    background: #FAF7F2;
+    color: #171614;
+  }
+
+  /* =========================================================================
+     PAGINA 2 — PLATTEGROND GROTE KERK MET LICHTE ACHTERGRONDKLEUR (#FAF7F2) + TITEL
+     (Positie op Vel 2: left: 0, width: 151mm, height: 216mm)
+     ========================================================================= */
+  .panel-p2-map {
+    left: 0;
+    width: 151mm;
+    height: 216mm;
+    pointer-events: none;
+  }
+
+  .p2-parchment-tint {
+    display: none;
+  }
+
+  /* De geroteerde (-90°) titel "PLATTEGROND" langs de linkerrand (bovenkant wanneer je de plattegrond leest!) */
+  .p2-rotated-header {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 216mm;
+    height: 151mm;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    box-sizing: border-box;
+    padding: 5.5mm 8mm 0 8mm;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .p2-main-title {
+    font-family: var(--font-display, 'bourbon-rough', 'bourbon', serif);
+    font-size: 47.7pt;
+    line-height: 0.88;
+    letter-spacing: 0.01em;
+    color: #006448;
+    margin: 0;
+    pointer-events: auto;
+  }
+
   /* =========================================================================
      HELLOPRINT GUIDES OVERLAY
      ========================================================================= */
@@ -967,9 +1037,9 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
   .p3-landscape-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding-bottom: 2mm;
-    border-bottom: 0.5mm solid #006448;
+    justify-content: flex-start;
+    padding-bottom: 1.8mm;
+    border-bottom: 0.45mm solid #006448;
     margin-bottom: 2mm;
   }
 
@@ -977,51 +1047,17 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
     border-bottom-color: rgba(202, 172, 142, 0.5);
   }
 
-  .p3-header-left {
-    display: flex;
-    align-items: baseline;
-    gap: 3mm;
-  }
-
   .p3-main-title {
     font-family: var(--font-display, 'bourbon-rough', 'bourbon', serif);
-    font-size: 7.4mm;
-    line-height: 0.95;
-    letter-spacing: 0.03em;
+    font-size: 47.7pt;
+    line-height: 0.88;
+    letter-spacing: 0.01em;
     color: #006448;
     margin: 0;
   }
 
   .p3-dark-mode .p3-main-title {
     color: #FAF7F2;
-  }
-
-  .p3-sub-title {
-    font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 2.35mm;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    color: #4c5752;
-  }
-
-  .p3-dark-mode .p3-sub-title {
-    color: #caac8e;
-  }
-
-  .p3-header-badge {
-    background: #006448;
-    color: #FAF7F2;
-    font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 2.15mm;
-    font-weight: 800;
-    letter-spacing: 0.05em;
-    padding: 1mm 2.8mm;
-    border-radius: 1.2mm;
-  }
-
-  .p3-dark-mode .p3-header-badge {
-    background: #caac8e;
-    color: #061A10;
   }
 
   /* 3 Kolommen Grid (15 rijen per kolom) */
@@ -1180,26 +1216,27 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
 
   /* =========================================================================
      STAP 1B: PAGINA 4 (x: 299mm, width: 145mm) & PAGINA 5 (x: 444mm, width: 145mm)
-     MASTERCLASSES DEEL 1 & DEEL 2 + WHISKYFEST AMSTERDAM 2027
+     MASTERCLASSES DEEL 1 & DEEL 2 + WHISKYFEST AMSTERDAM 2027 (OP LICHTE #FAF7F2 BASIS!)
      ========================================================================= */
   .panel-p4-mc1 {
     left: 299mm;
     width: 145mm;
-    padding: 7mm 5mm;
+    padding: 11mm 5mm 8.5mm 5mm; /* 11mm boven & 8.5mm onder = exact op 1 lijn met de 3mm snijranden van Vel 1! */
+    border-right: 0.35mm solid #c1d4ce;
   }
 
   .panel-p5-mc2 {
     left: 444mm;
     width: 145mm; /* 142mm netto + 3mm rechter bleed */
-    padding: 7mm 7.5mm 7mm 5mm;
+    padding: 11mm 8mm 8.5mm 5mm; /* 11mm boven & 8.5mm onder = exact op 1 lijn met de 3mm snijranden van Vel 1! */
   }
 
   .gent-section-title {
     font-family: var(--font-display, 'bourbon-rough', 'bourbon', serif);
-    font-size: 8.6mm;
-    line-height: 0.95;
-    letter-spacing: 0.03em;
-    color: #FAF7F2;
+    font-size: 47.7pt;
+    line-height: 0.88;
+    letter-spacing: 0.01em;
+    color: #006448;
     margin: 0;
     text-transform: uppercase;
   }
@@ -1209,17 +1246,17 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
     align-items: baseline;
     justify-content: space-between;
     gap: 2mm;
-    margin-bottom: 2.2mm;
+    margin-bottom: 2mm;
     padding-bottom: 1.2mm;
-    border-bottom: 0.35mm solid rgba(202, 172, 142, 0.35);
+    border-bottom: 0.45mm solid #006448;
   }
 
   .mc-header-sub {
     font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 2.15mm;
-    font-weight: 700;
+    font-size: 2.05mm;
+    font-weight: 800;
     letter-spacing: 0.04em;
-    color: #caac8e;
+    color: #004d37;
     text-align: right;
   }
 
@@ -1231,11 +1268,11 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
   }
 
   .mc-stack-24 {
-    gap: 0.95mm;
+    gap: 0.85mm;
   }
 
   .mc-stack-12 {
-    gap: 1.15mm;
+    gap: 1.05mm;
   }
 
   .gent-mc-pill {
@@ -1245,9 +1282,9 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
     background: #caac8e;
     color: #171614;
     border-radius: 1.8mm;
-    padding: 1.05mm 2.4mm;
+    padding: 0.95mm 2.4mm;
     gap: 2mm;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.22);
+    box-shadow: 0.45mm 0.45mm 0 #171614;
   }
 
   .mc-pill-left {
@@ -1312,7 +1349,7 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 3mm;
+    gap: 3.5mm;
     height: 100%;
   }
 
@@ -1328,155 +1365,179 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
     flex-direction: column;
   }
 
-  .amsterdam-ad-card {
+  /* Vernieuwde Luxe WhiskyFest Amsterdam 2027 Kaart (in de gouden offset-stijl van Vel 1!) */
+  .ams-gold-showcase-card {
     position: relative;
     flex: 1;
+    background: #caac8e;
+    color: #171614;
     border-radius: 3mm;
-    overflow: hidden;
-    border: 0.45mm solid #caac8e;
-    background: #171614;
+    box-shadow: 1.3mm 1.3mm 0 #171614;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 3.6mm 4mm;
+    overflow: hidden;
     box-sizing: border-box;
   }
 
-  .ams-ad-bg-photo {
-    position: absolute;
-    inset: 0;
-    background-image: url('/Afbeeldingen/2025/InternationalWhiskyFestival-MilouvanderWillPhotography-158.jpg');
-    background-size: cover;
-    background-position: center;
-    opacity: 0.26;
+  .ams-showcase-header {
+    background: #006448;
+    color: #FAF7F2;
+    padding: 3.2mm 4.2mm;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3mm;
+    border-bottom: 0.45mm solid #061A10;
   }
 
-  .ams-ad-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(145deg, rgba(23, 22, 20, 0.94) 0%, rgba(6, 26, 16, 0.86) 100%);
-  }
-
-  .ams-ad-content {
-    position: relative;
-    z-index: 2;
+  .ams-header-text {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
+    gap: 1.1mm;
   }
 
-  .ams-ad-top-row {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 2mm;
-  }
-
-  .ams-ad-badges {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2mm;
-  }
-
-  .ams-pill-tag {
+  .ams-date-pill {
     display: inline-block;
     background: #caac8e;
-    color: #171614;
-    font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 2.3mm;
-    font-weight: 900;
-    letter-spacing: 0.05em;
-    padding: 0.8mm 2.2mm;
-    border-radius: 1mm;
-    width: fit-content;
-  }
-
-  .ams-pill-urgent {
-    display: inline-block;
-    background: rgba(202, 172, 142, 0.18);
-    color: #e4d5c4;
-    border: 0.3mm solid #caac8e;
-    font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 2.05mm;
+    color: #061A10;
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 2.15mm;
     font-weight: 800;
-    letter-spacing: 0.06em;
-    padding: 0.6mm 2mm;
+    letter-spacing: 0.05em;
+    padding: 0.65mm 2.1mm;
     border-radius: 1mm;
     width: fit-content;
   }
 
-  .ams-logo-wrap {
-    width: 17mm;
-    height: 17mm;
+  .ams-showcase-title {
+    font-family: var(--font-display, 'bourbon-rough', 'bourbon', serif);
+    font-size: 32pt;
+    line-height: 0.88;
+    letter-spacing: 0.02em;
+    color: #FAF7F2;
+    margin: 0;
+  }
+
+  .ams-logo-stamp {
+    width: 17.5mm;
+    height: 17.5mm;
     flex-shrink: 0;
   }
 
-  .ams-logo-wrap svg {
+  .ams-logo-stamp svg {
     width: 100%;
     height: 100%;
     display: block;
   }
 
-  .ams-ad-headline {
-    font-family: var(--font-display, 'bourbon-rough', 'bourbon', serif);
-    font-size: 6.8mm;
-    line-height: 0.95;
-    letter-spacing: 0.03em;
-    color: #FAF7F2;
-    margin: 1mm 0 0;
+  .ams-showcase-body {
+    padding: 3.2mm 4.2mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2.6mm;
+    flex: 1;
   }
 
-  .ams-ad-venue {
-    font-family: var(--font-display, 'bourbon-rough', 'bourbon', serif);
-    font-size: 4.3mm;
-    letter-spacing: 0.05em;
-    color: #caac8e;
+  .ams-showcase-copy {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 2.55mm;
+    line-height: 1.36;
+    color: #171614;
     margin: 0;
   }
 
-  .ams-ad-desc {
-    font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 2.45mm;
-    line-height: 1.38;
-    color: #FAF7F2;
-    margin: 1mm 0;
-  }
-
-  .ams-ad-desc strong {
-    color: #caac8e !important;
+  .ams-showcase-copy strong {
+    color: #004d37;
     font-weight: 800;
   }
 
-  .ams-ad-footer-bar {
+  .ams-usp-checks {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2mm;
+  }
+
+  .ams-usp-item {
+    display: flex;
+    align-items: center;
+    gap: 1.4mm;
+    background: rgba(250, 247, 242, 0.72);
+    border: 0.3mm solid rgba(0, 100, 72, 0.35);
+    border-radius: 1.5mm;
+    padding: 1.3mm 1.8mm;
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 2.05mm;
+    font-weight: 800;
+    color: #061A10;
+  }
+
+  .ams-check-circle {
+    width: 3.8mm;
+    height: 3.8mm;
+    border-radius: 50%;
+    background: #006448;
+    color: #FAF7F2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .ams-check-circle svg {
+    width: 2.3mm;
+    height: 2.3mm;
+  }
+
+  .ams-showcase-footer {
+    padding: 2.5mm 4.2mm;
+    background: rgba(6, 26, 16, 0.08);
+    border-top: 0.3mm solid rgba(6, 26, 16, 0.16);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 2mm;
-    padding-top: 1.6mm;
-    border-top: 0.3mm solid rgba(202, 172, 142, 0.35);
+    gap: 2.5mm;
   }
 
-  .ams-usps {
+  .ams-footer-left {
     display: flex;
-    align-items: center;
-    gap: 1.2mm;
-    font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 2.15mm;
-    font-weight: 700;
-    color: #e4d5c4;
+    flex-direction: column;
+    gap: 0.4mm;
   }
 
-  .ams-cta-badge {
-    background: #006448;
+  .ams-urgent-tag {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 1.95mm;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: #004d37;
+  }
+
+  .ams-domain-text {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 2.25mm;
+    font-weight: 600;
+    color: #171614;
+  }
+
+  .ams-domain-text strong {
+    color: #006448;
+    font-weight: 800;
+  }
+
+  .ams-cta-pill {
+    background: #061A10;
     color: #FAF7F2;
-    border: 0.3mm solid #caac8e;
-    font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 2.15mm;
-    font-weight: 900;
+    border: 0.3mm solid #006448;
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 2.25mm;
+    font-weight: 800;
     letter-spacing: 0.04em;
-    padding: 0.9mm 2.2mm;
-    border-radius: 1.2mm;
+    padding: 1.3mm 2.8mm;
+    border-radius: 1.5mm;
+    box-shadow: 0.5mm 0.5mm 0 rgba(0, 0, 0, 0.35);
+    flex-shrink: 0;
   }
 
   /* =========================================================================
@@ -2224,6 +2285,15 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
           canvasContext: offCtx,
           viewport,
         }).promise;
+
+        // Geef Pagina 2 (de plattegrond op Vel 2) direct dezelfde warme #FAF7F2 achtergrondkleur als alle andere pagina's
+        if (cfg.pageNum === 2) {
+          offCtx.save();
+          offCtx.globalCompositeOperation = 'multiply';
+          offCtx.fillStyle = '#FAF7F2';
+          offCtx.fillRect(0, 0, targetW, targetH);
+          offCtx.restore();
+        }
 
         const canvasEl = document.getElementById(cfg.canvasId);
         if (canvasEl) {
