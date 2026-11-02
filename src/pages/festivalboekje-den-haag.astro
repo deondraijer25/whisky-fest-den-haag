@@ -16,6 +16,67 @@ import {
 const col1Stands = STANDHOUDERS_BOEKJE_2026.slice(0, 15);
 const col2Stands = STANDHOUDERS_BOEKJE_2026.slice(15, 30);
 const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
+
+// Exacte 11-assige Smaakpalet-Radar SVG generator (voor VAT A op licht vlak en VAT B op donkergroen vlak)
+const FLAVOR_LABELS = [
+  'Apple', 'Citrus', 'Floral', 'Dried fruits', 'Oily', 'Malty', 'Toffee', 'Woody', 'Spicy', 'Nutty', 'Peaty'
+];
+const VAT_A_VALUES = [0.54, 0.39, 0.33, 1.0, 0.54, 0.54, 0.90, 0.35, 1.0, 0.50, 0.14];
+const VAT_B_VALUES = [0.89, 0.72, 0.89, 0.50, 0.69, 0.90, 0.37, 0.87, 0.50, 0.69, 0.51];
+
+function buildFlavorRadarSvg(values: number[], theme: 'light' | 'dark'): string {
+  const cx = 160;
+  const cy = 148;
+  const R = 92;
+  const N = FLAVOR_LABELS.length;
+  const ringStroke = theme === 'light' ? 'rgba(23, 22, 20, 0.25)' : 'rgba(250, 247, 242, 0.35)';
+  const spokeStroke = theme === 'light' ? 'rgba(23, 22, 20, 0.7)' : 'rgba(250, 247, 242, 0.75)';
+  const polyFill = theme === 'light' ? 'rgba(235, 162, 122, 0.7)' : 'rgba(235, 162, 122, 0.8)';
+  const polyStroke = theme === 'light' ? '#171614' : '#FAF7F2';
+  const labelColor = theme === 'light' ? '#171614' : '#FAF7F2';
+
+  let rings = '';
+  for (let r = 1; r <= 5; r++) {
+    const rad = (R * r) / 5;
+    rings += `<circle cx="${cx}" cy="${cy}" r="${rad.toFixed(1)}" fill="none" stroke="${ringStroke}" stroke-width="0.9" stroke-dasharray="1.8 1.8" />`;
+  }
+
+  let spokes = '';
+  let labels = '';
+  const pts: string[] = [];
+
+  for (let i = 0; i < N; i++) {
+    const angle = -Math.PI / 2 + (i * 2 * Math.PI) / N;
+    const xEnd = cx + R * Math.cos(angle);
+    const yEnd = cy + R * Math.sin(angle);
+    spokes += `<line x1="${cx}" y1="${cy}" x2="${xEnd.toFixed(1)}" y2="${yEnd.toFixed(1)}" stroke="${spokeStroke}" stroke-width="1.15" />`;
+
+    const val = values[i] ?? 0.5;
+    const px = cx + R * val * Math.cos(angle);
+    const py = cy + R * val * Math.sin(angle);
+    pts.push(`${px.toFixed(1)},${py.toFixed(1)}`);
+
+    const labelDist = R + 13;
+    const lx = cx + labelDist * Math.cos(angle);
+    const ly = cy + labelDist * Math.sin(angle);
+    let anchor = 'middle';
+    if (Math.cos(angle) > 0.25) anchor = 'start';
+    else if (Math.cos(angle) < -0.25) anchor = 'end';
+
+    const dy = Math.sin(angle) > 0.7 ? 5 : Math.sin(angle) < -0.7 ? -2 : 3;
+    labels += `<text x="${lx.toFixed(1)}" y="${(ly + dy).toFixed(1)}" text-anchor="${anchor}" fill="${labelColor}" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="9.5" font-weight="700">${FLAVOR_LABELS[i]}</text>`;
+  }
+
+  return `<svg viewBox="0 0 330 295" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+    ${rings}
+    ${spokes}
+    <polygon points="${pts.join(' ')}" fill="${polyFill}" stroke="${polyStroke}" stroke-width="1.6" stroke-linejoin="round" />
+    ${labels}
+  </svg>`;
+}
+
+const radarSvgVatA = buildFlavorRadarSvg(VAT_A_VALUES, 'light');
+const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
 ---
 
 <Layout
@@ -231,11 +292,11 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
               </p>
             </div>
 
-            <!-- 2 Flessen (uit de Google Sheet) staand achter de 2 naar beneden gehaalde bannertjes -->
+            <!-- 2 Flessen (HQ) staand achter de 2 naar beneden gehaalde bannertjes -->
             <div class="p6-casks-duo">
               <div class="p6-cask-bottle-col">
                 <div class="p6-bottle-stage">
-                  <img src="/images/boekje/amrut-vat-a-9318.png" alt="Fles Vat A" class="p6-bottle-img" />
+                  <img src="/images/boekje/amrut-vat-a-9318-hq.png" alt="Fles Vat A" class="p6-bottle-img" />
                 </div>
                 <div class="p6-cask-pill">
                   <span class="p6-cask-tag editable-node">VAT A &bull; SINGLE CASK</span>
@@ -245,7 +306,7 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
 
               <div class="p6-cask-bottle-col">
                 <div class="p6-bottle-stage">
-                  <img src="/images/boekje/amrut-vat-b-3464.png" alt="Fles Vat B" class="p6-bottle-img" />
+                  <img src="/images/boekje/amrut-vat-b-3464-hq.png" alt="Fles Vat B" class="p6-bottle-img" />
                 </div>
                 <div class="p6-cask-pill">
                   <span class="p6-cask-tag editable-node">VAT B &bull; SINGLE CASK</span>
@@ -260,6 +321,105 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
                 Bij aankoop van <strong>2 flessen</strong> krijgt u een overheerlijk cadeautje waarin de Lindores Abbey is verwerkt <strong>t.w.v. &euro; 10,00</strong>!
               </p>
               <span class="p6-gift-subline editable-node">Reserveer de fles snel in de Slijterij (S) &bull; Zeer beperkte oplage per vat</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =====================================================================
+           PAGINA 7 (x: 145mm t/m 290mm = 145mm breed x 216mm hoog):
+           FESTIVAL BOTTELING OP 1 HELE PAGINA (1 FLES + SMAAKPALET PER HELFT)
+           BOVENSTE HELFT (0–108.26mm, licht): VAT A (#9318 - First Fill Bourbon Barrel - 116 flessen)
+           ONDERSTE HELFT (108.26–216mm, donkergroen): VAT B (#3464 - Refill Bourbon Barrel - 118 flessen)
+           ===================================================================== -->
+      <div class="overlay-panel panel-p7-new" id="panel-pagina-7">
+        <!-- BOVENSTE HELFT: VAT A (#9318 - First Fill Bourbon Barrel - 116 flessen) -->
+        <div class="p7-half p7-top-half">
+          <div class="p7-top-content">
+            <!-- Linkerzijde: Titel VAT A + 116 flessen -->
+            <div class="p7-title-group p7-title-left">
+              <h2 class="p7-vat-heading p7-heading-green editable-node">VAT A</h2>
+              <p class="p7-avail-sub p7-sub-dark editable-node">116 flessen beschikbaar</p>
+              <span class="p7-cask-spec p7-spec-light editable-node">First Fill Bourbon &bull; 60% Cask Strength</span>
+            </div>
+
+            <!-- Midden: Smaakpalet Vat A -->
+            <div class="p7-radar-box p7-radar-vat-a" set:html={radarSvgVatA} />
+
+            <!-- Rechterzijde: Haarscherpe Donkere Fles (#9318) achter de gouden kaart -->
+            <div class="p7-bottle-wrap p7-bottle-right">
+              <img src="/images/boekje/amrut-vat-a-9318-hq.png" alt="Amrut Single Malt Vat A #9318" class="p7-hq-bottle" />
+            </div>
+          </div>
+
+          <!-- Gouden Banner onderaan bovenste helft (exact zoals jouw ontwerp met schuin lint GELIMITEERD) -->
+          <div class="p7-banner-wrap">
+            <div class="p7-ribbon p7-ribbon-left">
+              <span class="editable-node">GELIMITEERD</span>
+            </div>
+            <div class="p7-gold-card p7-card-vat-a">
+              <div class="p7-card-top-right">
+                <strong class="p7-card-brand editable-node">AMRUT SINGLE MALT</strong>
+                <span class="p7-card-cask editable-node">Single Cask #9318</span>
+                <span class="p7-card-edition editable-node">Whisky Live The Hague 2026</span>
+              </div>
+              <div class="p7-card-bottom-row">
+                <span class="p7-card-price editable-node">&euro; 85,00</span>
+                <span class="p7-card-loc">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                  <span class="editable-node">Slijterij (S) / Informatiestand</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ONDERSTE HELFT: VAT B (#3464 - Refill / Second Fill Bourbon Barrel - 118 flessen) -->
+        <div class="p7-half p7-bottom-half">
+          <img src="/images/boekje/barrels-arch-bg.jpg" alt="" class="p7-barrels-bg" />
+          <div class="p7-green-overlay"></div>
+
+          <div class="p7-top-content p7-bottom-content">
+            <!-- Linkerzijde: Haarscherpe Lichtere Fles (#3464) achter de gouden kaart -->
+            <div class="p7-bottle-wrap p7-bottle-left">
+              <img src="/images/boekje/amrut-vat-b-3464-hq.png" alt="Amrut Single Malt Vat B #3464" class="p7-hq-bottle" />
+            </div>
+
+            <!-- Midden: Smaakpalet Vat B (vrij van fles en lint!) -->
+            <div class="p7-radar-box p7-radar-vat-b" set:html={radarSvgVatB} />
+
+            <!-- Rechterzijde: Titel VAT B + 118 flessen -->
+            <div class="p7-title-group p7-title-right">
+              <h2 class="p7-vat-heading p7-heading-white editable-node">VAT B</h2>
+              <p class="p7-avail-sub p7-sub-white editable-node">118 flessen beschikbaar</p>
+              <span class="p7-cask-spec p7-spec-dark editable-node">Refill Bourbon &bull; 60% Cask Strength</span>
+            </div>
+          </div>
+
+          <!-- Gouden Banner onderaan onderste helft (exact op de 8.5mm onderlijn i.v.m. 3mm snijverlies) -->
+          <div class="p7-banner-wrap">
+            <div class="p7-ribbon p7-ribbon-right">
+              <span class="editable-node">GELIMITEERD</span>
+            </div>
+            <div class="p7-gold-card p7-card-vat-b">
+              <div class="p7-card-top-left">
+                <strong class="p7-card-brand editable-node">AMRUT SINGLE MALT</strong>
+                <span class="p7-card-cask editable-node">Single Cask #3464</span>
+                <span class="p7-card-edition editable-node">Whisky Live The Hague 2026</span>
+              </div>
+              <div class="p7-card-bottom-row">
+                <span class="p7-card-loc">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                  <span class="editable-node">Slijterij (S) / Informatiestand</span>
+                </span>
+                <span class="p7-card-price editable-node">&euro; 85,00</span>
+              </div>
             </div>
           </div>
         </div>
@@ -1333,7 +1493,7 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
   .p6-top-half {
     height: 108.26mm; /* Exact gelijk aan de bovenrand van het donkergroene VAT B blok op Pagina 7! */
     background: #FAF7F2;
-    padding: 5.5mm 5.5mm 3mm 8mm; /* 3mm linker bleed + 5mm safe margin = 8mm links */
+    padding: 11mm 5.5mm 9.5mm 8mm; /* 11mm boven = exact op 1 lijn met VAT A & WIJ VERNIEUWEN; 9.5mm onder = exact op 1 lijn met onderkant VAT A kaart! */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -1372,26 +1532,26 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
     flex-direction: column;
     justify-content: space-between;
     flex: 1;
-    margin-top: 1.8mm;
-    gap: 1.4mm;
+    margin-top: 2mm;
+    gap: 1.35mm;
   }
 
   .p6-act-card {
     flex: 1;
     display: flex;
     align-items: center;
-    gap: 2.8mm;
+    gap: 2.6mm;
     background: #FCFAF7;
     border: 0.35mm solid #b4cbc2;
     border-left: 1.3mm solid #006448;
     border-radius: 2mm;
-    padding: 2mm 3mm;
+    padding: 1.5mm 2.8mm;
     box-shadow: 0 2px 6px rgba(0, 100, 72, 0.05);
   }
 
   .p6-act-icon {
-    width: 7.4mm;
-    height: 7.4mm;
+    width: 6.8mm;
+    height: 6.8mm;
     border-radius: 50%;
     background: #006448;
     color: #FAF7F2;
@@ -1402,14 +1562,14 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
   }
 
   .p6-act-icon svg {
-    width: 4.1mm;
-    height: 4.1mm;
+    width: 3.8mm;
+    height: 3.8mm;
   }
 
   .p6-act-body {
     display: flex;
     flex-direction: column;
-    gap: 0.4mm;
+    gap: 0.3mm;
     min-width: 0;
     flex: 1;
   }
@@ -1423,7 +1583,7 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
 
   .p6-act-top-row strong {
     font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 2.65mm;
+    font-size: 2.55mm;
     font-weight: 800;
     color: #061A10;
     line-height: 1.15;
@@ -1434,19 +1594,19 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
     color: #004d37 !important;
     border: 0.25mm solid #006448;
     font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 1.85mm !important;
+    font-size: 1.8mm !important;
     font-weight: 800;
     letter-spacing: 0.05em;
-    padding: 0.4mm 1.6mm;
+    padding: 0.35mm 1.5mm;
     border-radius: 0.9mm;
     flex-shrink: 0;
   }
 
   .p6-act-body > span {
     font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 2.25mm;
+    font-size: 2.15mm;
     color: #36403c;
-    line-height: 1.26;
+    line-height: 1.22;
   }
 
   /* Onderste helft Pagina 6 (107.74mm hoog, exact uitgelijnd met VAT B!) */
@@ -1479,7 +1639,7 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
     z-index: 2;
     width: 100%;
     height: 100%;
-    padding: 4mm 5.5mm 6mm 8mm; /* 6mm onder = 3mm onder-bleed + 3mm safe zone */
+    padding: 8.5mm 5.5mm 8.5mm 8mm; /* 8.5mm boven & 8.5mm onder = exact op 1 lijn met VAT B titel & gouden banner onderkant! */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -1489,7 +1649,7 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
   .p6-lindores-top {
     display: flex;
     flex-direction: column;
-    gap: 1.2mm;
+    gap: 1.1mm;
     flex-shrink: 0;
   }
 
@@ -1513,7 +1673,7 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
   .p6-heading-white {
     font-family: var(--font-display, 'bourbon-rough', 'bourbon', serif);
     font-size: 40pt;
-    line-height: 0.9;
+    line-height: 0.88;
     letter-spacing: 0.01em;
     color: #FAF7F2;
     margin: 0;
@@ -1537,8 +1697,8 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
 
   .p6-lindores-desc {
     font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 2.25mm;
-    line-height: 1.32;
+    font-size: 2.2mm;
+    line-height: 1.3;
     color: #FAF7F2;
     margin: 0;
   }
@@ -1555,7 +1715,7 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
     gap: 2.5mm;
     flex: 1;
     align-items: end;
-    margin: 0.5mm 0 2.2mm;
+    margin: 0.5mm 0 2mm;
     min-height: 0;
   }
 
@@ -1571,7 +1731,7 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
   .p6-bottle-stage {
     position: absolute;
     top: -1.5mm;
-    bottom: 5.5mm; /* Laat de onderkant van de fles achter het bannertje doorlopen! */
+    bottom: 5mm; /* Laat de onderkant van de fles achter het bannertje doorlopen! */
     left: 0;
     right: 0;
     display: flex;
@@ -1582,7 +1742,7 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
   }
 
   .p6-bottle-img {
-    height: 51mm;
+    height: 46mm;
     width: auto;
     max-width: none;
     object-fit: contain;
@@ -1598,16 +1758,16 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
     backdrop-filter: blur(4px);
     border: 0.4mm solid #caac8e;
     border-radius: 1.8mm;
-    padding: 1.8mm 2.2mm;
+    padding: 1.6mm 2.2mm;
     box-shadow: 0.9mm 0.9mm 0 #171614;
     display: flex;
     flex-direction: column;
-    gap: 0.35mm;
+    gap: 0.3mm;
   }
 
   .p6-cask-tag {
     font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 1.9mm;
+    font-size: 1.85mm;
     font-weight: 800;
     letter-spacing: 0.06em;
     color: #caac8e;
@@ -1615,13 +1775,13 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
 
   .p6-cask-title {
     font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 2.22mm;
+    font-size: 2.18mm;
     font-weight: 800;
     line-height: 1.2;
     color: #FAF7F2;
   }
 
-  /* Rustige Gouden Banner onderin Pagina 6 (zonder druk icoon of scheidingslijn) */
+  /* Rustige Gouden Banner onderin Pagina 6 (exact op 8.5mm onderlijn uitgelijnd met VAT B banner!) */
   .p6-gold-offset-card {
     position: relative;
     z-index: 3;
@@ -1629,19 +1789,19 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
     background: #caac8e;
     color: #171614;
     border-radius: 2.2mm;
-    padding: 2.1mm 3.2mm;
+    padding: 2mm 3mm;
     box-shadow: 1.2mm 1.2mm 0 #171614;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 0.5mm;
+    gap: 0.4mm;
   }
 
   .p6-gift-copy {
     font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 2.22mm;
-    line-height: 1.28;
+    font-size: 2.2mm;
+    line-height: 1.26;
     color: #171614;
     margin: 0;
   }
@@ -1653,10 +1813,323 @@ const col3Stands = STANDHOUDERS_BOEKJE_2026.slice(30, 45);
 
   .p6-gift-subline {
     font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 1.95mm;
+    font-size: 1.9mm;
     font-weight: 800;
     letter-spacing: 0.04em;
     color: #004d37;
+  }
+
+  /* =========================================================================
+     STAP 3: PAGINA 7 OP VEL 1 (x: 145mm t/m 290mm = 145mm breed x 216mm hoog)
+     FESTIVAL BOTTELING OP 1 HELE PAGINA:
+     - BOVENSTE HELFT (108.26mm): VAT A (#9318 - First Fill Bourbon - 116 flessen + Smaakpalet)
+     - ONDERSTE HELFT (107.74mm): VAT B (#3464 - Refill Bourbon - 118 flessen + Smaakpalet)
+     ========================================================================= */
+  .panel-p7-new {
+    left: 145mm;
+    width: 145mm;
+    height: 216mm;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .p7-half {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+
+  .p7-top-half {
+    height: 108.26mm;
+    background: #FAF7F2;
+    padding: 11mm 10mm 9.5mm 10mm; /* 11mm boven = exact gelijk aan WIJ VERNIEUWEN VOOR 2027 & OVERIGE ACTIVITEITEN */
+  }
+
+  .p7-bottom-half {
+    height: 107.74mm;
+    background: #061A10;
+    padding: 8.5mm 10mm 8.5mm 10mm; /* 8.5mm onder = exact vrij van de 3mm snijrand en op 1 lijn met Pagina 6 */
+  }
+
+  .p7-barrels-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.55;
+  }
+
+  .p7-green-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(6, 26, 16, 0.35) 0%, rgba(0, 100, 72, 0.65) 55%, rgba(0, 77, 55, 0.92) 100%);
+  }
+
+  .p7-top-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .p7-info-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 72mm;
+    z-index: 3;
+  }
+
+  .p7-info-left {
+    align-items: flex-start;
+  }
+
+  .p7-info-right {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .p7-title-group {
+    position: relative;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5mm;
+  }
+
+  .p7-title-left {
+    align-items: flex-start;
+  }
+
+  .p7-title-right {
+    margin-left: auto;
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .p7-vat-heading {
+    font-family: var(--font-display, 'bourbon-rough', 'bourbon', serif);
+    font-size: 47.7pt;
+    line-height: 0.88;
+    letter-spacing: 0.02em;
+    margin: 0;
+  }
+
+  .p7-heading-green {
+    color: #006448;
+  }
+
+  .p7-heading-white {
+    color: #FAF7F2;
+  }
+
+  .p7-avail-sub {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 3.1mm;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.15;
+  }
+
+  .p7-sub-dark {
+    color: #355248;
+  }
+
+  .p7-sub-white {
+    color: #FAF7F2;
+  }
+
+  .p7-cask-spec {
+    display: inline-block;
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 1.95mm;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    padding: 0.45mm 1.6mm;
+    border-radius: 0.9mm;
+    margin-top: 0.3mm;
+  }
+
+  .p7-spec-light {
+    background: #d8e7e2;
+    color: #004d37;
+    border: 0.25mm solid #006448;
+  }
+
+  .p7-spec-dark {
+    background: rgba(202, 172, 142, 0.2);
+    color: #e4d5c4;
+    border: 0.25mm solid #caac8e;
+  }
+
+  /* Smaakpalet Radar Box (exact vrij gepositioneerd tussen titel, fles en GELIMITEERD lint!) */
+  .p7-radar-box {
+    position: absolute;
+    width: 45mm;
+    height: 41mm;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .p7-radar-vat-a {
+    left: 24mm;
+    bottom: 1.5mm;
+  }
+
+  .p7-radar-vat-b {
+    left: 38mm;
+    bottom: 1.5mm;
+  }
+
+  /* Haarscherpe Fles Rechts (VAT A) & Links (VAT B) staand achter de gouden kaart */
+  .p7-bottle-wrap {
+    position: absolute;
+    top: -6mm;
+    bottom: -6mm;
+    width: 44mm;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .p7-bottle-right {
+    right: -1mm;
+  }
+
+  .p7-bottle-left {
+    left: -1mm;
+  }
+
+  .p7-hq-bottle {
+    height: 75mm;
+    width: auto;
+    max-width: none;
+    object-fit: contain;
+    filter: drop-shadow(0 3mm 6mm rgba(0, 0, 0, 0.38));
+  }
+
+  /* Gouden Kaart onderaan elke helft met schuin GELIMITEERD lint */
+  .p7-banner-wrap {
+    position: relative;
+    z-index: 4;
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  .p7-gold-card {
+    background: #caac8e;
+    color: #171614;
+    border-radius: 3mm;
+    padding: 3mm 4.5mm;
+    box-shadow: 1.3mm 1.3mm 0 #171614;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.8mm;
+    box-sizing: border-box;
+  }
+
+  .p7-card-top-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    gap: 0.25mm;
+  }
+
+  .p7-card-top-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 0.25mm;
+  }
+
+  .p7-card-brand {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 3.3mm;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: #006448;
+    line-height: 1.1;
+  }
+
+  .p7-card-cask,
+  .p7-card-edition {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 2.35mm;
+    font-weight: 600;
+    color: #006448;
+    line-height: 1.2;
+  }
+
+  .p7-card-bottom-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3mm;
+  }
+
+  .p7-card-price {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 5.2mm;
+    font-weight: 800;
+    color: #006448;
+    line-height: 1;
+  }
+
+  .p7-card-loc {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.4mm;
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 3.1mm;
+    font-weight: 700;
+    color: #FAF7F2;
+  }
+
+  .p7-card-loc svg {
+    width: 4.5mm;
+    height: 4.5mm;
+    color: #FAF7F2;
+    flex-shrink: 0;
+  }
+
+  /* Schuin wit lint "GELIMITEERD" */
+  .p7-ribbon {
+    position: absolute;
+    top: -3.5mm;
+    z-index: 5;
+    background: #FFFFFF;
+    color: #006448;
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 3mm;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    padding: 1.2mm 5.5mm;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%, 8% 50%);
+  }
+
+  .p7-ribbon-left {
+    left: -5mm;
+    transform: rotate(-30deg);
+  }
+
+  .p7-ribbon-right {
+    right: -5mm;
+    transform: rotate(30deg);
   }
 
   /* =========================================================================
