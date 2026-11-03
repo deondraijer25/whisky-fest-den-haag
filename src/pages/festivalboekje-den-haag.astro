@@ -184,7 +184,7 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
         <!-- Bovenste helft (0 t/m 100mm): Licht vlak aansluitend op VAT A ernaast -->
         <div class="p6-top-half">
           <div class="p6-top-header">
-            <h2 class="p6-heading-green editable-node">OVERIGE ACTIVITEITEN</h2>
+            <h2 class="p6-heading-green editable-node">BELEEF HET FESTIVAL</h2>
           </div>
 
           <ul class="p6-activities-stack">
@@ -276,52 +276,13 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
           </ul>
         </div>
 
-        <!-- Onderste helft (100 t/m 216mm): Donkergroen blok exact uitgelijnd met VAT B ernaast -->
-        <div class="p6-bottom-half">
-          <img src="/images/boekje/barrels-arch-bg.jpg" alt="" class="p6-barrels-bg" />
-          <div class="p6-green-overlay"></div>
-
-          <div class="p6-bottom-inner">
-            <div class="p6-lindores-top">
-              <div class="p6-lindores-title-row">
-                <h2 class="p6-heading-white editable-node">FESTIVAL BOTTELING 2027</h2>
-              </div>
-
-              <p class="p6-lindores-desc editable-node">
-                In 2027 worden er <strong>2 vaten van de Lindores Abbey Distilleerderij</strong> gebotteld, speciaal voor het International Whisky Festival. Het zijn 2 totaal verschillende vaten:
-              </p>
-            </div>
-
-            <!-- 2 Flessen (HQ) staand achter de 2 naar beneden gehaalde bannertjes -->
-            <div class="p6-casks-duo">
-              <div class="p6-cask-bottle-col">
-                <div class="p6-bottle-stage">
-                  <img src="/images/boekje/amrut-vat-a-9318-hq.png" alt="Fles Vat A" class="p6-bottle-img" />
-                </div>
-                <div class="p6-cask-pill">
-                  <span class="p6-cask-tag editable-node">VAT A &bull; SINGLE CASK</span>
-                  <strong class="p6-cask-title editable-node">Lindores Abbey Woodford Reserve ASB</strong>
-                </div>
-              </div>
-
-              <div class="p6-cask-bottle-col">
-                <div class="p6-bottle-stage">
-                  <img src="/images/boekje/amrut-vat-b-3464-hq.png" alt="Fles Vat B" class="p6-bottle-img" />
-                </div>
-                <div class="p6-cask-pill">
-                  <span class="p6-cask-tag editable-node">VAT B &bull; SINGLE CASK</span>
-                  <strong class="p6-cask-title editable-node">Lindores Abbey PX STR</strong>
-                </div>
-              </div>
-            </div>
-
-            <!-- Gouden Actie-Kaart (rustiger opgemaakt, conform tekst uit Google Sheet) -->
-            <div class="p6-gold-offset-card">
-              <p class="p6-gift-copy editable-node">
-                Bij aankoop van <strong>2 flessen</strong> krijgt u een overheerlijk cadeautje waarin de Lindores Abbey is verwerkt <strong>t.w.v. &euro; 10,00</strong>!
-              </p>
-              <span class="p6-gift-subline editable-node">Reserveer de fles snel in de Slijterij (S) &bull; Zeer beperkte oplage per vat</span>
-            </div>
+        <!-- Onderste helft (108.26 t/m 216mm): Sfeerimpressie-foto Grote Kerk (full-bleed), uitgelijnd met VAT B ernaast -->
+        <div class="p6-bottom-half p6-photo-half">
+          <img src="/images/boekje/impressie-grote-kerk-2025.jpg" alt="Sfeerimpressie International Whisky Festival in de Grote Kerk" class="p6-impression-img" />
+          <div class="p6-photo-fade"></div>
+          <div class="p6-photo-caption">
+            <span class="p6-photo-eyebrow editable-node">GROTE KERK &bull; DEN HAAG</span>
+            <h2 class="p6-photo-title editable-node">PROOST OP 25 EDITIES</h2>
           </div>
         </div>
       </div>
@@ -619,40 +580,21 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
                 <div class="ams-logo-stamp" set:html={rawLogoAmsterdamWit} />
               </div>
 
-              <!-- Middenstuk: Beschrijving + 3 Checkmark USPs (zoals Pagina 8) -->
+              <!-- Middenstuk: 10% korting met code AMS10 + QR-code -->
               <div class="ams-showcase-body">
-               <div class="ams-body-main">
-                <p class="ams-showcase-copy editable-node">
-                  Ontdek een sfeervolle nieuwe editie met <strong>20+ toonaangevende standhouders</strong> in het karakteristieke hart van De Hallen Amsterdam. Perfect voor een compleet dagje uit vol bijzondere drams!
-                </p>
-
-                <div class="ams-usp-checks">
-                  <div class="ams-usp-item">
-                    <span class="ams-check-circle">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                    </span>
-                    <span class="editable-node">20+ Standhouders</span>
+                <div class="ams-body-main">
+                  <span class="ams-deal-eyebrow editable-node">EXCLUSIEF VOOR FESTIVALBEZOEKERS</span>
+                  <div class="ams-deal-row">
+                    <span class="ams-deal-big editable-node">10% KORTING</span>
                   </div>
-                  <div class="ams-usp-item">
-                    <span class="ams-check-circle">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                    </span>
-                    <span class="editable-node">De Hallen Amsterdam</span>
+                  <div class="ams-code-row">
+                    <span class="ams-code-label editable-node">op je ticket met code</span>
+                    <span class="ams-code-chip editable-node">AMS10</span>
                   </div>
-                  <div class="ams-usp-item">
-                    <span class="ams-check-circle">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                    </span>
-                    <span class="editable-node">Middag &amp; Avondsessie</span>
-                  </div>
+                  <p class="ams-showcase-copy editable-node">
+                    Een dag vol bijzondere drams bij <strong>20+ toonaangevende standhouders</strong>.
+                  </p>
                 </div>
-               </div>
 
                 <!-- QR-code naar whiskyfest.nl (tickets bestellen) -->
                 <div class="ams-qr-tile">
@@ -661,12 +603,9 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
                 </div>
               </div>
 
-              <!-- Onderbalk: Locatie / URL + Directe Call-to-Action -->
+              <!-- Onderbalk: Urgentie + Directe Call-to-Action -->
               <div class="ams-showcase-footer">
-                <div class="ams-footer-left">
-                  <span class="ams-urgent-tag editable-node">LAATSTE TICKETS BESCHIKBAAR</span>
-                  <span class="ams-domain-text editable-node">Bestel direct via <strong>whiskyfest.nl</strong></span>
-                </div>
+                <span class="ams-urgent-tag editable-node">LAATSTE TICKETS BESCHIKBAAR</span>
                 <div class="ams-cta-pill editable-node">
                   WHISKYFEST.NL &rarr;
                 </div>
@@ -1453,9 +1392,52 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 4mm;
+    gap: 2mm;
     flex: 1;
     min-width: 0;
+  }
+
+  .ams-deal-eyebrow {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 2.1mm;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #70011c;
+  }
+
+  .ams-deal-big {
+    font-family: var(--font-display, 'bourbon-rough', 'bourbon', serif);
+    font-size: 46pt;
+    line-height: 0.85;
+    letter-spacing: 0.01em;
+    color: #8c0223;
+  }
+
+  .ams-code-row {
+    display: flex;
+    align-items: center;
+    gap: 2.2mm;
+  }
+
+  .ams-code-label {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 3mm;
+    font-weight: 600;
+    color: #171614;
+  }
+
+  .ams-code-chip {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 4mm;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    color: #FAF7F2;
+    background: #8c0223;
+    border: 0.45mm dashed #FAF7F2;
+    outline: 0.45mm solid #180505;
+    border-radius: 1.5mm;
+    padding: 0.9mm 3mm 0.9mm 3.4mm;
+    box-shadow: 0.9mm 0.9mm 0 #171614;
   }
 
   .ams-qr-tile {
@@ -1729,6 +1711,57 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
     overflow: hidden;
     box-sizing: border-box;
     border-right: 0.4mm solid rgba(202, 172, 142, 0.35);
+  }
+
+  /* Sfeerimpressie-foto (vervangt Lindores 2027 flessen) */
+  .p6-photo-half {
+    border-right: none;
+  }
+
+  .p6-impression-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 45%;
+  }
+
+  .p6-photo-fade {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 48%;
+    background: linear-gradient(to top, #061A10 0%, rgba(6, 26, 16, 0.72) 45%, rgba(6, 26, 16, 0) 100%);
+  }
+
+  .p6-photo-caption {
+    position: absolute;
+    left: 8mm;
+    right: 5.5mm;
+    bottom: 8.5mm;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 1mm;
+  }
+
+  .p6-photo-eyebrow {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 2.2mm;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: #caac8e;
+  }
+
+  .p6-photo-title {
+    font-family: var(--font-display, 'bourbon-rough', 'bourbon', serif);
+    font-size: 30pt;
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    color: #FAF7F2;
+    margin: 0;
   }
 
   .p6-barrels-bg {
