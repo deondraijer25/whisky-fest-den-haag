@@ -2351,8 +2351,8 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
       for (const cfg of pagesConfig) {
         const page = await pdf.getPage(cfg.pageNum);
         const unscaledVp = page.getViewport({ scale: 1 });
-        const targetW = 2226 * 2;
-        const targetH = 816 * 2;
+        const targetW = Math.round(2226 * 3.2); // ~307 DPI op 589mm (gelijk aan de 300 DPI export)
+        const targetH = Math.round(816 * 3.2);
 
         const offCanvas = document.createElement('canvas');
         offCanvas.width = targetW;
@@ -2370,6 +2370,30 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
 
         // Geef Pagina 2 (de plattegrond op Vel 2) direct dezelfde warme #FAF7F2 achtergrondkleur als alle andere pagina's
         if (cfg.pageNum === 2) {
+          // Plattegrond (P2, 0–151mm) iets verkleinen en het GEBOUW verticaal centreren op het paneel,
+          // zodat de annotaties boven/onder ruim binnen de snijlijn (3mm afloop + veilige marge) vallen.
+          const pxmm = targetW / 589;
+          const p2W = Math.round(151 * pxmm);
+          const MAP_SCALE = 0.915;                 // verkleining van de plattegrond
+          const srcCx = 75.7 * pxmm;               // horizontaal midden van de plattegrond
+          const srcCy = 114 * pxmm;                // verticaal midden van het gebouw (top 23mm, onderkant ingang 205mm)
+          const dstCx = 75.7 * pxmm;
+          const dstCy = 108 * pxmm;                // = exact midden van het 216mm hoge paneel
+          const p2Tmp = document.createElement('canvas');
+          p2Tmp.width = p2W;
+          p2Tmp.height = targetH;
+          p2Tmp.getContext('2d').drawImage(offCanvas, 0, 0, p2W, targetH, 0, 0, p2W, targetH);
+          offCtx.fillStyle = '#FFFFFF';
+          offCtx.fillRect(0, 0, p2W, targetH);
+          offCtx.imageSmoothingQuality = 'high';
+          offCtx.drawImage(
+            p2Tmp,
+            dstCx - srcCx * MAP_SCALE,
+            dstCy - srcCy * MAP_SCALE,
+            p2W * MAP_SCALE,
+            targetH * MAP_SCALE
+          );
+
           offCtx.save();
           offCtx.globalCompositeOperation = 'multiply';
           offCtx.fillStyle = '#FAF7F2';
@@ -2379,12 +2403,12 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
 
         const canvasEl = document.getElementById(cfg.canvasId);
         if (canvasEl) {
-          canvasEl.width = 2226;
-          canvasEl.height = 816;
+          canvasEl.width = targetW;
+          canvasEl.height = targetH;
           const ctx = canvasEl.getContext('2d');
           ctx.imageSmoothingEnabled = true;
           ctx.imageSmoothingQuality = 'high';
-          ctx.drawImage(offCanvas, 0, 0, 2226, 816);
+          ctx.drawImage(offCanvas, 0, 0, targetW, targetH);
         }
 
         const imgEl = document.getElementById(cfg.imgId);
