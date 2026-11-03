@@ -621,6 +621,7 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
 
               <!-- Middenstuk: Beschrijving + 3 Checkmark USPs (zoals Pagina 8) -->
               <div class="ams-showcase-body">
+               <div class="ams-body-main">
                 <p class="ams-showcase-copy editable-node">
                   Ontdek een sfeervolle nieuwe editie met <strong>20+ toonaangevende standhouders</strong> in het karakteristieke hart van De Hallen Amsterdam. Perfect voor een compleet dagje uit vol bijzondere drams!
                 </p>
@@ -651,16 +652,23 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
                     <span class="editable-node">Middag &amp; Avondsessie</span>
                   </div>
                 </div>
+               </div>
+
+                <!-- QR-code naar whiskyfest.nl (tickets bestellen) -->
+                <div class="ams-qr-tile">
+                  <img src="/qr/qr-whiskyfest-nl-amsterdam-groen.svg" alt="QR-code naar whiskyfest.nl" class="ams-qr-img" />
+                  <span class="ams-qr-label editable-node">SCAN &amp; BESTEL</span>
+                </div>
               </div>
 
               <!-- Onderbalk: Locatie / URL + Directe Call-to-Action -->
               <div class="ams-showcase-footer">
                 <div class="ams-footer-left">
                   <span class="ams-urgent-tag editable-node">LAATSTE TICKETS BESCHIKBAAR</span>
-                  <span class="ams-domain-text editable-node">Bestel direct via <strong>whiskyfestamsterdam.nl</strong></span>
+                  <span class="ams-domain-text editable-node">Bestel direct via <strong>whiskyfest.nl</strong></span>
                 </div>
                 <div class="ams-cta-pill editable-node">
-                  WHISKYFESTAMSTERDAM.NL &rarr;
+                  WHISKYFEST.NL &rarr;
                 </div>
               </div>
             </div>
@@ -1253,9 +1261,9 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
 
   .mc-header-sub {
     font-family: var(--font-sans, 'Inter', sans-serif);
-    font-size: 1.85mm;
+    font-size: 1.6mm;
     font-weight: 800;
-    letter-spacing: 0.02em;
+    letter-spacing: 0;
     color: #004d37;
     text-align: right;
     white-space: nowrap;
@@ -1435,10 +1443,49 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
   .ams-showcase-body {
     padding: 3.2mm 4.2mm;
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4mm;
+    flex: 1;
+  }
+
+  .ams-body-main {
+    display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 4.5mm;
+    gap: 4mm;
     flex: 1;
+    min-width: 0;
+  }
+
+  .ams-qr-tile {
+    flex-shrink: 0;
+    width: 27mm;
+    background: #FFFFFF;
+    border: 0.45mm solid #061A10;
+    border-radius: 2mm;
+    box-shadow: 0.9mm 0.9mm 0 #171614;
+    padding: 2mm 2mm 1.4mm;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2mm;
+    box-sizing: border-box;
+  }
+
+  .ams-qr-img {
+    width: 22.5mm;
+    height: 22.5mm;
+    display: block;
+  }
+
+  .ams-qr-label {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 2mm;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: #006448;
+    white-space: nowrap;
   }
 
   .ams-showcase-copy {
@@ -1461,15 +1508,16 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
   }
 
   .ams-usp-item {
+    white-space: nowrap;
     display: flex;
     align-items: center;
     gap: 1.4mm;
     background: rgba(250, 247, 242, 0.72);
     border: 0.3mm solid rgba(0, 100, 72, 0.35);
     border-radius: 1.5mm;
-    padding: 1.3mm 1.8mm;
+    padding: 1.3mm 1.4mm;
     font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
-    font-size: 2.05mm;
+    font-size: 1.8mm;
     font-weight: 800;
     color: #061A10;
   }
