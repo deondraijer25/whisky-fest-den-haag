@@ -858,7 +858,7 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
     height: 151mm;
     transform: translate(-50%, -50%) rotate(-90deg);
     box-sizing: border-box;
-    padding: 5.5mm 8mm 0 8mm;
+    padding: 8.1mm 8mm 0 8mm; /* titel op ~10mm van de vel-rand (3mm afloop + 7mm veilige marge), uitgelijnd met P6 */
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
@@ -1587,7 +1587,7 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
   .p6-top-half {
     height: 108.26mm; /* Exact gelijk aan de bovenrand van het donkergroene VAT B blok op Pagina 7! */
     background: #FAF7F2;
-    padding: 11mm 5.5mm 9.5mm 8mm; /* 11mm boven = exact op 1 lijn met VAT A & WIJ VERNIEUWEN; 9.5mm onder = exact op 1 lijn met onderkant VAT A kaart! */
+    padding: 11mm 5.5mm 9.5mm 10mm; /* 11mm boven = exact op 1 lijn met VAT A & WIJ VERNIEUWEN; 9.5mm onder = exact op 1 lijn met onderkant VAT A kaart! */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -1738,7 +1738,7 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
 
   .p6-photo-caption {
     position: absolute;
-    left: 8mm;
+    left: 10mm; /* 3mm afloop + 7mm veilige marge */
     right: 5.5mm;
     bottom: 8.5mm;
     z-index: 2;
