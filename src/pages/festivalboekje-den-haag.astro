@@ -2368,6 +2368,34 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
           viewport,
         }).promise;
 
+        // P8 "Wij vernieuwen voor 2027" (Vel 1, 290–438mm): de navy-blauwe subtitel + bullet-labels uit Canva
+        // omkleuren naar Den Haag groen (#006448). Alleen blauw-dominante pixels in het tekstgebied boven de
+        // pre-sale kaart; anti-aliasing blijft behouden doordat de verschuiving evenredig is met de inktdekking.
+        if (cfg.pageNum === 1) {
+          const pxmm = targetW / 589;
+          const rx = Math.round(290 * pxmm);
+          const ry = Math.round(30 * pxmm);
+          const rw = Math.round(148 * pxmm);
+          const rh = Math.round(60 * pxmm);   // 30–90mm: subtitel + bullets, vóór de pre-sale kaart
+          const img = offCtx.getImageData(rx, ry, rw, rh);
+          const d = img.data;
+          const OLD = [26, 67, 116];          // Canva navy #1A4374
+          const NEW = [0, 100, 72];           // Den Haag groen #006448
+          const BG_L = 246.3;                 // luminantie #FAF7F2
+          const OLD_L = (OLD[0] + OLD[1] + OLD[2]) / 3;
+          for (let i = 0; i < d.length; i += 4) {
+            const r = d[i], g = d[i + 1], b = d[i + 2];
+            if (b > r + 20 && b > g + 8) {
+              const l = (r + g + b) / 3;
+              const a = Math.max(0, Math.min(1, (BG_L - l) / (BG_L - OLD_L)));
+              d[i]     = Math.max(0, Math.min(255, Math.round(r + a * (NEW[0] - OLD[0]))));
+              d[i + 1] = Math.max(0, Math.min(255, Math.round(g + a * (NEW[1] - OLD[1]))));
+              d[i + 2] = Math.max(0, Math.min(255, Math.round(b + a * (NEW[2] - OLD[2]))));
+            }
+          }
+          offCtx.putImageData(img, rx, ry);
+        }
+
         // Geef Pagina 2 (de plattegrond op Vel 2) direct dezelfde warme #FAF7F2 achtergrondkleur als alle andere pagina's
         if (cfg.pageNum === 2) {
           // Plattegrond (P2, 0–151mm) iets verkleinen en het GEBOUW verticaal centreren op het paneel,
