@@ -395,7 +395,7 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
       <div class="overlay-panel panel-p8-usps" id="panel-pagina-8-usps">
         <span class="p8-usp-label p8-usp-1 editable-node">Direct online tickets</span>
         <span class="p8-usp-label p8-usp-2 editable-node">Masterclasses boeken</span>
-        <span class="p8-usp-label p8-usp-3 editable-node">E-ticket op je mobiel</span>
+        <span class="p8-usp-label p8-usp-3 editable-node">Eigen klantportaal</span>
       </div>
     </section>
 
@@ -2418,7 +2418,7 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
           const NEW = [0, 100, 72];           // Den Haag groen #006448
           const BG_L = 246.3;                 // luminantie #FAF7F2
           const OLD_L = (OLD[0] + OLD[1] + OLD[2]) / 3;
-          const eraseY0 = Math.round((76.2 - 30) * pxmm); // 76.2–82.4mm: oude Canva bullet-labels en hun witte halo wissen, met behoud van de beige golf (#F2EBE2) rechts
+          const eraseY0 = Math.round((76.2 - 30) * pxmm); // 76.2–82.4mm: alle oude Canva bullet-labels en hun witte halo volledig wissen
           const eraseY1 = Math.round((82.4 - 30) * pxmm);
           for (let y = 0; y < rh; y++) {
             for (let x = 0; x < rw; x++) {
@@ -2427,9 +2427,15 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
               if (y >= eraseY0 && y <= eraseY1) {
                 const isWave = (r >= 238 && r <= 245 && g >= 231 && g <= 238 && b >= 222 && b <= 230);
                 if (!isWave) {
-                  d[i] = 250; d[i + 1] = 247; d[i + 2] = 242; // #FAF7F2
-                  continue;
+                  // Rechtsonder (waar de diagonale beige golf zit) vullen met de golfkleur #F2EBE2, daarbuiten met #FAF7F2
+                  const inWaveZone = (x / pxmm) + 1.45 * (82.4 - (y / pxmm + 30)) > 142.8;
+                  if (inWaveZone) {
+                    d[i] = 242; d[i + 1] = 235; d[i + 2] = 226; // #F2EBE2
+                  } else {
+                    d[i] = 250; d[i + 1] = 247; d[i + 2] = 242; // #FAF7F2
+                  }
                 }
+                continue;
               }
               if (b > r + 20 && b > g + 8) {
                 const l = (r + g + b) / 3;
