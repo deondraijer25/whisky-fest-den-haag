@@ -387,6 +387,16 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
           </div>
         </div>
       </div>
+
+      <!-- =====================================================================
+           PAGINA 8 OVERLAY (x: 290mm t/m 438mm = 148mm breed):
+           3 Nieuwe, concrete USP-labels gecentreerd onder de 3 vinkjes
+           ===================================================================== -->
+      <div class="overlay-panel panel-p8-usps" id="panel-pagina-8-usps">
+        <span class="p8-usp-label p8-usp-1 editable-node">Direct online tickets</span>
+        <span class="p8-usp-label p8-usp-2 editable-node">Masterclasses boeken</span>
+        <span class="p8-usp-label p8-usp-3 editable-node">E-ticket op je mobiel</span>
+      </div>
     </section>
 
     <!-- =========================================================================
@@ -844,6 +854,31 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
     height: 216mm;
     pointer-events: none;
   }
+
+  /* Pagina 8 (Vel 1, 290–438mm): 3 USP-labels gecentreerd onder de vinkjes */
+  .panel-p8-usps {
+    left: 290mm;
+    width: 148mm;
+    height: 216mm;
+    pointer-events: none;
+  }
+
+  .p8-usp-label {
+    position: absolute;
+    top: 76.6mm;
+    transform: translateX(-50%);
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 2.85mm;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: #006448;
+    white-space: nowrap;
+    pointer-events: auto;
+  }
+
+  .p8-usp-1 { left: 21.6mm; }  /* 311.6mm op vel = exact midden van vinkje 1 */
+  .p8-usp-2 { left: 73.9mm; }  /* 363.9mm op vel = exact midden van vinkje 2 */
+  .p8-usp-3 { left: 126.4mm; } /* 416.4mm op vel = exact midden van vinkje 3 */
 
   .p2-parchment-tint {
     display: none;
@@ -2383,14 +2418,26 @@ const radarSvgVatB = buildFlavorRadarSvg(VAT_B_VALUES, 'dark');
           const NEW = [0, 100, 72];           // Den Haag groen #006448
           const BG_L = 246.3;                 // luminantie #FAF7F2
           const OLD_L = (OLD[0] + OLD[1] + OLD[2]) / 3;
-          for (let i = 0; i < d.length; i += 4) {
-            const r = d[i], g = d[i + 1], b = d[i + 2];
-            if (b > r + 20 && b > g + 8) {
-              const l = (r + g + b) / 3;
-              const a = Math.max(0, Math.min(1, (BG_L - l) / (BG_L - OLD_L)));
-              d[i]     = Math.max(0, Math.min(255, Math.round(r + a * (NEW[0] - OLD[0]))));
-              d[i + 1] = Math.max(0, Math.min(255, Math.round(g + a * (NEW[1] - OLD[1]))));
-              d[i + 2] = Math.max(0, Math.min(255, Math.round(b + a * (NEW[2] - OLD[2]))));
+          const eraseY0 = Math.round((76.2 - 30) * pxmm); // 76.2–82.4mm: oude Canva bullet-labels en hun witte halo wissen, met behoud van de beige golf (#F2EBE2) rechts
+          const eraseY1 = Math.round((82.4 - 30) * pxmm);
+          for (let y = 0; y < rh; y++) {
+            for (let x = 0; x < rw; x++) {
+              const i = (y * rw + x) * 4;
+              const r = d[i], g = d[i + 1], b = d[i + 2];
+              if (y >= eraseY0 && y <= eraseY1) {
+                const isWave = (r >= 238 && r <= 245 && g >= 231 && g <= 238 && b >= 222 && b <= 230);
+                if (!isWave) {
+                  d[i] = 250; d[i + 1] = 247; d[i + 2] = 242; // #FAF7F2
+                  continue;
+                }
+              }
+              if (b > r + 20 && b > g + 8) {
+                const l = (r + g + b) / 3;
+                const a = Math.max(0, Math.min(1, (BG_L - l) / (BG_L - OLD_L)));
+                d[i]     = Math.max(0, Math.min(255, Math.round(r + a * (NEW[0] - OLD[0]))));
+                d[i + 1] = Math.max(0, Math.min(255, Math.round(g + a * (NEW[1] - OLD[1]))));
+                d[i + 2] = Math.max(0, Math.min(255, Math.round(b + a * (NEW[2] - OLD[2]))));
+              }
             }
           }
           offCtx.putImageData(img, rx, ry);
