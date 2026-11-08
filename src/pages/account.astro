@@ -3392,13 +3392,14 @@ import Footer from '../components/Footer.astro';
         try {
           let verifiedOrder: any = null;
 
-          // 1. If order number entered, check Whiskytix API
+          // 1. If order number entered, check Whiskytix API by order number first
+          const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+          const bases = isLocal
+            ? ['http://localhost:4000', 'https://whiskytix-r1qq.vercel.app']
+            : ['https://whiskytix-r1qq.vercel.app'];
+
           if (rawResNo) {
             const cleanCode = rawResNo.replace(/^#/, '').trim();
-            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-            const bases = isLocal
-              ? ['http://localhost:4000', 'https://whiskytix-r1qq.vercel.app']
-              : ['https://whiskytix-r1qq.vercel.app'];
             for (const b of bases) {
               try {
                 const res = await fetch(`${b}/api/checkout/order/${encodeURIComponent(cleanCode)}`);
@@ -3406,6 +3407,47 @@ import Footer from '../components/Footer.astro';
                   const data = await res.json();
                   if (data && data.order) {
                     verifiedOrder = normalizeOrderObject(data.order);
+                    break;
+                  }
+                }
+              } catch (err) {
+                // Try next base
+              }
+            }
+          }
+
+          // 1b. Also check Whiskytix API by email (allows login with email only on mobile & merges multiple paid orders)
+          if (email) {
+            for (const b of bases) {
+              try {
+                const res = await fetch(`${b}/api/checkout/orders-by-email?email=${encodeURIComponent(email)}&festivalId=denhaag`);
+                if (res.ok) {
+                  const data = await res.json();
+                  if (data && Array.isArray(data.orders) && data.orders.length > 0) {
+                    const paidOrders = data.orders
+                      .filter((o: any) => o.status === 'paid' || o.isPaid === true)
+                      .map((o: any) => normalizeOrderObject(o))
+                      .filter(Boolean);
+                    if (paidOrders.length > 0) {
+                      if (!verifiedOrder) {
+                        verifiedOrder = paidOrders[0];
+                      }
+                      if (paidOrders.length > 1 && verifiedOrder) {
+                        const seenTicketCodes = new Set((verifiedOrder.activeTickets || []).map((t: any) => t.ticketCode || t.qrPayload));
+                        for (const extraOrder of paidOrders) {
+                          for (const t of (extraOrder.activeTickets || [])) {
+                            const key = t.ticketCode || t.qrPayload;
+                            if (key && !seenTicketCodes.has(key)) {
+                              seenTicketCodes.add(key);
+                              verifiedOrder.activeTickets.push(t);
+                              verifiedOrder.tickets.push(t);
+                            }
+                          }
+                        }
+                      }
+                    } else if (!verifiedOrder && !rawResNo) {
+                      verifiedOrder = normalizeOrderObject(data.orders[0]);
+                    }
                     break;
                   }
                 }
@@ -3536,12 +3578,13 @@ import Footer from '../components/Footer.astro';
     window.addEventListener('load', checkAuthAndRender);
     window.addEventListener('storage', checkAuthAndRender);
 
-    // Auto-authenticate if ?email=...&order=... are passed in the URL (e.g. from the post-checkout confirmation link)
-    if (paramEmail && paramOrder && loginForm) {
+    // Auto-authenticate if ?email=... (and optionally &order=...) are passed in the URL (e.g. from the GHL confirmation email or post-checkout link)
+    if (paramEmail && loginForm) {
       const existingSession = getValidSession();
-      const cleanParamOrder = paramOrder.replace(/^#+/, '').trim().toLowerCase();
+      const cleanParamOrder = (paramOrder || '').replace(/^#+/, '').trim().toLowerCase();
       const existingOrder = (existingSession?.resNumber || '').replace(/^#+/, '').trim().toLowerCase();
-      if (!existingSession || existingOrder !== cleanParamOrder) {
+      const existingEmail = (existingSession?.email || '').trim().toLowerCase();
+      if (!existingSession || (cleanParamOrder && existingOrder !== cleanParamOrder) || existingEmail !== paramEmail.trim().toLowerCase()) {
         loginForm.dispatchEvent(new Event('submit', { cancelable: true }));
       }
     }

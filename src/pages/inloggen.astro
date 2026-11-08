@@ -1,7 +1,28 @@
 ---
 // src/pages/inloggen.astro
-// Directe route voor inloggen op het bezoekersportaal
-const searchParams = Astro.url.searchParams;
-searchParams.set('view', 'login');
-return Astro.redirect(`/account?${searchParams.toString()}`);
+// Directe route voor inloggen op het bezoekersportaal met behoud van query parameters (?email=...&order=...)
 ---
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <title>Doorsturen naar Klantportaal...</title>
+    <meta name="robots" content="noindex" />
+    <script is:inline>
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        if (!params.has('view') && !params.has('order')) {
+          params.set('view', 'login');
+        }
+        var qs = params.toString();
+        window.location.replace('/account' + (qs ? '?' + qs : ''));
+      })();
+    </script>
+    <noscript>
+      <meta http-equiv="refresh" content="0;url=/account?view=login" />
+    </noscript>
+  </head>
+  <body style="background:#061A10;color:#FAF7F2;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;">
+    <p>U wordt doorgestuurd naar het klantportaal...</p>
+  </body>
+</html>
