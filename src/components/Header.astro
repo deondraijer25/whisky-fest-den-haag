@@ -1530,7 +1530,7 @@ const isAccount = pathname.startsWith("/account");
     else if (entreeCount >= 2 && entreeCount <= 5) serviceFee = 3.50;
     else if (entreeCount > 5) serviceFee = 4.50;
     const hasShipping = items.some((item: any) => item.category === 'botteling' && item.delivery === 'shipping');
-    const shippingFee = hasShipping ? 10.00 : 0;
+    const shippingFee = hasShipping ? 12.50 : 0;
     const total = subtotal + serviceFee + shippingFee;
 
     if (cartBadge) {

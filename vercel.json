@@ -1,6 +1,26 @@
 {
   "redirects": [
     {
+      "source": "/tickets",
+      "destination": "/#sessies",
+      "permanent": false
+    },
+    {
+      "source": "/bestellen",
+      "destination": "/#sessies",
+      "permanent": false
+    },
+    {
+      "source": "/faq",
+      "destination": "/#faq",
+      "permanent": false
+    },
+    {
+      "source": "/contact",
+      "destination": "/#footer",
+      "permanent": false
+    },
+    {
       "source": "/masterclasses",
       "destination": "/?cat=masterclass#sessies",
       "permanent": false

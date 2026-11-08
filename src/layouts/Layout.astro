@@ -67,7 +67,7 @@ const orgSchema = {
   "name": "International Whisky Festival",
   "alternateName": "Whisky Fest",
   "url": "https://www.whiskyfestival.nl",
-  "logo": "https://www.whiskyfestival.nl/assets/logo.png",
+  "logo": "https://www.whiskyfestival.nl/favicon.svg",
   "contactPoint": {
     "@type": "ContactPoint",
     "telephone": "",
@@ -87,7 +87,7 @@ const orgSchema = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     
     <!-- Primary Meta Tags -->
@@ -256,8 +256,8 @@ const orgSchema = {
         var GHL_API_KEY = 'pit-150d6114-ac2c-4cf7-9d5c-ffc20499c790';
         var GHL_LOCATION_ID = '1OZ9uxIBFoxwbheVC5iN';
 
-        function syncLiveTickets() {
-          fetch(GHL_API_BASE + '/objects/custom_objects.festival_tickets/records/search', {
+        function fetchDirectFromGhl() {
+          return fetch(GHL_API_BASE + '/objects/custom_objects.festival_tickets/records/search', {
             method: 'POST',
             headers: {
               'Authorization': 'Bearer ' + GHL_API_KEY,
@@ -272,39 +272,48 @@ const orgSchema = {
               searchAfter: []
             })
           })
+          .then(function(res) { return res.ok ? res.json() : null; })
+          .then(function(data) {
+            return (data && (data.customObjectRecords || data.records)) || [];
+          });
+        }
+
+        function syncLiveTickets() {
+          fetch('https://whiskytix-r1qq.vercel.app/api/catalog?city=denhaag')
           .then(function(res) {
-            if (!res.ok) return null;
+            if (!res.ok) throw new Error('Catalog status ' + res.status);
             return res.json();
           })
-          .then(function(data) {
-            var records = (data && (data.customObjectRecords || data.records)) || [];
-            if (records.length === 0) {
-              // Fallback to fetch all and filter in memory
-              return fetch(GHL_API_BASE + '/objects/custom_objects.festival_tickets/records/search', {
-                method: 'POST',
-                headers: {
-                  'Authorization': 'Bearer ' + GHL_API_KEY,
-                  'Version': '2021-07-28',
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                  locationId: GHL_LOCATION_ID,
-                  page: 1,
-                  pageLimit: 250,
-                  searchAfter: []
-                })
-              })
-              .then(function(fbRes) { return fbRes.ok ? fbRes.json() : null; })
-              .then(function(fbData) {
-                var allRecs = (fbData && (fbData.customObjectRecords || fbData.records)) || [];
-                return allRecs.filter(function(r) {
-                  var p = r.properties || r;
-                  var c = String(p.festival_city || '').toLowerCase().trim();
-                  return c === 'den_haag' || c === 'den haag' || c.indexOf('haag') !== -1;
-                });
-              });
+          .then(function(catData) {
+            if (!catData || !Array.isArray(catData.items) || catData.items.length === 0) {
+              return fetchDirectFromGhl();
             }
-            return records;
+            return catData.items.map(function(item) {
+              return {
+                id: item.id,
+                properties: {
+                  title: item.title,
+                  price: item.originalPriceEur,
+                  capacity: item.capacity || 0,
+                  sold: item.sold || 0,
+                  is_sold_out: Boolean(item.isSoldOut),
+                  status_badge: item.statusText === 'Concept (Verborgen)' ? 'hidden' : (item.isSoldOut ? 'sold-out' : ''),
+                  day: item.day || 'all',
+                  daypart: item.daypart || 'all',
+                  date_label: item.dateStr || '',
+                  time_label: item.timeStr || '',
+                  category: item.rawCategory || item.category || 'masterclass',
+                  location: item.location || 'Grote Kerk Den Haag',
+                  ticket_description: item.description || item.extra || '',
+                  ambassador_name: item.ambassadorName || '',
+                  ambassador_title: item.ambassadorTitle || '',
+                  tasting_lineup: item.tastingLineup || []
+                }
+              };
+            });
+          })
+          .catch(function() {
+            return fetchDirectFromGhl();
           })
           .then(function(records) {
             if (!Array.isArray(records) || records.length === 0) return;

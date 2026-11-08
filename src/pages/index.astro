@@ -6309,6 +6309,7 @@ const tickets = await getTickets('den_haag');
           returnUrl: window.location.origin + window.location.pathname
         });
 
+        let lastBackendError = "";
         for (const base of candidateBases) {
           try {
             const r = await fetch(`${base}/api/checkout/create-order`, {
@@ -6320,6 +6321,14 @@ const tickets = await getTickets('den_haag');
               response = r;
               usedBase = base;
               break;
+            } else {
+              try {
+                const errJson = await r.json();
+                if (errJson && errJson.error) lastBackendError = errJson.error;
+              } catch (_) {}
+              if (r.status >= 400 && r.status < 500) {
+                break;
+              }
             }
           } catch (_) {
             // Try next base
@@ -6329,111 +6338,23 @@ const tickets = await getTickets('den_haag');
         if (response && response.ok) {
           const data = await response.json();
           if (data.checkoutUrl) {
-            // Save pending order info to localStorage
-            const pendingOrderData = {
-              name: name,
-              firstName: firstName,
-              lastName: lastName,
-              email: email,
-              phone: phone,
-              items: itemsOrdered,
-              shippingAddress: shippingAddress,
-              ageVerification: ageVerification,
-              isMember: resPrefix === "WS",
-              resNumber: data.orderNumber || `#${resPrefix}-2027-PENDING`,
-              discountApplied: promoDiscount,
-              totalPrice: currentFinalTotal
-            };
-            // Do not set wf_last_order before payment is confirmed
-            
-            // Redirect to Mollie checkout or local Mollie sandbox simulator!
-            const targetUrl = data.checkoutUrl.startsWith('/') ? `${usedBase}${data.checkoutUrl}` : data.checkoutUrl;
+            const targetUrl = data.checkoutUrl.startsWith("/") ? `${usedBase}${data.checkoutUrl}` : data.checkoutUrl;
             window.location.href = targetUrl;
             return;
           }
         }
+
+        if (modalStep2) modalStep2.style.display = "none";
+        if (modalStep1) modalStep1.style.display = "block";
+        alert(lastBackendError || "De betaalserver is momenteel erg druk. Uw bestelling is nog niet geplaatst en er is niets afgeschreven. Probeer het over enkele seconden opnieuw.");
+        return;
       } catch (backendErr) {
-        console.warn("Whiskytix backend connectie overgeslagen (fallback geactiveerd):", backendErr);
+        console.error("Whiskytix checkout fout:", backendErr);
+        if (modalStep2) modalStep2.style.display = "none";
+        if (modalStep1) modalStep1.style.display = "block";
+        alert("Er kon geen verbinding worden gemaakt met de betaalomgeving. Controleer uw internetverbinding en probeer het opnieuw.");
+        return;
       }
-      
-      setTimeout(() => {
-        try {
-          if (modalStep2) modalStep2.style.display = "none";
-          
-          let orderList: string[] = [];
-          let itemsOrdered: any[] = [];
-          let resPrefix = "WF";
-
-          if (activePromoCode.startsWith("WS-") || activePromoCode === "IWS") {
-            resPrefix = "WS";
-          }
-          
-          Object.keys(cart).forEach(id => {
-            const item = cart[id];
-            if (item && item.qty > 0) {
-              let itemDisplayTitle = item.title;
-              if (item.category === "tram" && item.timeslot) {
-                itemDisplayTitle = `${item.title} (${item.timeslot.split(' - ')[1] || item.timeslot})`;
-              } else if (item.category === "botteling" && item.delivery) {
-                const method = item.delivery === "shipping" ? "Verzenden" : "Ophalen";
-                itemDisplayTitle = `${item.title} [${method}]`;
-              }
-              
-              orderList.push(`${itemDisplayTitle} (${item.qty}x)`);
-              itemsOrdered.push({
-                id: id,
-                title: item.title,
-                qty: item.qty,
-                price: item.price,
-                category: item.category,
-                timeslot: item.timeslot || "",
-                delivery: item.delivery || ""
-              });
-            }
-          });
-          
-          const finalResNumber = `#${resPrefix}-2027-${Math.floor(10000 + Math.random() * 90000)}`;
-
-          const orderData = {
-            name: name,
-            email: email,
-            phone: phone,
-            items: itemsOrdered,
-            shippingAddress: shippingAddress,
-            ageVerification: ageVerification,
-            isMember: resPrefix === "WS",
-            resNumber: finalResNumber,
-            discountApplied: promoDiscount,
-            totalPrice: recalcModalTotal()
-          };
-          localStorage.setItem('wf_last_order', JSON.stringify(orderData));
-
-          const myAccountLink = document.getElementById("my-account-link");
-          if (myAccountLink) {
-            myAccountLink.setAttribute("href", `/account?view=login&email=${encodeURIComponent(email)}&order=${encodeURIComponent(finalResNumber)}`);
-          }
-
-          const successResNumEl = document.querySelector("#modal-step-3 .ticket-summary-box strong");
-          if (successResNumEl) successResNumEl.textContent = finalResNumber;
-          
-          if (receiptSentEmail) receiptSentEmail.textContent = email;
-          if (receiptTicketsList) {
-            receiptTicketsList.innerHTML = "";
-            orderList.forEach(txt => {
-              const div = document.createElement("div");
-              div.className = "receipt-ticket-li";
-              div.innerHTML = `<span>${txt}</span>`;
-              receiptTicketsList.appendChild(div);
-            });
-          }
-        } catch (err) {
-          console.error("Order processing error:", err);
-        } finally {
-          if (modalStep1) modalStep1.style.display = "none";
-          if (modalStep2) modalStep2.style.display = "none";
-          if (modalStep3) modalStep3.style.display = "block";
-        }
-      }, 1500);
     });
   }
 

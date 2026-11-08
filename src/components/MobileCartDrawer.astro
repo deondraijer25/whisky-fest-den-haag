@@ -216,7 +216,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
 
       if (totalQty > 0) {
         const fee = getServiceFeeForCart(totalQty, entreeQty);
-        const shipping = shippingActive ? 10.00 : 0;
+        const shipping = shippingActive ? 12.50 : 0;
         const grandTotal = subtotal + fee + shipping;
 
         if (stickyCount) {
@@ -393,7 +393,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
       }).join('');
 
       const fee = getServiceFeeForCart(totalQty, entreeQty);
-      const shipping = shippingActive ? 10.00 : 0;
+      const shipping = shippingActive ? 12.50 : 0;
       const finalTotal = subtotal + fee + shipping;
 
       if (sheetCartSubtotal) sheetCartSubtotal.textContent = `€ ${subtotal.toFixed(2).replace('.', ',')}`;
@@ -440,7 +440,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
         }
       });
       const fee = getServiceFeeForCart(totalItems, entreeItems);
-      const shipping = shippingActive ? 10.00 : 0;
+      const shipping = shippingActive ? 12.50 : 0;
       const grandTotal = subtotal + fee + shipping;
 
       if (sheetFinalCheckoutText) {
