@@ -2175,7 +2175,7 @@ function formatSpeaker(host: string) {
             id: ticketId,
             title: title,
             price: currentPrice,
-            qty: Math.min(10, currentQty + 1),
+            qty: currentQty + 1,
             category: itemObj ? itemObj.category : 'masterclass',
             date: itemObj ? itemObj.date : '',
             time: itemObj ? itemObj.time : ''
@@ -2223,7 +2223,7 @@ function formatSpeaker(host: string) {
             id: ticketId,
             title: title,
             price: currentPrice,
-            qty: Math.min(10, currentQty + 1),
+            qty: currentQty + 1,
             category: 'trail',
             date: itemObj ? itemObj.date : '',
             time: itemObj ? itemObj.time : ''
@@ -2338,7 +2338,7 @@ function formatSpeaker(host: string) {
               id: ticketId,
               title: title,
               price: currentPrice,
-              qty: Math.min(10, currentQty + 1),
+              qty: currentQty + 1,
               category: 'masterclass',
               date: itemObj ? itemObj.date : '',
               time: itemObj ? itemObj.time : ''

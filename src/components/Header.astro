@@ -9,7 +9,7 @@ const isAccount = pathname.startsWith("/account");
 ---
 
 <header class="main-header animate-fade-in">
-  <div class="top-announcement-bar">
+  <div class="top-announcement-bar" id="top-announcement-bar">
     Sluit je aan bij duizenden whiskyliefhebbers in Den Haag – Bestel vandaag nog je tickets!
   </div>
   <div class="header-container">
@@ -108,6 +108,10 @@ const isAccount = pathname.startsWith("/account");
               <div class="calc-row">
                 <span class="calc-label">Subtotaal:</span>
                 <span class="calc-val" id="header-cart-subtotal">&euro;0,00</span>
+              </div>
+              <div class="calc-row" id="header-discount-row" style="display: none; color: #006448;">
+                <span class="calc-label" id="header-discount-label" style="color: #006448; font-weight: 700;">Pre-sale korting (NEW10 - 10%):</span>
+                <span class="calc-val" id="header-cart-discount" style="color: #006448; font-weight: 800;">- &euro;0,00</span>
               </div>
               <div class="calc-row">
                 <span class="calc-label">Administratiekosten:</span>
@@ -1531,7 +1535,10 @@ const isAccount = pathname.startsWith("/account");
     else if (entreeCount > 5) serviceFee = 4.50;
     const hasShipping = items.some((item: any) => item.category === 'botteling' && item.delivery === 'shipping');
     const shippingFee = hasShipping ? 12.50 : 0;
-    const total = subtotal + serviceFee + shippingFee;
+    const promoRaw = (localStorage.getItem('wf_auto_promo') || sessionStorage.getItem('wf_auto_promo') || '').trim().toUpperCase();
+    const isNew10 = promoRaw === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00');
+    const discountAmt = (isNew10 && subtotal > 0) ? Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100) : 0;
+    const total = Math.max(0, subtotal - discountAmt) + serviceFee + shippingFee;
 
     if (cartBadge) {
       if (totalCount > 0) {
@@ -1554,6 +1561,18 @@ const isAccount = pathname.startsWith("/account");
 
     if (cartSubtotal) {
       cartSubtotal.innerHTML = `&euro; ${subtotal.toFixed(2).replace('.', ',')}`;
+    }
+    const cartDiscountRow = document.getElementById('header-discount-row');
+    const cartDiscountEl = document.getElementById('header-cart-discount');
+    if (cartDiscountRow && cartDiscountEl) {
+      if (discountAmt > 0) {
+        cartDiscountRow.style.display = 'flex';
+        cartDiscountEl.innerHTML = `- &euro; ${discountAmt.toFixed(2).replace('.', ',')}`;
+      } else {
+        cartDiscountRow.style.display = 'none';
+      }
+    }
+    if (false) {
     }
     const cartFee = document.getElementById('header-cart-fee');
     if (cartFee) {
@@ -1639,7 +1658,7 @@ const isAccount = pathname.startsWith("/account");
         if (!currentItem) return;
 
         if (isPlus) {
-          currentItem.qty = Math.min(10, (currentItem.qty || 0) + 1);
+          currentItem.qty = (currentItem.qty || 0) + 1;
         } else {
           currentItem.qty = (currentItem.qty || 0) - 1;
         }
@@ -1734,6 +1753,29 @@ const isAccount = pathname.startsWith("/account");
 
   window.addEventListener('storage', updateHeaderCartUI);
   window.addEventListener('cart-updated', updateHeaderCartUI);
+  // Capture ?promo=NEW10 / ?code=NEW10 globally across all pages
+  (function captureGlobalPromoCode() {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const urlPromo = (params.get('promo') || params.get('code') || params.get('discount') || '').trim().toUpperCase();
+      if (urlPromo) {
+        localStorage.setItem('wf_auto_promo', urlPromo);
+        sessionStorage.setItem('wf_auto_promo', urlPromo);
+      }
+      const activePromo = urlPromo || (localStorage.getItem('wf_auto_promo') || sessionStorage.getItem('wf_auto_promo') || '').trim().toUpperCase();
+      if (activePromo === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00')) {
+        localStorage.setItem('wf_auto_promo', 'NEW10');
+        sessionStorage.setItem('wf_auto_promo', 'NEW10');
+        const topBar = document.getElementById('top-announcement-bar');
+        if (topBar) {
+          topBar.style.backgroundColor = '#082B1B';
+          topBar.style.color = '#FAF7F2';
+          topBar.innerHTML = '<span style="color:#CAAC8E; font-weight:800;">PRE-SALE VOORDEEL ACTIEF:</span> Uw 10% kortingscode (<strong>NEW10</strong>) wordt automatisch verrekend op uw bestelling!';
+        }
+      }
+    } catch (e) {}
+  })();
+
   document.addEventListener('DOMContentLoaded', updateHeaderCartUI);
   updateHeaderCartUI();
 

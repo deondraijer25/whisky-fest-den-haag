@@ -54,6 +54,10 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
             <span>Subtotaal:</span>
             <strong id="sheet-cart-subtotal">&euro;0,00</strong>
           </div>
+          <div class="sheet-calc-row" id="sheet-discount-row" style="display: none; color: #006448;">
+            <span id="sheet-discount-label">Pre-sale korting (NEW10 - 10%):</span>
+            <strong id="sheet-cart-discount" style="color: #006448;">- &euro;0,00</strong>
+          </div>
           <div class="sheet-calc-row">
             <span>Administratiekosten:</span>
             <strong id="sheet-cart-fee">&euro;0,00</strong>
@@ -165,6 +169,8 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
     const sheetCartEmpty = document.getElementById('sheet-cart-empty');
     const sheetCartFooter = document.getElementById('sheet-cart-footer');
     const sheetCartSubtotal = document.getElementById('sheet-cart-subtotal');
+    const sheetDiscountRow = document.getElementById('sheet-discount-row');
+    const sheetCartDiscount = document.getElementById('sheet-cart-discount');
     const sheetCartFee = document.getElementById('sheet-cart-fee');
     const sheetCartShipping = document.getElementById('sheet-cart-shipping');
     const sheetShippingRow = document.getElementById('sheet-shipping-row');
@@ -217,7 +223,10 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
       if (totalQty > 0) {
         const fee = getServiceFeeForCart(totalQty, entreeQty);
         const shipping = shippingActive ? 12.50 : 0;
-        const grandTotal = subtotal + fee + shipping;
+        const promoCode = (localStorage.getItem('wf_auto_promo') || sessionStorage.getItem('wf_auto_promo') || '').trim().toUpperCase();
+        const isNew10 = promoCode === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00');
+        const discount = (isNew10 && subtotal > 0) ? Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100) : 0;
+        const grandTotal = Math.max(0, subtotal - discount) + fee + shipping;
 
         if (stickyCount) {
           stickyCount.textContent = `${totalQty} ${totalQty === 1 ? 'ticket' : 'tickets'}`;
@@ -394,7 +403,18 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
 
       const fee = getServiceFeeForCart(totalQty, entreeQty);
       const shipping = shippingActive ? 12.50 : 0;
-      const finalTotal = subtotal + fee + shipping;
+      const promoCode = (localStorage.getItem('wf_auto_promo') || sessionStorage.getItem('wf_auto_promo') || '').trim().toUpperCase();
+      const isNew10 = promoCode === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00');
+      const discount = (isNew10 && subtotal > 0) ? Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100) : 0;
+      const finalTotal = Math.max(0, subtotal - discount) + fee + shipping;
+      if (sheetDiscountRow && sheetCartDiscount) {
+        if (discount > 0) {
+          sheetDiscountRow.style.display = 'flex';
+          sheetCartDiscount.textContent = `- € ${discount.toFixed(2).replace('.', ',')}`;
+        } else {
+          sheetDiscountRow.style.display = 'none';
+        }
+      }
 
       if (sheetCartSubtotal) sheetCartSubtotal.textContent = `€ ${subtotal.toFixed(2).replace('.', ',')}`;
       if (sheetCartFee) sheetCartFee.textContent = `€ ${fee.toFixed(2).replace('.', ',')}`;
@@ -441,7 +461,10 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
       });
       const fee = getServiceFeeForCart(totalItems, entreeItems);
       const shipping = shippingActive ? 12.50 : 0;
-      const grandTotal = subtotal + fee + shipping;
+      const promoCode = (localStorage.getItem('wf_auto_promo') || sessionStorage.getItem('wf_auto_promo') || '').trim().toUpperCase();
+      const isNew10 = promoCode === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00');
+      const discount = (isNew10 && subtotal > 0) ? Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100) : 0;
+      const grandTotal = Math.max(0, subtotal - discount) + fee + shipping;
 
       if (sheetFinalCheckoutText) {
         sheetFinalCheckoutText.innerHTML = `Afrekenen (€ ${grandTotal.toFixed(2).replace('.', ',')}) &rarr;`;
@@ -667,7 +690,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
       let currentQty = isObj ? cart[id].qty : cart[id];
 
       if (action === 'plus') {
-        currentQty = Math.min(10, currentQty + 1);
+        currentQty = currentQty + 1;
         if (isObj) cart[id].qty = currentQty;
         else cart[id] = currentQty;
       } else if (action === 'minus') {
@@ -708,8 +731,8 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
         } else {
           const isObj = typeof cart[id] === 'object';
           const qty = isObj ? cart[id].qty : cart[id];
-          if (isObj) cart[id].qty = Math.min(10, qty + 1);
-          else cart[id] = Math.min(10, qty + 1);
+          if (isObj) cart[id].qty = qty + 1;
+          else cart[id] = qty + 1;
         }
 
         saveLocalCart(cart);
@@ -726,7 +749,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
         let qty = isObj ? cart[id].qty : cart[id];
 
         if (action === 'plus') {
-          qty = Math.min(10, qty + 1);
+          qty = qty + 1;
           if (isObj) cart[id].qty = qty;
           else cart[id] = qty;
         } else if (action === 'minus') {
