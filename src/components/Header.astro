@@ -127,7 +127,7 @@ const isAccount = pathname.startsWith("/account");
               </div>
             </div>
 
-            <a href="/#sessies" class="btn btn-gold btn-checkout" id="header-dropdown-checkout-btn">
+            <a href="/?checkout=open#checkout" class="btn btn-gold btn-checkout" id="header-dropdown-checkout-btn">
               Afrekenen &rarr;
             </a>
           </div>
@@ -1473,14 +1473,7 @@ const isAccount = pathname.startsWith("/account");
       const cartRaw: Record<string, any> = {};
       const itemsList: any[] = [];
 
-      if (Array.isArray(parsed.items) && parsed.items.length > 0) {
-        parsed.items.forEach((it: any) => {
-          if (it && it.id && it.qty > 0) {
-            cartRaw[it.id] = { ...it };
-            itemsList.push({ ...it });
-          }
-        });
-      } else if (parsed.cartRaw && typeof parsed.cartRaw === 'object') {
+      if (parsed.cartRaw && typeof parsed.cartRaw === 'object' && Object.keys(parsed.cartRaw).length > 0) {
         Object.keys(parsed.cartRaw).forEach(id => {
           if (id === 'subtotal' || id === 'totalItems' || id === 'items' || id === 'cartRaw') return;
           const it = parsed.cartRaw[id];
@@ -1490,6 +1483,13 @@ const isAccount = pathname.startsWith("/account");
             const itemObj = typeof it === 'object' ? { ...it, id } : { id, title: id, price: 0, qty };
             cartRaw[id] = itemObj;
             itemsList.push(itemObj);
+          }
+        });
+      } else if (Array.isArray(parsed.items) && parsed.items.length > 0) {
+        parsed.items.forEach((it: any) => {
+          if (it && it.id && it.qty > 0) {
+            cartRaw[it.id] = { ...it };
+            itemsList.push({ ...it });
           }
         });
       } else {
@@ -1529,15 +1529,20 @@ const isAccount = pathname.startsWith("/account");
       .reduce((acc: number, item: any) => acc + (item.qty || 0), 0);
     const subtotal = items.reduce((acc: number, item: any) => acc + ((item.price || 0) * (item.qty || 0)), 0);
     let serviceFee = 0;
-    if (totalCount > 0 && entreeCount === 0) serviceFee = 0.50;
-    else if (entreeCount === 1) serviceFee = 1.75;
-    else if (entreeCount >= 2 && entreeCount <= 5) serviceFee = 3.50;
-    else if (entreeCount > 5) serviceFee = 4.50;
+    if (totalCount === 1) serviceFee = 1.75;
+    else if (totalCount >= 2 && totalCount <= 5) serviceFee = 3.50;
+    else if (totalCount > 5) serviceFee = 4.50;
     const hasShipping = items.some((item: any) => item.category === 'botteling' && item.delivery === 'shipping');
     const shippingFee = hasShipping ? 12.50 : 0;
     const promoRaw = (localStorage.getItem('wf_auto_promo') || sessionStorage.getItem('wf_auto_promo') || '').trim().toUpperCase();
+    const iwsCode = (sessionStorage.getItem('wf_iws_code') || '').trim();
     const isNew10 = promoRaw === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00');
-    const discountAmt = (isNew10 && subtotal > 0) ? Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100) : 0;
+    let discountAmt = 0;
+    if (iwsCode && subtotal > 0) {
+      discountAmt = Math.min(subtotal, 55.00);
+    } else if (isNew10 && subtotal > 0) {
+      discountAmt = Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100);
+    }
     const total = Math.max(0, subtotal - discountAmt) + serviceFee + shippingFee;
 
     if (cartBadge) {
@@ -1679,12 +1684,15 @@ const isAccount = pathname.startsWith("/account");
             return {
               id: k,
               title: it.title,
+              rawTitle: it.rawTitle || it.title,
               price: it.price,
               qty: it.qty,
               category: it.category || 'entree',
+              timeslot: it.timeslot || it.time || '',
+              delivery: it.delivery || '',
+              guide: it.guide || '',
               date: it.date || '',
-              time: it.time || '',
-              delivery: it.delivery || ''
+              time: it.time || ''
             };
           });
 

@@ -731,6 +731,10 @@ const orgSchema = {
                   if (btn) {
                     btn.setAttribute('data-ticket-id', r.id);
                     btn.setAttribute('data-title', cleanTitle);
+                    btn.setAttribute('data-price', String(priceNum));
+                    if (p.category) btn.setAttribute('data-category', p.category);
+                    if (p.date_label) btn.setAttribute('data-date', p.date_label);
+                    if (cleanAgendaTime) btn.setAttribute('data-time', cleanAgendaTime);
                     if (isSoldOut) {
                       btn.className = 'btn btn-gold btn-table-buy sold-out';
                       btn.disabled = true;

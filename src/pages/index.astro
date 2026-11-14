@@ -2320,7 +2320,7 @@ const tickets = await getTickets('den_haag');
                 style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 4px;"
               ></video>
               <div id="video-overlay" class="video-overlay-cover text-center" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(28, 25, 23, 0.25) 0%, rgba(28, 25, 23, 0.65) 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; z-index: 10;">
-                <div class="play-button" id="aftermovie-play-btn">▶</div>
+                <div class="play-button" id="aftermovie-play-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg></div>
                 <p style="color: #FFF; font-family: var(--font-sans); letter-spacing:0.12em; margin-top:1.25rem; text-transform:uppercase; font-size:0.85rem; font-weight:bold; text-shadow: 0 2px 10px rgba(0,0,0,0.8);">Bekijk Official Aftermovie 2025</p>
               </div>
             </div>
@@ -2331,7 +2331,15 @@ const tickets = await getTickets('den_haag');
           <span class="tt-tag">Wat bezoekers zeggen</span>
           <h3 class="testimonial-quote">"Dit festival is echt van een ander niveau. De locatie is adembenemend en het aanbod aan unieke masterclasses is enorm."</h3>
           <p class="testimonial-author">— Jeroen van den Berg, Bezoeker sinds 2012</p>
-          <div class="review-stars">★★★★★</div>
+          <div class="review-stars" aria-label="5 van 5 sterren">
+            <svg width="110" height="18" viewBox="0 0 110 18" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="9,1 11.5,6.2 17,7 13,11 14,16.5 9,13.8 4,16.5 5,11 1,7 6.5,6.2" />
+              <polygon points="32,1 34.5,6.2 40,7 36,11 37,16.5 32,13.8 27,16.5 28,11 24,7 29.5,6.2" />
+              <polygon points="55,1 57.5,6.2 63,7 59,11 60,16.5 55,13.8 50,16.5 51,11 47,7 52.5,6.2" />
+              <polygon points="78,1 80.5,6.2 86,7 82,11 83,16.5 78,13.8 73,16.5 74,11 70,7 75.5,6.2" />
+              <polygon points="101,1 103.5,6.2 109,7 105,11 106,16.5 101,13.8 96,16.5 97,11 93,7 98.5,6.2" />
+            </svg>
+          </div>
         </div>
 
       </div>
@@ -5124,8 +5132,10 @@ const tickets = await getTickets('den_haag');
   // Auto-open checkout modal if requested via URL param or hash
   if (window.location.search.includes('checkout=open') || window.location.hash === '#checkout') {
     setTimeout(() => {
+      if (typeof restoreCartFromLocalStorage === 'function') restoreCartFromLocalStorage();
+      if (typeof updateShop === 'function') updateShop(false);
       if (typeof openCheckoutModal === 'function') openCheckoutModal();
-    }, 400);
+    }, 550);
   }
 
   // 2. Safe Preloader Dismiss
@@ -5153,14 +5163,8 @@ const tickets = await getTickets('den_haag');
 
   // 4. Cart & Shop State
   const cart: Record<string, { title: string; price: number; qty: number; category: string; timeslot?: string; delivery?: string; guide?: string; date?: string; time?: string }> = {};
-  function getServiceFee(qty: number, entreeQty?: number): number {
+  function getServiceFee(qty: number, _entreeQty?: number): number {
     if (qty <= 0) return 0;
-    if (typeof entreeQty === 'number') {
-      if (entreeQty <= 0) return 0.50;
-      if (entreeQty === 1) return 1.75;
-      if (entreeQty <= 5) return 3.50;
-      return 4.50;
-    }
     if (qty === 1) return 1.75;
     if (qty <= 5) return 3.50;
     return 4.50;
@@ -5398,9 +5402,13 @@ const tickets = await getTickets('den_haag');
           return {
             id,
             title: displayTitle,
+            rawTitle: item.title,
             price: item.price,
             qty: item.qty,
             category: item.category || 'entree',
+            timeslot: item.timeslot || item.time || '',
+            delivery: item.delivery || '',
+            guide: item.guide || '',
             date: item.date || '',
             time: item.time || ''
           };
@@ -6238,6 +6246,10 @@ const tickets = await getTickets('den_haag');
           let itemDisplayTitle = item.title;
           if (item.category === "tram" && item.timeslot) {
             itemDisplayTitle = `${item.title} (${item.timeslot.split(' - ')[1] || item.timeslot})`;
+          } else if (item.category === "trail" && item.guide) {
+            itemDisplayTitle = item.title.toLowerCase().includes('gids')
+              ? item.title
+              : `${item.title} (Gids: ${item.guide})`;
           } else if (item.category === "botteling" && item.delivery) {
             const method = item.delivery === "shipping" ? "Verzenden" : "Ophalen";
             itemDisplayTitle = `${item.title} [${method}]`;
@@ -6246,22 +6258,27 @@ const tickets = await getTickets('den_haag');
           orderList.push(`${itemDisplayTitle} (${item.qty}x)`);
           let itemDate = item.date || "";
           let itemTime = item.time || item.timeslot || "";
-          const matchedTicket = (denHaagTicketsData || []).find((t: any) => t.id === id || (t.title && item.title && t.title.toLowerCase().replace(/[^a-z0-9]/g, '') === item.title.toLowerCase().replace(/[^a-z0-9]/g, '')));
+          const matchedTicket = (denHaagTicketsData || []).find((t: any) => t.id === id);
           if (matchedTicket) {
-            if (matchedTicket.date) itemDate = matchedTicket.date;
-            if (matchedTicket.time) {
+            if (!itemDate && matchedTicket.date) itemDate = matchedTicket.date;
+            if (!itemTime && matchedTicket.time) {
               itemTime = matchedTicket.time;
               if (item.category === 'masterclass' || item.category === 'entree') {
                 item.timeslot = matchedTicket.time;
               }
             }
             if (matchedTicket.price) item.price = matchedTicket.price;
-            if (matchedTicket.title) item.title = matchedTicket.title;
+          }
+
+          if (item.category === "botteling") {
+            const isShip = item.delivery === "shipping";
+            itemDate = isShip ? "Verzending na festival (12-14 nov 2027)" : "Afhalen Festival (12-14 nov 2027)";
+            itemTime = isShip ? "Verzending per post" : "Afhalen tijdens festival";
           }
 
           itemsOrdered.push({
             id: id,
-            title: item.title,
+            title: itemDisplayTitle,
             qty: item.qty,
             price: item.price,
             category: item.category,

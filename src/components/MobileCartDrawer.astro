@@ -187,12 +187,20 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
     const stickyCount = document.getElementById('mscb-cart-count');
     const stickyTotal = document.getElementById('mscb-cart-total');
 
-    function getServiceFeeForCart(totalQty, entreeQty) {
+    function getServiceFeeForCart(totalQty, _entreeQty) {
       if (totalQty <= 0) return 0;
-      if (entreeQty === 0) return 0.50;
-      if (entreeQty === 1) return 1.75;
-      if (entreeQty <= 5) return 3.50;
+      if (totalQty === 1) return 1.75;
+      if (totalQty <= 5) return 3.50;
       return 4.50;
+    }
+
+    function getCartDiscountAmt(subtotal) {
+      if (subtotal <= 0) return 0;
+      const iwsCode = (sessionStorage.getItem('wf_iws_code') || '').trim();
+      if (iwsCode) return Math.min(subtotal, 55.00);
+      const promoCode = (localStorage.getItem('wf_auto_promo') || sessionStorage.getItem('wf_auto_promo') || '').trim().toUpperCase();
+      const isNew10 = promoCode === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00');
+      return isNew10 ? Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100) : 0;
     }
 
     function updateStickyBar() {
@@ -223,9 +231,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
       if (totalQty > 0) {
         const fee = getServiceFeeForCart(totalQty, entreeQty);
         const shipping = shippingActive ? 12.50 : 0;
-        const promoCode = (localStorage.getItem('wf_auto_promo') || sessionStorage.getItem('wf_auto_promo') || '').trim().toUpperCase();
-        const isNew10 = promoCode === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00');
-        const discount = (isNew10 && subtotal > 0) ? Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100) : 0;
+        const discount = getCartDiscountAmt(subtotal);
         const grandTotal = Math.max(0, subtotal - discount) + fee + shipping;
 
         if (stickyCount) {
@@ -298,7 +304,14 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
             const price = (typeof val === 'object' && val.price) ? val.price : (raw?.price || 0);
             const title = (typeof val === 'object' && val.title) ? val.title : (raw?.title || id);
             const category = (typeof val === 'object' && val.category) ? val.category : (raw?.category || 'entree');
-            const itemData = typeof val === 'object' ? { ...val, id, qty, price, title, category } : { id, qty, price, title, category };
+            const date = (typeof val === 'object' && val.date) ? val.date : (raw?.date || '');
+            const time = (typeof val === 'object' && val.time) ? val.time : (raw?.time || '');
+            const timeslot = (typeof val === 'object' && val.timeslot) ? val.timeslot : time;
+            const delivery = (typeof val === 'object' && val.delivery) ? val.delivery : (category === 'botteling' ? 'pickup' : '');
+            const guide = (typeof val === 'object' && val.guide) ? val.guide : '';
+            const itemData = typeof val === 'object'
+              ? { ...val, id, qty, price, title, category, date, time, timeslot, delivery, guide }
+              : { id, qty, price, title, category, date, time, timeslot, delivery, guide };
             itemsArr.push(itemData);
             cartRaw[id] = itemData;
             subtotal += price * qty;
@@ -403,9 +416,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
 
       const fee = getServiceFeeForCart(totalQty, entreeQty);
       const shipping = shippingActive ? 12.50 : 0;
-      const promoCode = (localStorage.getItem('wf_auto_promo') || sessionStorage.getItem('wf_auto_promo') || '').trim().toUpperCase();
-      const isNew10 = promoCode === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00');
-      const discount = (isNew10 && subtotal > 0) ? Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100) : 0;
+      const discount = getCartDiscountAmt(subtotal);
       const finalTotal = Math.max(0, subtotal - discount) + fee + shipping;
       if (sheetDiscountRow && sheetCartDiscount) {
         if (discount > 0) {
@@ -461,9 +472,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
       });
       const fee = getServiceFeeForCart(totalItems, entreeItems);
       const shipping = shippingActive ? 12.50 : 0;
-      const promoCode = (localStorage.getItem('wf_auto_promo') || sessionStorage.getItem('wf_auto_promo') || '').trim().toUpperCase();
-      const isNew10 = promoCode === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00');
-      const discount = (isNew10 && subtotal > 0) ? Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100) : 0;
+      const discount = getCartDiscountAmt(subtotal);
       const grandTotal = Math.max(0, subtotal - discount) + fee + shipping;
 
       if (sheetFinalCheckoutText) {
@@ -792,28 +801,39 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
       }
     });
 
-    window.addEventListener('ghl:tickets-updated', (e) => {
-      const records = e.detail;
-      if (Array.isArray(records) && records.length > 0) {
-        if (!Array.isArray(window.GLOBAL_TICKETS)) window.GLOBAL_TICKETS = [];
-        records.forEach((r) => {
-          const p = r.properties || r;
-          const cleanTitle = (p.title || '').replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
-          const match = window.GLOBAL_TICKETS.find((t) => t.id === r.id || (t.title && cleanTitle && t.title.toLowerCase().replace(/[^a-z0-9]/g, '') === cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '')));
-          if (match) {
-            if (p.price) match.price = typeof p.price === 'number' ? p.price : (parseFloat(p.price) || match.price);
-            if (p.date_label) match.date = p.date_label;
-            if (p.time_label) match.time = p.time_label;
-            if (cleanTitle) match.title = cleanTitle;
-          }
-        });
-        updateStickyBar();
-        if (overlay && overlay.classList.contains('active')) {
-          renderSheetCart();
-          renderSheetAddons();
+    function applyLiveRecordsToDrawer(records) {
+      if (!Array.isArray(records) || records.length === 0) return;
+      if (!Array.isArray(window.GLOBAL_TICKETS)) window.GLOBAL_TICKETS = [];
+      records.forEach((r) => {
+        const p = r.properties || r;
+        const cleanTitle = (p.title || '').replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
+        const match = window.GLOBAL_TICKETS.find((t) => t.id === r.id || (t.title && cleanTitle && t.title.toLowerCase().replace(/[^a-z0-9]/g, '') === cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '') && (!p.time_label || !t.time || t.time.replace(/\s*uur/i, '').trim() === p.time_label.replace(/\s*uur/i, '').trim())));
+        if (match) {
+          if (r.id) match.id = r.id;
+          if (p.price) match.price = typeof p.price === 'number' ? p.price : (parseFloat(p.price) || match.price);
+          if (p.date_label) match.date = p.date_label;
+          if (p.time_label) match.time = p.time_label;
+          if (cleanTitle) match.title = cleanTitle;
+          const cap = Number(p.capacity) || 0;
+          const sold = Number(p.sold) || 0;
+          const badge = (p.badge || '').toLowerCase();
+          match.isSoldOut = Boolean((cap > 0 && sold >= cap) || badge.includes('uitverkocht') || badge.includes('sold'));
         }
+      });
+      updateStickyBar();
+      if (overlay && overlay.classList.contains('active')) {
+        renderSheetCart();
+        renderSheetAddons();
       }
+    }
+
+    window.addEventListener('ghl:tickets-updated', (e) => {
+      applyLiveRecordsToDrawer(e.detail);
     });
+
+    if (Array.isArray(window.__LIVE_GHL_TICKETS__) && window.__LIVE_GHL_TICKETS__.length > 0) {
+      applyLiveRecordsToDrawer(window.__LIVE_GHL_TICKETS__);
+    }
 
     // Expose helpers globally
     window.openMobileCartDrawer = openMobileCartDrawer;

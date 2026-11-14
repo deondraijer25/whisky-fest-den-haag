@@ -568,6 +568,10 @@ function formatSpeaker(host: string) {
                           class="btn btn-gold btn-table-buy"
                           data-ticket-id={item.id}
                           data-title={item.title}
+                          data-price={item.price}
+                          data-category={item.category}
+                          data-date={`${s.dayLabel} 2027`}
+                          data-time={item.time}
                         >
                           + Bestel
                         </button>
@@ -635,6 +639,9 @@ function formatSpeaker(host: string) {
                                           class="btn-matrix-action"
                                           data-ticket-id={slotInfo.ticketId}
                                           data-title={`Whisky Trail (Gids ${g.name} - ${row.time} uur)`}
+                                          data-date={`${s.dayLabel} 2027`}
+                                          data-time={`${row.time} uur`}
+                                          data-guide={g.name}
                                         >
                                           + Boek € {slotInfo.price},-
                                         </button>
@@ -721,6 +728,10 @@ function formatSpeaker(host: string) {
                         class="btn btn-gold btn-table-buy"
                         data-ticket-id={b.id}
                         data-title={b.title}
+                        data-price={b.price}
+                        data-category={b.category || 'botteling'}
+                        data-date="12-14 nov 2027"
+                        data-time="Afhalen tijdens festival"
                       >
                         + Reserveer
                       </button>
@@ -814,6 +825,9 @@ function formatSpeaker(host: string) {
                                           class="btn-matrix-action"
                                           data-ticket-id={slotInfo.ticketId}
                                           data-title={`Whisky Trail (Gids ${g.name} - ${row.time} uur)`}
+                                          data-date={`${ms.dayLabel} 2027`}
+                                          data-time={`${row.time} uur`}
+                                          data-guide={g.name}
                                         >
                                           + Boek € {slotInfo.price},-
                                         </button>
@@ -2056,7 +2070,7 @@ function formatSpeaker(host: string) {
             }
             return '<td class="td-guide-cell cell-active"><div class="slot-book-cell">' +
               '<span class="avail-indicator">' + freeSpots + ' ' + (freeSpots === 1 ? 'plek' : 'plekken') + ' vrij</span>' +
-              '<button type="button" class="btn-matrix-action" data-ticket-id="' + t.id + '" data-title="Whisky Trail (Gids ' + g.name + ' - ' + timeStr + ' uur)">' +
+              '<button type="button" class="btn-matrix-action" data-ticket-id="' + t.id + '" data-title="Whisky Trail (Gids ' + g.name + ' - ' + timeStr + ' uur)" data-date="' + (t.date_label || '') + '" data-time="' + timeStr + ' uur" data-guide="' + g.name + '">' +
               '+ Boek &euro; ' + priceVal + ',-</button>' +
               '</div></td>';
           }).join('');
@@ -2356,10 +2370,17 @@ function formatSpeaker(host: string) {
       const title = btn.getAttribute('data-title') || 'Ticket';
       const priceStr = btn.getAttribute('data-price') || '20';
       const parsedPrice = parseFloat(priceStr.replace(/[^0-9.]/g, '')) || 20;
+      const btnCategory = btn.getAttribute('data-category') || '';
+      const btnDate = btn.getAttribute('data-date') || '';
+      const btnTime = btn.getAttribute('data-time') || '';
 
       try {
         const cart = getProgrammaCart();
         const itemObj = (ticketsList || []).find(t => t.id === ticketId);
+        const resolvedCat = itemObj ? itemObj.category : (btnCategory || (title.toLowerCase().includes('botteling') ? 'botteling' : 'masterclass'));
+        const resolvedDate = (itemObj && itemObj.date) ? itemObj.date : btnDate;
+        const resolvedTime = (itemObj && itemObj.time) ? itemObj.time : btnTime;
+        const resolvedDelivery = resolvedCat === 'botteling' ? 'pickup' : '';
 
         if (!cart[ticketId]) {
           cart[ticketId] = {
@@ -2367,21 +2388,26 @@ function formatSpeaker(host: string) {
             title: title,
             price: itemObj ? itemObj.price : parsedPrice,
             qty: 1,
-            category: itemObj ? itemObj.category : 'masterclass',
-            date: itemObj ? itemObj.date : '',
-            time: itemObj ? itemObj.time : ''
+            category: resolvedCat,
+            date: resolvedDate,
+            time: resolvedTime,
+            timeslot: resolvedTime,
+            delivery: resolvedDelivery
           };
         } else {
           const currentQty = typeof cart[ticketId] === 'number' ? cart[ticketId] : (cart[ticketId].qty || 0);
           const currentPrice = typeof cart[ticketId] === 'object' ? cart[ticketId].price : (itemObj ? itemObj.price : parsedPrice);
+          const existingDelivery = (typeof cart[ticketId] === 'object' && cart[ticketId].delivery) ? cart[ticketId].delivery : resolvedDelivery;
           cart[ticketId] = {
             id: ticketId,
             title: title,
             price: currentPrice,
             qty: currentQty + 1,
-            category: itemObj ? itemObj.category : 'masterclass',
-            date: itemObj ? itemObj.date : '',
-            time: itemObj ? itemObj.time : ''
+            category: resolvedCat,
+            date: resolvedDate,
+            time: resolvedTime,
+            timeslot: resolvedTime,
+            delivery: existingDelivery
           };
         }
         saveProgrammaCart(cart);
@@ -2404,10 +2430,15 @@ function formatSpeaker(host: string) {
       e.preventDefault();
       const ticketId = btn.getAttribute('data-ticket-id') || '';
       const title = btn.getAttribute('data-title') || 'Whisky Trail';
+      const btnDate = btn.getAttribute('data-date') || '';
+      const btnTime = btn.getAttribute('data-time') || '';
+      const btnGuide = btn.getAttribute('data-guide') || '';
 
       try {
         const cart = getProgrammaCart();
         const itemObj = (ticketsList || []).find(t => t.id === ticketId);
+        const resolvedDate = (itemObj && itemObj.date) ? itemObj.date : btnDate;
+        const resolvedTime = (itemObj && itemObj.time) ? itemObj.time : btnTime;
 
         if (!cart[ticketId]) {
           cart[ticketId] = {
@@ -2416,8 +2447,10 @@ function formatSpeaker(host: string) {
             price: itemObj ? itemObj.price : 5.00,
             qty: 1,
             category: 'trail',
-            date: itemObj ? itemObj.date : '',
-            time: itemObj ? itemObj.time : ''
+            date: resolvedDate,
+            time: resolvedTime,
+            timeslot: resolvedTime,
+            guide: btnGuide
           };
         } else {
           const currentQty = typeof cart[ticketId] === 'number' ? cart[ticketId] : (cart[ticketId].qty || 0);
@@ -2428,8 +2461,10 @@ function formatSpeaker(host: string) {
             price: currentPrice,
             qty: currentQty + 1,
             category: 'trail',
-            date: itemObj ? itemObj.date : '',
-            time: itemObj ? itemObj.time : ''
+            date: resolvedDate,
+            time: resolvedTime,
+            timeslot: resolvedTime,
+            guide: btnGuide
           };
         }
         saveProgrammaCart(cart);
