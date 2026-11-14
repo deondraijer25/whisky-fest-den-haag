@@ -1632,11 +1632,12 @@ const exhibitors = await getStandhouders('den_haag');
       }
     });
 
-    // Prune deleted standhouders if full list (>10 records) was returned from GHL
+    // Prune deleted standhouders if full list (>10 records) was returned from GHL (always preserve static church facilities S, U, G, C, O, B)
+    const facilityIds = new Set(['S', 'U', 'G', 'C', 'O', 'B']);
     if (records.length >= 10) {
       for (let i = exhibitors.length - 1; i >= 0; i--) {
         const ex = exhibitors[i];
-        if (!seenIds.has(ex.id)) {
+        if (!seenIds.has(ex.id) && !facilityIds.has(ex.id)) {
           const cardNode = document.querySelector(`.directory-item-card[data-id="${ex.id}"]`);
           if (cardNode) cardNode.remove();
           exhibitors.splice(i, 1);

@@ -55,7 +55,7 @@ import Layout from '../layouts/Layout.astro';
               />
             </div>
 
-            <span class="scan-instructions">SCAN BIJ DE DEUR</span>
+            <span class="scan-instructions" id="tv-scan-inst">SCAN BIJ DE DEUR</span>
             <span class="scan-res-hash" id="tv-code">#WF-TICKET</span>
           </div>
 
@@ -87,7 +87,7 @@ import Layout from '../layouts/Layout.astro';
                 </div>
                 <div class="meta-item">
                   <span class="meta-label">STATUS:</span>
-                  <strong class="meta-value" style="color: var(--success-green);">GELDIG TOEGANGSBEWIJS</strong>
+                  <strong class="meta-value" id="tv-status" style="color: var(--success-green);">GELDIG TOEGANGSBEWIJS</strong>
                 </div>
                 <div class="meta-item">
                   <span class="meta-label">TIJDSSLOT:</span>
@@ -464,8 +464,11 @@ import Layout from '../layouts/Layout.astro';
   const tvDay = document.getElementById('tv-day');
 
   const titleLower = title.toLowerCase();
-  const cleanTitle = title.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
+  const cleanTitle = title.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
   if (tvSessionTitle) tvSessionTitle.textContent = cleanTitle.toUpperCase();
+  if (tvName) tvName.textContent = name;
+  if (tvCode) tvCode.textContent = code;
+  if (tvTicketCode) tvTicketCode.textContent = code;
 
   const tvQrImg = document.getElementById('tv-qr-img') as HTMLImageElement;
   if (tvQrImg) {

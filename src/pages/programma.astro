@@ -54,6 +54,7 @@ interface ProgramRow {
   host: string;
   description: string;
   price: number;
+  isSoldOut?: boolean;
 }
 
 interface SessionData {
@@ -323,7 +324,8 @@ function mapTicketToProgramRow(t: any): ProgramRow {
     categoryLabel: catLabel,
     host: hostStr,
     description: t.description || '',
-    price: Number(t.price) || 0
+    price: Number(t.price) || 0,
+    isSoldOut: Boolean(t.isSoldOut || (t.capacity && t.capacity > 0 && (t.sold || 0) >= t.capacity))
   };
 }
 
@@ -385,7 +387,8 @@ const BOTTELLINGS = liveTickets
     title: t.title,
     spec: `Single Cask Edition • Gelimiteerde Oplage (${t.capacity || 125} flessen)`,
     description: t.description || 'Exclusieve festivalbotteling voor International Whisky Festival Den Haag 2027.',
-    price: Number(t.price) || 79.00
+    price: Number(t.price) || 79.00,
+    isSoldOut: Boolean(t.isSoldOut || (t.capacity && t.capacity > 0 && (t.sold || 0) >= t.capacity))
   }));
 
 function formatSpeaker(host: string) {
@@ -541,6 +544,8 @@ function formatSpeaker(host: string) {
                         class="btn-trigger-details"
                         data-ticket-id={item.id}
                         data-title={item.title}
+                        data-category={item.category}
+                        data-soldout={item.isSoldOut ? 'true' : 'false'}
                         data-loc={item.location}
                         data-time={item.time}
                         data-host={item.host}
@@ -549,14 +554,24 @@ function formatSpeaker(host: string) {
                       >
                         Details
                       </button>
-                      <button 
-                        type="button" 
-                        class="btn btn-gold btn-table-buy"
-                        data-ticket-id={item.id}
-                        data-title={item.title}
-                      >
-                        + Bestel
-                      </button>
+                      {item.isSoldOut ? (
+                        <button 
+                          type="button" 
+                          class="btn btn-gold btn-table-buy sold-out"
+                          disabled
+                        >
+                          Uitverkocht
+                        </button>
+                      ) : (
+                        <button 
+                          type="button" 
+                          class="btn btn-gold btn-table-buy"
+                          data-ticket-id={item.id}
+                          data-title={item.title}
+                        >
+                          + Bestel
+                        </button>
+                      )}
                     </div>
                   </div>
                 </article>
@@ -682,6 +697,8 @@ function formatSpeaker(host: string) {
                       class="btn-trigger-details"
                       data-ticket-id={b.id}
                       data-title={b.title}
+                      data-category="botteling"
+                      data-soldout={b.isSoldOut ? 'true' : 'false'}
                       data-loc="Festivalslijterij (Grote Kerk)"
                       data-time="Tijdens festival afhalen"
                       data-host={b.spec}
@@ -690,14 +707,24 @@ function formatSpeaker(host: string) {
                     >
                       Details
                     </button>
-                    <button 
-                      type="button" 
-                      class="btn btn-gold btn-table-buy"
-                      data-ticket-id={b.id}
-                      data-title={b.title}
-                    >
-                      + Reserveer
-                    </button>
+                    {b.isSoldOut ? (
+                      <button 
+                        type="button" 
+                        class="btn btn-gold btn-table-buy sold-out"
+                        disabled
+                      >
+                        Uitverkocht
+                      </button>
+                    ) : (
+                      <button 
+                        type="button" 
+                        class="btn btn-gold btn-table-buy"
+                        data-ticket-id={b.id}
+                        data-title={b.title}
+                      >
+                        + Reserveer
+                      </button>
+                    )}
                   </div>
                 </div>
               </article>
@@ -2423,6 +2450,8 @@ function formatSpeaker(host: string) {
     let currentModalTicketId = '';
     let currentModalTitle = '';
     let currentModalPrice = 20;
+    let currentModalCategory = 'masterclass';
+    let currentModalSoldOut = false;
 
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('.btn-trigger-details');
@@ -2436,10 +2465,28 @@ function formatSpeaker(host: string) {
       const desc = btn.getAttribute('data-desc') || '';
       const price = btn.getAttribute('data-price') || '';
       const ticketId = btn.getAttribute('data-ticket-id') || '';
+      const cat = btn.getAttribute('data-category') || 'masterclass';
+      const rowBuyBtn = btn.closest('.action-buttons-group')?.querySelector('.btn-table-buy');
+      const isSoldOut = btn.getAttribute('data-soldout') === 'true' || Boolean(rowBuyBtn && rowBuyBtn.disabled);
 
       currentModalTicketId = ticketId;
       currentModalTitle = title;
       currentModalPrice = parseFloat((price || '20').replace(/[^0-9.]/g, '')) || 20;
+      currentModalCategory = cat;
+      currentModalSoldOut = isSoldOut;
+
+      const mBuyBtn = document.getElementById('m-buy');
+      if (mBuyBtn) {
+        if (isSoldOut) {
+          mBuyBtn.disabled = true;
+          mBuyBtn.textContent = 'Uitverkocht';
+          mBuyBtn.style.opacity = '0.55';
+        } else {
+          mBuyBtn.disabled = false;
+          mBuyBtn.textContent = '+ Voeg toe aan Winkelwagen';
+          mBuyBtn.style.opacity = '1';
+        }
+      }
 
       const titleEl = document.getElementById('m-title');
       const locEl = document.getElementById('m-loc');
@@ -2491,12 +2538,14 @@ function formatSpeaker(host: string) {
     const mBuy = document.getElementById('m-buy');
     if (mBuy) {
       mBuy.addEventListener('click', () => {
+        if (currentModalSoldOut || mBuy.disabled) return;
         const title = currentModalTitle || document.getElementById('m-title')?.textContent || 'Ticket';
         const ticketId = currentModalTicketId || 'masterclass-item';
 
         try {
           const cart = getProgrammaCart();
           const itemObj = (ticketsList || []).find(t => t.id === ticketId);
+          const resolvedCategory = itemObj ? itemObj.category : (currentModalCategory || 'masterclass');
 
           if (!cart[ticketId]) {
             cart[ticketId] = {
@@ -2504,7 +2553,7 @@ function formatSpeaker(host: string) {
               title: title,
               price: itemObj ? itemObj.price : currentModalPrice,
               qty: 1,
-              category: 'masterclass',
+              category: resolvedCategory,
               date: itemObj ? itemObj.date : '',
               time: itemObj ? itemObj.time : ''
             };
@@ -2516,7 +2565,7 @@ function formatSpeaker(host: string) {
               title: title,
               price: currentPrice,
               qty: currentQty + 1,
-              category: 'masterclass',
+              category: resolvedCategory,
               date: itemObj ? itemObj.date : '',
               time: itemObj ? itemObj.time : ''
             };

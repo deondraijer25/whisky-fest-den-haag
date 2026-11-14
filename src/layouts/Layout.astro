@@ -249,8 +249,8 @@ const orgSchema = {
       }
     </style>
 
-    <!-- Global Mobile Bottom Sheet Cart Drawer -->
-    <MobileCartDrawer />
+    <!-- Global Mobile Bottom Sheet Cart Drawer (rendered on subpages; index.astro has its own integrated bottom sheet) -->
+    {Astro.url.pathname !== '/' && <MobileCartDrawer />}
 
     <!-- Real-time Live GHL Ticket & Standhouder Sync (Instant Realtime Updates from Leadfabriek CRM) -->
     <script is:inline>
@@ -321,15 +321,15 @@ const orgSchema = {
         }
 
         function syncLiveTickets() {
-          fetchDirectFromGhl()
-          .then(function(directRecords) {
-            if (Array.isArray(directRecords) && directRecords.length > 0) {
-              return directRecords;
+          fetchFromCatalogFallback()
+          .then(function(catalogRecords) {
+            if (Array.isArray(catalogRecords) && catalogRecords.length > 0) {
+              return catalogRecords;
             }
-            return fetchFromCatalogFallback();
+            return fetchDirectFromGhl();
           })
           .catch(function() {
-            return fetchFromCatalogFallback();
+            return fetchDirectFromGhl();
           })
           .then(function(records) {
             if (!Array.isArray(records) || records.length === 0) return;
@@ -823,31 +823,46 @@ const orgSchema = {
               }
             });
 
-            // DELETION SYNC: Prune ticket stubs deleted from GHL
-            var allDomCards = document.querySelectorAll('#shop-tickets-list .ticket-stub');
-            allDomCards.forEach(function(card) {
-              if (!matchedCards.has(card)) {
-                var cardId = card.getAttribute('data-ticket-id');
-                try {
-                  var rawCart = localStorage.getItem('whiskyfest_cart');
-                  if (rawCart) {
-                    var parsedCart = JSON.parse(rawCart);
-                    if (cardId && parsedCart[cardId]) {
-                      delete parsedCart[cardId];
-                      localStorage.setItem('whiskyfest_cart', JSON.stringify(parsedCart));
-                      window.dispatchEvent(new CustomEvent('cart-updated', { detail: parsedCart }));
+            // DELETION SYNC: Prune ticket stubs deleted from GHL (only when full catalog >= 20 records is loaded)
+            if (records.length >= 20) {
+              var allDomCards = document.querySelectorAll('#shop-tickets-list .ticket-stub');
+              allDomCards.forEach(function(card) {
+                var cardId = card.getAttribute('data-ticket-id') || '';
+                var isGhlId = /^[a-f0-9]{20,30}$/i.test(cardId);
+                if (!matchedCards.has(card) && isGhlId) {
+                  try {
+                    var rawCart = localStorage.getItem('whiskyfest_cart');
+                    if (rawCart) {
+                      var parsedCart = JSON.parse(rawCart);
+                      var changed = false;
+                      if (cardId && parsedCart[cardId]) {
+                        delete parsedCart[cardId];
+                        changed = true;
+                      }
+                      if (cardId && parsedCart.cartRaw && parsedCart.cartRaw[cardId]) {
+                        delete parsedCart.cartRaw[cardId];
+                        changed = true;
+                      }
+                      if (cardId && Array.isArray(parsedCart.items)) {
+                        parsedCart.items = parsedCart.items.filter(function(it) { return it && it.id !== cardId; });
+                        changed = true;
+                      }
+                      if (changed) {
+                        localStorage.setItem('whiskyfest_cart', JSON.stringify(parsedCart));
+                        window.dispatchEvent(new CustomEvent('cart-updated', { detail: parsedCart }));
+                      }
                     }
-                  }
-                } catch(e) {}
+                  } catch(e) {}
 
-                if (Array.isArray(window.denHaagTicketsData)) {
-                  window.denHaagTicketsData = window.denHaagTicketsData.filter(function(t) {
-                    return t.id !== cardId;
-                  });
+                  if (Array.isArray(window.denHaagTicketsData)) {
+                    window.denHaagTicketsData = window.denHaagTicketsData.filter(function(t) {
+                      return t.id !== cardId;
+                    });
+                  }
+                  card.remove();
                 }
-                card.remove();
-              }
-            });
+              });
+            }
 
             // Re-sort homepage ticket stubs by category, day, and time
             var shopList = document.getElementById('shop-tickets-list');
@@ -982,8 +997,8 @@ const orgSchema = {
         } else {
           syncAll();
         }
-        window.addEventListener('focus', syncAll);
-        setInterval(syncAll, 10000);
+        window.addEventListener('focus', syncLiveTickets);
+        setInterval(syncLiveTickets, 30000);
       })();
     </script>
   </body>

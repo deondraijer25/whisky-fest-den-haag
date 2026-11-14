@@ -2535,7 +2535,7 @@ const tickets = await getTickets('den_haag');
                         <span style="font-size: 0.72rem; color: #665C54;">Verzekerde pakketpost met verplichte 18+ ID-check aan de deur</span>
                       </div>
                     </div>
-                    <span style="font-size: 0.78rem; font-weight: 800; color: #006448; font-family: var(--font-sans); background: rgba(0, 100, 72, 0.08); padding: 0.2rem 0.5rem; border-radius: 4px;">+ €10,00</span>
+                    <span style="font-size: 0.78rem; font-weight: 800; color: #006448; font-family: var(--font-sans); background: rgba(0, 100, 72, 0.08); padding: 0.2rem 0.5rem; border-radius: 4px;">+ €12,50</span>
                   </label>
                 </div>
 
@@ -2822,7 +2822,7 @@ const tickets = await getTickets('den_haag');
           <p style="font-family: var(--font-sans); font-size: 0.88rem; color: var(--text-muted, #665C54); margin: 0.35rem 0 0; line-height: 1.4;">Voeg optioneel nog een exclusieve Masterclass, Whiskytram, Trail of Workshop toe:</p>
         </div>
         <button type="button" id="addon-upsell-close" style="background: rgba(0, 0, 0, 0.05); border: 1px solid rgba(140, 110, 70, 0.4); color: var(--text-charcoal); cursor: pointer; padding: 0.4rem; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" aria-label="Sluiten">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="18" x2="18" y2="18"></line></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
       </div>
 
@@ -7217,15 +7217,17 @@ const tickets = await getTickets('den_haag');
 
   window.openCheckoutModal = openCheckoutModal;
   function openCheckoutModal() {
-    promoDiscount = 0;
-    activePromoCode = "";
-    activePromoType = "";
-    activePromoValue = 0;
-    if (promoInput) promoInput.value = unlockedIwsCode || "";
-    if (promoMsg) promoMsg.style.display = "none";
-
-    if (unlockedIwsCode && applyPromoBtn && promoInput) {
-      applyPromoBtn.click();
+    if (unlockedIwsCode && activePromoCode !== unlockedIwsCode) {
+      if (promoInput) promoInput.value = unlockedIwsCode;
+      if (applyPromoBtn && promoInput) {
+        applyPromoBtn.click();
+      }
+    } else if (!activePromoCode) {
+      promoDiscount = 0;
+      activePromoType = "";
+      activePromoValue = 0;
+      if (promoInput) promoInput.value = "";
+      if (promoMsg) promoMsg.style.display = "none";
     }
     
     recalcModalTotal();
@@ -7297,7 +7299,11 @@ const tickets = await getTickets('den_haag');
     });
     const activeShipping = shippingActive ? 12.50 : 0;
     const activeFee = getActiveCartFee();
-    const finalTotal = subtotal + activeFee + activeShipping;
+    const iwsDisc = getIwsCartDiscount();
+    const isAutoNew10 = !iwsDisc && ((localStorage.getItem("wf_auto_promo") || sessionStorage.getItem("wf_auto_promo")) === "NEW10") && (new Date() <= new Date("2027-01-01T00:00:00+01:00"));
+    const autoPromoDisc = isAutoNew10 ? Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100) : 0;
+    const totalCartDisc = iwsDisc > 0 ? iwsDisc : autoPromoDisc;
+    const finalTotal = Math.max(0, subtotal - totalCartDisc) + activeFee + activeShipping;
     if (upsellModalProceed) {
       upsellModalProceed.innerHTML = `Naar Afrekenen (€ ${finalTotal.toFixed(2).replace('.', ',')}) &rarr;`;
     }
@@ -7563,7 +7569,11 @@ const tickets = await getTickets('den_haag');
 
     const fee = getActiveCartFee();
     const shipping = shippingActive ? 12.50 : 0;
-    const finalTotal = subtotal + fee + shipping;
+    const iwsDisc = getIwsCartDiscount();
+    const isAutoNew10 = !iwsDisc && ((localStorage.getItem("wf_auto_promo") || sessionStorage.getItem("wf_auto_promo")) === "NEW10") && (new Date() <= new Date("2027-01-01T00:00:00+01:00"));
+    const autoPromoDisc = isAutoNew10 ? Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100) : 0;
+    const totalCartDisc = iwsDisc > 0 ? iwsDisc : autoPromoDisc;
+    const finalTotal = Math.max(0, subtotal - totalCartDisc) + fee + shipping;
 
     if (sheetCartSubtotal) sheetCartSubtotal.textContent = `€ ${subtotal.toFixed(2).replace('.', ',')}`;
     if (sheetCartFee) sheetCartFee.textContent = `€ ${fee.toFixed(2).replace('.', ',')}`;
@@ -7628,7 +7638,11 @@ const tickets = await getTickets('den_haag');
     });
     const fee = getActiveCartFee();
     const shipping = shippingActive ? 12.50 : 0;
-    const grandTotal = subtotal + fee + shipping;
+    const iwsDisc = getIwsCartDiscount();
+    const isAutoNew10 = !iwsDisc && ((localStorage.getItem("wf_auto_promo") || sessionStorage.getItem("wf_auto_promo")) === "NEW10") && (new Date() <= new Date("2027-01-01T00:00:00+01:00"));
+    const autoPromoDisc = isAutoNew10 ? Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100) : 0;
+    const totalCartDisc = iwsDisc > 0 ? iwsDisc : autoPromoDisc;
+    const grandTotal = Math.max(0, subtotal - totalCartDisc) + fee + shipping;
 
     if (sheetFinalCheckoutText) {
       sheetFinalCheckoutText.innerHTML = `Naar Afrekenen (€ ${grandTotal.toFixed(2).replace('.', ',')}) &rarr;`;
@@ -8192,6 +8206,27 @@ const tickets = await getTickets('den_haag');
     if (priceValEl) priceValEl.textContent = priceSplit[0];
     if (priceCentsEl) priceCentsEl.textContent = ',' + priceSplit[1];
 
+    // Check sold-out status and update modal add button
+    const isItemSoldOut = Boolean(
+      (lp && (lp.is_sold_out === true || lp.is_sold_out === 'true' || (lp.capacity > 0 && lp.sold >= lp.capacity))) ||
+      (item && item.isSoldOut) ||
+      (ticketStubEl && ticketStubEl.getAttribute('data-soldout') === 'true' && !ticketStubEl.classList.contains('iws-unlocked'))
+    );
+    if (mcModalAddBtn) {
+      const btnEl = mcModalAddBtn as HTMLButtonElement;
+      if (isItemSoldOut) {
+        btnEl.disabled = true;
+        btnEl.style.opacity = '0.55';
+        btnEl.style.cursor = 'not-allowed';
+        btnEl.innerHTML = 'Uitverkocht';
+      } else {
+        btnEl.disabled = false;
+        btnEl.style.opacity = '1';
+        btnEl.style.cursor = 'pointer';
+        btnEl.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Selecteer dit Ticket';
+      }
+    }
+
     if (mcModal) {
       mcModal.style.display = 'flex';
       document.body.style.overflow = 'hidden';
@@ -8234,16 +8269,17 @@ const tickets = await getTickets('den_haag');
   // Add MC to Cart from Modal
   if (mcModalAddBtn) {
     mcModalAddBtn.addEventListener('click', () => {
+      if ((mcModalAddBtn as HTMLButtonElement).disabled) return;
       if (activeMcId) {
-        let stub = document.querySelector(`.ticket-stub[data-ticket-id="${activeMcId}"]`);
-        if (!stub) {
-          // fallback search
-          const allStubs = Array.from(document.querySelectorAll('.ticket-stub[data-category="masterclass"]'));
-          if (allStubs.length > 0) stub = allStubs[0];
-        }
+        const stub = document.querySelector(`.ticket-stub[data-ticket-id="${activeMcId}"]`);
         if (stub) {
-          const plusBtn = stub.querySelector('.plus-btn') as HTMLButtonElement;
-          if (plusBtn) plusBtn.click();
+          const isSoldOutStub = stub.getAttribute('data-soldout') === 'true' && !stub.classList.contains('iws-unlocked');
+          if (!isSoldOutStub) {
+            const plusBtn = (stub.classList.contains('iws-unlocked')
+              ? stub.querySelector('.plus-btn')
+              : stub.querySelector('.qty-selector:not(.iws-member-qty-selector) .plus-btn')) as HTMLButtonElement | null;
+            if (plusBtn) plusBtn.click();
+          }
         }
       }
       if (mcModal) mcModal.style.display = 'none';
