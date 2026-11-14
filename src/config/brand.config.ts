@@ -68,7 +68,7 @@ export const BRAND: BrandConfig = {
   edition: '26e Editie',
   datesText: '12, 13 en 14 November 2027',
   datesShort: '12-14 Nov 2027',
-  domain: 'https://whisky-fest-den-haag.vercel.app',
+  domain: 'https://www.whiskyfestival.nl',
   localPort: 4330,
 
   contact: {

@@ -6853,39 +6853,70 @@ const tickets = await getTickets('den_haag');
       const p = r.properties || r;
       const cleanTitle = (p.title || '').replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
       const priceNum = typeof p.price === 'number' ? p.price : (parseFloat(p.price) || parseFloat(p.ticket_price) || 0);
-      const isSoldOut = p.is_sold_out === true || p.is_sold_out === 'true' || p.is_sold_out === '1' || p.is_sold_out === 'ja' || p.is_sold_out === 'yes';
+      const capacity = parseInt(p.capacity, 10) || 0;
+      const sold = parseInt(p.sold, 10) || 0;
+      const rawSoldOut = p.is_sold_out === true || p.is_sold_out === 'true' || p.is_sold_out === '1' || p.is_sold_out === 'ja' || p.is_sold_out === 'yes';
+      const isSoldOut = rawSoldOut || (capacity > 0 && sold >= capacity);
       const day = (p.day || '').toLowerCase().trim();
       const daypart = (p.daypart || '').toLowerCase().trim();
 
       let target = denHaagTicketsData.find((t: any) => t.id === r.id);
       if (!target) {
-        target = denHaagTicketsData.find((t: any) => 
-          t.title && cleanTitle && (
-            t.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '')) ||
-            cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '').includes(t.title.toLowerCase().replace(/[^a-z0-9]/g, ''))
-          )
-        );
+        target = denHaagTicketsData.find((t: any) => {
+          const isGhlId = Boolean(t.id && /^[a-f0-9]{20,30}$/i.test(t.id));
+          if (isGhlId) return false;
+          return t.title && cleanTitle && (
+            t.title.toLowerCase().replace(/[^a-z0-9]/g, '') === cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '') &&
+            (!day || t.day === day)
+          );
+        });
       }
       if (target) {
         target.id = r.id;
         target.title = cleanTitle;
         target.price = priceNum;
+        if (capacity > 0) target.capacity = capacity;
+        target.sold = sold;
         if (day) target.day = day;
         if (daypart) target.daypart = daypart;
         if (p.date_label) target.date = p.date_label;
         if (p.time_label) target.time = p.time_label;
         if (p.category) target.category = p.category;
+        if (p.booking_type) target.bookingType = p.booking_type;
+        if (p.duration || p.session_duration) target.duration = p.duration || p.session_duration;
         if (p.location) target.location = p.location;
-        if (p.ticket_description || p.description) target.description = p.ticket_description || p.description;
-        if (p.ambassador_name) target.ambassadorName = p.ambassador_name;
-        if (p.ambassador_title) target.ambassadorTitle = p.ambassador_title;
-        if (p.ambassador_bio) target.ambassadorBio = p.ambassador_bio;
+        if (p.ticket_description !== undefined || p.description !== undefined) target.description = p.ticket_description || p.description || '';
+        if (p.ambassador_name !== undefined) target.ambassadorName = p.ambassador_name || '';
+        if (p.ambassador_title !== undefined) target.ambassadorTitle = p.ambassador_title || '';
+        if (p.ambassador_bio !== undefined) target.ambassadorBio = p.ambassador_bio || '';
         if (p.tasting_lineup) {
           target.tastingLineup = Array.isArray(p.tasting_lineup) 
             ? p.tasting_lineup 
             : String(p.tasting_lineup).split(/[\n,]+/).map((s: string) => s.trim()).filter(Boolean);
         }
         target.isSoldOut = isSoldOut;
+      } else {
+        denHaagTicketsData.push({
+          id: r.id,
+          title: cleanTitle,
+          price: priceNum,
+          capacity: capacity,
+          sold: sold,
+          day: day || 'all',
+          daypart: daypart || 'all',
+          date: p.date_label || '',
+          time: p.time_label || '',
+          category: p.category || 'masterclass',
+          bookingType: p.booking_type || '',
+          duration: p.duration || p.session_duration || '',
+          location: p.location || 'Grote Kerk Den Haag',
+          description: p.ticket_description || p.description || '',
+          ambassadorName: p.ambassador_name || '',
+          ambassadorTitle: p.ambassador_title || '',
+          ambassadorBio: p.ambassador_bio || '',
+          tastingLineup: p.tasting_lineup ? (Array.isArray(p.tasting_lineup) ? p.tasting_lineup : String(p.tasting_lineup).split(/[\n,]+/).map((s: string) => s.trim()).filter(Boolean)) : [],
+          isSoldOut: isSoldOut
+        });
       }
     });
     allAddonsList = denHaagTicketsData.filter(t => t.category !== 'entree');

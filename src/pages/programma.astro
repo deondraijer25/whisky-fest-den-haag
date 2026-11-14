@@ -241,6 +241,47 @@ export const MATRIX_SESSIONS: TrailMatrixSession[] = [
 ];
 
 // Map session ID to matrix session
+// Dynamically rebuild MATRIX_SESSIONS rows from live GHL trail tickets if present
+const liveTrailTickets = liveTickets.filter(t => t.category === 'trail');
+if (liveTrailTickets.length > 0) {
+  const sessionDefs = [
+    { idx: 0, day: 'vrijdag', daypart: 'avond' },
+    { idx: 1, day: 'zaterdag', daypart: 'middag' },
+    { idx: 2, day: 'zaterdag', daypart: 'avond' },
+    { idx: 3, day: 'zondag', daypart: 'middag' }
+  ];
+  sessionDefs.forEach(def => {
+    const sessTrails = liveTrailTickets.filter(t => {
+      const tDay = (t.day || '').toLowerCase();
+      const tPart = (t.daypart || '').toLowerCase();
+      const matchesPart = def.daypart === 'middag' ? (tPart === 'ochtend' || tPart === 'middag') : (tPart === 'avond');
+      return tDay === def.day && matchesPart;
+    });
+    if (sessTrails.length > 0) {
+      const timeMap = new Map<string, Record<string, { ticketId: string } | undefined>>();
+      sessTrails.forEach(t => {
+        const cleanTime = (t.time || '').replace(/\s*uur/gi, '').replace(/\s*[–—-]\s*/g, ' - ').trim();
+        if (!cleanTime) return;
+        const searchStr = ((t.title || '') + ' ' + (t.ambassadorName || '')).toLowerCase();
+        let guideKey = '';
+        if (searchStr.includes('ernst')) guideKey = 'Ernst';
+        else if (searchStr.includes('klaas')) guideKey = 'Klaas';
+        else if (searchStr.includes('marly') || searchStr.includes('marlie')) guideKey = 'Marlie';
+        else if (searchStr.includes('sebastiaan')) guideKey = 'Sebastiaan';
+        else if (searchStr.includes('stanley')) guideKey = 'Stanley';
+        if (!guideKey) return;
+        if (!timeMap.has(cleanTime)) timeMap.set(cleanTime, {});
+        timeMap.get(cleanTime)![guideKey] = { ticketId: t.id };
+      });
+      if (timeMap.size > 0) {
+        MATRIX_SESSIONS[def.idx].rows = Array.from(timeMap.entries())
+          .sort((a, b) => a[0].localeCompare(b[0]))
+          .map(([time, slots]) => ({ time, slots }));
+      }
+    }
+  });
+}
+
 const SESSION_TRAIL_MAP: Record<string, TrailMatrixSession | undefined> = {
   'vrijdag-avond': MATRIX_SESSIONS[0],
   'zaterdag-middag': MATRIX_SESSIONS[1],
@@ -498,6 +539,7 @@ function formatSpeaker(host: string) {
                       <button 
                         type="button" 
                         class="btn-trigger-details"
+                        data-ticket-id={item.id}
                         data-title={item.title}
                         data-loc={item.location}
                         data-time={item.time}
@@ -533,7 +575,7 @@ function formatSpeaker(host: string) {
                 </div>
 
                 <div class="matrix-table-container">
-                  <table class="whisky-matrix-table">
+                  <table class="whisky-matrix-table" data-trail-session={SESSION_TRAIL_MAP[s.id]!.id}>
                     <thead>
                       <tr>
                         <th class="col-time-head">Tijdslot</th>
@@ -610,7 +652,7 @@ function formatSpeaker(host: string) {
 
           <div class="pane-rows-list">
             {BOTTELLINGS.map((b) => (
-              <article class="agenda-row-item">
+              <article class="agenda-row-item" data-ticket-id={b.id}>
                 <!-- Left: Status & Location -->
                 <div class="col-time-loc">
                   <span class="item-time-val">Single Cask</span>
@@ -638,6 +680,7 @@ function formatSpeaker(host: string) {
                     <button 
                       type="button" 
                       class="btn-trigger-details"
+                      data-ticket-id={b.id}
                       data-title={b.title}
                       data-loc="Festivalslijterij (Grote Kerk)"
                       data-time="Tijdens festival afhalen"
@@ -696,7 +739,7 @@ function formatSpeaker(host: string) {
                 id={`tmatrix-${ms.id}`}
               >
                 <div class="matrix-table-container">
-                  <table class="whisky-matrix-table">
+                  <table class="whisky-matrix-table" data-trail-session={ms.id}>
                     <thead>
                       <tr>
                         <th class="col-time-head">Tijdslot</th>
@@ -1919,35 +1962,168 @@ function formatSpeaker(host: string) {
 <script define:vars={{ liveTicketsData: liveTickets }}>
   let ticketsList = Array.isArray(liveTicketsData) ? liveTicketsData : [];
 
+  function renderLiveTrailMatrices() {
+    const guideCols = [
+      { key: 'Ernst', name: 'Ernst' },
+      { key: 'Klaas', name: 'Klaas' },
+      { key: 'Marlie', name: 'Marly' },
+      { key: 'Sebastiaan', name: 'Sebastiaan' },
+      { key: 'Stanley', name: 'Stanley' }
+    ];
+    const sessionDefs = [
+      { id: 'trail-fri-evening', day: 'vrijdag', daypart: 'avond' },
+      { id: 'trail-sat-afternoon', day: 'zaterdag', daypart: 'middag' },
+      { id: 'trail-sat-evening', day: 'zaterdag', daypart: 'avond' },
+      { id: 'trail-sun-afternoon', day: 'zondag', daypart: 'middag' }
+    ];
+    const trailTickets = (ticketsList || []).filter(t => (t.category || '').toLowerCase() === 'trail');
+    if (trailTickets.length === 0) return;
+
+    sessionDefs.forEach(def => {
+      const sessTrails = trailTickets.filter(t => {
+        const tDay = (t.day || '').toLowerCase();
+        const tPart = (t.daypart || '').toLowerCase();
+        const matchesPart = def.daypart === 'middag' ? (tPart === 'ochtend' || tPart === 'middag') : (tPart === 'avond');
+        return tDay === def.day && matchesPart;
+      });
+      if (sessTrails.length === 0) return;
+
+      const timeMap = new Map();
+      sessTrails.forEach(t => {
+        const cleanTime = (t.time || '').replace(/\s*uur/gi, '').replace(/\s*[–—-]\s*/g, ' - ').trim();
+        if (!cleanTime) return;
+        const searchStr = ((t.title || '') + ' ' + (t.ambassadorName || '')).toLowerCase();
+        let guideKey = '';
+        if (searchStr.includes('ernst')) guideKey = 'Ernst';
+        else if (searchStr.includes('klaas')) guideKey = 'Klaas';
+        else if (searchStr.includes('marly') || searchStr.includes('marlie')) guideKey = 'Marlie';
+        else if (searchStr.includes('sebastiaan')) guideKey = 'Sebastiaan';
+        else if (searchStr.includes('stanley')) guideKey = 'Stanley';
+        if (!guideKey) return;
+        if (!timeMap.has(cleanTime)) timeMap.set(cleanTime, {});
+        timeMap.get(cleanTime)[guideKey] = t;
+      });
+      if (timeMap.size === 0) return;
+
+      const sortedRows = Array.from(timeMap.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+      const tables = document.querySelectorAll('table.whisky-matrix-table[data-trail-session="' + def.id + '"]');
+      tables.forEach(table => {
+        const tbody = table.querySelector('tbody');
+        if (!tbody) return;
+        tbody.innerHTML = sortedRows.map(([timeStr, slots]) => {
+          const cellsHtml = guideCols.map(g => {
+            const t = slots[g.key];
+            if (!t) {
+              return '<td class="td-guide-cell cell-empty"><span class="dash-empty">&mdash;</span></td>';
+            }
+            const cap = Number(t.capacity) || 6;
+            const sold = Number(t.sold) || 0;
+            const freeSpots = Math.max(0, cap - sold);
+            const isSoldOut = Boolean(t.isSoldOut || (cap > 0 && sold >= cap) || freeSpots === 0);
+            const priceVal = Number(t.price) || 5;
+            if (isSoldOut) {
+              return '<td class="td-guide-cell cell-active"><div class="slot-book-cell">' +
+                '<span class="avail-indicator sold-out">Volgeboekt (0 plekken)</span>' +
+                '<button type="button" class="btn-matrix-action sold-out" disabled>Uitverkocht</button>' +
+                '</div></td>';
+            }
+            return '<td class="td-guide-cell cell-active"><div class="slot-book-cell">' +
+              '<span class="avail-indicator">' + freeSpots + ' ' + (freeSpots === 1 ? 'plek' : 'plekken') + ' vrij</span>' +
+              '<button type="button" class="btn-matrix-action" data-ticket-id="' + t.id + '" data-title="Whisky Trail (Gids ' + g.name + ' - ' + timeStr + ' uur)">' +
+              '+ Boek &euro; ' + priceVal + ',-</button>' +
+              '</div></td>';
+          }).join('');
+          return '<tr>' +
+            '<td class="td-time-cell"><span class="matrix-time-val">' + timeStr + '</span><span class="matrix-time-sub">Start Infostand</span></td>' +
+            cellsHtml +
+            '</tr>';
+        }).join('');
+      });
+    });
+  }
+
   function updateProgrammaTicketsData(records) {
     if (!Array.isArray(records) || records.length === 0) return;
     records.forEach(r => {
       const p = r.properties || r;
-      const cleanTitle = (p.title || '').replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
+      const rawTitle = p.title || '';
+      const badge = String(p.status_badge || '').toLowerCase().trim();
+      if (badge === 'hidden' || badge === 'concept' || badge === 'draft') return;
+      if (rawTitle.toLowerCase().includes('nog niet bekend') || rawTitle.toLowerCase().includes('programma volgt')) return;
+
+      const cleanTitle = rawTitle.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
       const priceNum = typeof p.price === 'number' ? p.price : (parseFloat(p.price) || parseFloat(p.ticket_price) || 0);
-      const isSoldOut = p.is_sold_out === true || p.is_sold_out === 'true' || p.is_sold_out === '1' || p.is_sold_out === 'ja' || p.is_sold_out === 'yes';
+      const capacity = parseInt(p.capacity, 10) || 0;
+      const sold = parseInt(p.sold, 10) || 0;
+      const rawSoldOut = p.is_sold_out === true || p.is_sold_out === 'true' || p.is_sold_out === '1' || p.is_sold_out === 'ja' || p.is_sold_out === 'yes';
+      const isSoldOut = rawSoldOut || (capacity > 0 && sold >= capacity);
+
+      let day = (p.day || '').toLowerCase().trim();
+      const dateLabel = p.date_label || '';
+      const timeLabel = p.time_label || '';
+      if (!day || day === 'all') {
+        if (dateLabel.toLowerCase().includes('vrijdag')) day = 'vrijdag';
+        else if (dateLabel.toLowerCase().includes('zaterdag')) day = 'zaterdag';
+        else if (dateLabel.toLowerCase().includes('zondag')) day = 'zondag';
+      }
+      let daypart = (p.daypart || '').toLowerCase().trim();
+      if (!daypart || daypart === 'all') {
+        const hourMatch = timeLabel.match(/(\d{1,2}):\d{2}/);
+        if (hourMatch) {
+          const startHour = parseInt(hourMatch[1], 10);
+          daypart = startHour < 12 ? 'ochtend' : (startHour < 18 ? 'middag' : 'avond');
+        }
+      }
 
       let target = ticketsList.find(t => t.id === r.id);
       if (!target) {
-        target = ticketsList.find(t =>
-          t.title && cleanTitle && (
-            t.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '')) ||
-            cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '').includes(t.title.toLowerCase().replace(/[^a-z0-9]/g, ''))
-          )
-        );
+        target = ticketsList.find(t => {
+          const isGhlId = Boolean(t.id && /^[a-f0-9]{20,30}$/i.test(t.id));
+          if (isGhlId) return false;
+          return t.title && cleanTitle && (
+            t.title.toLowerCase().replace(/[^a-z0-9]/g, '') === cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '') &&
+            (!day || t.day === day)
+          );
+        });
       }
       if (target) {
         target.id = r.id;
         target.title = cleanTitle;
         target.price = priceNum;
-        if (p.day) target.day = p.day;
-        if (p.daypart) target.daypart = p.daypart;
-        if (p.date_label) target.date = p.date_label;
-        if (p.time_label) target.time = p.time_label;
+        if (capacity > 0) target.capacity = capacity;
+        target.sold = sold;
+        if (day) target.day = day;
+        if (daypart) target.daypart = daypart;
+        if (dateLabel) target.date = dateLabel;
+        if (timeLabel) target.time = timeLabel;
         if (p.category) target.category = p.category;
+        if (p.location) target.location = p.location;
+        if (p.ticket_description !== undefined || p.description !== undefined) target.description = p.ticket_description || p.description || '';
+        if (p.ambassador_name !== undefined) target.ambassadorName = p.ambassador_name || '';
+        if (p.ambassador_title !== undefined) target.ambassadorTitle = p.ambassador_title || '';
         target.isSoldOut = isSoldOut;
+      } else {
+        ticketsList.push({
+          id: r.id,
+          title: cleanTitle,
+          price: priceNum,
+          capacity: capacity || 6,
+          sold: sold,
+          day: day || 'all',
+          daypart: daypart || 'all',
+          date: dateLabel,
+          time: timeLabel,
+          category: (p.category || 'masterclass').toLowerCase(),
+          location: p.location || 'Grote Kerk Den Haag',
+          description: p.ticket_description || p.description || '',
+          ambassadorName: p.ambassador_name || '',
+          ambassadorTitle: p.ambassador_title || '',
+          isSoldOut: isSoldOut
+        });
       }
     });
+
+    renderLiveTrailMatrices();
   }
 
   window.addEventListener('ghl:tickets-updated', (e) => {
@@ -2274,6 +2450,7 @@ function formatSpeaker(host: string) {
 
       if (titleEl) titleEl.textContent = title;
       if (locEl) locEl.textContent = loc;
+      if (timeEl) timeEl.textContent = time || 'Tijdens festival';
       if (descEl) {
         descEl.textContent = desc;
         descEl.style.display = desc ? 'block' : 'none';

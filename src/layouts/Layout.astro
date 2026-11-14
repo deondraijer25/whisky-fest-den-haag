@@ -111,10 +111,13 @@ const orgSchema = {
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={image} />
 
-    <!-- Load Google Fonts (Plus Jakarta Sans and Rye as fallback display) -->
+    <!-- Preload self-hosted Bourbon display font -->
+    <link rel="preload" href="/fonts/bourbon-rough-n4.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- Load Google Fonts (Plus Jakarta Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&family=Rye&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&display=swap" rel="stylesheet" />
 
     <!-- Adobe Fonts integration -->
     <link rel="stylesheet" href="https://use.typekit.net/ppq2zvf.css">
@@ -278,15 +281,15 @@ const orgSchema = {
           });
         }
 
-        function syncLiveTickets() {
-          fetch('https://whiskytix-r1qq.vercel.app/api/catalog?city=denhaag')
+        function fetchFromCatalogFallback() {
+          return fetch('https://whiskytix-r1qq.vercel.app/api/catalog?city=denhaag')
           .then(function(res) {
             if (!res.ok) throw new Error('Catalog status ' + res.status);
             return res.json();
           })
           .then(function(catData) {
             if (!catData || !Array.isArray(catData.items) || catData.items.length === 0) {
-              return fetchDirectFromGhl();
+              return [];
             }
             return catData.items.map(function(item) {
               return {
@@ -307,13 +310,26 @@ const orgSchema = {
                   ticket_description: item.description || item.extra || '',
                   ambassador_name: item.ambassadorName || '',
                   ambassador_title: item.ambassadorTitle || '',
+                  ambassador_bio: item.ambassadorBio || '',
+                  duration: item.duration || '',
+                  booking_type: item.bookingType || '',
                   tasting_lineup: item.tastingLineup || []
                 }
               };
             });
+          });
+        }
+
+        function syncLiveTickets() {
+          fetchDirectFromGhl()
+          .then(function(directRecords) {
+            if (Array.isArray(directRecords) && directRecords.length > 0) {
+              return directRecords;
+            }
+            return fetchFromCatalogFallback();
           })
           .catch(function() {
-            return fetchDirectFromGhl();
+            return fetchFromCatalogFallback();
           })
           .then(function(records) {
             if (!Array.isArray(records) || records.length === 0) return;
@@ -360,6 +376,7 @@ const orgSchema = {
               }
 
               var category = (p.category || '').toLowerCase().trim() || 'masterclass';
+              var bookingType = (p.booking_type || '').toLowerCase().trim();
 
               var cleanDate = dateLabel;
               if (day === 'vrijdag' || (cleanDate.toLowerCase().includes('vrijdag') && (cleanDate.includes('12') || cleanDate.toLowerCase().includes('12 nov')))) {
@@ -394,11 +411,15 @@ const orgSchema = {
                   id: r.id,
                   title: cleanTitle,
                   price: priceNum,
+                  capacity: capacity,
+                  sold: sold,
                   date: dateLabel || cleanDate,
                   time: cleanTime,
                   day: day,
                   daypart: daypart,
                   category: category,
+                  bookingType: bookingType,
+                  duration: p.duration || p.session_duration || '',
                   location: p.location || 'Grote Kerk Den Haag',
                   isSoldOut: isSoldOut,
                   description: p.ticket_description || p.description || '',
@@ -415,14 +436,17 @@ const orgSchema = {
                 }
               }
 
-              // 1. Homepage ticket stubs
+              // 1. Homepage ticket stubs (strict GHL ID matching to prevent multi-slot clobbering)
               var cardFound = false;
               var allCards = document.querySelectorAll('.ticket-stub');
               allCards.forEach(function(card) {
                 var cardId = card.getAttribute('data-ticket-id');
                 var cardTitle = (card.getAttribute('data-title') || '').toLowerCase().replace(/[^a-z0-9]/g, '');
                 var matchKey = cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '');
-                var isMatch = (cardId && cardId === r.id) || (cardTitle && matchKey && (cardTitle.indexOf(matchKey) !== -1 || matchKey.indexOf(cardTitle) !== -1));
+                var isGhlCardId = Boolean(cardId && /^[a-f0-9]{20,30}$/i.test(cardId));
+                var isMatch = isGhlCardId
+                  ? (cardId === r.id)
+                  : ((cardId && cardId === r.id) || (cardTitle && matchKey && cardTitle === matchKey && card.getAttribute('data-day') === day && card.getAttribute('data-time') === cleanTime));
 
                 if (isMatch) {
                   cardFound = true;
@@ -436,6 +460,11 @@ const orgSchema = {
                   if (category) card.setAttribute('data-category', category);
                   card.setAttribute('data-date', dateLabel || cleanDate);
                   card.setAttribute('data-time', cleanTime);
+
+                  var infoTrigger = card.querySelector('.btn-mc-info-trigger');
+                  if (infoTrigger) {
+                    infoTrigger.setAttribute('data-mc-id', r.id);
+                  }
 
                   var titleEl = card.querySelector('.ticket-title');
                   if (titleEl) {
@@ -501,6 +530,13 @@ const orgSchema = {
                   } else {
                     card.classList.remove('ticket-sold-out');
                     card.setAttribute('data-soldout', 'false');
+                    var existingSoldBox = card.querySelector('.sold-out-box');
+                    if (existingSoldBox && !card.querySelector('.qty-selector:not(.iws-member-qty-selector)')) {
+                      var restoredQty = document.createElement('div');
+                      restoredQty.className = 'qty-selector';
+                      restoredQty.innerHTML = '<button type="button" class="qty-btn minus-btn" data-action="minus" aria-label="Aantal verlagen" disabled>&minus;</button><span class="qty-val" id="qty-' + r.id + '">0</span><button type="button" class="qty-btn plus-btn" data-action="plus" aria-label="Aantal verhogen">&plus;</button>';
+                      existingSoldBox.replaceWith(restoredQty);
+                    }
                   }
                 }
               });
@@ -525,7 +561,7 @@ const orgSchema = {
                   var priceParts = priceNum.toFixed(2).split('.');
                   var serialNo = Math.floor(Math.random() * 90000) + 10000;
                   var titleLen = cleanTitle.length;
-                  var titleSizeClass = titleLen > 38 ? 'title-sm' : (titleLen > 28 ? 'title-md' : 'title-lg');
+                  var titleSizeClass = category === 'entree' ? 'title-lg' : (titleLen > 38 ? 'title-sm' : (titleLen > 28 ? 'title-md' : 'title-lg'));
 
                   newCard.innerHTML =
                     '<div class="ticket-inner-border"></div>' +
@@ -577,12 +613,60 @@ const orgSchema = {
                 }
               }
 
-              // 2. Programma timetable rows
-              // Non-agenda items (entree tickets, bottelings, standhouders) NEVER belong in the timetable
-              if (category === 'entree' || category === 'standhouders' || category === 'standhouder' || category === 'botteling') {
+              // 2. Programma rows sync
+              if (category === 'entree' || category === 'standhouders' || category === 'standhouder') {
                 return;
               }
 
+              // 2a. Botteling rows in #pane-bottelingen
+              if (category === 'botteling') {
+                var botRows = document.querySelectorAll('#pane-bottelingen .agenda-row-item');
+                botRows.forEach(function(bRow) {
+                  var bBtn = bRow.querySelector('.btn-table-buy');
+                  var bDetailsBtn = bRow.querySelector('.btn-trigger-details');
+                  var bRowId = bRow.getAttribute('data-ticket-id') || (bBtn ? bBtn.getAttribute('data-ticket-id') : '');
+                  if (bRowId === r.id) {
+                    matchedRows.add(bRow);
+                    var bName = bRow.querySelector('.item-name');
+                    if (bName) bName.textContent = cleanTitle;
+                    var bSpec = bRow.querySelector('.speaker-name');
+                    if (bSpec && capacity > 0) {
+                      bSpec.textContent = 'Single Cask Edition \u2022 Gelimiteerde Oplage (' + capacity + ' flessen)';
+                    }
+                    var bPrice = bRow.querySelector('.item-price');
+                    if (bPrice) bPrice.textContent = '\u20ac ' + priceNum.toFixed(2).replace('.', ',');
+                    if (bBtn) {
+                      bBtn.setAttribute('data-ticket-id', r.id);
+                      bBtn.setAttribute('data-title', cleanTitle);
+                      if (isSoldOut) {
+                        bBtn.className = 'btn btn-gold btn-table-buy sold-out';
+                        bBtn.disabled = true;
+                        bBtn.textContent = 'Uitverkocht';
+                      } else {
+                        bBtn.className = 'btn btn-gold btn-table-buy';
+                        bBtn.disabled = false;
+                        bBtn.textContent = '+ Reserveer';
+                      }
+                    }
+                    if (bDetailsBtn) {
+                      bDetailsBtn.setAttribute('data-ticket-id', r.id);
+                      bDetailsBtn.setAttribute('data-title', cleanTitle);
+                      bDetailsBtn.setAttribute('data-price', '\u20ac ' + priceNum.toFixed(2).replace('.', ','));
+                      if (p.ticket_description || p.description) {
+                        bDetailsBtn.setAttribute('data-desc', p.ticket_description || p.description);
+                      }
+                    }
+                  }
+                });
+                return;
+              }
+
+              // Trail tickets are handled in the Whisky Trails Matrix on /programma
+              if (category === 'trail') {
+                return;
+              }
+
+              var cleanAgendaTime = timeLabel.replace(/\s*uur/gi, '').replace(/\s*-\s*/g, ' \u2013 ').trim();
               var rowFound = false;
               var allRows = document.querySelectorAll('.agenda-row-item');
               allRows.forEach(function(row) {
@@ -603,10 +687,11 @@ const orgSchema = {
                 var rowTimeStart = rowTimeVal ? rowTimeVal.split(/[-–]/)[0].replace(/[^0-9:]/g, '').trim() : '';
                 var timeMatches = !cleanTimeStart || !rowTimeStart || cleanTimeStart === rowTimeStart || cleanTime.indexOf(rowTimeStart) !== -1 || rowTimeVal.indexOf(cleanTimeStart) !== -1;
 
+                var isGhlRowId = Boolean(rowId && /^[a-f0-9]{20,30}$/i.test(rowId));
                 var isIdMatch = Boolean(rowId && rowId === r.id);
                 var isTitleMatch = Boolean(rowTitle && matchKey && (rowTitle === matchKey || rowTitle.indexOf(matchKey) !== -1 || matchKey.indexOf(rowTitle) !== -1));
 
-                var isMatch = isIdMatch || (isTitleMatch && dayMatches && timeMatches);
+                var isMatch = isGhlRowId ? isIdMatch : (isIdMatch || (isTitleMatch && dayMatches && timeMatches));
 
                 if (isMatch) {
                   rowFound = true;
@@ -616,12 +701,32 @@ const orgSchema = {
                   if (nameEl) nameEl.textContent = cleanTitle;
 
                   var timeEl = row.querySelector('.item-time-val');
-                  if (timeEl && cleanTime && (isIdMatch || (dayMatches && timeMatches))) {
-                    timeEl.textContent = cleanTime;
+                  if (timeEl && cleanAgendaTime) {
+                    timeEl.textContent = cleanAgendaTime;
+                  }
+
+                  var locEl = row.querySelector('.item-loc-tag');
+                  if (locEl && p.location) {
+                    locEl.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>' + p.location;
+                  }
+
+                  var spkNameEl = row.querySelector('.speaker-name');
+                  var spkBlockEl = row.querySelector('.speaker-block');
+                  if (spkNameEl && p.ambassador_name) {
+                    spkNameEl.textContent = p.ambassador_name;
+                    var spkRoleEl = row.querySelector('.speaker-role');
+                    if (p.ambassador_title) {
+                      if (!spkRoleEl && spkBlockEl) {
+                        spkRoleEl = document.createElement('span');
+                        spkRoleEl.className = 'speaker-role';
+                        spkBlockEl.appendChild(spkRoleEl);
+                      }
+                      if (spkRoleEl) spkRoleEl.textContent = p.ambassador_title;
+                    }
                   }
 
                   var priceEl = row.querySelector('.item-price');
-                  if (priceEl) priceEl.textContent = '€ ' + priceNum.toFixed(2).replace('.', ',');
+                  if (priceEl) priceEl.textContent = '\u20ac ' + priceNum.toFixed(2).replace('.', ',');
 
                   if (btn) {
                     btn.setAttribute('data-ticket-id', r.id);
@@ -638,49 +743,73 @@ const orgSchema = {
                   }
 
                   if (detailsBtn) {
+                    detailsBtn.setAttribute('data-ticket-id', r.id);
                     detailsBtn.setAttribute('data-title', cleanTitle);
-                    if (cleanTime) detailsBtn.setAttribute('data-time', cleanTime);
-                    detailsBtn.setAttribute('data-price', '€ ' + priceNum.toFixed(2).replace('.', ','));
+                    if (p.location) detailsBtn.setAttribute('data-loc', p.location);
+                    if (cleanAgendaTime) detailsBtn.setAttribute('data-time', cleanAgendaTime);
+                    detailsBtn.setAttribute('data-price', '\u20ac ' + priceNum.toFixed(2).replace('.', ','));
                     if (p.ticket_description || p.description) {
                       detailsBtn.setAttribute('data-desc', p.ticket_description || p.description);
                     }
                     if (p.ambassador_name) {
-                      var hostStr = p.ambassador_name + (p.ambassador_title ? ' — ' + p.ambassador_title : '');
+                      var hostStr = p.ambassador_name + (p.ambassador_title ? ' (' + p.ambassador_title + ')' : '');
                       detailsBtn.setAttribute('data-host', hostStr);
                     }
                   }
 
-                  // NEVER move rows between panes on the client side!
+                  // If day or daypart changed in GHL, move the row to the matching session pane
+                  if (day && day !== 'all' && daypart && daypart !== 'all') {
+                    var sessPart = (daypart === 'ochtend' || daypart === 'middag') ? 'middag' : 'avond';
+                    var desiredPaneId = 'pane-' + day + '-' + sessPart;
+                    if (rowPaneId && rowPaneId !== desiredPaneId) {
+                      var destPane = document.getElementById(desiredPaneId);
+                      var destList = destPane ? destPane.querySelector('.pane-rows-list') : null;
+                      if (destList) {
+                        destList.appendChild(row);
+                      }
+                    }
+                  }
                 }
               });
 
-              // Dynamically inject brand-new agenda row ONLY if it is an actual masterclass or workshop
-              if (!rowFound && (category === 'masterclass' || category === 'workshop') && day && day !== 'all' && daypart && daypart !== 'all') {
-                var targetPaneId = 'pane-' + day + '-' + daypart;
+              // Dynamically inject brand-new agenda row if not present in DOM
+              if (!rowFound && day && day !== 'all' && daypart && daypart !== 'all') {
+                var sessPartNew = (daypart === 'ochtend' || daypart === 'middag') ? 'middag' : 'avond';
+                var targetPaneId = 'pane-' + day + '-' + sessPartNew;
                 var targetPane = document.getElementById(targetPaneId);
                 if (targetPane) {
                   var targetList = targetPane.querySelector('.pane-rows-list');
                   if (targetList) {
+                    var mappedCat = category === 'vatenmaken' ? 'workshop' :
+                      category === 'tram' ? 'tram' :
+                      category === 'warehouse' ? 'warehouse' : 'masterclass';
+                    var catLabel = mappedCat === 'workshop' ? 'Cooperclass' :
+                      mappedCat === 'tram' ? 'Whiskytram' :
+                      mappedCat === 'warehouse' ? 'Warehouse Tasting' :
+                      cleanTitle.toLowerCase().indexOf('torentasting') !== -1 ? 'Torentasting' :
+                      cleanTitle.toLowerCase().indexOf('introductie') !== -1 ? 'Introductie' : 'Masterclass';
+                    var hostDisplay = p.ambassador_name ? (p.ambassador_title ? p.ambassador_name + ' (' + p.ambassador_title + ')' : p.ambassador_name) : '';
+
                     var newRow = document.createElement('article');
                     newRow.className = 'agenda-row-item';
                     newRow.setAttribute('data-ticket-id', r.id);
                     newRow.innerHTML = 
-                      '<div class="col-time"><span class="item-time-val">' + cleanTime + '</span></div>' +
+                      '<div class="col-time"><span class="item-time-val">' + cleanAgendaTime + '</span></div>' +
                       '<div class="col-title"><h3 class="item-name">' + cleanTitle + '</h3></div>' +
                       '<div class="col-type-loc">' +
-                        '<span class="cat-pill cat-' + category + '">' + (category.charAt(0).toUpperCase() + category.slice(1)) + '</span>' +
+                        '<span class="cat-pill cat-' + mappedCat + '">' + catLabel + '</span>' +
                         '<span class="item-loc-tag">' +
                           '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>' +
                           (p.location || 'Grote Kerk') +
                         '</span>' +
                       '</div>' +
-                      '<div class="col-speaker"><div class="speaker-block"><strong class="speaker-name">' + (p.ambassador_name || '—') + '</strong>' +
+                      '<div class="col-speaker"><div class="speaker-block"><strong class="speaker-name">' + (p.ambassador_name || 'Festival Specialist') + '</strong>' +
                         (p.ambassador_title ? '<span class="speaker-role">' + p.ambassador_title + '</span>' : '') +
                       '</div></div>' +
                       '<div class="col-action">' +
                         '<strong class="item-price">&euro; ' + priceNum.toFixed(2).replace('.', ',') + '</strong>' +
                         '<div class="action-buttons-group">' +
-                          '<button type="button" class="btn-trigger-details" data-title="' + cleanTitle + '" data-loc="' + (p.location || '') + '" data-time="' + cleanTime + '" data-price="&euro; ' + priceNum.toFixed(2).replace('.', ',') + '" data-desc="' + (p.ticket_description || p.description || '') + '" data-host="' + (p.ambassador_name || '') + '">Details</button>' +
+                          '<button type="button" class="btn-trigger-details" data-ticket-id="' + r.id + '" data-title="' + cleanTitle + '" data-loc="' + (p.location || '') + '" data-time="' + cleanAgendaTime + '" data-price="&euro; ' + priceNum.toFixed(2).replace('.', ',') + '" data-desc="' + (p.ticket_description || p.description || '') + '" data-host="' + hostDisplay + '">Details</button>' +
                           (isSoldOut ? 
                             '<button type="button" class="btn btn-gold btn-table-buy sold-out" disabled>Uitverkocht</button>' :
                             '<button type="button" class="btn btn-gold btn-table-buy" data-ticket-id="' + r.id + '" data-title="' + cleanTitle + '">+ Bestel</button>'
@@ -699,7 +828,6 @@ const orgSchema = {
             allDomCards.forEach(function(card) {
               if (!matchedCards.has(card)) {
                 var cardId = card.getAttribute('data-ticket-id');
-                // Remove from shopping cart if present
                 try {
                   var rawCart = localStorage.getItem('whiskyfest_cart');
                   if (rawCart) {
@@ -712,7 +840,6 @@ const orgSchema = {
                   }
                 } catch(e) {}
 
-                // Remove from in-memory ticket dataset
                 if (Array.isArray(window.denHaagTicketsData)) {
                   window.denHaagTicketsData = window.denHaagTicketsData.filter(function(t) {
                     return t.id !== cardId;
@@ -722,6 +849,33 @@ const orgSchema = {
               }
             });
 
+            // Re-sort homepage ticket stubs by category, day, and time
+            var shopList = document.getElementById('shop-tickets-list');
+            if (shopList) {
+              var catOrder = { entree: 1, botteling: 2, masterclass: 3, warehouse: 4, toren: 5, tram: 6, trail: 7, vatenmaken: 8 };
+              var dayOrder = { vrijdag: 1, zaterdag: 2, zondag: 3, all: 4 };
+              var showMoreEl = document.getElementById('show-more-container');
+              var cardsArray = Array.from(shopList.querySelectorAll('.ticket-stub'));
+              cardsArray.sort(function(a, b) {
+                var cA = catOrder[a.getAttribute('data-category') || ''] || 99;
+                var cB = catOrder[b.getAttribute('data-category') || ''] || 99;
+                if (cA !== cB) return cA - cB;
+                var dA = dayOrder[a.getAttribute('data-day') || 'all'] || 99;
+                var dB = dayOrder[b.getAttribute('data-day') || 'all'] || 99;
+                if (dA !== dB) return dA - dB;
+                var tA = a.getAttribute('data-time') || '';
+                var tB = b.getAttribute('data-time') || '';
+                return tA.localeCompare(tB);
+              });
+              cardsArray.forEach(function(cardEl) {
+                if (showMoreEl) {
+                  shopList.insertBefore(cardEl, showMoreEl);
+                } else {
+                  shopList.appendChild(cardEl);
+                }
+              });
+            }
+
             // DELETION SYNC: Prune timetable rows deleted from GHL
             var allDomRows = document.querySelectorAll('.agenda-row-item');
             allDomRows.forEach(function(row) {
@@ -730,6 +884,21 @@ const orgSchema = {
               if (!matchedRows.has(row) && isGhlTicket) {
                 row.remove();
               }
+            });
+
+            // Re-sort timetable rows by start time within each session pane
+            document.querySelectorAll('.session-agenda-pane .pane-rows-list').forEach(function(paneList) {
+              var paneEl = paneList.closest('.session-agenda-pane');
+              if (paneEl && paneEl.id === 'pane-bottelingen') return;
+              var rowsArr = Array.from(paneList.querySelectorAll('.agenda-row-item'));
+              rowsArr.sort(function(a, b) {
+                var tA = (a.querySelector('.item-time-val')?.textContent || '').trim();
+                var tB = (b.querySelector('.item-time-val')?.textContent || '').trim();
+                return tA.localeCompare(tB);
+              });
+              rowsArr.forEach(function(rEl) {
+                paneList.appendChild(rEl);
+              });
             });
 
             // Re-apply active filters on the homepage
