@@ -2811,7 +2811,7 @@ import Footer from '../components/Footer.astro';
       }
 
       const formattedTotal = (orderData && orderData.totalPrice) ? `€ ${orderData.totalPrice.toFixed(2).replace('.', ',')}` : "-";
-      const resNum = (orderData && (orderData.resNumber || orderData.orderNumber)) || session.resNumber || "-";
+      const resNum = (orderData && (orderData.allOrderNumbers || orderData.resNumber || orderData.orderNumber)) || session.resNumber || "-";
 
       if (receiptResNo) receiptResNo.textContent = resNum;
       const receiptResNoMob = document.getElementById('receipt-res-no-mob');
@@ -2846,7 +2846,7 @@ import Footer from '../components/Footer.astro';
           if (ticketsList.length > 0) {
             const payload = ticketsList.map((t: any, idx: number) => ({
               ticketCode: t.ticketCode ? (t.ticketCode.startsWith('#') ? t.ticketCode : `#${t.ticketCode}`) : `#${cleanOrderNum}-${idx + 1}`,
-              orderNumber: cleanOrderNum,
+              orderNumber: (t.orderNumber || cleanOrderNum).replace(/^#+/, '').trim(),
               attendeeName: t.attendeeName || orderData.name || 'Bezoeker',
               cityName: citySlug,
               sessionTitle: t.sessionTitle || t.title || 'Festival Entreeticket',
@@ -3021,7 +3021,7 @@ import Footer from '../components/Footer.astro';
 
                     <!-- 3. Bottom Row: Action Buttons -->
                     <div class="ticket-actions-row">
-                      <button type="button" class="btn-ticket-download-gold" onclick="window.open('${whiskytixApiBase}/api/tickets/${encodeURIComponent(cleanCode)}/pdf?city=denhaag&name=${encodeURIComponent(attendeeName)}&title=${encodeURIComponent(cleanTitle)}&time=${encodeURIComponent(displayTime)}&date=${encodeURIComponent(formattedDate)}&orderNumber=${encodeURIComponent(orderData.resNumber || orderData.orderNumber || '')}', '_blank')">
+                      <button type="button" class="btn-ticket-download-gold" onclick="window.open('${whiskytixApiBase}/api/tickets/${encodeURIComponent(cleanCode)}/pdf?city=denhaag&name=${encodeURIComponent(attendeeName)}&title=${encodeURIComponent(cleanTitle)}&time=${encodeURIComponent(displayTime)}&date=${encodeURIComponent(formattedDate)}&orderNumber=${encodeURIComponent(ticket.orderNumber || orderData.resNumber || orderData.orderNumber || '')}', '_blank')">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                         <span>Download E-Ticket (PDF)</span>
                       </button>
@@ -3342,35 +3342,102 @@ import Footer from '../components/Footer.astro';
 
         updatePortalUI();
 
-        // 3. LIVE WHISKYTIX SYNC: Always re-fetch latest order & tickets from Whiskytix
+        // 3. LIVE WHISKYTIX SYNC: Always re-fetch latest order AND all paid orders for this email (multi-order merge!)
         const activeResNo = session.resNumber || (orderData && (orderData.resNumber || orderData.orderNumber));
-        if (activeResNo) {
-          const cleanCode = activeResNo.replace(/^#/, '').trim();
+        const activeEmail = (session.email || (orderData && (orderData.email || orderData.customerEmail)) || '').trim().toLowerCase();
+        if (activeResNo || activeEmail) {
+          const cleanCode = (activeResNo || '').replace(/^#/, '').trim();
           const apiBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
             ? 'http://localhost:4000'
             : 'https://whiskytix-r1qq.vercel.app';
-          fetch(`${apiBase}/api/checkout/order/${encodeURIComponent(cleanCode)}`)
-            .then((res) => (res.ok ? res.json() : null))
-            .then((data) => {
-              if (data && data.order) {
-                const vOrder = data.order;
-                if (vOrder.status !== 'paid' && vOrder.isPaid !== true) {
-                  console.warn('Toegang ontzegd: order is niet betaald of geannuleerd:', vOrder.orderNumber);
-                  sessionStorage.removeItem('wf_auth_session');
-                  localStorage.removeItem('wf_auth_session');
-                  localStorage.removeItem('wf_last_order');
-                  orderData = null;
-                  checkAuthAndRender();
-                  showError(`Bestelling ${activeResNo} is niet voltooid of geannuleerd. Het portaal is alleen toegankelijk voor bezoekers met een voltooide ticketbestelling.`);
-                  return;
-                }
-                orderData = normalizeOrderObject({
-                  ...orderData,
-                  ...vOrder,
-                });
-                localStorage.setItem('wf_last_order', JSON.stringify(orderData));
-                updatePortalUI();
+          Promise.all([
+            cleanCode
+              ? fetch(`${apiBase}/api/checkout/order/${encodeURIComponent(cleanCode)}`).then((res) => (res.ok ? res.json() : null)).catch(() => null)
+              : Promise.resolve(null),
+            activeEmail
+              ? fetch(`${apiBase}/api/checkout/orders-by-email?email=${encodeURIComponent(activeEmail)}&festivalId=denhaag`).then((res) => (res.ok ? res.json() : null)).catch(() => null)
+              : Promise.resolve(null),
+          ])
+            .then(([singleData, emailData]) => {
+              const vOrder = singleData && singleData.order ? singleData.order : null;
+              const rawEmailOrders = emailData && Array.isArray(emailData.orders) ? emailData.orders : [];
+              const paidEmailOrders = rawEmailOrders.filter((o: any) => o.status === 'paid' || o.isPaid === true);
+
+              if (vOrder && vOrder.status !== 'paid' && vOrder.isPaid !== true && paidEmailOrders.length === 0) {
+                console.warn('Toegang ontzegd: order is niet betaald of geannuleerd:', vOrder.orderNumber);
+                sessionStorage.removeItem('wf_auth_session');
+                localStorage.removeItem('wf_auth_session');
+                localStorage.removeItem('wf_last_order');
+                orderData = null;
+                checkAuthAndRender();
+                showError(`Bestelling ${activeResNo} is niet voltooid of geannuleerd. Het portaal is alleen toegankelijk voor bezoekers met een voltooide ticketbestelling.`);
+                return;
               }
+
+              const baseOrder = (vOrder && (vOrder.status === 'paid' || vOrder.isPaid === true))
+                ? vOrder
+                : (paidEmailOrders[0] || null);
+              if (!baseOrder) return;
+
+              let merged = normalizeOrderObject({
+                ...orderData,
+                ...baseOrder,
+              });
+
+              const allPaidToMerge = paidEmailOrders.map((o: any) => normalizeOrderObject(o)).filter(Boolean);
+              if (allPaidToMerge.length > 0) {
+                const seenTicketCodes = new Set<string>();
+                const mergedActiveTickets: any[] = [];
+                const mergedAllTickets: any[] = [];
+                const mergedOrderNums: string[] = [];
+                let combinedTotalCents = 0;
+                const combinedItems: any[] = [];
+
+                // Ensure baseOrder is included first
+                const allUniqueOrders: any[] = [];
+                const seenOrderNums = new Set<string>();
+                for (const candidate of [merged, ...allPaidToMerge]) {
+                  const oNum = String(candidate.resNumber || candidate.orderNumber || '').replace(/^#/, '').trim();
+                  if (oNum && !seenOrderNums.has(oNum)) {
+                    seenOrderNums.add(oNum);
+                    allUniqueOrders.push(candidate);
+                  }
+                }
+
+                for (const po of allUniqueOrders) {
+                  const poRes = po.resNumber || po.orderNumber || merged.resNumber;
+                  if (poRes && !mergedOrderNums.includes(poRes)) mergedOrderNums.push(poRes);
+                  combinedTotalCents += (po.totalCents || Math.round((po.totalPrice || 0) * 100));
+                  for (const it of (po.items || [])) {
+                    combinedItems.push({ ...it, orderNumber: poRes });
+                  }
+                  for (const t of (po.activeTickets || [])) {
+                    const key = (t.ticketCode || t.qrPayload || '').replace(/^#/, '');
+                    if (key && !seenTicketCodes.has(key)) {
+                      seenTicketCodes.add(key);
+                      mergedActiveTickets.push({ ...t, orderNumber: t.orderNumber || poRes });
+                      mergedAllTickets.push({ ...t, orderNumber: t.orderNumber || poRes });
+                    }
+                  }
+                }
+
+                if (mergedActiveTickets.length > 0) {
+                  merged.activeTickets = mergedActiveTickets;
+                  merged.tickets = mergedAllTickets;
+                }
+                if (combinedItems.length > 0) {
+                  merged.items = combinedItems;
+                }
+                if (allUniqueOrders.length > 1 && combinedTotalCents > 0) {
+                  merged.totalCents = combinedTotalCents;
+                  merged.totalPrice = combinedTotalCents / 100;
+                  merged.allOrderNumbers = mergedOrderNums.join(' · ');
+                }
+              }
+
+              orderData = merged;
+              localStorage.setItem('wf_last_order', JSON.stringify(orderData));
+              updatePortalUI();
             })
             .catch((err) => {
               console.warn('Whiskytix achtergrond sync:', err);
@@ -3464,14 +3531,19 @@ import Footer from '../components/Footer.astro';
                 verifiedOrder = paidOrders[0];
               }
               if (paidOrders.length > 1 && verifiedOrder) {
-                const seenTicketCodes = new Set((verifiedOrder.activeTickets || []).map((t: any) => t.ticketCode || t.qrPayload));
+                const vOrderNum = verifiedOrder.resNumber || verifiedOrder.orderNumber;
+                verifiedOrder.activeTickets = (verifiedOrder.activeTickets || []).map((t: any) => ({ ...t, orderNumber: t.orderNumber || vOrderNum }));
+                verifiedOrder.tickets = (verifiedOrder.tickets || []).map((t: any) => ({ ...t, orderNumber: t.orderNumber || vOrderNum }));
+                const seenTicketCodes = new Set((verifiedOrder.activeTickets || []).map((t: any) => (t.ticketCode || t.qrPayload || '').replace(/^#/, '')));
                 for (const extraOrder of paidOrders) {
+                  const extraOrderNum = extraOrder.resNumber || extraOrder.orderNumber || vOrderNum;
                   for (const t of (extraOrder.activeTickets || [])) {
-                    const key = t.ticketCode || t.qrPayload;
+                    const key = (t.ticketCode || t.qrPayload || '').replace(/^#/, '');
                     if (key && !seenTicketCodes.has(key)) {
                       seenTicketCodes.add(key);
-                      verifiedOrder.activeTickets.push(t);
-                      verifiedOrder.tickets.push(t);
+                      const enriched = { ...t, orderNumber: t.orderNumber || extraOrderNum };
+                      verifiedOrder.activeTickets.push(enriched);
+                      verifiedOrder.tickets.push(enriched);
                     }
                   }
                 }

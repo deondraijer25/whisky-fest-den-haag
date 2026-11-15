@@ -8432,10 +8432,22 @@ const tickets = await getTickets('den_haag');
       if (modalStep1) modalStep1.style.display = "block";
       document.body.style.overflow = "";
 
-      // Clean up any uncompleted order state or residual auth
-      sessionStorage.removeItem('wf_auth_session');
-      localStorage.removeItem('wf_auth_session');
-      localStorage.removeItem('wf_last_order');
+      // Clean up uncompleted order state ONLY if there is not already a previous paid order in storage
+      let hasExistingPaidOrder = false;
+      try {
+        const existingRaw = localStorage.getItem('wf_last_order');
+        if (existingRaw) {
+          const existingParsed = JSON.parse(existingRaw);
+          if (existingParsed && (existingParsed.status === 'paid' || existingParsed.isPaid === true)) {
+            hasExistingPaidOrder = true;
+          }
+        }
+      } catch (e) {}
+      if (!hasExistingPaidOrder) {
+        sessionStorage.removeItem('wf_auth_session');
+        localStorage.removeItem('wf_auth_session');
+        localStorage.removeItem('wf_last_order');
+      }
 
       // Show user-friendly cancellation banner
       const cancelAlert = document.createElement('div');
@@ -8510,9 +8522,32 @@ const tickets = await getTickets('den_haag');
       totalPrice: verifiedOrder.totalCents ? (verifiedOrder.totalCents / 100) : (verifiedOrder.totalPrice || 0),
       totalCents: verifiedOrder.totalCents || Math.round((verifiedOrder.totalPrice || 0) * 100),
       items: normalizedItems,
-      tickets: verifiedOrder.tickets || [],
-      activeTickets: verifiedOrder.activeTickets || (verifiedOrder.tickets || []).filter((t: any) => t.status !== 'cancelled' && t.status !== 'swapped'),
+      tickets: (verifiedOrder.tickets || []).map((t: any) => ({ ...t, orderNumber: finalResNumber })),
+      activeTickets: (verifiedOrder.activeTickets || (verifiedOrder.tickets || []).filter((t: any) => t.status !== 'cancelled' && t.status !== 'swapped')).map((t: any) => ({ ...t, orderNumber: finalResNumber })),
     };
+    // Merge any previous paid orders for the same customerEmail so repeat buyers immediately see all tickets
+    try {
+      const prevRaw = localStorage.getItem('wf_last_order');
+      if (prevRaw) {
+        const prevOrder = JSON.parse(prevRaw);
+        const prevEmail = String(prevOrder?.customerEmail || prevOrder?.email || '').trim().toLowerCase();
+        const prevPaid = prevOrder && (prevOrder.status === 'paid' || prevOrder.isPaid === true);
+        if (prevPaid && prevEmail && prevEmail === customerEmail) {
+          const seenCodes = new Set(normalizedOrderData.activeTickets.map((t: any) => t.ticketCode || t.qrPayload));
+          const prevOrderNum = prevOrder.resNumber || prevOrder.orderNumber || finalResNumber;
+          for (const pt of (prevOrder.activeTickets || prevOrder.tickets || [])) {
+            if (pt.status !== 'cancelled' && pt.status !== 'swapped') {
+              const key = pt.ticketCode || pt.qrPayload;
+              if (key && !seenCodes.has(key)) {
+                seenCodes.add(key);
+                normalizedOrderData.activeTickets.push({ ...pt, orderNumber: pt.orderNumber || prevOrderNum });
+                normalizedOrderData.tickets.push({ ...pt, orderNumber: pt.orderNumber || prevOrderNum });
+              }
+            }
+          }
+        }
+      }
+    } catch (e) {}
     localStorage.setItem('wf_last_order', JSON.stringify(normalizedOrderData));
     localStorage.removeItem('wf_user_logged_out');
     const authPayload = JSON.stringify({
