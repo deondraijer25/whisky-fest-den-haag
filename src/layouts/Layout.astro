@@ -320,16 +320,17 @@ const orgSchema = {
           });
         }
 
-        function syncLiveTickets() {
+        var lastTicketSyncAt = 0;
+        function syncLiveTickets(force) {
+          var now = Date.now();
+          if (!force && lastTicketSyncAt > 0 && now - lastTicketSyncAt < 20000) return;
+          lastTicketSyncAt = now;
           fetchFromCatalogFallback()
           .then(function(catalogRecords) {
-            if (Array.isArray(catalogRecords) && catalogRecords.length > 0) {
-              return catalogRecords;
-            }
-            return fetchDirectFromGhl();
+            return Array.isArray(catalogRecords) ? catalogRecords : [];
           })
           .catch(function() {
-            return fetchDirectFromGhl();
+            return [];
           })
           .then(function(records) {
             if (!Array.isArray(records) || records.length === 0) return;
@@ -1005,8 +1006,11 @@ const orgSchema = {
         }
 
         function syncAll() {
-          syncLiveTickets();
-          syncLiveStands();
+          syncLiveTickets(true);
+          var path = (window.location.pathname || '').toLowerCase();
+          if (path.indexOf('standhouder') !== -1 || path.indexOf('kaart') !== -1) {
+            syncLiveStands();
+          }
         }
 
         if (document.readyState === 'loading') {
@@ -1014,8 +1018,8 @@ const orgSchema = {
         } else {
           syncAll();
         }
-        window.addEventListener('focus', syncLiveTickets);
-        setInterval(syncLiveTickets, 30000);
+        window.addEventListener('focus', function() { syncLiveTickets(false); });
+        setInterval(function() { syncLiveTickets(false); }, 60000);
       })();
     </script>
   </body>
