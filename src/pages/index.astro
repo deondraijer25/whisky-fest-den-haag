@@ -2455,7 +2455,7 @@ const tickets = await getTickets('den_haag');
               <div class="form-group" style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
                 <label for="checkout-promo-code" class="form-label">Kortingscode of IWS Lidnummer</label>
                 <div style="display: flex; gap: 0.5rem;">
-                  <input type="text" id="checkout-promo-code" placeholder="Bijv. NEW10, WS-10024 of GIFT-50" class="form-control" style="flex: 1;" />
+                  <input type="text" id="checkout-promo-code" placeholder="Vul uw kortingscode of IWS-lidnummer in" class="form-control" style="flex: 1;" />
                   <button type="button" class="btn btn-outline" id="apply-promo-btn" style="padding: 0 1rem; font-size: 0.85rem; border-color: rgba(140, 110, 70, 0.4); background: transparent; color: var(--text-charcoal);">Toepassen</button>
                 </div>
                 <span id="promo-status-msg" style="display: none; font-size: 0.75rem; margin-top: 4px; font-weight: 600;"></span>
@@ -5888,7 +5888,7 @@ const tickets = await getTickets('den_haag');
       promoDiscount = Math.min(subtotal, Math.round(subtotal * (activePromoValue / 100) * 100) / 100);
     } else if (activePromoType === "fixed_amount" && activePromoValue > 0) {
       promoDiscount = Math.min(subtotal, activePromoValue);
-    } else if (!activePromoCode && ((localStorage.getItem("wf_auto_promo") || sessionStorage.getItem("wf_auto_promo")) === "NEW10") && (new Date() <= new Date("2027-01-01T00:00:00+01:00"))) {
+    } else if (!activePromoCode && (sessionStorage.getItem("wf_manual_promo") === "NEW10") && (new Date() <= new Date("2027-01-01T00:00:00+01:00"))) {
       activePromoCode = "NEW10";
       activePromoType = "percentage";
       activePromoValue = 10;
@@ -7246,7 +7246,7 @@ const tickets = await getTickets('den_haag');
     const activeShipping = shippingActive ? 12.50 : 0;
     const activeFee = getActiveCartFee();
     const iwsDisc = getIwsCartDiscount();
-    const isAutoNew10 = !iwsDisc && ((localStorage.getItem("wf_auto_promo") || sessionStorage.getItem("wf_auto_promo")) === "NEW10") && (new Date() <= new Date("2027-01-01T00:00:00+01:00"));
+    const isAutoNew10 = !iwsDisc && (sessionStorage.getItem("wf_manual_promo") === "NEW10") && (new Date() <= new Date("2027-01-01T00:00:00+01:00"));
     const autoPromoDisc = isAutoNew10 ? Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100) : 0;
     const totalCartDisc = iwsDisc > 0 ? iwsDisc : autoPromoDisc;
     const finalTotal = Math.max(0, subtotal - totalCartDisc) + activeFee + activeShipping;
