@@ -1996,27 +1996,15 @@ const tickets = await getTickets('den_haag');
             <p class="timeline-intro-text">
               Ontdek hoe een passie voor Schotse single malts uitgroeide tot het meest sfeervolle en toonaangevende whisky-evenement van Nederland.
             </p>
-            <div class="timeline-era-list" aria-hidden="true">
-              <div class="era-item active" data-target="0">
-                <span class="era-dot"></span>
-                <span class="era-text">2000 — Het Eerste Festival</span>
-              </div>
-              <div class="era-item" data-target="1">
-                <span class="era-dot"></span>
-                <span class="era-text">2001 — De Grote Kerk</span>
-              </div>
-              <div class="era-item" data-target="7">
-                <span class="era-dot"></span>
-                <span class="era-text">2011 — De Whisky Tram</span>
-              </div>
-              <div class="era-item" data-target="12">
-                <span class="era-dot"></span>
-                <span class="era-text">2022 — Toren-Tasting</span>
-              </div>
-              <div class="era-item" data-target="15">
-                <span class="era-dot"></span>
-                <span class="era-text">2026 — 25e Editie</span>
-              </div>
+            <div class="timeline-nav-controls" aria-label="Tijdlijn navigatie">
+              <button type="button" class="timeline-nav-btn" id="timeline-prev-btn" aria-label="Vorig jaartal">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                <span>Vorige</span>
+              </button>
+              <button type="button" class="timeline-nav-btn" id="timeline-next-btn" aria-label="Volgend jaartal">
+                <span>Volgende</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
             </div>
           </div>
 
@@ -2256,49 +2244,6 @@ const tickets = await getTickets('den_haag');
             <button class="axis-tick" data-index="13"><span>'23</span></button>
             <button class="axis-tick" data-index="14"><span>'25</span></button>
             <button class="axis-tick" data-index="15"><span>'26</span></button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 8. HERITAGE STATS BAR (Sustainability/Trust) -->
-    <section class="heritage-bar">
-      <div class="section-container">
-        <div class="heritage-grid">
-          <div class="heritage-stat">
-            <div class="stat-icon-wrapper">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--whisky-gold-dark)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <line x1="16" y1="13" x2="8" y2="13"></line>
-                <line x1="16" y1="17" x2="8" y2="17"></line>
-              </svg>
-            </div>
-            <span class="stat-val">Sinds 2000</span>
-            <span class="stat-label">Historische Traditie</span>
-          </div>
-          <div class="heritage-stat">
-            <div class="stat-icon-wrapper">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--whisky-gold-dark)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-              </svg>
-            </div>
-            <span class="stat-val">Duizenden</span>
-            <span class="stat-label">Tevreden Bezoekers</span>
-          </div>
-          <div class="heritage-stat">
-            <div class="stat-icon-wrapper">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--whisky-gold-dark)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M7 3h10l1 7c0 4.4-3.6 8-8 8s-8-3.6-8-8l1-7z"></path>
-                <line x1="12" y1="18" x2="12" y2="21"></line>
-                <line x1="8" y1="21" x2="16" y2="21"></line>
-              </svg>
-            </div>
-            <span class="stat-val">200+</span>
-            <span class="stat-label">Unieke Whisky's</span>
           </div>
         </div>
       </div>
@@ -3719,56 +3664,6 @@ const tickets = await getTickets('den_haag');
     background-color: var(--bg-parchment);
   }
 
-  /* Heritage Stats Bar */
-  .heritage-bar {
-    background-color: var(--bg-paper);
-    border-top: 1px solid var(--border-color);
-    border-bottom: 1px solid var(--border-color);
-    padding: 4rem 0;
-  }
-  .heritage-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    text-align: center;
-    gap: 2rem;
-  }
-  .heritage-stat {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-  }
-  .stat-icon-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 68px;
-    height: 68px;
-    border-radius: 50%;
-    background-color: rgba(140, 110, 70, 0.07);
-    border: 1px solid rgba(140, 110, 70, 0.25);
-    margin-bottom: 0.25rem;
-    transition: transform 0.3s ease, border-color 0.3s ease;
-  }
-  .heritage-stat:hover .stat-icon-wrapper {
-    transform: translateY(-3px);
-    border-color: var(--whisky-gold-dark);
-  }
-  .stat-val {
-    font-family: var(--font-display);
-    font-size: 2.5rem;
-    color: var(--text-charcoal);
-    line-height: 1;
-  }
-  .stat-label {
-    font-family: var(--font-sans);
-    font-weight: 700;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--whisky-gold-dark);
-  }
-
   /* Testimonials Section */
   .testimonials-section {
     padding: 8rem 0;
@@ -4193,6 +4088,7 @@ const tickets = await getTickets('den_haag');
       gap: 1rem !important;
     }
     .timeline-card {
+      flex: 0 0 min(82vw, 310px) !important;
       width: 82vw !important;
       max-width: 310px !important;
       height: auto !important;
@@ -4234,42 +4130,6 @@ const tickets = await getTickets('den_haag');
     }
     .tt-split-title {
       font-size: 1.5rem !important;
-    }
-
-    /* 6. HERITAGE STATS */
-    .heritage-bar {
-      padding: 2.25rem 0 !important;
-    }
-    .heritage-grid {
-      display: grid !important;
-      grid-template-columns: repeat(3, 1fr) !important;
-      gap: 0.5rem !important;
-      align-items: start !important;
-      text-align: center !important;
-    }
-    .heritage-stat {
-      display: flex !important;
-      flex-direction: column !important;
-      align-items: center !important;
-      gap: 0.25rem !important;
-    }
-    .stat-icon-wrapper {
-      width: 46px !important;
-      height: 46px !important;
-      margin-bottom: 0.15rem !important;
-    }
-    .stat-icon-wrapper svg {
-      width: 22px !important;
-      height: 22px !important;
-    }
-    .stat-val {
-      font-size: 1.35rem !important;
-      line-height: 1.1 !important;
-    }
-    .stat-label {
-      font-size: 0.62rem !important;
-      letter-spacing: 0.04em !important;
-      line-height: 1.25 !important;
     }
 
     /* 7. CHECKOUT BOTTOM SHEET */
@@ -4509,6 +4369,7 @@ const tickets = await getTickets('den_haag');
   .timeline-scroll-section {
     position: relative;
     background-color: var(--bg-parchment);
+    border-bottom: 1px solid var(--border-color);
     /* Calibrated height for smooth horizontal card scroll without dead scroll space */
     height: 185vh;
   }
@@ -4521,7 +4382,8 @@ const tickets = await getTickets('den_haag');
     flex-direction: column;
     justify-content: center;
     overflow: hidden;
-    padding: 2rem 0;
+    padding: 5.25rem 0 1.75rem;
+    box-sizing: border-box;
   }
 
   .timeline-container {
@@ -4529,11 +4391,12 @@ const tickets = await getTickets('den_haag');
     margin: 0 auto;
     padding: 0 4rem;
     display: grid;
-    grid-template-columns: 380px 1fr;
-    gap: 4rem;
+    grid-template-columns: 340px minmax(0, 1fr);
+    gap: 3rem;
     align-items: center;
-    height: calc(100vh - 180px);
+    height: auto;
     width: 100%;
+    box-sizing: border-box;
   }
 
   .timeline-left-header {
@@ -4544,118 +4407,105 @@ const tickets = await getTickets('den_haag');
   }
 
   .timeline-title {
-    font-size: 3rem;
+    font-size: clamp(2.35rem, 3vw, 2.85rem);
     color: var(--text-charcoal);
-    line-height: 1.1;
-    margin-bottom: 0.5rem;
+    line-height: 1.08;
+    margin-bottom: 0.25rem;
   }
 
   .timeline-intro-text {
-    font-size: 1.1rem;
+    font-size: 1.02rem;
     color: var(--text-muted);
     line-height: 1.6;
-    margin-bottom: 2rem;
+    margin-bottom: 1.75rem;
   }
 
-  /* Left Era List styling */
-  .timeline-era-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    margin-top: 1rem;
-    border-left: 2px solid var(--border-color);
-    padding-left: 1.5rem;
-  }
-
-  .era-item {
+  /* Left Navigation Controls */
+  .timeline-nav-controls {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    margin-top: 0.25rem;
+  }
+
+  .timeline-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 1rem;
+    background-color: var(--bg-paper-card);
+    border: 1px solid var(--border-color-dark);
+    border-radius: 6px;
     font-family: var(--font-sans);
     font-weight: 700;
-    font-size: 0.9rem;
-    color: var(--text-muted);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-charcoal);
     cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    left: -25px; /* overlay the dot on the border line */
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
   }
 
-  .era-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: var(--border-color-dark);
-    border: 2px solid var(--bg-parchment);
-    transition: all 0.3s ease;
-    box-sizing: content-box;
-  }
-
-  .era-text {
-    transition: transform 0.3s ease;
-  }
-
-  .era-item.active {
+  .timeline-nav-btn:hover {
+    border-color: var(--whisky-gold-dark);
     color: var(--whisky-gold-dark);
-  }
-
-  .era-item.active .era-dot {
-    background-color: var(--whisky-gold);
-    transform: scale(1.5);
-    box-shadow: 0 0 0 4px var(--whisky-gold-trans);
-  }
-
-  .era-item.active .era-text {
-    transform: translateX(4px);
+    transform: translateY(-1px);
   }
 
   /* Right Side Scrolling Track */
   .timeline-track-viewport {
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-x: clip;
+    overflow-y: visible;
     position: relative;
     width: 100%;
-    height: 100%;
+    padding: 14px 2px;
+    margin: -14px -2px;
     display: flex;
     align-items: center;
+    box-sizing: border-box;
   }
 
   .timeline-track {
     cursor: grab;
     user-select: none;
     display: flex;
-    gap: 3rem;
-    padding: 2rem 0;
+    width: 100%;
+    gap: 2rem;
+    padding: 0.5rem 0;
     will-change: transform;
-    /* On desktop, translate is controlled by JS. We add a smooth transition for tick-button clicks */
-    /* CSS transition disabled during scroll to prevent stutter */
+    box-sizing: border-box;
   }
 
   .timeline-card {
-    width: 400px;
-    min-height: 550px;
-    height: 100%;
+    flex: 0 0 calc((100% - 2rem) / 2);
+    width: calc((100% - 2rem) / 2);
+    min-width: 0;
+    height: clamp(430px, calc(100vh - 255px), 495px);
+    min-height: 430px;
     flex-shrink: 0;
     background-color: var(--bg-paper-card);
     border: 1px solid var(--border-color);
     border-radius: 12px;
-    padding: 2rem 2.25rem;
+    padding: 1.5rem 1.75rem;
     box-shadow: var(--shadow-paper);
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.7rem;
     box-sizing: border-box;
   }
 
   .timeline-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-6px);
     box-shadow: var(--shadow-hover);
     border-color: var(--border-color-dark);
   }
 
   .timeline-card.active {
     border-color: var(--whisky-gold);
-    box-shadow: 0 15px 40px rgba(197, 139, 57, 0.1), var(--shadow-paper);
+    box-shadow: 0 12px 32px rgba(197, 139, 57, 0.14), var(--shadow-paper);
   }
 
   /* Special Highlighted Card for Jubilee */
@@ -4666,7 +4516,7 @@ const tickets = await getTickets('den_haag');
   }
 
   .timeline-card.highlighted-jubilee:hover {
-    box-shadow: 0 25px 55px rgba(197, 139, 57, 0.25), 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 20px 45px rgba(197, 139, 57, 0.25), 0 10px 25px rgba(0,0,0,0.45);
   }
 
   .timeline-card.highlighted-jubilee .card-title {
@@ -4682,7 +4532,7 @@ const tickets = await getTickets('den_haag');
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--border-color);
-    padding-bottom: 0.75rem;
+    padding-bottom: 0.6rem;
     flex-shrink: 0;
   }
 
@@ -4692,7 +4542,7 @@ const tickets = await getTickets('den_haag');
 
   .card-year {
     font-family: var(--font-display);
-    font-size: 2.25rem;
+    font-size: 2rem;
     color: var(--whisky-gold-dark);
     line-height: 1;
   }
@@ -4700,7 +4550,7 @@ const tickets = await getTickets('den_haag');
   .card-num {
     font-family: var(--font-sans);
     font-weight: 800;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--text-muted);
     letter-spacing: 0.1em;
   }
@@ -4708,20 +4558,21 @@ const tickets = await getTickets('den_haag');
   .card-title {
     font-family: var(--font-serif);
     font-weight: 700;
-    font-size: 1.35rem;
+    font-size: 1.24rem;
+    line-height: 1.25;
     text-transform: none;
     letter-spacing: 0;
     color: var(--text-charcoal);
-    min-height: 3.2rem;
+    min-height: 2.4rem;
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
     margin: 0;
     flex-shrink: 0;
   }
 
   .card-desc {
-    font-size: 0.92rem;
-    line-height: 1.55;
+    font-size: 0.86rem;
+    line-height: 1.5;
     color: var(--text-muted);
     margin: 0;
     flex: 1;
@@ -4730,7 +4581,7 @@ const tickets = await getTickets('den_haag');
 
   .card-img-frame {
     width: 100%;
-    height: 175px;
+    height: clamp(130px, 16vh, 165px);
     flex-shrink: 0;
     margin-top: auto;
     border-radius: 8px;
@@ -4758,9 +4609,10 @@ const tickets = await getTickets('den_haag');
     max-width: 1440px;
     margin: 0 auto;
     padding: 0 4rem;
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
     position: relative;
     z-index: 10;
+    box-sizing: border-box;
   }
 
   .timeline-axis-line {
@@ -4845,7 +4697,7 @@ const tickets = await getTickets('den_haag');
 
     .timeline-container {
       grid-template-columns: 1fr;
-      gap: 3rem;
+      gap: 2.5rem;
       height: auto !important;
       padding: 0 2rem;
     }
@@ -4859,14 +4711,15 @@ const tickets = await getTickets('den_haag');
       max-width: 600px;
     }
 
-    .timeline-era-list {
-      display: none; /* Hide era list on mobile to save vertical space */
+    .timeline-nav-controls {
+      justify-content: center;
     }
 
     .timeline-track-viewport {
       overflow-x: auto;
       scroll-snap-type: x mandatory;
-      padding-bottom: 1.5rem;
+      padding: 0.5rem 0 1.5rem;
+      margin: 0;
       scrollbar-width: none; /* Hide standard scrollbar on Firefox */
     }
 
@@ -4875,6 +4728,7 @@ const tickets = await getTickets('den_haag');
     }
 
     .timeline-track {
+      width: max-content;
       padding: 1rem 0;
       gap: 1.5rem;
       /* On mobile we want natural touch swipe, no JS transform override */
@@ -4883,8 +4737,10 @@ const tickets = await getTickets('den_haag');
     }
 
     .timeline-card {
+      flex: 0 0 290px;
       width: 290px;
-      height: 480px;
+      height: 460px;
+      min-height: 460px;
       scroll-snap-align: center;
       padding: 1.5rem;
     }
@@ -4902,7 +4758,6 @@ const tickets = await getTickets('den_haag');
       font-size: 0.75rem;
     }
   }
-
   /* Interactive Timetable Styles */
   .timetable-section {
     background: var(--bg-parchment);
@@ -6672,7 +6527,8 @@ const tickets = await getTickets('den_haag');
   const timelineCards = document.querySelectorAll('.timeline-card');
   const axisProgress = document.getElementById('axis-progress') as HTMLElement;
   const axisTicks = document.querySelectorAll('.axis-tick');
-  const eraItems = document.querySelectorAll('.era-item');
+  const timelinePrevBtn = document.getElementById('timeline-prev-btn') as HTMLButtonElement | null;
+  const timelineNextBtn = document.getElementById('timeline-next-btn') as HTMLButtonElement | null;
 
   let activeIndex = 0;
   let isDesktop = window.innerWidth > 1024;
@@ -6685,6 +6541,8 @@ const tickets = await getTickets('den_haag');
     isDesktop = window.innerWidth > 1024;
     if (!isDesktop && timelineTrack) {
       timelineTrack.style.transform = 'none';
+    } else if (isDesktop) {
+      updateTimelineScroll();
     }
   });
 
@@ -6692,11 +6550,11 @@ const tickets = await getTickets('den_haag');
     if (!timelineTrack) return { maxTranslate: 0, trackWidth: 0, viewportWidth: 0 };
     const trackWidth = timelineTrack.scrollWidth;
     const viewportWidth = timelineTrack.parentElement?.clientWidth || window.innerWidth;
-    const maxTranslate = Math.max(0, trackWidth - viewportWidth + 60);
+    const maxTranslate = Math.max(0, trackWidth - viewportWidth);
     return { maxTranslate, trackWidth, viewportWidth };
   }
 
-  function setTimelinePosition(fraction: number, smooth: boolean = false) {
+  function setTimelinePosition(fraction: number, smooth: boolean = false, forcedActiveIdx?: number) {
     if (!timelineTrack) return;
     const { maxTranslate } = getTimelineScrollData();
     const clampedFraction = Math.max(0, Math.min(1, fraction));
@@ -6718,7 +6576,9 @@ const tickets = await getTickets('den_haag');
     }
 
     const cardCount = timelineCards.length;
-    const activeIdx = Math.min(cardCount - 1, Math.round(clampedFraction * (cardCount - 1)));
+    const activeIdx = typeof forcedActiveIdx === 'number'
+      ? Math.max(0, Math.min(cardCount - 1, forcedActiveIdx))
+      : Math.min(cardCount - 1, Math.round(clampedFraction * (cardCount - 1)));
     updateActiveStates(activeIdx);
   }
 
@@ -6728,7 +6588,7 @@ const tickets = await getTickets('den_haag');
     const rect = timelineSection.getBoundingClientRect();
     const sectionHeight = timelineSection.scrollHeight;
     const viewHeight = window.innerHeight;
-    const scrollDistance = sectionHeight - viewHeight;
+    const scrollDistance = Math.max(1, sectionHeight - viewHeight);
     const scrolledAmount = -rect.top;
     const fraction = scrolledAmount / scrollDistance;
 
@@ -6736,7 +6596,6 @@ const tickets = await getTickets('den_haag');
   }
 
   function updateActiveStates(index: number) {
-    if (index === activeIndex) return;
     activeIndex = index;
 
     timelineCards.forEach((card, idx) => {
@@ -6748,18 +6607,35 @@ const tickets = await getTickets('den_haag');
       if (idx === index) tick.classList.add('active');
       else tick.classList.remove('active');
     });
+  }
 
-    const targets = Array.from(eraItems).map(e => parseInt(e.getAttribute('data-target') || '0', 10)).sort((a, b) => a - b);
-    let activeEra = 0;
-    for (const t of targets) {
-      if (index >= t) activeEra = t;
+  function navigateToTimelineIndex(targetIndex: number) {
+    const cardCount = timelineCards.length;
+    const clampedIndex = Math.max(0, Math.min(cardCount - 1, targetIndex));
+    const card = timelineCards[clampedIndex] as HTMLElement | undefined;
+
+    if (isDesktop && timelineSection) {
+      const { maxTranslate } = getTimelineScrollData();
+      const targetTranslate = card
+        ? Math.min(maxTranslate, card.offsetLeft)
+        : (clampedIndex / Math.max(1, cardCount - 1)) * maxTranslate;
+      const targetFraction = maxTranslate > 0 ? targetTranslate / maxTranslate : 0;
+
+      const sectionTop = timelineSection.offsetTop;
+      const sectionHeight = timelineSection.scrollHeight;
+      const viewHeight = window.innerHeight;
+      const scrollDistance = Math.max(1, sectionHeight - viewHeight);
+      const scrollTarget = sectionTop + (targetFraction * scrollDistance);
+
+      window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+      setTimelinePosition(targetFraction, true, clampedIndex);
+    } else if (timelineViewport && card) {
+      timelineViewport.scrollTo({
+        left: Math.max(0, card.offsetLeft - 16),
+        behavior: 'smooth'
+      });
+      updateActiveStates(clampedIndex);
     }
-
-    eraItems.forEach((era) => {
-      const targetIdx = parseInt(era.getAttribute('data-target') || '0', 10);
-      if (targetIdx === activeEra) era.classList.add('active');
-      else era.classList.remove('active');
-    });
   }
 
   window.addEventListener('scroll', updateTimelineScroll, { passive: true });
@@ -6768,38 +6644,21 @@ const tickets = await getTickets('den_haag');
   axisTicks.forEach((tick, tickIdx) => {
     tick.addEventListener('click', () => {
       const targetIndex = parseInt(tick.getAttribute('data-index') || String(tickIdx), 10);
-      const cardCount = timelineCards.length;
-      const targetFraction = targetIndex / (cardCount - 1);
-
-      if (isDesktop && timelineSection) {
-        const sectionTop = timelineSection.offsetTop;
-        const sectionHeight = timelineSection.scrollHeight;
-        const viewHeight = window.innerHeight;
-        const scrollDistance = sectionHeight - viewHeight;
-        const scrollTarget = sectionTop + (targetFraction * scrollDistance);
-
-        window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
-        setTimelinePosition(targetFraction, true);
-      } else {
-        const card = timelineCards[targetIndex] as HTMLElement;
-        if (timelineViewport && card) {
-          timelineViewport.scrollTo({
-            left: card.offsetLeft - 20,
-            behavior: 'smooth'
-          });
-          updateActiveStates(targetIndex);
-        }
-      }
+      navigateToTimelineIndex(targetIndex);
     });
   });
 
-  eraItems.forEach(era => {
-    era.addEventListener('click', () => {
-      const targetIndex = parseInt(era.getAttribute('data-target') || '0', 10);
-      const tickBtn = document.querySelector(`.axis-tick[data-index="${targetIndex}"]`) as HTMLButtonElement;
-      if (tickBtn) tickBtn.click();
+  if (timelinePrevBtn) {
+    timelinePrevBtn.addEventListener('click', () => {
+      navigateToTimelineIndex(activeIndex - 1);
     });
-  });
+  }
+
+  if (timelineNextBtn) {
+    timelineNextBtn.addEventListener('click', () => {
+      navigateToTimelineIndex(activeIndex + 1);
+    });
+  }
 
   if (timelineViewport && timelineTrack) {
     timelineViewport.addEventListener('mousedown', (e) => {
@@ -6838,7 +6697,6 @@ const tickets = await getTickets('den_haag');
       }
     }, { passive: true });
   }
-
   // 12. Aftermovie Video Player Logic
   const aftermoviePlayBtn = document.getElementById('aftermovie-play-btn');
   const videoOverlay = document.getElementById('video-overlay');
