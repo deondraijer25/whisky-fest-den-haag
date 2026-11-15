@@ -794,6 +794,7 @@ import Footer from '../components/Footer.astro';
     align-items: center;
     gap: 0.5rem;
     width: 100%;
+    padding-top: 2.75rem;
   }
 
   .portal-header-top-row {
@@ -1797,6 +1798,7 @@ import Footer from '../components/Footer.astro';
     .portal-header {
       width: 100% !important;
       text-align: center !important;
+      padding-top: 0 !important;
     }
 
     .portal-header-top-row {
@@ -2540,6 +2542,10 @@ import Footer from '../components/Footer.astro';
   }
 
   .btn-login-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
     font-family: var(--font-sans);
     font-size: 0.88rem;
     font-weight: 800;
@@ -2560,6 +2566,22 @@ import Footer from '../components/Footer.astro';
     background-color: #004D37;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0, 100, 72, 0.35);
+  }
+
+  .btn-login-submit:disabled {
+    opacity: 0.92;
+    cursor: wait;
+    transform: none;
+  }
+
+  .btn-spinner {
+    animation: wf-btn-spin 0.75s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes wf-btn-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 
   .login-card-footer {
@@ -3386,7 +3408,7 @@ import Footer from '../components/Footer.astro';
         const originalBtnText = loginSubmitBtn ? loginSubmitBtn.innerHTML : '';
         if (loginSubmitBtn) {
           loginSubmitBtn.disabled = true;
-          loginSubmitBtn.innerHTML = '<span>Gegevens verifiëren...</span>';
+          loginSubmitBtn.innerHTML = '<svg class="btn-spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg><span>Gegevens verifiëren...</span>';
         }
 
         try {
@@ -3398,7 +3420,8 @@ import Footer from '../components/Footer.astro';
             ? ['http://localhost:4000', 'https://whiskytix-r1qq.vercel.app']
             : ['https://whiskytix-r1qq.vercel.app'];
 
-          if (rawResNo) {
+          const fetchOrderByCode = async () => {
+            if (!rawResNo) return null;
             const cleanCode = rawResNo.replace(/^#/, '').trim();
             for (const b of bases) {
               try {
@@ -3406,54 +3429,63 @@ import Footer from '../components/Footer.astro';
                 if (res.ok) {
                   const data = await res.json();
                   if (data && data.order) {
-                    verifiedOrder = normalizeOrderObject(data.order);
-                    break;
+                    return normalizeOrderObject(data.order);
                   }
                 }
-              } catch (err) {
-                // Try next base
-              }
+              } catch (err) {}
             }
-          }
+            return null;
+          };
 
-          // 1b. Also check Whiskytix API by email (allows login with email only on mobile & merges multiple paid orders)
-          if (email) {
+          const fetchOrdersByEmail = async () => {
+            if (!email) return [];
             for (const b of bases) {
               try {
                 const res = await fetch(`${b}/api/checkout/orders-by-email?email=${encodeURIComponent(email)}&festivalId=denhaag`);
                 if (res.ok) {
                   const data = await res.json();
                   if (data && Array.isArray(data.orders) && data.orders.length > 0) {
-                    const paidOrders = data.orders
-                      .filter((o: any) => o.status === 'paid' || o.isPaid === true)
-                      .map((o: any) => normalizeOrderObject(o))
-                      .filter(Boolean);
-                    if (paidOrders.length > 0) {
-                      if (!verifiedOrder) {
-                        verifiedOrder = paidOrders[0];
-                      }
-                      if (paidOrders.length > 1 && verifiedOrder) {
-                        const seenTicketCodes = new Set((verifiedOrder.activeTickets || []).map((t: any) => t.ticketCode || t.qrPayload));
-                        for (const extraOrder of paidOrders) {
-                          for (const t of (extraOrder.activeTickets || [])) {
-                            const key = t.ticketCode || t.qrPayload;
-                            if (key && !seenTicketCodes.has(key)) {
-                              seenTicketCodes.add(key);
-                              verifiedOrder.activeTickets.push(t);
-                              verifiedOrder.tickets.push(t);
-                            }
-                          }
-                        }
-                      }
-                    } else if (!verifiedOrder && !rawResNo) {
-                      verifiedOrder = normalizeOrderObject(data.orders[0]);
-                    }
-                    break;
+                    return data.orders;
                   }
                 }
-              } catch (err) {
-                // Try next base
+              } catch (err) {}
+            }
+            return [];
+          };
+
+          const [orderByCode, rawEmailOrders] = await Promise.all([
+            fetchOrderByCode(),
+            fetchOrdersByEmail(),
+          ]);
+
+          if (orderByCode) {
+            verifiedOrder = orderByCode;
+          }
+
+          if (rawEmailOrders.length > 0) {
+            const paidOrders = rawEmailOrders
+              .filter((o: any) => o.status === 'paid' || o.isPaid === true)
+              .map((o: any) => normalizeOrderObject(o))
+              .filter(Boolean);
+            if (paidOrders.length > 0) {
+              if (!verifiedOrder) {
+                verifiedOrder = paidOrders[0];
               }
+              if (paidOrders.length > 1 && verifiedOrder) {
+                const seenTicketCodes = new Set((verifiedOrder.activeTickets || []).map((t: any) => t.ticketCode || t.qrPayload));
+                for (const extraOrder of paidOrders) {
+                  for (const t of (extraOrder.activeTickets || [])) {
+                    const key = t.ticketCode || t.qrPayload;
+                    if (key && !seenTicketCodes.has(key)) {
+                      seenTicketCodes.add(key);
+                      verifiedOrder.activeTickets.push(t);
+                      verifiedOrder.tickets.push(t);
+                    }
+                  }
+                }
+              }
+            } else if (!verifiedOrder && !rawResNo) {
+              verifiedOrder = normalizeOrderObject(rawEmailOrders[0]);
             }
           }
 
