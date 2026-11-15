@@ -9,8 +9,8 @@ const isAccount = pathname.startsWith("/account");
 ---
 
 <header class="main-header animate-fade-in">
-  <div class="top-announcement-bar" id="top-announcement-bar">
-    Sluit je aan bij duizenden whiskyliefhebbers in Den Haag – Bestel vandaag nog je tickets!
+  <div class="top-announcement-bar" id="top-announcement-bar" style="background-color: #082B1B; color: #FAF7F2;">
+    <span style="color:#CAAC8E; font-weight:800;">ONZE NIEUWE WEBSITE IS LIVE!</span> Deze lancering vieren wij met een exclusieve 10% korting met code <strong style="color:#CAAC8E; font-weight:800;">NEW10</strong>!
   </div>
   <div class="header-container">
     <!-- Overlapping Logo Image (links to Home) -->
@@ -1319,9 +1319,9 @@ const isAccount = pathname.startsWith("/account");
   /* Responsive styling */
   @media (max-width: 990px) {
     .main-header {
-      position: sticky !important;
-      top: 0 !important;
-      z-index: 1000 !important;
+      position: relative !important;
+      top: auto !important;
+      z-index: 100 !important;
       background-color: var(--bg-paper-card, #FFFFFF) !important;
       border-bottom: 2px solid var(--text-charcoal, #1D1C1A) !important;
       box-shadow: 0 2px 10px rgba(0,0,0,0.06) !important;
@@ -1353,9 +1353,7 @@ const isAccount = pathname.startsWith("/account");
       border: 2px solid var(--text-charcoal, #1D1C1A) !important;
       box-shadow: 2px 2px 0px var(--text-charcoal, #1D1C1A) !important;
     }
-    .main-header.sticky-header .top-announcement-bar {
-      display: none !important;
-    }
+    /* Top announcement bar scrolls naturally with the non-sticky mobile header */
     .header-container {
       padding: 0.85rem 1rem !important;
       min-height: 68px !important;
@@ -1548,7 +1546,7 @@ const isAccount = pathname.startsWith("/account");
     else if (totalCount > 5) serviceFee = 4.50;
     const hasShipping = items.some((item: any) => item.category === 'botteling' && item.delivery === 'shipping');
     const shippingFee = hasShipping ? 12.50 : 0;
-    const promoRaw = (localStorage.getItem('wf_auto_promo') || sessionStorage.getItem('wf_auto_promo') || '').trim().toUpperCase();
+    const promoRaw = (sessionStorage.getItem('wf_manual_promo') || '').trim().toUpperCase();
     const iwsCode = (sessionStorage.getItem('wf_iws_code') || '').trim();
     const isNew10 = promoRaw === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00');
     let discountAmt = 0;
@@ -1775,26 +1773,11 @@ const isAccount = pathname.startsWith("/account");
 
   window.addEventListener('storage', updateHeaderCartUI);
   window.addEventListener('cart-updated', updateHeaderCartUI);
-  // Capture ?promo=NEW10 / ?code=NEW10 globally across all pages
-  (function captureGlobalPromoCode() {
+  // Clear any legacy auto-applied promo from localStorage so users enter NEW10 manually at checkout
+  (function clearLegacyAutoPromo() {
     try {
-      const params = new URLSearchParams(window.location.search);
-      const urlPromo = (params.get('promo') || params.get('code') || params.get('discount') || '').trim().toUpperCase();
-      if (urlPromo) {
-        localStorage.setItem('wf_auto_promo', urlPromo);
-        sessionStorage.setItem('wf_auto_promo', urlPromo);
-      }
-      const activePromo = urlPromo || (localStorage.getItem('wf_auto_promo') || sessionStorage.getItem('wf_auto_promo') || '').trim().toUpperCase();
-      if (activePromo === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00')) {
-        localStorage.setItem('wf_auto_promo', 'NEW10');
-        sessionStorage.setItem('wf_auto_promo', 'NEW10');
-        const topBar = document.getElementById('top-announcement-bar');
-        if (topBar) {
-          topBar.style.backgroundColor = '#082B1B';
-          topBar.style.color = '#FAF7F2';
-          topBar.innerHTML = '<span style="color:#CAAC8E; font-weight:800;">PRE-SALE VOORDEEL ACTIEF:</span> Uw 10% kortingscode (<strong style="color:#CAAC8E; font-weight:800;">NEW10</strong>) wordt automatisch verrekend op uw bestelling!';
-        }
-      }
+      localStorage.removeItem('wf_auto_promo');
+      sessionStorage.removeItem('wf_auto_promo');
     } catch (e) {}
   })();
 

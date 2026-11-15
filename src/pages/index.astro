@@ -5197,7 +5197,7 @@ const tickets = await getTickets('den_haag');
     const activeShipping = shippingActive ? 12.50 : 0;
     const activeFee = getActiveCartFee();
     const iwsDiscount = getIwsCartDiscount();
-    const isAutoNew10 = !iwsDiscount && ((localStorage.getItem("wf_auto_promo") || sessionStorage.getItem("wf_auto_promo")) === "NEW10") && (new Date() <= new Date("2027-01-01T00:00:00+01:00"));
+    const isAutoNew10 = !iwsDiscount && (sessionStorage.getItem("wf_manual_promo") === "NEW10") && (new Date() <= new Date("2027-01-01T00:00:00+01:00"));
     const autoPromoDiscount = isAutoNew10 ? Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100) : 0;
     const totalCartDiscount = iwsDiscount > 0 ? iwsDiscount : autoPromoDiscount;
     const finalTotal = Math.max(0, subtotal - totalCartDiscount) + activeFee + activeShipping;
@@ -5899,7 +5899,7 @@ const tickets = await getTickets('den_haag');
       if (pMsg) {
         pMsg.style.display = "block";
         pMsg.style.color = "var(--success-green)";
-        pMsg.textContent = "✓ Pre-sale korting NEW10 (10%) automatisch toegepast!";
+        pMsg.textContent = "✓ Kortingscode NEW10 (10% korting) toegepast!";
       }
     } else if (!activePromoCode) {
       promoDiscount = 0;
@@ -5997,6 +5997,7 @@ const tickets = await getTickets('den_haag');
         activePromoValue = 0;
         localStorage.removeItem("wf_auto_promo");
         sessionStorage.removeItem("wf_auto_promo");
+        sessionStorage.removeItem("wf_manual_promo");
         promoMsg.style.display = "none";
         updateShop();
         recalcModalTotal();
@@ -6007,11 +6008,10 @@ const tickets = await getTickets('den_haag');
         activePromoCode = "NEW10";
         activePromoType = "percentage";
         activePromoValue = 10;
-        localStorage.setItem("wf_auto_promo", "NEW10");
-        sessionStorage.setItem("wf_auto_promo", "NEW10");
+        sessionStorage.setItem("wf_manual_promo", "NEW10");
         promoMsg.style.display = "block";
         promoMsg.style.color = "var(--success-green)";
-        promoMsg.textContent = "✓ Pre-sale korting NEW10 (10%) automatisch toegepast!";
+        promoMsg.textContent = "✓ Kortingscode NEW10 (10% korting) toegepast!";
         updateShop();
         recalcModalTotal();
         return;
@@ -6067,10 +6067,10 @@ const tickets = await getTickets('den_haag');
         activePromoCode = "NEW10";
         activePromoType = "percentage";
         activePromoValue = 10;
-        sessionStorage.setItem("wf_auto_promo", "NEW10");
+        sessionStorage.setItem("wf_manual_promo", "NEW10");
         promoMsg.style.display = "block";
         promoMsg.style.color = "var(--success-green)";
-        promoMsg.textContent = "✓ Pre-sale korting NEW10 (10%) automatisch toegepast!";
+        promoMsg.textContent = "✓ Kortingscode NEW10 (10% korting) toegepast!";
         updateShop();
         recalcModalTotal();
         return;
@@ -6098,31 +6098,11 @@ const tickets = await getTickets('den_haag');
       recalcModalTotal();
     });
 
-    // Auto-apply promo code from QR scan URL (?promo=NEW10 or ?code=NEW10) or localStorage/sessionStorage
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlPromo = (urlParams.get("promo") || urlParams.get("code") || urlParams.get("discount") || "").trim().toUpperCase();
-    if (urlPromo) {
-      localStorage.setItem("wf_auto_promo", urlPromo);
-      sessionStorage.setItem("wf_auto_promo", urlPromo);
-    }
-    const savedAutoPromo = urlPromo || (localStorage.getItem("wf_auto_promo") || sessionStorage.getItem("wf_auto_promo") || "").trim().toUpperCase();
-    if (savedAutoPromo) {
-      promoInput.value = savedAutoPromo;
-      if (savedAutoPromo === "NEW10" && new Date() <= new Date("2027-01-01T00:00:00+01:00")) {
-        activePromoCode = "NEW10";
-        activePromoType = "percentage";
-        activePromoValue = 10;
-        promoMsg.style.display = "block";
-        promoMsg.style.color = "var(--success-green)";
-        promoMsg.textContent = "✓ Pre-sale korting NEW10 (10%) automatisch toegepast!";
-        updateShop();
-        recalcModalTotal();
-      } else {
-        setTimeout(() => {
-          applyPromoBtn.click();
-        }, 150);
-      }
-    }
+    // Clear legacy auto-promo so visitors manually enter NEW10 at checkout
+    try {
+      localStorage.removeItem("wf_auto_promo");
+      sessionStorage.removeItem("wf_auto_promo");
+    } catch (e) {}
   }
 
   // Delivery radio event listeners in modal

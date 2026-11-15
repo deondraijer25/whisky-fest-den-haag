@@ -198,7 +198,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
       if (subtotal <= 0) return 0;
       const iwsCode = (sessionStorage.getItem('wf_iws_code') || '').trim();
       if (iwsCode) return Math.min(subtotal, 55.00);
-      const promoCode = (localStorage.getItem('wf_auto_promo') || sessionStorage.getItem('wf_auto_promo') || '').trim().toUpperCase();
+      const promoCode = (sessionStorage.getItem('wf_manual_promo') || '').trim().toUpperCase();
       const isNew10 = promoCode === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00');
       return isNew10 ? Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100) : 0;
     }
