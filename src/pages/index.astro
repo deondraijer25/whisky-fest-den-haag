@@ -1019,7 +1019,7 @@ const tickets = await getTickets('den_haag');
                   <span>Whiskytram</span>
                   <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#006448" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
-                <div class="custom-dd-item" data-value="trail" role="option">
+                <div class="custom-dd-item" data-value="trail" role="option" style="display: none;">
                   <span>Whiskytrail</span>
                   <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#006448" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
@@ -1640,9 +1640,9 @@ const tickets = await getTickets('den_haag');
     <section class="banner-drams">
       <div class="section-container text-center" style="max-width: 860px; margin: 0 auto;">
         <span class="tt-tag" style="margin-bottom: 0.75rem; display: inline-block;">HET FESTIVAL &amp; DE BELEVING</span>
-        <h2>Een Onvergetelijke Whiskybeleving in het Hart van Den Haag</h2>
+        <h2 class="tt-section-title">Een Onvergetelijke Whiskybeleving in het Hart van Den Haag</h2>
         <div class="vintage-line"></div>
-        <p style="font-size: 1.15rem; color: var(--text-charcoal); opacity: 0.8; margin-bottom: 2rem; line-height: 1.6;">
+        <p class="tt-section-subtitle banner-drams-lead" style="color: var(--text-charcoal); opacity: 0.85; margin-bottom: 2rem; line-height: 1.6;">
           Van de eeuwenoude gewelven in de historische Grote Kerk en intieme masterclasses tot een rijdende proeverij in de Haagsche Whiskytram. Ontdek wat het International Whisky Festival al meer dan 26 jaar zo uniek maakt.
         </p>
         <a href="#sessies" class="btn btn-gold" style="font-size: 0.95rem; padding: 0.9rem 2.25rem;">Kies uw Sessie &amp; Tickets</a>
@@ -1730,7 +1730,7 @@ const tickets = await getTickets('den_haag');
               <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--whisky-gold)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:-2px; margin-right:6px;"><polyline points="20 6 9 17 4 12"></polyline></svg>Thematische trails: o.a. 'Beginners', 'Rokerige Islay' en 'Cask Finishes'</li>
               <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--whisky-gold)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:-2px; margin-right:6px;"><polyline points="20 6 9 17 4 12"></polyline></svg>Directe ontmoetingen met de importeurs en meesterstokers</li>
             </ul>
-            <a href="/programma?tab=gidsen" class="tt-text-link" style="margin-top: 0.5rem; display: inline-block;">Ontdek onze whiskygidsen &amp; trails &rarr;</a>
+            <a href="/programma" class="tt-text-link" style="margin-top: 0.5rem; display: inline-block;">Ontdek onze whiskygidsen &amp; trails &rarr;</a>
           </div>
           <div class="split-visual tilt-slight-left">
             <div class="visual-placeholder vintage-frame">
@@ -4117,7 +4117,41 @@ const tickets = await getTickets('den_haag');
       display: none !important;
     }
 
-    /* 5. SPLIT FEATURES & PILLARS */
+    /* 5. SPLIT FEATURES & PILLARS + UNIFORM MOBILE TYPOGRAPHY SCALE */
+    .section-container {
+      padding-left: 1.25rem !important;
+      padding-right: 1.25rem !important;
+    }
+    .banner-drams {
+      padding: 3.5rem 0 !important;
+    }
+    .tt-tag,
+    .section-tag {
+      font-size: 0.75rem !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.14em !important;
+      line-height: 1.4 !important;
+    }
+    .tt-section-title,
+    .banner-drams h2,
+    .timeline-title,
+    .section-title,
+    .faq-main-title {
+      font-size: 2rem !important;
+      line-height: 1.12 !important;
+      letter-spacing: 0.02em !important;
+    }
+    .tt-section-subtitle,
+    .banner-drams p,
+    .banner-drams-lead,
+    .timeline-intro-text,
+    .section-subtitle,
+    .faq-subtitle,
+    .tt-split-desc {
+      font-size: 0.95rem !important;
+      line-height: 1.6 !important;
+      max-width: 100% !important;
+    }
     .split-features-section {
       padding: 3rem 0 !important;
     }
@@ -4129,7 +4163,8 @@ const tickets = await getTickets('den_haag');
       height: 220px !important;
     }
     .tt-split-title {
-      font-size: 1.5rem !important;
+      font-size: 1.45rem !important;
+      line-height: 1.2 !important;
     }
 
     /* 7. CHECKOUT BOTTOM SHEET */

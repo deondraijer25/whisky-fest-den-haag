@@ -467,6 +467,7 @@ function formatSpeaker(host: string) {
           type="button" 
           class="session-btn-card btn-gidsen-special"
           data-target-tab="gidsen"
+          style="display: none;"
         >
           <span class="btn-card-day">Rondleiding</span>
           <span class="btn-card-name">Whisky Gidsen</span>
@@ -584,7 +585,7 @@ function formatSpeaker(host: string) {
 
             <!-- DIRECT IN-PANE TRAIL MATRIX (Als er trails zijn in deze sessie) -->
             {SESSION_TRAIL_MAP[s.id] && (
-              <div class="session-trail-matrix-box">
+              <div class="session-trail-matrix-box" style="display: none;">
                 <div class="stmb-header">
                   <div class="stmb-title-box">
                     <span class="stmb-kicker">30 MIN RONDLEIDING &bull; € 5,00 INCL. 5 PROEFDRAMS</span>
@@ -744,7 +745,7 @@ function formatSpeaker(host: string) {
         </section>
 
         <!-- 7: Whisky Gidsen Planning Matrix Pane -->
-        <section class="session-agenda-pane" id="pane-gidsen">
+        <section class="session-agenda-pane" id="pane-gidsen" style="display: none;">
           
           <div class="pane-header-bar">
             <div class="phb-left">
@@ -2029,7 +2030,18 @@ function formatSpeaker(host: string) {
       { id: 'trail-sun-afternoon', day: 'zondag', daypart: 'middag' }
     ];
     const trailTickets = (ticketsList || []).filter(t => (t.category || '').toLowerCase() === 'trail');
-    if (trailTickets.length === 0) return;
+    const gidsenBtn = document.querySelector('.btn-gidsen-special');
+    const gidsenPane = document.getElementById('pane-gidsen');
+    const inlineTrailBoxes = document.querySelectorAll('.session-trail-matrix-box');
+    if (trailTickets.length === 0) {
+      if (gidsenBtn) gidsenBtn.style.display = 'none';
+      if (gidsenPane) gidsenPane.style.display = 'none';
+      inlineTrailBoxes.forEach(box => { box.style.display = 'none'; });
+      return;
+    }
+    if (gidsenBtn) gidsenBtn.style.display = '';
+    if (gidsenPane) gidsenPane.style.display = '';
+    inlineTrailBoxes.forEach(box => { box.style.display = ''; });
 
     sessionDefs.forEach(def => {
       const sessTrails = trailTickets.filter(t => {
