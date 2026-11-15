@@ -250,7 +250,7 @@ const orgSchema = {
     </style>
 
     <!-- Global Mobile Bottom Sheet Cart Drawer (rendered on subpages; index.astro has its own integrated bottom sheet) -->
-    {Astro.url.pathname !== '/' && <MobileCartDrawer />}
+    <MobileCartDrawer />
 
     <!-- Real-time Live GHL Ticket & Standhouder Sync (Instant Realtime Updates from Leadfabriek CRM) -->
     <script is:inline>
@@ -816,7 +816,7 @@ const orgSchema = {
                           '<button type="button" class="btn-trigger-details" data-ticket-id="' + r.id + '" data-title="' + cleanTitle + '" data-loc="' + (p.location || '') + '" data-time="' + cleanAgendaTime + '" data-price="&euro; ' + priceNum.toFixed(2).replace('.', ',') + '" data-desc="' + (p.ticket_description || p.description || '') + '" data-host="' + hostDisplay + '">Details</button>' +
                           (isSoldOut ? 
                             '<button type="button" class="btn btn-gold btn-table-buy sold-out" disabled>Uitverkocht</button>' :
-                            '<button type="button" class="btn btn-gold btn-table-buy" data-ticket-id="' + r.id + '" data-title="' + cleanTitle + '">+ Bestel</button>'
+                            '<button type="button" class="btn btn-gold btn-table-buy" data-ticket-id="' + r.id + '" data-title="' + cleanTitle + '" data-price="' + String(priceNum) + '" data-category="' + category + '" data-date="' + (dateLabel || cleanDate) + '" data-time="' + cleanAgendaTime + '">+ Bestel</button>'
                           ) +
                         '</div>' +
                       '</div>';
@@ -894,6 +894,19 @@ const orgSchema = {
                 }
               });
             }
+
+            // Re-sort /programma session panes chronologically by start time
+            document.querySelectorAll('.session-agenda-pane:not(#pane-bottelingen):not(#pane-gidsen) .pane-rows-list').forEach(function(listEl) {
+              var rowsArr = Array.from(listEl.querySelectorAll('.agenda-row-item'));
+              if (rowsArr.length > 1) {
+                rowsArr.sort(function(a, b) {
+                  var tA = (a.querySelector('.item-time-val')?.textContent || '').trim();
+                  var tB = (b.querySelector('.item-time-val')?.textContent || '').trim();
+                  return tA.localeCompare(tB);
+                });
+                rowsArr.forEach(function(rEl) { listEl.appendChild(rEl); });
+              }
+            });
 
             // DELETION SYNC: Prune timetable rows deleted from GHL
             var allDomRows = document.querySelectorAll('.agenda-row-item');

@@ -1575,7 +1575,7 @@ strong {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 999;
+  z-index: 99990;
   background: #FFFFFF;
   border-top: 2px solid var(--text-charcoal, #171614);
   box-shadow: 0 -6px 25px rgba(0, 0, 0, 0.18);

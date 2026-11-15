@@ -220,11 +220,31 @@ export async function getTickets(city: string = 'den_haag'): Promise<TicketItem[
         row: idx + 1,
         title: (p.title || 'Ticket').replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim(),
         price: typeof p.price === 'number' ? p.price : (parseFloat(p.price) || parseFloat(p.ticket_price) || 0),
-        date: p.date_label || 'Datum volgt',
+                date: p.date_label || 'Datum volgt',
         time: p.time_label || 'Tijd volgt',
-        day: p.day || 'all',
-        daypart: p.daypart || 'all',
-        category: p.category || 'entree',
+        day: (() => {
+          const rawDay = String(p.day || '').toLowerCase().trim();
+          if (rawDay && rawDay !== 'all') return rawDay;
+          const dl = String(p.date_label || '').toLowerCase();
+          if (dl.includes('vrijdag')) return 'vrijdag';
+          if (dl.includes('zaterdag')) return 'zaterdag';
+          if (dl.includes('zondag')) return 'zondag';
+          return 'all';
+        })(),
+        daypart: (() => {
+          const rawDp = String(p.daypart || '').toLowerCase().trim();
+          if (rawDp && rawDp !== 'all') return rawDp;
+          const tl = String(p.time_label || '');
+          const hm = tl.match(/(\d{1,2}):\d{2}/);
+          if (hm) {
+            const sh = parseInt(hm[1], 10);
+            if (sh < 12) return 'ochtend';
+            if (sh < 18) return 'middag';
+            return 'avond';
+          }
+          return 'all';
+        })(),
+        category: String(p.category || 'entree').toLowerCase().trim(),
         categoryName: p.category ? (p.category.charAt(0).toUpperCase() + p.category.slice(1)) : 'Entreeticket',
         bookingType: p.booking_type || 'Vrij te boeken voor iedereen',
         location: p.location || '',
