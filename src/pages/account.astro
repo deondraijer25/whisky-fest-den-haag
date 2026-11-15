@@ -14,9 +14,9 @@ import Footer from '../components/Footer.astro';
         var raw = localStorage.getItem('wf_auth_session') || sessionStorage.getItem('wf_auth_session');
         if (raw) {
           var p = JSON.parse(raw);
-          if (p && p.email && p.expiresAt && Date.now() <= p.expiresAt) {
+          if (p && p.email && p.resNumber && p.expiresAt && Date.now() <= p.expiresAt) {
             isAuth = true;
-          } else if (p && p.expiresAt && Date.now() > p.expiresAt) {
+          } else if (p && (!p.resNumber || (p.expiresAt && Date.now() > p.expiresAt))) {
             localStorage.removeItem('wf_auth_session');
             sessionStorage.removeItem('wf_auth_session');
           }
@@ -62,14 +62,15 @@ import Footer from '../components/Footer.astro';
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="login-res-no">Ordernummer of Reservering (Optioneel)</label>
+            <label class="form-label" for="login-res-no">Ordernummer of Reservering *</label>
             <input 
               type="text" 
               id="login-res-no" 
               class="form-input" 
               placeholder="bijv. #WF-2027-84387" 
+              required 
             />
-            <span class="form-subtext">U vindt uw ordernummer in de bevestigingsmail.</span>
+            <span class="form-subtext">Verplicht ter beveiliging van uw tickets. U vindt dit nummer in uw bevestigingsmail of op uw bankafschrift.</span>
           </div>
 
           <button type="submit" id="btn-login-submit" class="btn btn-gold btn-login-submit">
@@ -3263,9 +3264,9 @@ import Footer from '../components/Footer.astro';
         const raw = localStorage.getItem('wf_auth_session') || sessionStorage.getItem('wf_auth_session');
         if (!raw) return null;
         const s = JSON.parse(raw);
-        if (s && s.email && s.expiresAt && Date.now() <= s.expiresAt) {
+        if (s && s.email && s.resNumber && s.expiresAt && Date.now() <= s.expiresAt) {
           return s;
-        } else if (s && s.expiresAt && Date.now() > s.expiresAt) {
+        } else if (s && (!s.resNumber || (s.expiresAt && Date.now() > s.expiresAt))) {
           localStorage.removeItem('wf_auth_session');
           sessionStorage.removeItem('wf_auth_session');
         }
@@ -3345,7 +3346,7 @@ import Footer from '../components/Footer.astro';
         // 3. LIVE WHISKYTIX SYNC: Always re-fetch latest order AND all paid orders for this email (multi-order merge!)
         const activeResNo = session.resNumber || (orderData && (orderData.resNumber || orderData.orderNumber));
         const activeEmail = (session.email || (orderData && (orderData.email || orderData.customerEmail)) || '').trim().toLowerCase();
-        if (activeResNo || activeEmail) {
+        if (activeResNo && activeEmail) {
           const cleanCode = (activeResNo || '').replace(/^#/, '').trim();
           const apiBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
             ? 'http://localhost:4000'
@@ -3354,8 +3355,8 @@ import Footer from '../components/Footer.astro';
             cleanCode
               ? fetch(`${apiBase}/api/checkout/order/${encodeURIComponent(cleanCode)}`).then((res) => (res.ok ? res.json() : null)).catch(() => null)
               : Promise.resolve(null),
-            activeEmail
-              ? fetch(`${apiBase}/api/checkout/orders-by-email?email=${encodeURIComponent(activeEmail)}&festivalId=denhaag`).then((res) => (res.ok ? res.json() : null)).catch(() => null)
+            activeEmail && cleanCode
+              ? fetch(`${apiBase}/api/checkout/orders-by-email?email=${encodeURIComponent(activeEmail)}&orderNumber=${encodeURIComponent(cleanCode)}&festivalId=denhaag`).then((res) => (res.ok ? res.json() : null)).catch(() => null)
               : Promise.resolve(null),
           ])
             .then(([singleData, emailData]) => {
@@ -3458,9 +3459,15 @@ import Footer from '../components/Footer.astro';
 
         const email = loginEmailInput ? loginEmailInput.value.trim().toLowerCase() : '';
         const rawResNo = loginResInput ? loginResInput.value.trim() : '';
+        const cleanInputCode = rawResNo.replace(/^#+/, '').trim();
 
         if (!email) {
           showError('Vul een geldig e-mailadres in.');
+          return;
+        }
+
+        if (!cleanInputCode || cleanInputCode.length < 4) {
+          showError('Vul ter beveiliging van uw tickets ook uw ordernummer in (bijv. #WF-2027-... uit uw bevestigingsmail).');
           return;
         }
 
@@ -3473,18 +3480,17 @@ import Footer from '../components/Footer.astro';
         try {
           let verifiedOrder: any = null;
 
-          // 1. If order number entered, check Whiskytix API by order number first
+          // 1. Check Whiskytix API by order number AND by email+orderNumber proof
           const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
           const bases = isLocal
             ? ['http://localhost:4000', 'https://whiskytix-r1qq.vercel.app']
             : ['https://whiskytix-r1qq.vercel.app'];
 
           const fetchOrderByCode = async () => {
-            if (!rawResNo) return null;
-            const cleanCode = rawResNo.replace(/^#/, '').trim();
+            if (!cleanInputCode) return null;
             for (const b of bases) {
               try {
-                const res = await fetch(`${b}/api/checkout/order/${encodeURIComponent(cleanCode)}`);
+                const res = await fetch(`${b}/api/checkout/order/${encodeURIComponent(cleanInputCode)}`);
                 if (res.ok) {
                   const data = await res.json();
                   if (data && data.order) {
@@ -3497,10 +3503,10 @@ import Footer from '../components/Footer.astro';
           };
 
           const fetchOrdersByEmail = async () => {
-            if (!email) return [];
+            if (!email || !cleanInputCode) return [];
             for (const b of bases) {
               try {
-                const res = await fetch(`${b}/api/checkout/orders-by-email?email=${encodeURIComponent(email)}&festivalId=denhaag`);
+                const res = await fetch(`${b}/api/checkout/orders-by-email?email=${encodeURIComponent(email)}&orderNumber=${encodeURIComponent(cleanInputCode)}&festivalId=denhaag`);
                 if (res.ok) {
                   const data = await res.json();
                   if (data && Array.isArray(data.orders) && data.orders.length > 0) {
@@ -3548,12 +3554,10 @@ import Footer from '../components/Footer.astro';
                   }
                 }
               }
-            } else if (!verifiedOrder && !rawResNo) {
-              verifiedOrder = normalizeOrderObject(rawEmailOrders[0]);
             }
           }
 
-          // 2. Check local order storage fallback
+          // 2. Check local order storage fallback (strictly requires matching both email AND orderNumber)
           if (!verifiedOrder) {
             try {
               const localRaw = localStorage.getItem('wf_last_order');
@@ -3561,12 +3565,10 @@ import Footer from '../components/Footer.astro';
                 const localData = normalizeOrderObject(JSON.parse(localRaw));
                 if (localData) {
                   const localOrderNum = (localData.resNumber || localData.orderNumber || '').replace(/^#/, '').trim().toLowerCase();
-                  const searchOrderNum = rawResNo.replace(/^#/, '').trim().toLowerCase();
+                  const searchOrderNum = cleanInputCode.toLowerCase();
                   const localEmail = (localData.email || localData.customerEmail || '').trim().toLowerCase();
 
-                  if (searchOrderNum && (localOrderNum === searchOrderNum || localOrderNum.endsWith(searchOrderNum))) {
-                    verifiedOrder = localData;
-                  } else if (!searchOrderNum && localEmail === email) {
+                  if (searchOrderNum && localEmail === email && (localOrderNum === searchOrderNum || localOrderNum.endsWith(searchOrderNum))) {
                     verifiedOrder = localData;
                   }
                 }
