@@ -47,10 +47,6 @@ const isAccount = pathname.startsWith("/account");
             <span class="nav-drop-title">Haagsche Whiskytram</span>
             <span class="nav-drop-sub">4 drams tijdens een historische tramrit</span>
           </a>
-          <a href="/?cat=trail#sessies" class="nav-dropdown-item">
-            <span class="nav-drop-title">Whisky Trails (Gidsen)</span>
-            <span class="nav-drop-sub">Rondleidingen met onze 5 gidsen</span>
-          </a>
           <a href="/?cat=warehouse#sessies" class="nav-dropdown-item">
             <span class="nav-drop-title">Warehouse Tastings</span>
             <span class="nav-drop-sub">Intieme proeverijen direct aan de stands</span>
@@ -61,23 +57,8 @@ const isAccount = pathname.startsWith("/account");
       <!-- 2. PLATTEGROND & STANDS -->
       <a href="/standhouders" class={`nav-link ${isStandhouders ? 'active' : ''}`}>Plattegrond &amp; Stands</a>
 
-      <!-- 3. PROGRAMMA DROPDOWN -->
-      <div class="header-nav-dropdown-wrapper" id="header-programma-wrapper">
-        <a href="/programma" class={`nav-link nav-dropdown-trigger ${isProgramma ? 'active' : ''}`} id="nav-programma-trigger">
-          <span>Programma</span>
-          <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </a>
-        <div class="header-nav-dropdown" id="header-programma-dropdown">
-          <a href="/programma" class="nav-dropdown-item">
-            <span class="nav-drop-title">Festival Programma</span>
-            <span class="nav-drop-sub">Masterclasses, tram &amp; proeverijen</span>
-          </a>
-          <a href="/programma?view=gidsen" class="nav-dropdown-item">
-            <span class="nav-drop-title">Gidsen Planning</span>
-            <span class="nav-drop-sub">Whisky trails &amp; tijdsloten</span>
-          </a>
-        </div>
-      </div>
+      <!-- 3. PROGRAMMA -->
+      <a href="/programma" class={`nav-link ${isProgramma ? 'active' : ''}`}>Programma</a>
     </nav>
 
     <!-- Header Actions: 1. Cart Icon > 2. Bestel Tickets > 3. Mijn Account (Text link) -->
@@ -286,7 +267,7 @@ const isAccount = pathname.startsWith("/account");
           </span>
           <div class="mn-item-text">
             <strong class="mn-item-title">Programma</strong>
-            <span class="mn-item-desc">Timetable, Masterclasses &amp; Gidsen</span>
+            <span class="mn-item-desc">Timetable, Masterclasses &amp; Whiskytram</span>
           </div>
           <span class="mn-item-arrow">&rarr;</span>
         </a>
