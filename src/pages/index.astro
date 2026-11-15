@@ -5255,7 +5255,25 @@ const tickets = await getTickets('den_haag');
   const totalEl = document.getElementById("receipt-total");
   const checkoutBtn = document.getElementById("checkout-trigger-btn") as HTMLButtonElement;
 
+  let unlockedIwsCode = sessionStorage.getItem('wf_iws_code') || '';
   let unlockedIwsDiscountAmount = 55.00;
+  const iwsToggleBtn = document.getElementById('iws-unlock-toggle-btn');
+  const iwsToggleLabel = document.getElementById('iws-toggle-label');
+  const iwsToggleIcon = document.getElementById('iws-toggle-icon');
+  const iwsFormRow = document.getElementById('iws-unlock-form-row');
+  const iwsCodeInput = document.getElementById('iws-shop-code-input') as HTMLInputElement | null;
+  const iwsApplyBtn = document.getElementById('iws-shop-apply-btn');
+  const iwsFeedback = document.getElementById('iws-unlock-feedback');
+  let denHaagTicketsData: any[] = JSON.parse(document.getElementById("tickets-data-json")?.textContent || "[]");
+  let allAddonsList: any[] = denHaagTicketsData.filter(t => t.category !== 'entree');
+  let activeMcId: string | null = null;
+  const mcModal = document.getElementById('masterclass-info-modal');
+  const mcModalClose = document.getElementById('mc-modal-close');
+  const mcModalAddBtn = document.getElementById('mc-modal-add-btn');
+  const upsellModal = document.getElementById('addon-upsell-modal');
+  const upsellModalClose = document.getElementById('addon-upsell-close');
+  const upsellModalCancel = document.getElementById('addon-upsell-cancel');
+  const upsellModalProceed = document.getElementById('addon-upsell-proceed-btn');
   function getIwsCartDiscount(forceActive: boolean = false): number {
     const activeCode = forceActive ? "IWS" : (sessionStorage.getItem("wf_iws_code") || "");
     if (!activeCode) return 0;
@@ -6924,8 +6942,6 @@ const tickets = await getTickets('den_haag');
   }
 ]
 ;
-  let denHaagTicketsData: any[] = JSON.parse(document.getElementById("tickets-data-json")?.textContent || "[]");
-  let allAddonsList: any[] = denHaagTicketsData.filter(t => t.category !== 'entree');
 
   function updateLiveTicketsData(records: any[]) {
     if (!Array.isArray(records) || records.length === 0) return;
@@ -7047,14 +7063,6 @@ const tickets = await getTickets('den_haag');
   // ==========================================
   // IWS MEMBER UNLOCK & RECEIPT DISCOUNT CONTROLLER (Item #10)
   // ==========================================
-  let unlockedIwsCode = sessionStorage.getItem('wf_iws_code') || '';
-  const iwsToggleBtn = document.getElementById('iws-unlock-toggle-btn');
-  const iwsToggleLabel = document.getElementById('iws-toggle-label');
-  const iwsToggleIcon = document.getElementById('iws-toggle-icon');
-  const iwsFormRow = document.getElementById('iws-unlock-form-row');
-  const iwsCodeInput = document.getElementById('iws-shop-code-input') as HTMLInputElement | null;
-  const iwsApplyBtn = document.getElementById('iws-shop-apply-btn');
-  const iwsFeedback = document.getElementById('iws-unlock-feedback');
 
   function canUnlockIwsSession(isVip: boolean): boolean {
     const now = new Date();
@@ -7283,17 +7291,6 @@ const tickets = await getTickets('den_haag');
     updateLiveTicketsData((window as any).__LIVE_GHL_TICKETS__);
     applyIwsUnlockToCards();
   }
-
-  let activeMcId: string | null = null;
-
-  const mcModal = document.getElementById('masterclass-info-modal');
-  const mcModalClose = document.getElementById('mc-modal-close');
-  const mcModalAddBtn = document.getElementById('mc-modal-add-btn');
-
-  const upsellModal = document.getElementById('addon-upsell-modal');
-  const upsellModalClose = document.getElementById('addon-upsell-close');
-  const upsellModalCancel = document.getElementById('addon-upsell-cancel');
-  const upsellModalProceed = document.getElementById('addon-upsell-proceed-btn');
 
   window.openCheckoutModal = openCheckoutModal;
   function openCheckoutModal() {
@@ -8459,6 +8456,7 @@ const tickets = await getTickets('den_haag');
     // PAYMENT IS 100% CONFIRMED & PAID!
     __orderReturnInProgress = false;
     __orderReturnCompleted = true;
+    setTimeout(() => { __orderReturnCompleted = false; }, 2500);
 
     // 1. Completely clear shopping cart in memory, DOM, localStorage & Header badge
     if (typeof cart !== 'undefined') {
