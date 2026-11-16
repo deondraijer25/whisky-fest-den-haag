@@ -2890,11 +2890,15 @@ import Footer from '../components/Footer.astro';
             const liveGhlTickets = (window as any).__LIVE_GHL_TICKETS__;
             if (Array.isArray(liveGhlTickets) && liveGhlTickets.length > 0 && (!ticket.dateStr || !ticket.timeStr)) {
               const cleanTKey = cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '');
-              const ghlMatch = liveGhlTickets.find((r: any) => {
-                const p = r.properties || r;
-                const pTitle = (p.title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-                return pTitle && cleanTKey && (pTitle.includes(cleanTKey) || cleanTKey.includes(pTitle));
-              });
+              const ticketTypeId = (ticket as any).ticketTypeId || (ticket as any).id || '';
+              let ghlMatch = ticketTypeId ? liveGhlTickets.find((r: any) => r.id === ticketTypeId) : null;
+              if (!ghlMatch) {
+                ghlMatch = liveGhlTickets.find((r: any) => {
+                  const p = r.properties || r;
+                  const pTitle = (p.title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                  return pTitle && cleanTKey && pTitle === cleanTKey;
+                });
+              }
               if (ghlMatch) {
                 const p = ghlMatch.properties || ghlMatch;
                 if (!ticket.dateStr && p.date_label) formattedDate = p.date_label.trim();

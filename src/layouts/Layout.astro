@@ -353,7 +353,7 @@ const orgSchema = {
               var isSoldOut = rawSoldOut || (capacity > 0 && sold >= capacity);
 
               var rawDay = (p.day || '').toLowerCase().trim();
-              var dateLabel = p.date_label || '';
+              var dateLabel = String(p.date_label || '').replace(/\b2026\b/g, '2027');
               var timeLabel = p.time_label || '';
               var day = rawDay;
               if (!day || day === 'all') {

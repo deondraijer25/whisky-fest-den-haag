@@ -914,17 +914,46 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
       records.forEach((r) => {
         const p = r.properties || r;
         const cleanTitle = (p.title || '').replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
-        const match = window.GLOBAL_TICKETS.find((t) => t.id === r.id || (t.title && cleanTitle && t.title.toLowerCase().replace(/[^a-z0-9]/g, '') === cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '') && (!p.time_label || !t.time || t.time.replace(/\s*uur/i, '').trim() === p.time_label.replace(/\s*uur/i, '').trim())));
+        let match = window.GLOBAL_TICKETS.find((t) => t.id === r.id);
+        if (!match) {
+          match = window.GLOBAL_TICKETS.find((t) => {
+            const isGhlId = Boolean(t.id && /^[a-f0-9]{20,30}$/i.test(t.id));
+            if (isGhlId) return false;
+            return t.title && cleanTitle &&
+              t.title.toLowerCase().replace(/[^a-z0-9]/g, '') === cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '') &&
+              (!p.time_label || !t.time || t.time.replace(/\s*uur/i, '').replace(/[–—]/g, '-').trim() === p.time_label.replace(/\s*uur/i, '').replace(/[–—]/g, '-').trim());
+          });
+        }
+        const normDate = p.date_label ? String(p.date_label).replace(/\b2026\b/g, '2027') : '';
         if (match) {
           if (r.id) match.id = r.id;
           if (p.price) match.price = typeof p.price === 'number' ? p.price : (parseFloat(p.price) || match.price);
-          if (p.date_label) match.date = p.date_label;
+          if (normDate) match.date = normDate;
           if (p.time_label) match.time = p.time_label;
           if (cleanTitle) match.title = cleanTitle;
           const cap = Number(p.capacity) || 0;
           const sold = Number(p.sold) || 0;
           const badge = (p.badge || '').toLowerCase();
           match.isSoldOut = Boolean((cap > 0 && sold >= cap) || badge.includes('uitverkocht') || badge.includes('sold'));
+        } else if (r.id && cleanTitle) {
+          const cap = Number(p.capacity) || 0;
+          const sold = Number(p.sold) || 0;
+          const badge = (p.badge || '').toLowerCase();
+          const newTicket = {
+            id: r.id,
+            title: cleanTitle,
+            price: typeof p.price === 'number' ? p.price : (parseFloat(p.price) || 0),
+            date: normDate,
+            time: p.time_label || '',
+            day: (p.day || 'all').toLowerCase(),
+            category: (p.category || 'masterclass').toLowerCase(),
+            location: p.location || 'Grote Kerk Den Haag',
+            isSoldOut: Boolean((cap > 0 && sold >= cap) || badge.includes('uitverkocht') || badge.includes('sold')),
+          };
+          window.GLOBAL_TICKETS.push(newTicket);
+          if (newTicket.category !== 'entree' && Array.isArray(window.GLOBAL_ADDONS) && !window.GLOBAL_ADDONS.some((a) => a.id === r.id)) {
+            window.GLOBAL_ADDONS.push(newTicket);
+          }
         }
       });
       updateStickyBar();

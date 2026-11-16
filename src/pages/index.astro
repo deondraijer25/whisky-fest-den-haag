@@ -6849,7 +6849,7 @@ const tickets = await getTickets('den_haag');
         target.sold = sold;
         if (day) target.day = day;
         if (daypart) target.daypart = daypart;
-        if (p.date_label) target.date = p.date_label;
+        if (p.date_label) target.date = String(p.date_label).replace(/\b2026\b/g, '2027');
         if (p.time_label) target.time = p.time_label;
         if (p.category) target.category = p.category;
         if (p.booking_type) target.bookingType = p.booking_type;
@@ -6874,7 +6874,7 @@ const tickets = await getTickets('den_haag');
           sold: sold,
           day: day || 'all',
           daypart: daypart || 'all',
-          date: p.date_label || '',
+          date: String(p.date_label || '').replace(/\b2026\b/g, '2027'),
           time: p.time_label || '',
           category: p.category || 'masterclass',
           bookingType: p.booking_type || '',
@@ -6894,12 +6894,26 @@ const tickets = await getTickets('den_haag');
       (window as any).__renderAddonUpsellList();
     }
 
-    // Synchronize active in-memory cart with live GHL data
+    // Synchronize active in-memory cart with live GHL data (STRICT ID-FIRST MATCH to prevent multi-slot clobbering)
     let cartModified = false;
     Object.keys(cart).forEach(id => {
       const item = cart[id];
       if (!item) return;
-      const match = denHaagTicketsData.find(t => t.id === id || (t.title && item.title && t.title.toLowerCase().replace(/[^a-z0-9]/g, '') === item.title.toLowerCase().replace(/[^a-z0-9]/g, '')));
+      let match = denHaagTicketsData.find(t => t.id === id);
+      const isGhlId = Boolean(id && /^[a-f0-9]{20,30}$/i.test(id));
+      if (!match && !isGhlId) {
+        const itemTimeClean = (item.time || item.timeslot || '').replace(/\s*uur/gi, '').replace(/[–—]/g, '-').trim();
+        match = denHaagTicketsData.find(t => {
+          if (!t.title || !item.title) return false;
+          const sameTitle = t.title.toLowerCase().replace(/[^a-z0-9]/g, '') === item.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+          if (!sameTitle) return false;
+          if (itemTimeClean && t.time) {
+            const tTimeClean = String(t.time).replace(/\s*uur/gi, '').replace(/[–—]/g, '-').trim();
+            return tTimeClean === itemTimeClean;
+          }
+          return true;
+        });
+      }
       if (match) {
         if (match.title && item.title !== match.title) {
           item.title = match.title;

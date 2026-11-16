@@ -4,8 +4,8 @@ import { TICKETS_DEN_HAAG, type TicketItem } from '../data/ticketsDenHaag';
 import { EXHIBITORS_DEN_HAAG, type ExhibitorItem } from '../data/standhouders';
 
 const GHL_API_BASE = 'https://services.leadconnectorhq.com';
-const GHL_API_KEY = process.env.GHL_API_KEY || import.meta.env?.GHL_API_KEY || 'pit-150d6114-ac2c-4cf7-9d5c-ffc20499c790';
-const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID || import.meta.env?.GHL_LOCATION_ID || '1OZ9uxIBFoxwbheVC5iN';
+const GHL_API_KEY = 'pit-150d6114-ac2c-4cf7-9d5c-ffc20499c790';
+const GHL_LOCATION_ID = '1OZ9uxIBFoxwbheVC5iN';
 
 // Custom Object Schema Keys as registered in GHL
 const GHL_TICKETS_OBJECT_KEY = 'custom_objects.festival_tickets';
@@ -220,7 +220,7 @@ export async function getTickets(city: string = 'den_haag'): Promise<TicketItem[
         row: idx + 1,
         title: (p.title || 'Ticket').replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim(),
         price: typeof p.price === 'number' ? p.price : (parseFloat(p.price) || parseFloat(p.ticket_price) || 0),
-                date: p.date_label || 'Datum volgt',
+                date: String(p.date_label || 'Datum volgt').replace(/\b2026\b/g, '2027'),
         time: p.time_label || 'Tijd volgt',
         day: (() => {
           const rawDay = String(p.day || '').toLowerCase().trim();
