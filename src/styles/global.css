@@ -1361,6 +1361,11 @@ strong {
     display: flex !important;
     justify-content: space-between !important;
   }
+  .sheet-calc-row[style*="display: none"],
+  .sheet-calc-row[style*="display:none"],
+  .sheet-calc-row.is-hidden {
+    display: none !important;
+  }
   .sheet-calc-row.sheet-total-row {
     font-size: 1.05rem !important;
     font-weight: 800 !important;

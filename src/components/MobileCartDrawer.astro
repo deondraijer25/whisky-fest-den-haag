@@ -49,12 +49,29 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
 
       <!-- Cart Summary Footer -->
       <div class="sheet-footer" id="sheet-cart-footer">
+        <div class="sheet-promo-box" style="margin-bottom: 0.35rem;">
+          <div style="display: flex; gap: 0.4rem; align-items: center;">
+            <input
+              type="text"
+              id="sheet-promo-input"
+              placeholder="Vul kortingscode (NEW10) of IWS-lidnr. in"
+              aria-label="Kortingscode of IWS-lidnummer"
+              style="flex: 1; min-width: 0; height: 36px; padding: 0 0.65rem; border: 1.5px solid #D5C8B8; border-radius: 6px; font-size: 0.8rem; font-family: var(--font-sans, sans-serif); background: #FFFFFF; color: #171614; text-transform: uppercase;"
+            />
+            <button
+              type="button"
+              id="sheet-promo-apply-btn"
+              style="height: 36px; padding: 0 0.85rem; border-radius: 6px; border: 1.5px solid #006448; background: #006448; color: #FFFFFF; font-size: 0.78rem; font-weight: 800; font-family: var(--font-sans, sans-serif); cursor: pointer; white-space: nowrap;"
+            >Toepassen</button>
+          </div>
+          <div id="sheet-promo-feedback" style="display: none; font-size: 0.75rem; font-weight: 700; margin-top: 0.25rem;"></div>
+        </div>
         <div class="sheet-calc-rows">
           <div class="sheet-calc-row">
             <span>Subtotaal:</span>
             <strong id="sheet-cart-subtotal">&euro;0,00</strong>
           </div>
-          <div class="sheet-calc-row" id="sheet-discount-row" style="display: none; color: #006448;">
+          <div class="sheet-calc-row is-hidden" id="sheet-discount-row" style="display: none; color: #006448;">
             <span id="sheet-discount-label">Pre-sale korting (NEW10 - 10%):</span>
             <strong id="sheet-cart-discount" style="color: #006448;">- &euro;0,00</strong>
           </div>
@@ -62,7 +79,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
             <span>Administratiekosten:</span>
             <strong id="sheet-cart-fee">&euro;0,00</strong>
           </div>
-          <div class="sheet-calc-row" id="sheet-shipping-row" style="display: none;">
+          <div class="sheet-calc-row is-hidden" id="sheet-shipping-row" style="display: none;">
             <span>Verzendkosten Fles:</span>
             <strong id="sheet-cart-shipping">&euro;0,00</strong>
           </div>
@@ -418,11 +435,25 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
       const shipping = shippingActive ? 12.50 : 0;
       const discount = getCartDiscountAmt(subtotal);
       const finalTotal = Math.max(0, subtotal - discount) + fee + shipping;
+      const sheetDiscountLabel = document.getElementById('sheet-discount-label');
+      const sheetPromoInput = document.getElementById('sheet-promo-input');
+      const activeIws = (sessionStorage.getItem('wf_iws_code') || '').trim();
+      const activeManualPromo = (sessionStorage.getItem('wf_manual_promo') || '').trim().toUpperCase();
+      if (sheetPromoInput && !sheetPromoInput.value && (activeIws || activeManualPromo)) {
+        sheetPromoInput.value = activeIws || activeManualPromo;
+      }
       if (sheetDiscountRow && sheetCartDiscount) {
         if (discount > 0) {
+          sheetDiscountRow.classList.remove('is-hidden');
           sheetDiscountRow.style.display = 'flex';
+          if (sheetDiscountLabel) {
+            sheetDiscountLabel.textContent = activeIws
+              ? `IWS Ledenkorting (${activeIws}):`
+              : 'Pre-sale korting (NEW10 - 10%):';
+          }
           sheetCartDiscount.textContent = `- € ${discount.toFixed(2).replace('.', ',')}`;
         } else {
+          sheetDiscountRow.classList.add('is-hidden');
           sheetDiscountRow.style.display = 'none';
         }
       }
@@ -431,9 +462,11 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
       if (sheetCartFee) sheetCartFee.textContent = `€ ${fee.toFixed(2).replace('.', ',')}`;
       if (sheetShippingRow && sheetCartShipping) {
         if (shippingActive) {
+          sheetShippingRow.classList.remove('is-hidden');
           sheetShippingRow.style.display = 'flex';
           sheetCartShipping.textContent = `€ ${shipping.toFixed(2).replace('.', ',')}`;
         } else {
+          sheetShippingRow.classList.add('is-hidden');
           sheetShippingRow.style.display = 'none';
         }
       }
@@ -639,6 +672,80 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
     document.getElementById('sheet-close-btn-cart')?.addEventListener('click', closeMobileCartDrawer);
     document.getElementById('sheet-close-btn-addons')?.addEventListener('click', closeMobileCartDrawer);
     document.getElementById('mobile-cart-sheet-backdrop')?.addEventListener('click', closeMobileCartDrawer);
+
+    // Promo / IWS code apply inside Mobile Cart Drawer
+    const sheetPromoBtn = document.getElementById('sheet-promo-apply-btn');
+    const sheetPromoInp = document.getElementById('sheet-promo-input');
+    const sheetPromoMsg = document.getElementById('sheet-promo-feedback');
+    async function applySheetPromoCode() {
+      if (!sheetPromoInp) return;
+      const code = (sheetPromoInp.value || '').trim().toUpperCase();
+      if (!code) {
+        sessionStorage.removeItem('wf_manual_promo');
+        sessionStorage.removeItem('wf_iws_code');
+        if (sheetPromoMsg) sheetPromoMsg.style.display = 'none';
+        renderSheetCart();
+        window.dispatchEvent(new CustomEvent('cart-updated'));
+        return;
+      }
+      if (code === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00')) {
+        sessionStorage.removeItem('wf_iws_code');
+        sessionStorage.setItem('wf_manual_promo', 'NEW10');
+        if (sheetPromoMsg) {
+          sheetPromoMsg.style.display = 'block';
+          sheetPromoMsg.style.color = '#006448';
+          sheetPromoMsg.textContent = '✓ Kortingscode NEW10 (10% korting) toegepast!';
+        }
+        renderSheetCart();
+        window.dispatchEvent(new CustomEvent('cart-updated'));
+        return;
+      }
+      try {
+        const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const base = isLocalDev ? 'http://localhost:4000' : 'https://whiskytix-r1qq.vercel.app';
+        const res = await fetch(`${base}/api/coupons/validate`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code, festivalId: 'denhaag' }),
+        });
+        const data = await res.json();
+        if (res.ok && data && data.valid) {
+          if (data.type === 'percentage' || code === 'NEW10') {
+            sessionStorage.removeItem('wf_iws_code');
+            sessionStorage.setItem('wf_manual_promo', code);
+          } else {
+            sessionStorage.removeItem('wf_manual_promo');
+            sessionStorage.setItem('wf_iws_code', data.code || code);
+          }
+          if (sheetPromoMsg) {
+            sheetPromoMsg.style.display = 'block';
+            sheetPromoMsg.style.color = '#006448';
+            sheetPromoMsg.textContent = data.message || '✓ Kortingscode toegepast!';
+          }
+          renderSheetCart();
+          window.dispatchEvent(new CustomEvent('cart-updated'));
+          return;
+        }
+        if (sheetPromoMsg) {
+          sheetPromoMsg.style.display = 'block';
+          sheetPromoMsg.style.color = '#A82828';
+          sheetPromoMsg.textContent = (data && data.message) || '✗ Ongeldige of reeds gebruikte kortingscode.';
+        }
+      } catch (err) {
+        if (sheetPromoMsg) {
+          sheetPromoMsg.style.display = 'block';
+          sheetPromoMsg.style.color = '#A82828';
+          sheetPromoMsg.textContent = '✗ Kon kortingscode niet valideren.';
+        }
+      }
+    }
+    sheetPromoBtn?.addEventListener('click', applySheetPromoCode);
+    sheetPromoInp?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        applySheetPromoCode();
+      }
+    });
 
     // Switch to Addons View
     document.getElementById('sheet-to-addons-btn')?.addEventListener('click', () => {

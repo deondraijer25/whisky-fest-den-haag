@@ -650,6 +650,11 @@ const tickets = await getTickets('den_haag');
         display: flex !important;
         justify-content: space-between !important;
       }
+      .sheet-calc-row[style*="display: none"],
+      .sheet-calc-row[style*="display:none"],
+      .sheet-calc-row.is-hidden {
+        display: none !important;
+      }
       .sheet-calc-row.sheet-total-row {
         font-size: 1.1rem !important;
         font-weight: 800 !important;
@@ -1577,7 +1582,7 @@ const tickets = await getTickets('den_haag');
                 <!-- Clean Receipt-Style IWS Member Input -->
                 <div class="receipt-iws-section" id="receipt-iws-section">
                   <button type="button" class="receipt-iws-toggle" id="iws-unlock-toggle-btn">
-                    <span class="receipt-iws-toggle-label" id="iws-toggle-label">IWS-lid? Lidnummer invoeren</span>
+                    <span class="receipt-iws-toggle-label" id="iws-toggle-label">Kortingscode of IWS-lidnummer invoeren</span>
                     <span class="receipt-iws-toggle-icon" id="iws-toggle-icon">+</span>
                   </button>
                   <div class="receipt-iws-form" id="iws-unlock-form-row" style="display: none;">
@@ -1586,7 +1591,7 @@ const tickets = await getTickets('den_haag');
                         type="text"
                         id="iws-shop-code-input"
                         class="receipt-iws-input"
-                        placeholder="Lidnr. (bijv. 271 of WS-271)"
+                        placeholder="Bijv. NEW10 of IWS-lidnummer"
                         aria-label="IWS Lidnummer"
                       />
                       <button type="button" class="receipt-iws-apply-btn" id="iws-shop-apply-btn">Toepassen</button>
@@ -7024,6 +7029,22 @@ const tickets = await getTickets('den_haag');
     feedbackEl?: HTMLElement | null
   ): Promise<boolean> {
     const rawVal = rawInput.trim().toUpperCase();
+    if (rawVal === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00')) {
+      unlockedIwsCode = '';
+      sessionStorage.removeItem('wf_iws_code');
+      sessionStorage.setItem('wf_manual_promo', 'NEW10');
+      if (iwsToggleBtn) iwsToggleBtn.classList.add('is-active');
+      if (iwsToggleLabel) iwsToggleLabel.textContent = '✓ Kortingscode NEW10 (-10%) actief';
+      if (iwsToggleIcon) iwsToggleIcon.textContent = '✓';
+      if (feedbackEl) {
+        feedbackEl.style.display = 'block';
+        feedbackEl.style.color = '#006448';
+        feedbackEl.textContent = '✓ Kortingscode NEW10 (10% korting) toegepast!';
+      }
+      updateShop();
+      window.dispatchEvent(new CustomEvent('cart-updated'));
+      return true;
+    }
     if (!rawVal) {
       if (feedbackEl) {
         feedbackEl.style.display = 'block';
