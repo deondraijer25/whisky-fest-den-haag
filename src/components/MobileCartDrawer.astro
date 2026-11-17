@@ -702,13 +702,23 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
       }
       try {
         const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-        const base = isLocalDev ? 'http://localhost:4000' : 'https://whiskytix-r1qq.vercel.app';
-        const res = await fetch(`${base}/api/coupons/validate`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code, festivalId: 'denhaag' }),
-        });
-        const data = await res.json();
+        const bases = isLocalDev ? ['http://localhost:4000', 'https://whiskytix-r1qq.vercel.app'] : ['', 'https://whiskytix-r1qq.vercel.app'];
+        let res = null;
+        let data = null;
+        for (const base of bases) {
+          try {
+            const r = await fetch(`${base}/api/coupons/validate`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ code, festivalId: 'denhaag' }),
+            });
+            if (r.ok) {
+              res = r;
+              data = await r.json();
+              break;
+            }
+          } catch {}
+        }
         if (res.ok && data && data.valid) {
           if (data.type === 'percentage' || code === 'NEW10') {
             sessionStorage.removeItem('wf_iws_code');

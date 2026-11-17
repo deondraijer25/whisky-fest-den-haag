@@ -6026,7 +6026,7 @@ const tickets = await getTickets('den_haag');
       const isLocalDev = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
       const validateBases = isLocalDev
         ? ["http://localhost:4000", "https://whiskytix-r1qq.vercel.app"]
-        : ["https://whiskytix-r1qq.vercel.app"];
+        : ["", "https://whiskytix-r1qq.vercel.app"];
 
       let serverRejectionMsg = "";
       for (const base of validateBases) {
@@ -6340,7 +6340,7 @@ const tickets = await getTickets('den_haag');
         const isLocalDev = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
         const candidateBases = isLocalDev
           ? ["http://localhost:4000", "https://whiskytix-r1qq.vercel.app"]
-          : ["https://whiskytix-r1qq.vercel.app"];
+          : ["", "https://whiskytix-r1qq.vercel.app"];
 
         let response: Response | null = null;
         let usedBase = "https://whiskytix-r1qq.vercel.app";
@@ -7071,7 +7071,7 @@ const tickets = await getTickets('den_haag');
     const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     const validateBases = isLocalDev
       ? ['http://localhost:4000', 'https://whiskytix-r1qq.vercel.app']
-      : ['https://whiskytix-r1qq.vercel.app'];
+      : ['', 'https://whiskytix-r1qq.vercel.app'];
 
     for (const base of validateBases) {
       try {
@@ -7823,7 +7823,7 @@ const tickets = await getTickets('den_haag');
     const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     const candidateBases = isLocalDev
       ? ['http://localhost:4000', 'https://whiskytix-r1qq.vercel.app']
-      : ['https://whiskytix-r1qq.vercel.app'];
+      : ['', 'https://whiskytix-r1qq.vercel.app'];
     let verifiedOrder: any = null;
     let isPaid = false;
 
