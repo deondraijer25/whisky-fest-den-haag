@@ -19,13 +19,19 @@ const {
   type = "website" 
 } = Astro.props;
 
+const siteOrigin = Astro.site ? Astro.site.origin : "https://www.whiskyfestival.nl";
+const fullTitle = title.includes("International Whisky Festival")
+  ? title
+  : `${title} | International Whisky Festival Den Haag`;
+const ogImageUrl = image.startsWith("http") ? image : `${siteOrigin}${image.startsWith("/") ? "" : "/"}${image}`;
+
 // Dynamic JSON-LD Structured Data Schema for search engine rich results
 const eventSchema = {
   "@context": "https://schema.org",
   "@type": "Festival",
   "name": "International Whisky Festival Den Haag 2027",
-  "description": "Het bekendste en meest premium whisky festival van Nederland. Proef honderden whisky's, volg exclusieve masterclasses en geniet van de sfeer in de Grote Kerk Den Haag.",
-  "startDate": "2027-11-12T13:00:00+01:00",
+  "description": "Het bekendste en meest sfeervolle whiskyfestival van Nederland. Proef honderden whisky's, volg exclusieve masterclasses en geniet van de sfeer in de Grote Kerk Den Haag.",
+  "startDate": "2027-11-12T19:00:00+01:00",
   "endDate": "2027-11-14T17:00:00+01:00",
   "eventStatus": "https://schema.org/EventScheduled",
   "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
@@ -45,17 +51,17 @@ const eventSchema = {
   ],
   "offers": {
     "@type": "AggregateOffer",
-    "url": "https://www.whiskyfestival.nl/bestellen",
+    "url": "https://www.whiskyfestival.nl/#tickets",
     "priceCurrency": "EUR",
-    "lowPrice": "55.00",
-    "highPrice": "79.50",
-    "offerCount": "2",
+    "lowPrice": "37.50",
+    "highPrice": "67.50",
+    "offerCount": "6",
     "availability": "https://schema.org/InStock",
-    "validFrom": "2026-05-01"
+    "validFrom": "2026-11-16"
   },
   "organizer": {
     "@type": "Organization",
-    "name": "Highland Consultancy",
+    "name": "International Whisky Festival",
     "url": "https://www.whiskyfestival.nl",
     "email": "info@whiskyfestival.nl"
   }
@@ -65,12 +71,12 @@ const orgSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "International Whisky Festival",
-  "alternateName": "Whisky Fest",
+  "alternateName": "Whisky Festival Den Haag",
   "url": "https://www.whiskyfestival.nl",
-  "logo": "https://www.whiskyfestival.nl/favicon.svg",
+  "logo": "https://www.whiskyfestival.nl/android-chrome-512x512.png",
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "",
+    "telephone": "+3197006532822",
     "contactType": "customer service",
     "email": "info@whiskyfestival.nl",
     "availableLanguage": ["Dutch", "English"]
@@ -87,29 +93,43 @@ const orgSchema = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2027" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png?v=2027" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=2027" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=2027" />
+    <link rel="shortcut icon" href="/favicon.ico?v=2027" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2027" />
+    <link rel="manifest" href="/site.webmanifest?v=2027" />
+    <meta name="theme-color" content="#006448" />
     <meta name="generator" content={Astro.generator} />
     
     <!-- Primary Meta Tags -->
-    <title>{title} | International Whisky Festival</title>
-    <meta name="title" content={`${title} | International Whisky Festival`} />
+    <title>{fullTitle}</title>
+    <meta name="title" content={fullTitle} />
     <meta name="description" content={description} />
+    <meta name="keywords" content="International Whisky Festival, Whisky Festival Den Haag, Grote Kerk Den Haag, whisky proeverij, whisky masterclasses, Haagsche Whiskytram, whisky tickets 2027" />
+    <meta name="author" content="International Whisky Festival" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonicalUrl} />
 
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content={type} />
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:site_name" content="International Whisky Festival Den Haag" />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:title" content={`${title} | International Whisky Festival`} />
+    <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={image} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="International Whisky Festival Den Haag - Grote Kerk" />
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonicalUrl} />
-    <meta property="twitter:title" content={`${title} | International Whisky Festival`} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={image} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
 
     <!-- Preload self-hosted Bourbon display font -->
     <link rel="preload" href="/fonts/bourbon-rough-n4.woff2" as="font" type="font/woff2" crossorigin />

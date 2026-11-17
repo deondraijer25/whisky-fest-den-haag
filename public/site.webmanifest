@@ -1,0 +1,21 @@
+{
+  "name": "International Whisky Festival Den Haag",
+  "short_name": "Whisky Festival",
+  "description": "Bezoek het International Whisky Festival op 12, 13 en 14 november 2027 in de Grote Kerk Den Haag.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF7F2",
+  "theme_color": "#006448",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -125,7 +125,7 @@ export const BRAND: BrandConfig = {
     tramTitle: 'Haagsche Whiskytram',
     tramDesc: 'Rondrit door historisch Den Haag in een klassieke tram inclusief deskundig geleide proeverij van 4 topdrams.',
     floorplanTitle: 'Plattegrond Grote Kerk Den Haag',
-    metaTitle: 'International Whisky Festival Den Haag | 12-14 Nov 2027',
-    metaDescription: 'Bezoek het meest sfeervolle en toonaangevende whiskyfestival van Nederland in de Grote Kerk Den Haag. Bestel nu direct uw entreekaarten.'
+    metaTitle: 'International Whisky Festival Den Haag | 12, 13 & 14 November 2027',
+    metaDescription: "Bezoek de 26e editie van het International Whisky Festival op 12, 13 en 14 november 2027 in de Grote Kerk Den Haag. Proef honderden whisky's, volg exclusieve masterclasses, maak een rit in de Whiskytram en bestel direct uw officiële entreekaarten."
   }
 };
