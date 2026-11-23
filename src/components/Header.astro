@@ -10,7 +10,7 @@ const isAccount = pathname.startsWith("/account");
 
 <header class="main-header animate-fade-in">
   <div class="top-announcement-bar" id="top-announcement-bar" style="background-color: #082B1B; color: #FAF7F2;">
-    <span style="color:#CAAC8E; font-weight:800;">ONZE NIEUWE WEBSITE IS LIVE!</span> Om dat te vieren nu tijdelijk 10% korting met code <strong style="color:#CAAC8E; font-weight:800;">NEW10</strong>
+    <span style="color:#CAAC8E; font-weight:800;">WELKOM OP ONZE NIEUWE WEBSITE!</span> International Whisky Festival Den Haag — Bestel vandaag nog je tickets!
   </div>
   <div class="header-container">
     <!-- Overlapping Logo Image (links to Home) -->
@@ -1530,12 +1530,12 @@ const isAccount = pathname.startsWith("/account");
     const promoRaw = (sessionStorage.getItem('wf_manual_promo') || '').trim().toUpperCase();
     const iwsCode = (sessionStorage.getItem('wf_iws_code') || '').trim();
     const isNew10 = promoRaw === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00');
-    let discountAmt = 0;
-    if (iwsCode && subtotal > 0) {
-      discountAmt = Math.min(subtotal, 55.00);
-    } else if (isNew10 && subtotal > 0) {
-      discountAmt = Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100);
-    }
+    const iwsDiscountAmt = (iwsCode && subtotal > 0) ? Math.min(subtotal, 55.00) : 0;
+    const remainingAfterIws = Math.max(0, subtotal - iwsDiscountAmt);
+    const new10DiscountAmt = (isNew10 && remainingAfterIws > 0)
+      ? Math.min(remainingAfterIws, Math.round(remainingAfterIws * 0.10 * 100) / 100)
+      : 0;
+    const discountAmt = Math.min(subtotal, iwsDiscountAmt + new10DiscountAmt);
     const total = Math.max(0, subtotal - discountAmt) + serviceFee + shippingFee;
 
     if (cartBadge) {

@@ -214,10 +214,14 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
     function getCartDiscountAmt(subtotal) {
       if (subtotal <= 0) return 0;
       const iwsCode = (sessionStorage.getItem('wf_iws_code') || '').trim();
-      if (iwsCode) return Math.min(subtotal, 55.00);
+      const iwsDiscount = iwsCode ? Math.min(subtotal, 55.00) : 0;
+      const remainingAfterIws = Math.max(0, subtotal - iwsDiscount);
       const promoCode = (sessionStorage.getItem('wf_manual_promo') || '').trim().toUpperCase();
       const isNew10 = promoCode === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00');
-      return isNew10 ? Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100) : 0;
+      const new10Discount = (isNew10 && remainingAfterIws > 0)
+        ? Math.min(remainingAfterIws, Math.round(remainingAfterIws * 0.10 * 100) / 100)
+        : 0;
+      return Math.min(subtotal, iwsDiscount + new10Discount);
     }
 
     function updateStickyBar() {
@@ -447,9 +451,12 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
           sheetDiscountRow.classList.remove('is-hidden');
           sheetDiscountRow.style.display = 'flex';
           if (sheetDiscountLabel) {
-            sheetDiscountLabel.textContent = activeIws
+            const hasNew10 = activeManualPromo === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00');
+            sheetDiscountLabel.textContent = (activeIws && hasNew10)
+              ? `IWS (${activeIws}) + NEW10 (-10%):`
+              : activeIws
               ? `IWS Ledenkorting (${activeIws}):`
-              : 'Pre-sale korting (NEW10 - 10%):';
+              : 'Kortingscode (NEW10 - 10%):';
           }
           sheetCartDiscount.textContent = `- € ${discount.toFixed(2).replace('.', ',')}`;
         } else {
@@ -689,12 +696,14 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
         return;
       }
       if (code === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00')) {
-        sessionStorage.removeItem('wf_iws_code');
         sessionStorage.setItem('wf_manual_promo', 'NEW10');
+        const activeIws = (sessionStorage.getItem('wf_iws_code') || '').trim();
         if (sheetPromoMsg) {
           sheetPromoMsg.style.display = 'block';
           sheetPromoMsg.style.color = '#006448';
-          sheetPromoMsg.textContent = '✓ Kortingscode NEW10 (10% korting) toegepast!';
+          sheetPromoMsg.textContent = activeIws
+            ? `✓ NEW10 (10% over resterend bedrag) gecombineerd met IWS (${activeIws})!`
+            : '✓ Kortingscode NEW10 (10% korting) toegepast!';
         }
         renderSheetCart();
         window.dispatchEvent(new CustomEvent('cart-updated'));
@@ -721,16 +730,17 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
         }
         if (res.ok && data && data.valid) {
           if (data.type === 'percentage' || code === 'NEW10') {
-            sessionStorage.removeItem('wf_iws_code');
             sessionStorage.setItem('wf_manual_promo', code);
           } else {
-            sessionStorage.removeItem('wf_manual_promo');
             sessionStorage.setItem('wf_iws_code', data.code || code);
           }
           if (sheetPromoMsg) {
             sheetPromoMsg.style.display = 'block';
             sheetPromoMsg.style.color = '#006448';
-            sheetPromoMsg.textContent = data.message || '✓ Kortingscode toegepast!';
+            const hasBoth = Boolean(sessionStorage.getItem('wf_iws_code')) && sessionStorage.getItem('wf_manual_promo') === 'NEW10';
+            sheetPromoMsg.textContent = hasBoth
+              ? `✓ IWS (${sessionStorage.getItem('wf_iws_code')}) + NEW10 (10% over restant) gecombineerd!`
+              : (data.message || '✓ Kortingscode toegepast!');
           }
           renderSheetCart();
           window.dispatchEvent(new CustomEvent('cart-updated'));

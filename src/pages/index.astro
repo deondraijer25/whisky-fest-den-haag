@@ -5202,9 +5202,12 @@ const tickets = await getTickets('den_haag');
     const activeShipping = shippingActive ? 12.50 : 0;
     const activeFee = getActiveCartFee();
     const iwsDiscount = getIwsCartDiscount();
-    const isAutoNew10 = !iwsDiscount && (sessionStorage.getItem("wf_manual_promo") === "NEW10") && (new Date() <= new Date("2027-01-01T00:00:00+01:00"));
-    const autoPromoDiscount = isAutoNew10 ? Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100) : 0;
-    const totalCartDiscount = iwsDiscount > 0 ? iwsDiscount : autoPromoDiscount;
+    const remainingAfterIws = Math.max(0, subtotal - iwsDiscount);
+    const isAutoNew10 = (sessionStorage.getItem("wf_manual_promo") === "NEW10") && (new Date() <= new Date("2027-01-01T00:00:00+01:00"));
+    const autoPromoDiscount = (isAutoNew10 && remainingAfterIws > 0)
+      ? Math.min(remainingAfterIws, Math.round(remainingAfterIws * 0.10 * 100) / 100)
+      : 0;
+    const totalCartDiscount = Math.min(subtotal, iwsDiscount + autoPromoDiscount);
     const finalTotal = Math.max(0, subtotal - totalCartDiscount) + activeFee + activeShipping;
 
     if (cartItemsContainer) {
@@ -5258,16 +5261,20 @@ const tickets = await getTickets('den_haag');
     if (subtotalEl) subtotalEl.innerHTML = `&euro;${subtotal.toFixed(2)}`;
     if (receiptIwsDiscountRow && receiptIwsDiscountEl) {
       const labelSpan = receiptIwsDiscountRow.querySelector(".calc-label");
-      if (iwsDiscount > 0) {
+      if (iwsDiscount > 0 && autoPromoDiscount > 0) {
+        if (labelSpan) labelSpan.textContent = "IWS Ledenkorting + NEW10 (10%):";
+        receiptIwsDiscountRow.style.display = "flex";
+        receiptIwsDiscountEl.innerHTML = `- &euro;${totalCartDiscount.toFixed(2)}`;
+      } else if (iwsDiscount > 0) {
         if (labelSpan) labelSpan.textContent = "IWS Ledenkorting (1x gratis ticket):";
         receiptIwsDiscountRow.style.display = "flex";
         receiptIwsDiscountEl.innerHTML = `- &euro;${iwsDiscount.toFixed(2)}`;
       } else if (autoPromoDiscount > 0) {
-        if (labelSpan) labelSpan.textContent = "Pre-sale korting (NEW10 - 10%):";
+        if (labelSpan) labelSpan.textContent = "Kortingscode (NEW10 - 10%):";
         receiptIwsDiscountRow.style.display = "flex";
         receiptIwsDiscountEl.innerHTML = `- &euro;${autoPromoDiscount.toFixed(2)}`;
       } else if (isAutoNew10) {
-        if (labelSpan) labelSpan.textContent = "Pre-sale korting (NEW10 - 10% actief):";
+        if (labelSpan) labelSpan.textContent = "Kortingscode (NEW10 - 10% actief):";
         receiptIwsDiscountRow.style.display = "flex";
         receiptIwsDiscountEl.innerHTML = `- 10%`;
       } else {
@@ -5878,37 +5885,48 @@ const tickets = await getTickets('den_haag');
     const activeShipping = shippingActive ? 12.50 : 0;
     const activeFee = getActiveCartFee();
 
-    if (unlockedIwsCode && (!activePromoCode || activePromoCode.startsWith("WS-") || activePromoCode.startsWith("IWS"))) {
-      const iwsAmt = getIwsCartDiscount(true);
-      activePromoCode = unlockedIwsCode;
-      activePromoType = "fixed_amount";
-      activePromoValue = iwsAmt;
-      promoDiscount = Math.min(subtotal, iwsAmt);
-    } else if (!unlockedIwsCode && (activePromoCode.startsWith("WS-") || activePromoCode.startsWith("IWS"))) {
-      activePromoCode = "";
-      activePromoType = "";
-      activePromoValue = 0;
-      promoDiscount = 0;
-    } else if (activePromoType === "percentage" && activePromoValue > 0) {
-      promoDiscount = Math.min(subtotal, Math.round(subtotal * (activePromoValue / 100) * 100) / 100);
-    } else if (activePromoType === "fixed_amount" && activePromoValue > 0) {
-      promoDiscount = Math.min(subtotal, activePromoValue);
-    } else if (!activePromoCode && (sessionStorage.getItem("wf_manual_promo") === "NEW10") && (new Date() <= new Date("2027-01-01T00:00:00+01:00"))) {
+    const iwsDiscModal = unlockedIwsCode ? Math.min(subtotal, getIwsCartDiscount(true)) : 0;
+    const remainingAfterIwsModal = Math.max(0, subtotal - iwsDiscModal);
+
+    if (!activePromoCode && (sessionStorage.getItem("wf_manual_promo") === "NEW10") && (new Date() <= new Date("2027-01-01T00:00:00+01:00"))) {
       activePromoCode = "NEW10";
       activePromoType = "percentage";
       activePromoValue = 10;
-      promoDiscount = Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100);
       const pInput = document.getElementById("checkout-promo-code") as HTMLInputElement;
       const pMsg = document.getElementById("promo-status-msg");
       if (pInput && !pInput.value) pInput.value = "NEW10";
       if (pMsg) {
         pMsg.style.display = "block";
         pMsg.style.color = "var(--success-green)";
-        pMsg.textContent = "✓ Kortingscode NEW10 (10% korting) toegepast!";
+        pMsg.textContent = unlockedIwsCode
+          ? `✓ IWS (${unlockedIwsCode}) + NEW10 (10% over resterend bedrag) gecombineerd!`
+          : "✓ Kortingscode NEW10 (10% korting) toegepast!";
       }
-    } else if (!activePromoCode) {
-      promoDiscount = 0;
+    } else if (!unlockedIwsCode && (activePromoCode.startsWith("WS-") || activePromoCode.startsWith("IWS"))) {
+      activePromoCode = "";
+      activePromoType = "";
+      activePromoValue = 0;
     }
+
+    let extraPromoDisc = 0;
+    const isSeparatePromo = Boolean(
+      activePromoCode &&
+      activePromoCode !== unlockedIwsCode &&
+      !activePromoCode.startsWith("WS-") &&
+      !activePromoCode.startsWith("IWS")
+    );
+    if (isSeparatePromo && remainingAfterIwsModal > 0) {
+      if (activePromoType === "percentage" && activePromoValue > 0) {
+        extraPromoDisc = Math.min(
+          remainingAfterIwsModal,
+          Math.round(remainingAfterIwsModal * (activePromoValue / 100) * 100) / 100
+        );
+      } else if (activePromoType === "fixed_amount" && activePromoValue > 0) {
+        extraPromoDisc = Math.min(remainingAfterIwsModal, activePromoValue);
+      }
+    }
+
+    promoDiscount = Math.min(subtotal, iwsDiscModal + extraPromoDisc);
 
     const discountedSubtotal = Math.max(0, subtotal - promoDiscount);
     const finalTotal = discountedSubtotal + activeFee + activeShipping;
@@ -5973,11 +5991,17 @@ const tickets = await getTickets('den_haag');
         modalSummaryDiscountRow.style.display = "flex";
         const labelSpan = modalSummaryDiscountRow.querySelector("span:first-child");
         if (labelSpan) {
-          labelSpan.textContent = activePromoType === "percentage" && activePromoCode
-            ? `Korting (${activePromoCode} - ${activePromoValue}%):`
-            : activePromoCode
-            ? `Korting (${activePromoCode}):`
-            : "Korting:";
+          if (iwsDiscModal > 0 && extraPromoDisc > 0 && isSeparatePromo) {
+            labelSpan.textContent = `Korting (${unlockedIwsCode} + ${activePromoCode}):`;
+          } else if (iwsDiscModal > 0 && unlockedIwsCode) {
+            labelSpan.textContent = `Korting (${unlockedIwsCode}):`;
+          } else if (activePromoType === "percentage" && activePromoCode) {
+            labelSpan.textContent = `Korting (${activePromoCode} - ${activePromoValue}%):`;
+          } else if (activePromoCode) {
+            labelSpan.textContent = `Korting (${activePromoCode}):`;
+          } else {
+            labelSpan.textContent = "Korting:";
+          }
         }
         modalSummaryDiscount.innerHTML = `- &euro;${promoDiscount.toFixed(2)}`;
       } else {
@@ -6016,7 +6040,9 @@ const tickets = await getTickets('den_haag');
         sessionStorage.setItem("wf_manual_promo", "NEW10");
         promoMsg.style.display = "block";
         promoMsg.style.color = "var(--success-green)";
-        promoMsg.textContent = "✓ Kortingscode NEW10 (10% korting) toegepast!";
+        promoMsg.textContent = unlockedIwsCode
+          ? `✓ NEW10 (10% over resterend bedrag) gecombineerd met IWS (${unlockedIwsCode})!`
+          : "✓ Kortingscode NEW10 (10% korting) toegepast!";
         updateShop();
         recalcModalTotal();
         return;
@@ -6039,19 +6065,26 @@ const tickets = await getTickets('den_haag');
           if (res.ok) {
             const data = await res.json();
             if (data && data.valid) {
-              activePromoCode = data.code || code;
-              activePromoType = data.type === "percentage" ? "percentage" : "fixed_amount";
-              activePromoValue = Number(data.value) || 0;
               if (data.isIwsMember) {
-                unlockedIwsCode = activePromoCode;
-                unlockedIwsDiscountAmount = activePromoValue || 55.00;
+                unlockedIwsCode = data.code || code;
+                unlockedIwsDiscountAmount = Number(data.value) || 55.00;
                 sessionStorage.setItem("wf_iws_code", unlockedIwsCode);
                 if (iwsCodeInput) iwsCodeInput.value = unlockedIwsCode;
                 applyIwsUnlockToCards(data.message);
+              } else {
+                activePromoCode = data.code || code;
+                activePromoType = data.type === "percentage" ? "percentage" : "fixed_amount";
+                activePromoValue = Number(data.value) || 0;
+                if (activePromoCode === "NEW10") {
+                  sessionStorage.setItem("wf_manual_promo", "NEW10");
+                }
               }
               promoMsg.style.display = "block";
               promoMsg.style.color = "var(--success-green)";
-              promoMsg.textContent = data.message || `✓ Kortingscode ${activePromoCode} toegepast.`;
+              const hasStacked = Boolean(unlockedIwsCode) && Boolean(activePromoCode && activePromoCode !== unlockedIwsCode && !activePromoCode.startsWith("WS-"));
+              promoMsg.textContent = hasStacked
+                ? `✓ IWS (${unlockedIwsCode}) + ${activePromoCode} gecombineerd!`
+                : (data.message || `✓ Kortingscode ${data.code || code} toegepast.`);
               updateShop();
               recalcModalTotal();
               return;
@@ -6355,7 +6388,10 @@ const tickets = await getTickets('den_haag');
           items: itemsOrdered,
           shippingAddress: shippingAddress,
           ageVerification: ageVerification,
-          promoCode: activePromoCode,
+          iwsCode: unlockedIwsCode || "",
+          promoCode: (activePromoCode && activePromoCode !== unlockedIwsCode && !activePromoCode.startsWith("WS-") && !activePromoCode.startsWith("IWS"))
+            ? activePromoCode
+            : (unlockedIwsCode ? "" : activePromoCode),
           discountCents: Math.round(promoDiscount * 100),
           returnUrl: window.location.origin + window.location.pathname
         });
@@ -7044,16 +7080,20 @@ const tickets = await getTickets('den_haag');
   ): Promise<boolean> {
     const rawVal = rawInput.trim().toUpperCase();
     if (rawVal === 'NEW10' && new Date() <= new Date('2027-01-01T00:00:00+01:00')) {
-      unlockedIwsCode = '';
-      sessionStorage.removeItem('wf_iws_code');
       sessionStorage.setItem('wf_manual_promo', 'NEW10');
       if (iwsToggleBtn) iwsToggleBtn.classList.add('is-active');
-      if (iwsToggleLabel) iwsToggleLabel.textContent = '✓ Kortingscode NEW10 (-10%) actief';
+      if (iwsToggleLabel) {
+        iwsToggleLabel.textContent = unlockedIwsCode
+          ? `✓ IWS (${unlockedIwsCode}) + NEW10 (-10%) actief`
+          : '✓ Kortingscode NEW10 (-10%) actief';
+      }
       if (iwsToggleIcon) iwsToggleIcon.textContent = '✓';
       if (feedbackEl) {
         feedbackEl.style.display = 'block';
         feedbackEl.style.color = '#006448';
-        feedbackEl.textContent = '✓ Kortingscode NEW10 (10% korting) toegepast!';
+        feedbackEl.textContent = unlockedIwsCode
+          ? `✓ NEW10 (10% over resterend bedrag) gecombineerd met IWS (${unlockedIwsCode})!`
+          : '✓ Kortingscode NEW10 (10% korting) toegepast!';
       }
       updateShop();
       window.dispatchEvent(new CustomEvent('cart-updated'));
@@ -7198,10 +7238,18 @@ const tickets = await getTickets('den_haag');
 
   window.openCheckoutModal = openCheckoutModal;
   function openCheckoutModal() {
-    if (unlockedIwsCode && activePromoCode !== unlockedIwsCode) {
-      if (promoInput) promoInput.value = unlockedIwsCode;
-      if (applyPromoBtn && promoInput) {
-        applyPromoBtn.click();
+    const manualPromo = (sessionStorage.getItem("wf_manual_promo") || "").trim().toUpperCase();
+    if (manualPromo === "NEW10" && new Date() <= new Date("2027-01-01T00:00:00+01:00")) {
+      activePromoCode = "NEW10";
+      activePromoType = "percentage";
+      activePromoValue = 10;
+      if (promoInput) promoInput.value = "NEW10";
+    } else if (unlockedIwsCode && !activePromoCode) {
+      if (promoInput && !promoInput.value) promoInput.value = "";
+      if (promoMsg) {
+        promoMsg.style.display = "block";
+        promoMsg.style.color = "var(--success-green)";
+        promoMsg.textContent = `✓ IWS-ledenkorting (${unlockedIwsCode}) is actief. Heeft u ook een kortingscode? Vul deze hierboven in.`;
       }
     } else if (!activePromoCode) {
       promoDiscount = 0;
@@ -7281,9 +7329,12 @@ const tickets = await getTickets('den_haag');
     const activeShipping = shippingActive ? 12.50 : 0;
     const activeFee = getActiveCartFee();
     const iwsDisc = getIwsCartDiscount();
-    const isAutoNew10 = !iwsDisc && (sessionStorage.getItem("wf_manual_promo") === "NEW10") && (new Date() <= new Date("2027-01-01T00:00:00+01:00"));
-    const autoPromoDisc = isAutoNew10 ? Math.min(subtotal, Math.round(subtotal * 0.10 * 100) / 100) : 0;
-    const totalCartDisc = iwsDisc > 0 ? iwsDisc : autoPromoDisc;
+    const remainingAfterIwsUp = Math.max(0, subtotal - iwsDisc);
+    const isAutoNew10 = (sessionStorage.getItem("wf_manual_promo") === "NEW10") && (new Date() <= new Date("2027-01-01T00:00:00+01:00"));
+    const autoPromoDisc = (isAutoNew10 && remainingAfterIwsUp > 0)
+      ? Math.min(remainingAfterIwsUp, Math.round(remainingAfterIwsUp * 0.10 * 100) / 100)
+      : 0;
+    const totalCartDisc = Math.min(subtotal, iwsDisc + autoPromoDisc);
     const finalTotal = Math.max(0, subtotal - totalCartDisc) + activeFee + activeShipping;
     if (upsellModalProceed) {
       upsellModalProceed.innerHTML = `Naar Afrekenen (€ ${finalTotal.toFixed(2).replace('.', ',')}) &rarr;`;
