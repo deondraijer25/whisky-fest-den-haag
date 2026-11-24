@@ -1,0 +1,283 @@
+---
+// src/pages/enquete-bedankt.astro
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import logoFullColor from '../assets/Logo/Logo.svg';
+---
+
+<Layout
+  title="Bedankt voor je feedback! | International Whisky Festival Den Haag"
+  description="Bedankt voor het invullen van ons bezoekersonderzoek. Je doet automatisch mee met de verloting van de Lindores Abbey Festival Botteling 2027."
+>
+  <Header />
+
+  <main class="thanks-page">
+    <div class="thanks-container">
+      <div class="thanks-card">
+        <div class="thanks-logo-wrap">
+          <img
+            src={logoFullColor.src}
+            alt="International Whisky Festival Den Haag"
+            width="136"
+            height="136"
+            class="thanks-logo"
+          />
+        </div>
+
+        <div class="thanks-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          <span>INZENDING ONTVANGEN</span>
+        </div>
+
+        <h1 class="thanks-title">BEDANKT VOOR JE HULP!</h1>
+
+        <p class="thanks-lead">
+          Super dat je even de tijd nam om je ervaring met ons te delen.
+        </p>
+
+        <p class="thanks-body">
+          Jouw cijfers, opmerkingen en ideeën nemen we direct mee achter de schermen. Zo maken we het
+          <strong>International Whisky Festival 2027 in de Grote Kerk</strong> samen nog mooier,
+          gezelliger en verrassender, van het aanbod aan bijzondere drams tot de sfeer op de vloer.
+        </p>
+
+        <div class="thanks-raffle">
+          <div class="raffle-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 3h6" />
+              <path d="M10 3v5l-4 7a3 3 0 0 0 2.6 4.5h6.8A3 3 0 0 0 18 15l-4-7V3" />
+              <path d="M7.5 14h9" />
+            </svg>
+          </div>
+          <div class="raffle-copy">
+            <h2>Je doet automatisch mee voor 2027!</h2>
+            <p>
+              Onder alle deelnemers verloten we <strong>1x Lindores Abbey (Vat A)</strong> en
+              <strong>1x Lindores Abbey (Vat B)</strong>. De winnaars krijgen persoonlijk bericht via e-mail.
+            </p>
+          </div>
+        </div>
+
+        <p class="thanks-signoff">
+          Tot ziens bij de volgende editie in Den Haag. Slàinte mhath!
+        </p>
+
+        <div class="thanks-actions">
+          <a href="/" class="btn-primary-green">Terug naar de homepage</a>
+          <a href="/programma" class="btn-secondary-outline">Bekijk het programma</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .thanks-page {
+    background: #FAF7F2;
+    min-height: 100vh;
+    padding-top: 9.75rem;
+    padding-bottom: 5rem;
+    font-family: var(--font-sans, 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif);
+    color: #111111;
+  }
+
+  .thanks-container {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+  }
+
+  .thanks-card {
+    background: #FFFFFF;
+    border: 1px solid #E5DFD5;
+    border-top: 4px solid #006448;
+    border-radius: 16px;
+    padding: 2.75rem 2.5rem;
+    text-align: center;
+    box-shadow: 0 14px 36px rgba(17, 17, 17, 0.06);
+  }
+
+  .thanks-logo-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+  }
+
+  .thanks-logo {
+    width: 124px;
+    height: auto;
+    display: block;
+  }
+
+  .thanks-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: #006448;
+    background: rgba(0, 100, 72, 0.08);
+    border: 1px solid rgba(0, 100, 72, 0.2);
+    padding: 0.38rem 0.9rem;
+    border-radius: 999px;
+    margin-bottom: 1rem;
+  }
+
+  .thanks-title {
+    font-family: var(--font-display, 'bourbon-rough', sans-serif);
+    font-weight: 400;
+    font-synthesis: none;
+    font-size: clamp(2rem, 4.5vw, 2.9rem);
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+    color: #006448;
+    margin: 0 0 0.85rem 0;
+  }
+
+  .thanks-lead {
+    font-size: 1.08rem;
+    font-weight: 600;
+    color: #1A1A1A;
+    margin: 0 auto 0.85rem auto;
+    max-width: 520px;
+    line-height: 1.5;
+  }
+
+  .thanks-body {
+    font-size: 0.96rem;
+    line-height: 1.68;
+    color: #4A4A4A;
+    margin: 0 auto 1.75rem auto;
+    max-width: 540px;
+  }
+
+  .thanks-raffle {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-align: left;
+    background: #006448;
+    color: #FFFFFF;
+    border-radius: 12px;
+    padding: 1.15rem 1.35rem;
+    border-bottom: 3px solid #CAAC8E;
+    margin-bottom: 1.6rem;
+  }
+
+  .raffle-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: rgba(202, 172, 142, 0.16);
+    border: 1px solid rgba(202, 172, 142, 0.45);
+    color: #CAAC8E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .raffle-copy h2 {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0 0 0.25rem 0;
+  }
+
+  .raffle-copy p {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+  }
+
+  .raffle-copy strong {
+    color: #CAAC8E;
+    font-weight: 700;
+  }
+
+  .thanks-signoff {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #006448;
+    margin: 0 0 1.65rem 0;
+  }
+
+  .thanks-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .btn-primary-green {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #006448;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 0.94rem;
+    font-weight: 700;
+    padding: 0.85rem 1.5rem;
+    border-radius: 9px;
+    transition: background 0.15s ease;
+  }
+
+  .btn-primary-green:hover {
+    background: #004D37;
+  }
+
+  .btn-secondary-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    color: #006448;
+    border: 1.5px solid #006448;
+    text-decoration: none;
+    font-size: 0.94rem;
+    font-weight: 700;
+    padding: 0.85rem 1.5rem;
+    border-radius: 9px;
+    transition: background 0.15s ease;
+  }
+
+  .btn-secondary-outline:hover {
+    background: rgba(0, 100, 72, 0.06);
+  }
+
+  @media (max-width: 640px) {
+    .thanks-page {
+      padding-top: 8.25rem;
+      padding-bottom: 3.5rem;
+    }
+
+    .thanks-card {
+      padding: 2rem 1.25rem;
+    }
+
+    .thanks-raffle {
+      flex-direction: column;
+      text-align: center;
+      padding: 1.1rem 1rem;
+    }
+
+    .thanks-actions {
+      flex-direction: column;
+    }
+
+    .btn-primary-green,
+    .btn-secondary-outline {
+      width: 100%;
+    }
+  }
+</style>
