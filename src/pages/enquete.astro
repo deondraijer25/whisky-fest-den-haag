@@ -4,16 +4,8 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
-const MATRIX_ITEMS = [
-  { key: 'locatie_sfeer', label: 'Locatie & sfeer' },
-  { key: 'drukte_ingang', label: 'Doorloop bij de ingang' },
-  { key: 'drukte_kerk', label: 'Drukte in de kerk' },
-  { key: 'prijs_kwaliteit', label: 'Prijs-kwaliteit (tickets & drams)' },
-  { key: 'eten_drinken', label: 'Eten & drinken naast de whisky' },
-  { key: 'masterclasses', label: "Masterclasses & extra's" },
-  { key: 'organisatie_vooraf', label: 'Info vooraf' },
-  { key: 'organisatie_tijdens', label: 'Organisatie op de dag zelf' },
-];
+const SURVEY_ID = 'fpXncK5MNTF8AGcFTSp0';
+const SURVEY_BASE_URL = `https://link.leadfabriek.io/widget/survey/${SURVEY_ID}`;
 ---
 
 <Layout
@@ -51,526 +43,57 @@ const MATRIX_ITEMS = [
       </div>
     </section>
 
-    <!-- 2. MULTI-STEP ENQUETE WIZARD -->
+    <!-- 2. NATIVE GHL SURVEY EMBED -->
     <section class="enquete-wizard-section">
       <div class="enquete-container">
-        <div class="wizard-card" id="wizardCard">
-
-          <!-- VOORTGANGSBALK & STAPPENINDICATOR -->
-          <div class="wizard-progress" id="wizardProgress">
-            <div class="progress-header">
-              <span class="step-badge" id="stepBadge">STAP 1 VAN 5</span>
-              <span class="step-title-label" id="stepTitleLabel">Eerste indruk</span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-fill" id="progressFill" style="width: 20%;"></div>
-            </div>
-            <div class="step-dots" aria-hidden="true">
-              <button type="button" class="step-dot is-active" data-goto="1">1. Indruk</button>
-              <button type="button" class="step-dot" data-goto="2">2. Whisky &amp; sfeer</button>
-              <button type="button" class="step-dot" data-goto="3">3. Over jou</button>
-              <button type="button" class="step-dot" data-goto="4">4. Tips</button>
-              <button type="button" class="step-dot" data-goto="5">5. Win!</button>
-            </div>
-          </div>
-
-          <form id="enqueteForm" novalidate>
-
-            <!-- ==================== STAP 1: EERSTE INDRUK ==================== -->
-            <div class="wizard-step is-active" data-step="1" data-label="Eerste indruk">
-              <div class="step-intro">
-                <h2>Eerste indruk</h2>
-                <p>Kort en eerlijk: hoe beviel het?</p>
-              </div>
-
-              <div class="q-block">
-                <label class="q-label">1. Welk cijfer geef je het festival? <span class="req">*</span></label>
-                <div class="scale-grid scale-10" role="radiogroup" aria-label="Cijfer festival">
-                  {[1,2,3,4,5,6,7,8,9,10].map((n) => (
-                    <label class="scale-option">
-                      <input type="radio" name="algemeen_cijfer" value={String(n)} required />
-                      <span>{n}</span>
-                    </label>
-                  ))}
-                </div>
-                <div class="scale-legend">
-                  <span>1 = Tegenvaller</span>
-                  <span>10 = Topdag!</span>
-                </div>
-              </div>
-
-              <div class="q-block">
-                <label class="q-label">2. Zou je ons aanraden aan vrienden of collega's? <span class="req">*</span></label>
-                <div class="scale-grid scale-11" role="radiogroup" aria-label="Aanraden aan vrienden">
-                  {[0,1,2,3,4,5,6,7,8,9,10].map((n) => (
-                    <label class="scale-option">
-                      <input type="radio" name="nps_aanbevelen" value={String(n)} required />
-                      <span>{n}</span>
-                    </label>
-                  ))}
-                </div>
-                <div class="scale-legend">
-                  <span>0 = Nee</span>
-                  <span>10 = Zeker weten!</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- ==================== STAP 2: WHISKY & SFEER ==================== -->
-            <div class="wizard-step" data-step="2" data-label="Whisky & sfeer">
-              <div class="step-intro">
-                <h2>Whisky &amp; sfeer</h2>
-                <p>Hoe smaakte het in de Grote Kerk?</p>
-              </div>
-
-              <div class="q-block">
-                <label class="q-label">3. Hoe goed was het aanbod aan whisky's en stands? <span class="req">*</span></label>
-                <div class="scale-grid scale-10" role="radiogroup" aria-label="Tevredenheid aanbod">
-                  {[1,2,3,4,5,6,7,8,9,10].map((n) => (
-                    <label class="scale-option">
-                      <input type="radio" name="aanbod_cijfer" value={String(n)} required />
-                      <span>{n}</span>
-                    </label>
-                  ))}
-                </div>
-                <div class="scale-legend">
-                  <span>1 = Mager</span>
-                  <span>10 = Geweldig!</span>
-                </div>
-              </div>
-
-              <div class="q-block">
-                <label class="q-label">4. Geef elk onderdeel een score (1 t/m 5): <span class="req">*</span></label>
-                <p class="q-hint">1 = Kan veel beter &bull; 5 = Helemaal top!</p>
-                <div class="matrix-wrap">
-                  <table class="matrix-table">
-                    <thead>
-                      <tr>
-                        <th>Onderdeel</th>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>4</th>
-                        <th>5</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {MATRIX_ITEMS.map((item) => (
-                        <tr>
-                          <td class="matrix-item-label">{item.label}</td>
-                          {[1,2,3,4,5].map((score) => (
-                            <td>
-                              <label class="matrix-radio" title={`${item.label}: ${score} van 5`}>
-                                <input type="radio" name={`matrix_${item.key}`} value={String(score)} required />
-                                <span class="matrix-dot">{score}</span>
-                              </label>
-                            </td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div class="q-block">
-                <label class="q-label">5. Waarom kwam je vooral? <span class="req">*</span></label>
-                <div class="choice-grid cols-2">
-                  {[
-                    "Whisky's proeven & ontdekken",
-                    'Masterclasses & kennis',
-                    "Gezellig dagje met vrienden / collega's",
-                    'Specifieke merken of stands',
-                    'Anders',
-                  ].map((opt) => (
-                    <label class="choice-card">
-                      <input type="radio" name="belangrijkste_reden" value={opt} required />
-                      <span class="choice-indicator"></span>
-                      <span class="choice-text">{opt}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <!-- ==================== STAP 3: EVEN OVER JOU ==================== -->
-            <div class="wizard-step" data-step="3" data-label="Even over jou">
-              <div class="step-intro">
-                <h2>Even over jou</h2>
-                <p>4 snelle klikken!</p>
-              </div>
-
-              <div class="q-block">
-                <label class="q-label">6. Hoe vaak ben je al geweest? <span class="req">*</span></label>
-                <div class="choice-grid cols-3">
-                  {['Eerste keer', '2-3 keer', '4 keer of vaker'].map((opt) => (
-                    <label class="choice-card">
-                      <input type="radio" name="bezoekfrequentie" value={opt} required />
-                      <span class="choice-indicator"></span>
-                      <span class="choice-text">{opt}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div class="q-block">
-                <label class="q-label">7. Met wie was je er? <span class="req">*</span></label>
-                <div class="choice-grid cols-2">
-                  {['Alleen', 'Partner', 'Vrienden', "Collega's"].map((opt) => (
-                    <label class="choice-card">
-                      <input type="radio" name="gezelschap" value={opt} required />
-                      <span class="choice-indicator"></span>
-                      <span class="choice-text">{opt}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div class="q-block">
-                <label class="q-label">8. Wat is je leeftijd? <span class="req">*</span></label>
-                <div class="choice-grid cols-3">
-                  {['18-24', '25-34', '35-44', '45-54', '55-64', '65+'].map((opt) => (
-                    <label class="choice-card">
-                      <input type="radio" name="leeftijd" value={opt} required />
-                      <span class="choice-indicator"></span>
-                      <span class="choice-text">{opt}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div class="q-block">
-                <label class="q-label">9. Hoe kende je het festival? <span class="opt">(optioneel)</span></label>
-                <div class="choice-grid cols-3">
-                  {['Social media', 'Nieuwsbrief', 'Vrienden / familie', 'Advertentie', 'Eerder bezocht', 'Anders'].map((opt) => (
-                    <label class="choice-card">
-                      <input type="radio" name="hoe_gehoord" value={opt} />
-                      <span class="choice-indicator"></span>
-                      <span class="choice-text">{opt}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <!-- ==================== STAP 4: JOUW IDEEEN ==================== -->
-            <div class="wizard-step" data-step="4" data-label="Jouw ideeën">
-              <div class="step-intro">
-                <h2>Jouw idee&euml;n voor 2027</h2>
-                <p>Gooi je beste tips erin!</p>
-              </div>
-
-              <div class="q-block">
-                <label class="q-label" for="vriendMeenemen">10. Wat is er nodig om volgende keer een vriend(in) mee te nemen?</label>
-                <textarea
-                  id="vriendMeenemen"
-                  name="vriend_meenemen"
-                  rows="3"
-                  class="text-input"
-                  placeholder="Bijv. een duo-ticket, instapsessie voor beginners..."
-                ></textarea>
-              </div>
-
-              <div class="q-block">
-                <label class="q-label" for="whiskyRegios">11. Welke whisky's of regio's miste je nog? <span class="opt">(optioneel)</span></label>
-                <input
-                  type="text"
-                  id="whiskyRegios"
-                  name="whisky_regios_merken"
-                  class="text-input"
-                  placeholder="Bijv. Campbeltown, Japanse whisky's, indie bottelaars..."
-                />
-              </div>
-
-              <div class="q-block">
-                <label class="q-label" for="tipsOpmerkingen">12. Nog gouden tips voor 2027?</label>
-                <textarea
-                  id="tipsOpmerkingen"
-                  name="tips_opmerkingen"
-                  rows="3"
-                  class="text-input"
-                  placeholder="Complimenten of verbeterpunten, alles is welkom!"
-                ></textarea>
-              </div>
-            </div>
-
-            <!-- ==================== STAP 5: WIN EEN FLES ==================== -->
-            <div class="wizard-step" data-step="5" data-label="Win een fles!">
-              <div class="step-intro">
-                <h2>Win een Lindores Abbey 2027 fles!</h2>
-                <p>
-                  Laatste stap! We verloten <strong>1x Vat A</strong> en <strong>1x Vat B</strong> onder alle inzendingen.
-                </p>
-              </div>
-
-              <div class="q-block">
-                <label class="q-label">Welke fles wil je het liefst winnen?</label>
-                <div class="choice-grid cols-3">
-                  {[
-                    'Lindores Abbey (Vat A)',
-                    'Lindores Abbey (Vat B)',
-                    'Verras me!',
-                  ].map((opt, idx) => (
-                    <label class="choice-card">
-                      <input type="radio" name="voorkeur_botteling" value={opt} checked={idx === 0} />
-                      <span class="choice-indicator"></span>
-                      <span class="choice-text">{opt}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div class="form-row-2">
-                <div class="q-block">
-                  <label class="q-label" for="firstName">Voornaam <span class="req">*</span></label>
-                  <input type="text" id="firstName" name="first_name" class="text-input" placeholder="Je voornaam" required />
-                </div>
-                <div class="q-block">
-                  <label class="q-label" for="email">E-mailadres (voor de loting) <span class="req">*</span></label>
-                  <input type="email" id="email" name="email" class="text-input" placeholder="naam@voorbeeld.nl" required />
-                </div>
-              </div>
-
-              <div class="optin-box">
-                <label class="optin-label">
-                  <input type="checkbox" id="nieuwsbriefOptin" name="nieuwsbrief_optin" value="Ja" checked />
-                  <span class="optin-check" aria-hidden="true">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </span>
-                  <span class="optin-text">
-                    <strong>Ja, houd me op de hoogte van 2027</strong> (nieuwsbrief &amp; voorverkoop).
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            <!-- VALIDATIE MELDING -->
-            <div class="wizard-error" id="wizardError" role="alert" aria-live="polite"></div>
-
-            <!-- NAVIGATIE KNOPPEN -->
-            <div class="wizard-actions" id="wizardActions">
-              <button type="button" class="btn-prev" id="btnPrev" disabled>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
-                </svg>
-                Vorige
-              </button>
-
-              <button type="button" class="btn-next" id="btnNext">
-                Volgende
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
-                </svg>
-              </button>
-
-              <button type="submit" class="btn-submit" id="btnSubmit" style="display: none;">
-                Verstuur &amp; doe mee
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
-                </svg>
-              </button>
-            </div>
-          </form>
-
-          <!-- BEDANKSCHERM -->
-          <div class="thank-you-view" id="thankYouView" style="display: none;">
-            <div class="ty-icon" aria-hidden="true">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-            </div>
-            <span class="hero-kicker dark">INZENDING BINNEN</span>
-            <h2>Top, bedankt voor je hulp!</h2>
-            <p>
-              Je antwoorden zijn opgeslagen en je doet automatisch mee voor een van de twee
-              <strong>Lindores Abbey 2027 flessen (Vat A &amp; Vat B)</strong>.
-              De winnaars krijgen persoonlijk bericht per mail!
-            </p>
-            <div class="ty-actions">
-              <a href="/#sessies" class="btn-next" style="text-decoration: none;">
-                Bekijk Tickets voor 2027
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
-                </svg>
-              </a>
-              <a href="/" class="btn-prev" style="text-decoration: none;">Terug naar de homepagina</a>
-            </div>
-          </div>
-
+        <div class="wizard-card">
+          <iframe
+            src={SURVEY_BASE_URL}
+            style="border:none;width:100%;min-height:560px;"
+            scrolling="no"
+            id={SURVEY_ID}
+            title="IWF Den Haag Bezoekersonderzoek 2026"
+            loading="eager"
+          ></iframe>
         </div>
       </div>
     </section>
   </main>
 
   <Footer />
+  <script is:inline src="https://link.leadfabriek.io/js/form_embed.js"></script>
 </Layout>
 
-<script>
-  const TOTAL_STEPS = 5;
-  let currentStep = 1;
+<script is:inline define:vars={{ SURVEY_ID, SURVEY_BASE_URL }}>
+  (function () {
+    const params = new URLSearchParams(window.location.search);
+    const email = params.get('email');
+    const firstName = params.get('first_name') || params.get('name');
+    if (!email && !firstName) return;
 
-  // Optioneel: GHL Inbound Webhook URL of eigen API endpoint
-  const ENQUETE_ENDPOINT = '/api/enquete';
+    const iframe = document.getElementById(SURVEY_ID);
+    if (!iframe) return;
 
-  const form = document.getElementById('enqueteForm') as HTMLFormElement | null;
-  const steps = Array.from(document.querySelectorAll<HTMLElement>('.wizard-step'));
-  const dots = Array.from(document.querySelectorAll<HTMLButtonElement>('.step-dot'));
-  const stepBadge = document.getElementById('stepBadge');
-  const stepTitleLabel = document.getElementById('stepTitleLabel');
-  const progressFill = document.getElementById('progressFill');
-  const btnPrev = document.getElementById('btnPrev') as HTMLButtonElement | null;
-  const btnNext = document.getElementById('btnNext') as HTMLButtonElement | null;
-  const btnSubmit = document.getElementById('btnSubmit') as HTMLButtonElement | null;
-  const errorBox = document.getElementById('wizardError');
-  const wizardProgress = document.getElementById('wizardProgress');
-  const thankYouView = document.getElementById('thankYouView');
-
-  // Pre-fill naam & email vanuit GHL-maillink (?email={{contact.email}}&name={{contact.first_name}})
-  const params = new URLSearchParams(window.location.search);
-  const preEmail = params.get('email');
-  const preName = params.get('name') || params.get('first_name');
-  if (preEmail) {
-    const emailEl = document.getElementById('email') as HTMLInputElement | null;
-    if (emailEl && !preEmail.includes('{{')) emailEl.value = preEmail;
-  }
-  if (preName) {
-    const nameEl = document.getElementById('firstName') as HTMLInputElement | null;
-    if (nameEl && !preName.includes('{{')) nameEl.value = preName;
-  }
-
-  function showError(msg: string) {
-    if (!errorBox) return;
-    errorBox.textContent = msg;
-    errorBox.style.display = msg ? 'block' : 'none';
-  }
-
-  function validateStep(stepNum: number): boolean {
-    const stepEl = steps.find((s) => Number(s.dataset.step) === stepNum);
-    if (!stepEl) return true;
-
-    // Check required radio groups in this step
-    const requiredRadios = Array.from(stepEl.querySelectorAll<HTMLInputElement>('input[type="radio"][required]'));
-    const groupNames = [...new Set(requiredRadios.map((r) => r.name))];
-    for (const name of groupNames) {
-      const checked = stepEl.querySelector<HTMLInputElement>(`input[type="radio"][name="${name}"]:checked`);
-      if (!checked) {
-        showError('Vul alle verplichte vragen (*) in deze stap in voordat je verdergaat.');
-        return false;
-      }
-    }
-
-    // Check required text/email inputs
-    const requiredInputs = Array.from(stepEl.querySelectorAll<HTMLInputElement>('input[required]:not([type="radio"])'));
-    for (const inp of requiredInputs) {
-      if (!inp.value.trim() || !inp.checkValidity()) {
-        showError('Vul je voornaam en een geldig e-mailadres in voor de verloting.');
-        inp.focus();
-        return false;
-      }
-    }
-
-    showError('');
-    return true;
-  }
-
-  function renderStep(stepNum: number) {
-    currentStep = Math.max(1, Math.min(TOTAL_STEPS, stepNum));
-
-    steps.forEach((el) => {
-      el.classList.toggle('is-active', Number(el.dataset.step) === currentStep);
-    });
-
-    const activeEl = steps.find((s) => Number(s.dataset.step) === currentStep);
-    const label = activeEl?.dataset.label || '';
-
-    if (stepBadge) stepBadge.textContent = `STAP ${currentStep} VAN ${TOTAL_STEPS}`;
-    if (stepTitleLabel) stepTitleLabel.textContent = label;
-    if (progressFill) progressFill.style.width = `${(currentStep / TOTAL_STEPS) * 100}%`;
-
-    dots.forEach((d) => {
-      const n = Number(d.dataset.goto);
-      d.classList.toggle('is-active', n === currentStep);
-      d.classList.toggle('is-done', n < currentStep);
-    });
-
-    if (btnPrev) btnPrev.disabled = currentStep === 1;
-    if (btnNext) btnNext.style.display = currentStep < TOTAL_STEPS ? 'inline-flex' : 'none';
-    if (btnSubmit) btnSubmit.style.display = currentStep === TOTAL_STEPS ? 'inline-flex' : 'none';
-
-    showError('');
-  }
-
-  btnNext?.addEventListener('click', () => {
-    if (!validateStep(currentStep)) return;
-    renderStep(currentStep + 1);
-    document.getElementById('wizardCard')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-
-  btnPrev?.addEventListener('click', () => {
-    renderStep(currentStep - 1);
-    document.getElementById('wizardCard')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-
-  dots.forEach((d) => {
-    d.addEventListener('click', () => {
-      const target = Number(d.dataset.goto);
-      if (target < currentStep) {
-        renderStep(target);
-      } else if (target > currentStep && validateStep(currentStep)) {
-        renderStep(target);
-      }
-    });
-  });
-
-  form?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!validateStep(currentStep)) return;
-
-    const fd = new FormData(form);
-    const payload: Record<string, string> = {};
-    fd.forEach((v, k) => {
-      payload[k] = String(v);
-    });
-    if (!fd.has('nieuwsbrief_optin')) {
-      payload.nieuwsbrief_optin = 'Nee';
-    }
-    payload.submitted_at = new Date().toISOString();
-    payload.festival = 'Den Haag';
-
-    if (btnSubmit) {
-      btnSubmit.disabled = true;
-      btnSubmit.textContent = 'Bezig met versturen...';
-    }
-
-    try {
-      await fetch(ENQUETE_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      }).catch(() => null);
-    } finally {
-      if (form) form.style.display = 'none';
-      if (wizardProgress) wizardProgress.style.display = 'none';
-      if (thankYouView) thankYouView.style.display = 'block';
-      document.getElementById('wizardCard')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  });
-
-  renderStep(1);
+    const forward = new URLSearchParams();
+    if (email) forward.set('email', email);
+    if (firstName) forward.set('first_name', firstName);
+    iframe.setAttribute('src', `${SURVEY_BASE_URL}?${forward.toString()}`);
+  })();
 </script>
 
 <style>
   .enquete-page {
-    background-color: #FAF7F2;
+    background: #FAF7F2;
     min-height: 100vh;
-    padding-top: 9rem;
+    padding-top: 7.5rem;
     padding-bottom: 5rem;
+    font-family: var(--font-sans, 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif);
+    color: #111111;
   }
 
   .enquete-container {
-    max-width: 820px;
+    width: 100%;
+    max-width: 780px;
     margin: 0 auto;
     padding: 0 1.25rem;
   }
@@ -578,638 +101,125 @@ const MATRIX_ITEMS = [
   /* HERO */
   .enquete-hero {
     text-align: center;
-    padding: 1.5rem 0 2rem;
+    padding-bottom: 1.75rem;
   }
 
   .hero-kicker {
     display: inline-block;
-    padding: 0.35rem 0.95rem;
-    background-color: #D8E7E2;
-    border: 1px solid #C1D4CE;
-    border-radius: 99px;
     font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
-    color: #006448;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    margin-bottom: 0.9rem;
-  }
-
-  .hero-kicker.dark {
-    margin-bottom: 0.75rem;
+    color: #006448;
+    background: rgba(0, 100, 72, 0.08);
+    border: 1px solid rgba(0, 100, 72, 0.18);
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    margin-bottom: 0.95rem;
   }
 
   .hero-title {
     font-family: var(--font-display, 'bourbon-rough', sans-serif);
     font-weight: 400;
     font-synthesis: none;
-    font-size: clamp(2.1rem, 5vw, 3.2rem);
-    line-height: 1.08;
+    font-size: clamp(2.1rem, 4.6vw, 3.1rem);
+    line-height: 1.05;
+    letter-spacing: 0.04em;
     color: #006448;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    margin-bottom: 0.85rem;
+    margin: 0 0 0.75rem 0;
   }
 
   .hero-subtitle {
-    font-size: 0.98rem;
-    line-height: 1.55;
-    color: #4C5752;
-    max-width: 680px;
-    margin: 0 auto 1.5rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #444444;
+    max-width: 560px;
+    margin: 0 auto 1.5rem auto;
   }
 
-  /* WINACTIE KAART */
+  /* WINACTIE STRIP */
   .prize-card {
-    background: #006448;
-    border: 1.5px solid #004D37;
-    border-bottom: 3px solid #CAAC8E;
-    border-radius: 12px;
-    padding: 1.05rem 1.5rem;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     gap: 1rem;
     text-align: left;
-    color: #FAF7F2;
-    max-width: 640px;
-    width: 100%;
-    box-shadow: 0 8px 22px rgba(0, 100, 72, 0.12);
+    background: #006448;
+    color: #FFFFFF;
+    border-radius: 12px;
+    padding: 1rem 1.35rem;
+    border-bottom: 3px solid #CAAC8E;
+    box-shadow: 0 8px 24px rgba(0, 100, 72, 0.14);
   }
 
   .prize-icon {
     flex-shrink: 0;
     width: 44px;
     height: 44px;
-    border-radius: 9px;
-    background: rgba(202, 172, 142, 0.14);
-    border: 1.5px solid #CAAC8E;
+    border-radius: 10px;
+    background: rgba(202, 172, 142, 0.16);
+    border: 1px solid rgba(202, 172, 142, 0.45);
+    color: #CAAC8E;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #E4D5C4;
   }
 
   .prize-copy h2 {
     font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
     font-size: 1rem;
     font-weight: 700;
-    text-transform: none;
-    letter-spacing: 0;
     color: #FFFFFF;
-    margin-bottom: 0.15rem;
+    margin: 0 0 0.2rem 0;
     line-height: 1.3;
   }
 
   .prize-copy p {
     font-size: 0.88rem;
-    line-height: 1.4;
-    color: #D8E7E2;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.88);
     margin: 0;
   }
 
   .prize-copy strong {
-    color: #FFFFFF;
+    color: #CAAC8E;
+    font-weight: 700;
   }
 
   .no-break {
     white-space: nowrap;
   }
 
-  /* WIZARD CARD */
+  /* SURVEY CONTAINER CARD */
   .wizard-card {
-    background: #FCFAF7;
-    border: 2px solid #006448;
+    background: #FFFFFF;
+    border: 1px solid #E5DFD5;
+    border-top: 4px solid #006448;
     border-radius: 14px;
-    box-shadow: 4px 4px 0px #006448;
+    padding: 1.5rem 1.75rem;
+    box-shadow: 0 12px 32px rgba(17, 17, 17, 0.05);
     overflow: hidden;
   }
 
-  .wizard-progress {
-    background: #FAF7F2;
-    border-bottom: 1.5px solid #D8E7E2;
-    padding: 1.35rem 2rem 1.15rem;
-  }
-
-  .progress-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.65rem;
-  }
-
-  .step-badge {
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    color: #006448;
-    background: #D8E7E2;
-    padding: 0.25rem 0.7rem;
-    border-radius: 4px;
-  }
-
-  .step-title-label {
-    font-size: 0.88rem;
-    font-weight: 700;
-    color: #1D1C1A;
-  }
-
-  .progress-track {
-    height: 8px;
-    background: #D8E7E2;
-    border-radius: 99px;
-    overflow: hidden;
-    margin-bottom: 0.9rem;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: #006448;
-    border-radius: 99px;
-    transition: width 0.3s ease;
-  }
-
-  .step-dots {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 0.4rem;
-  }
-
-  .step-dot {
-    background: transparent;
-    border: 1px solid #C1D4CE;
-    border-radius: 6px;
-    padding: 0.4rem 0.3rem;
-    font-size: 0.74rem;
-    font-weight: 600;
-    color: #4C5752;
-    cursor: pointer;
-    transition: all 0.18s ease;
-    font-family: inherit;
-  }
-
-  .step-dot.is-active {
-    background: #006448;
-    border-color: #006448;
-    color: #FFFFFF;
-  }
-
-  .step-dot.is-done {
-    background: #D8E7E2;
-    border-color: #006448;
-    color: #004D37;
-  }
-
-  /* FORM STEPS */
-  form {
-    padding: 2rem;
-  }
-
-  .wizard-step {
-    display: none;
-  }
-
-  .wizard-step.is-active {
+  .wizard-card iframe {
     display: block;
-    animation: fadeInStep 0.22s ease;
-  }
-
-  @keyframes fadeInStep {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .step-intro {
-    margin-bottom: 1.75rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px dashed #C1D4CE;
-  }
-
-  .step-intro h2 {
-    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
-    font-weight: 700;
-    text-transform: none;
-    letter-spacing: -0.01em;
-    font-size: 1.35rem;
-    color: #006448;
-    margin-bottom: 0.25rem;
-  }
-
-  .step-intro p {
-    font-size: 0.92rem;
-    color: #4C5752;
-  }
-
-  .q-block {
-    margin-bottom: 1.75rem;
-  }
-
-  .q-label {
-    display: block;
-    font-size: 0.98rem;
-    font-weight: 700;
-    color: #1D1C1A;
-    margin-bottom: 0.7rem;
-    line-height: 1.4;
-  }
-
-  .q-hint {
-    font-size: 0.8rem;
-    color: #4C5752;
-    margin-top: -0.4rem;
-    margin-bottom: 0.8rem;
-  }
-
-  .req { color: #006448; }
-  .opt { font-weight: 500; color: #4C5752; font-size: 0.85rem; }
-
-  /* 1-10 / 0-10 SCALE */
-  .scale-grid {
-    display: grid;
-    gap: 0.4rem;
-  }
-  .scale-10 { grid-template-columns: repeat(10, 1fr); }
-  .scale-11 { grid-template-columns: repeat(11, 1fr); }
-
-  .scale-option {
-    position: relative;
-    cursor: pointer;
-  }
-  .scale-option input {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-  }
-  .scale-option span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 44px;
-    border: 1.5px solid #C1D4CE;
-    border-radius: 8px;
-    background: #FFFFFF;
-    font-size: 0.92rem;
-    font-weight: 700;
-    color: #1D1C1A;
-    transition: all 0.15s ease;
-  }
-  .scale-option:hover span {
-    border-color: #006448;
-    background: #D8E7E2;
-  }
-  .scale-option input:checked + span {
-    background: #006448;
-    border-color: #006448;
-    color: #FFFFFF;
-    box-shadow: 0 3px 8px rgba(0, 100, 72, 0.25);
-  }
-
-  .scale-legend {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    color: #4C5752;
-    margin-top: 0.45rem;
-  }
-
-  /* 1-5 MATRIX TABLE */
-  .matrix-wrap {
-    overflow-x: auto;
-    border: 1.5px solid #C1D4CE;
-    border-radius: 10px;
-    background: #FFFFFF;
-  }
-
-  .matrix-table {
     width: 100%;
-    border-collapse: collapse;
-    min-width: 480px;
+    border: none;
   }
 
-  .matrix-table th {
-    padding: 0.75rem 0.4rem;
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: #006448;
-    background: #FAF7F2;
-    border-bottom: 1.5px solid #D8E7E2;
-    text-align: center;
-  }
-  .matrix-table th:first-child {
-    text-align: left;
-    padding-left: 1rem;
-  }
-
-  .matrix-table td {
-    padding: 0.7rem 0.4rem;
-    border-bottom: 1px solid #EFE9DF;
-    text-align: center;
-  }
-  .matrix-table tr:last-child td { border-bottom: none; }
-  .matrix-item-label {
-    text-align: left !important;
-    padding-left: 1rem !important;
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: #1D1C1A;
-  }
-
-  .matrix-radio {
-    display: inline-flex;
-    cursor: pointer;
-    position: relative;
-  }
-  .matrix-radio input {
-    position: absolute;
-    opacity: 0;
-  }
-  .matrix-dot {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    border: 1.5px solid #C1D4CE;
-    background: #FAF7F2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: #4C5752;
-    transition: all 0.15s ease;
-  }
-  .matrix-radio:hover .matrix-dot {
-    border-color: #006448;
-    color: #006448;
-  }
-  .matrix-radio input:checked + .matrix-dot {
-    background: #006448;
-    border-color: #006448;
-    color: #FFFFFF;
-  }
-
-  /* CHOICE CARDS */
-  .choice-grid {
-    display: grid;
-    gap: 0.6rem;
-  }
-  .cols-2 { grid-template-columns: repeat(2, 1fr); }
-  .cols-3 { grid-template-columns: repeat(3, 1fr); }
-
-  .choice-card {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    padding: 0.8rem 1rem;
-    background: #FFFFFF;
-    border: 1.5px solid #C1D4CE;
-    border-radius: 9px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-  .choice-card input {
-    position: absolute;
-    opacity: 0;
-  }
-  .choice-indicator {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    border: 2px solid #8BA198;
-    flex-shrink: 0;
-    transition: all 0.15s ease;
-  }
-  .choice-text {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: #1D1C1A;
-    line-height: 1.3;
-  }
-  .choice-card:hover {
-    border-color: #006448;
-    background: #FAF7F2;
-  }
-  .choice-card:has(input:checked) {
-    border-color: #006448;
-    background: #D8E7E2;
-  }
-  .choice-card:has(input:checked) .choice-indicator {
-    border-color: #006448;
-    background: #006448;
-    box-shadow: inset 0 0 0 3px #D8E7E2;
-  }
-  .choice-card:has(input:checked) .choice-text {
-    color: #004D37;
-  }
-
-  /* TEXT INPUTS */
-  .text-input {
-    width: 100%;
-    padding: 0.85rem 1rem;
-    background: #FFFFFF;
-    border: 1.5px solid #C1D4CE;
-    border-radius: 9px;
-    font-family: inherit;
-    font-size: 0.92rem;
-    color: #1D1C1A;
-    transition: border-color 0.15s ease;
-  }
-  .text-input:focus {
-    outline: none;
-    border-color: #006448;
-    box-shadow: 0 0 0 3px rgba(0, 100, 72, 0.1);
-  }
-
-  .form-row-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-
-  /* OPT-IN BOX */
-  .optin-box {
-    background: #FAF7F2;
-    border: 1.5px solid #C1D4CE;
-    border-radius: 10px;
-    padding: 1rem 1.15rem;
-    margin-top: 0.5rem;
-  }
-  .optin-label {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    cursor: pointer;
-    position: relative;
-  }
-  .optin-label input {
-    position: absolute;
-    opacity: 0;
-  }
-  .optin-check {
-    width: 20px;
-    height: 20px;
-    border-radius: 5px;
-    border: 2px solid #006448;
-    background: #FFFFFF;
-    color: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-top: 2px;
-    transition: all 0.15s ease;
-  }
-  .optin-label input:checked + .optin-check {
-    background: #006448;
-    color: #FFFFFF;
-  }
-  .optin-text {
-    font-size: 0.88rem;
-    line-height: 1.45;
-    color: #1D1C1A;
-  }
-
-  /* ERROR */
-  .wizard-error {
-    display: none;
-    background: #FEF2F2;
-    border: 1.5px solid #DC2626;
-    color: #991B1B;
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    font-size: 0.88rem;
-    font-weight: 600;
-    margin-bottom: 1.25rem;
-  }
-
-  /* ACTIONS */
-  .wizard-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid #E4D5C4;
-  }
-
-  .btn-prev,
-  .btn-next,
-  .btn-submit {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.85rem 1.5rem;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 0.9rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.16s ease;
-  }
-
-  .btn-prev {
-    background: #FFFFFF;
-    border: 1.5px solid #C1D4CE;
-    color: #4C5752;
-  }
-  .btn-prev:hover:not(:disabled) {
-    border-color: #006448;
-    color: #006448;
-  }
-  .btn-prev:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-  }
-
-  .btn-next,
-  .btn-submit {
-    background: #006448;
-    border: 1.5px solid #006448;
-    border-bottom: 3px solid #004D37;
-    color: #FFFFFF;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-  .btn-next:hover,
-  .btn-submit:hover {
-    background: #004D37;
-  }
-
-  /* THANK YOU */
-  .thank-you-view {
-    padding: 3.2rem 2rem;
-    text-align: center;
-  }
-  .ty-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: #006448;
-    color: #FFFFFF;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.2rem;
-    border: 3px solid #CAAC8E;
-  }
-  .thank-you-view h2 {
-    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
-    font-weight: 700;
-    text-transform: none;
-    letter-spacing: -0.01em;
-    font-size: 1.65rem;
-    color: #006448;
-    margin-bottom: 0.75rem;
-  }
-  .thank-you-view p {
-    font-size: 0.98rem;
-    line-height: 1.6;
-    color: #4C5752;
-    max-width: 520px;
-    margin: 0 auto 1.8rem;
-  }
-  .ty-actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.85rem;
-  }
-
-  /* MOBILE */
-  @media (max-width: 768px) {
+  @media (max-width: 640px) {
     .enquete-page {
       padding-top: 7.5rem;
+      padding-bottom: 3.5rem;
     }
+
     .prize-card {
-      flex-direction: column;
-      text-align: center;
-      padding: 1.25rem;
+      padding: 0.9rem 1rem;
+      gap: 0.8rem;
     }
-    .wizard-progress,
-    form {
-      padding: 1.25rem;
-    }
-    .step-dots {
-      display: none;
-    }
-    .scale-10 {
-      grid-template-columns: repeat(5, 1fr);
-    }
-    .scale-11 {
-      grid-template-columns: repeat(6, 1fr);
-    }
-    .cols-2,
-    .cols-3,
-    .form-row-2 {
-      grid-template-columns: 1fr;
-    }
-    .wizard-actions {
-      flex-direction: column-reverse;
-    }
-    .btn-prev,
-    .btn-next,
-    .btn-submit {
-      width: 100%;
+
+    .wizard-card {
+      padding: 1rem 0.75rem;
+      border-radius: 12px;
     }
   }
 </style>
