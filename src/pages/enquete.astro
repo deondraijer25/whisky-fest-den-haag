@@ -60,31 +60,31 @@ const MATRIX_ITEMS = [
           <div class="wizard-progress" id="wizardProgress">
             <div class="progress-header">
               <span class="step-badge" id="stepBadge">STAP 1 VAN 5</span>
-              <span class="step-title-label" id="stepTitleLabel">Algemeen oordeel</span>
+              <span class="step-title-label" id="stepTitleLabel">Hoe was het festival?</span>
             </div>
             <div class="progress-track">
               <div class="progress-fill" id="progressFill" style="width: 20%;"></div>
             </div>
             <div class="step-dots" aria-hidden="true">
-              <button type="button" class="step-dot is-active" data-goto="1">1. Oordeel</button>
-              <button type="button" class="step-dot" data-goto="2">2. Aanbod</button>
+              <button type="button" class="step-dot is-active" data-goto="1">1. Indruk</button>
+              <button type="button" class="step-dot" data-goto="2">2. Whisky &amp; sfeer</button>
               <button type="button" class="step-dot" data-goto="3">3. Over jou</button>
-              <button type="button" class="step-dot" data-goto="4">4. Tips</button>
-              <button type="button" class="step-dot" data-goto="5">5. Verloting</button>
+              <button type="button" class="step-dot" data-goto="4">4. Idee&euml;n</button>
+              <button type="button" class="step-dot" data-goto="5">5. Win een fles</button>
             </div>
           </div>
 
           <form id="enqueteForm" novalidate>
 
-            <!-- ==================== STAP 1: ALGEMEEN OORDEEL ==================== -->
-            <div class="wizard-step is-active" data-step="1" data-label="Algemeen oordeel">
+            <!-- ==================== STAP 1: HOE WAS HET FESTIVAL ==================== -->
+            <div class="wizard-step is-active" data-step="1" data-label="Hoe was het festival?">
               <div class="step-intro">
-                <h2>Algemeen oordeel</h2>
-                <p>Hoe kijk je terug op jouw bezoek aan het International Whisky Festival?</p>
+                <h2>Hoe was het festival?</h2>
+                <p>Geef ons een cijfer &mdash; gewoon eerlijk, van glas tot sfeer.</p>
               </div>
 
               <div class="q-block">
-                <label class="q-label">1. Hoe waardeer je het festival als geheel? <span class="req">*</span></label>
+                <label class="q-label">1. Welk cijfer geef je het festival als geheel? <span class="req">*</span></label>
                 <div class="scale-grid scale-10" role="radiogroup" aria-label="Waardering festival als geheel">
                   {[1,2,3,4,5,6,7,8,9,10].map((n) => (
                     <label class="scale-option">
@@ -94,13 +94,13 @@ const MATRIX_ITEMS = [
                   ))}
                 </div>
                 <div class="scale-legend">
-                  <span>1 = Zeer slecht</span>
-                  <span>10 = Uitstekend</span>
+                  <span>1 = Niet best</span>
+                  <span>10 = Topdag!</span>
                 </div>
               </div>
 
               <div class="q-block">
-                <label class="q-label">2. Hoe waarschijnlijk is het dat je het International Whisky Festival aanbeveelt aan vrienden of collega's? <span class="req">*</span></label>
+                <label class="q-label">2. Zou je het International Whisky Festival aanraden aan vrienden of collega's? <span class="req">*</span></label>
                 <div class="scale-grid scale-11" role="radiogroup" aria-label="Waarschijnlijkheid aanbevelen">
                   {[0,1,2,3,4,5,6,7,8,9,10].map((n) => (
                     <label class="scale-option">
@@ -110,21 +110,21 @@ const MATRIX_ITEMS = [
                   ))}
                 </div>
                 <div class="scale-legend">
-                  <span>0 = Zeer onwaarschijnlijk</span>
-                  <span>10 = Zeer waarschijnlijk</span>
+                  <span>0 = Zeker niet</span>
+                  <span>10 = Absoluut!</span>
                 </div>
               </div>
             </div>
 
-            <!-- ==================== STAP 2: AANBOD & ERVARING ==================== -->
-            <div class="wizard-step" data-step="2" data-label="Aanbod & ervaring">
+            <!-- ==================== STAP 2: DE WHISKY'S & DE SFEER ==================== -->
+            <div class="wizard-step" data-step="2" data-label="De whisky's & de sfeer">
               <div class="step-intro">
-                <h2>Aanbod en ervaring</h2>
-                <p>Hoe bevielen de whisky's, de sfeer en de organisatie in de Grote Kerk?</p>
+                <h2>De whisky's &amp; de sfeer</h2>
+                <p>Hoe smaakte het aanbod en hoe was de sfeer in de Grote Kerk?</p>
               </div>
 
               <div class="q-block">
-                <label class="q-label">3. Hoe tevreden was je over het aanbod aan whisky's en exposanten? <span class="req">*</span></label>
+                <label class="q-label">3. Hoe tevreden was je over het aanbod aan whisky's en stands? <span class="req">*</span></label>
                 <div class="scale-grid scale-10" role="radiogroup" aria-label="Tevredenheid aanbod">
                   {[1,2,3,4,5,6,7,8,9,10].map((n) => (
                     <label class="scale-option">
@@ -194,10 +194,10 @@ const MATRIX_ITEMS = [
             </div>
 
             <!-- ==================== STAP 3: OVER JOU ==================== -->
-            <div class="wizard-step" data-step="3" data-label="Over jou">
+            <div class="wizard-step" data-step="3" data-label="Even over jou">
               <div class="step-intro">
-                <h2>Over jou</h2>
-                <p>Een paar korte vragen zodat we het festival nog beter kunnen afstemmen op onze bezoekers.</p>
+                <h2>Even over jou</h2>
+                <p>Zo weten we wie er bij ons over de vloer komt.</p>
               </div>
 
               <div class="q-block">
@@ -254,10 +254,10 @@ const MATRIX_ITEMS = [
             </div>
 
             <!-- ==================== STAP 4: OPEN VRAGEN ==================== -->
-            <div class="wizard-step" data-step="4" data-label="Jouw tips & wensen">
+            <div class="wizard-step" data-step="4" data-label="Jouw ideeën voor 2027">
               <div class="step-intro">
-                <h2>Jouw tips &amp; wensen</h2>
-                <p>Heb je idee&euml;n of wensen voor volgend jaar? We horen ze heel graag.</p>
+                <h2>Jouw idee&euml;n voor 2027</h2>
+                <p>Mis je een bepaalde whisky of heb je een goede tip? Gooi het erin!</p>
               </div>
 
               <div class="q-block">
@@ -295,12 +295,11 @@ const MATRIX_ITEMS = [
             </div>
 
             <!-- ==================== STAP 5: VERLOTING & OPT-IN ==================== -->
-            <div class="wizard-step" data-step="5" data-label="Verloting Lindores Abbey 2027">
+            <div class="wizard-step" data-step="5" data-label="Win een Lindores Abbey 2027 fles">
               <div class="step-intro">
-                <h2>Doe mee aan de verloting</h2>
+                <h2>Win een Lindores Abbey 2027 fles</h2>
                 <p>
-                  Vul je gegevens in en maak kans op een van de twee exclusieve flessen van de
-                  <strong>Festival Botteling 2027 (Lindores Abbey — Vat A of Vat B)</strong>.
+                  Laat je naam en e-mail achter &mdash; we verloten <strong>1x Vat A</strong> en <strong>1x Vat B</strong> onder iedereen die meedoet.
                 </p>
               </div>
 
