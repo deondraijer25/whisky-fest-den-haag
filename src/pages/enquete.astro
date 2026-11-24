@@ -18,7 +18,7 @@ const MATRIX_ITEMS = [
 
 <Layout
   title="Bezoekersonderzoek & Winactie 2027 | International Whisky Festival Den Haag"
-  description="Deel uw ervaring over het International Whisky Festival Den Haag en maak kans op een exclusieve fles Lindores Abbey Festival Botteling 2027 (Vat A of Vat B)."
+  description="Deel je ervaring over het International Whisky Festival Den Haag en maak kans op een exclusieve fles Lindores Abbey Festival Botteling 2027 (Vat A of Vat B)."
 >
   <Header />
 
@@ -27,9 +27,9 @@ const MATRIX_ITEMS = [
     <section class="enquete-hero">
       <div class="enquete-container">
         <div class="hero-kicker">BEZOEKERSONDERZOEK &bull; CA. 2 MINUTEN</div>
-        <h1 class="hero-title">UW MENING OVER HET FESTIVAL</h1>
+        <h1 class="hero-title">HOE VOND JE HET FESTIVAL?</h1>
         <p class="hero-subtitle">
-          Deel uw ervaring in 5 korte stappen en help ons de editie van 2027 nog mooier te maken.
+          Deel je ervaring in 5 korte stappen en help ons de editie van 2027 nog mooier te maken.
         </p>
 
         <!-- WINACTIE STRIP: 2X LINDORES ABBEY 2027 -->
@@ -80,7 +80,7 @@ const MATRIX_ITEMS = [
             <div class="wizard-step is-active" data-step="1" data-label="Algemeen oordeel">
               <div class="step-intro">
                 <h2>Algemeen oordeel</h2>
-                <p>Laten we beginnen met uw totaalindruk van het International Whisky Festival.</p>
+                <p>Hoe kijk je terug op jouw bezoek aan het International Whisky Festival?</p>
               </div>
 
               <div class="q-block">
@@ -120,7 +120,7 @@ const MATRIX_ITEMS = [
             <div class="wizard-step" data-step="2" data-label="Aanbod & ervaring">
               <div class="step-intro">
                 <h2>Aanbod en ervaring</h2>
-                <p>Hoe heeft u het aanbod, de sfeer en de organisatie in de Grote Kerk ervaren?</p>
+                <p>Hoe bevielen de whisky's, de sfeer en de organisatie in de Grote Kerk?</p>
               </div>
 
               <div class="q-block">
@@ -257,7 +257,7 @@ const MATRIX_ITEMS = [
             <div class="wizard-step" data-step="4" data-label="Jouw tips & wensen">
               <div class="step-intro">
                 <h2>Jouw tips &amp; wensen</h2>
-                <p>Deel gerust je ideeen — hier halen wij de meeste inspiratie uit voor de editie van 2027.</p>
+                <p>Heb je idee&euml;n of wensen voor volgend jaar? We horen ze heel graag.</p>
               </div>
 
               <div class="q-block">
@@ -324,7 +324,7 @@ const MATRIX_ITEMS = [
               <div class="form-row-2">
                 <div class="q-block">
                   <label class="q-label" for="firstName">Voornaam <span class="req">*</span></label>
-                  <input type="text" id="firstName" name="first_name" class="text-input" placeholder="Uw voornaam" required />
+                  <input type="text" id="firstName" name="first_name" class="text-input" placeholder="Je voornaam" required />
                 </div>
                 <div class="q-block">
                   <label class="q-label" for="email">E-mailadres (voor de verloting) <span class="req">*</span></label>
@@ -383,9 +383,9 @@ const MATRIX_ITEMS = [
               </svg>
             </div>
             <span class="hero-kicker dark">INZENDING ONTVANGEN</span>
-            <h2>Hartelijk dank voor uw feedback</h2>
+            <h2>Bedankt voor je feedback!</h2>
             <p>
-              Uw antwoorden zijn opgeslagen en u dingt automatisch mee naar een van de twee exclusieve flessen
+              Je antwoorden zijn opgeslagen en je dingt automatisch mee naar een van de twee exclusieve flessen
               <strong>Lindores Abbey Festival Botteling 2027 (Vat A &amp; Vat B)</strong>.
               De winnaars ontvangen persoonlijk bericht per e-mail.
             </p>
@@ -457,7 +457,7 @@ const MATRIX_ITEMS = [
     for (const name of groupNames) {
       const checked = stepEl.querySelector<HTMLInputElement>(`input[type="radio"][name="${name}"]:checked`);
       if (!checked) {
-        showError('Vul alle verplichte vragen (*) in deze stap in voordat u verdergaat.');
+        showError('Vul alle verplichte vragen (*) in deze stap in voordat je verdergaat.');
         return false;
       }
     }
@@ -466,7 +466,7 @@ const MATRIX_ITEMS = [
     const requiredInputs = Array.from(stepEl.querySelectorAll<HTMLInputElement>('input[required]:not([type="radio"])'));
     for (const inp of requiredInputs) {
       if (!inp.value.trim() || !inp.checkValidity()) {
-        showError('Vul een geldige voornaam en een geldig e-mailadres in voor de verloting.');
+        showError('Vul je voornaam en een geldig e-mailadres in voor de verloting.');
         inp.focus();
         return false;
       }
