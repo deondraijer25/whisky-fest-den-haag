@@ -26,28 +26,25 @@ const MATRIX_ITEMS = [
     <!-- 1. HERO LANDINGSSECTIE -->
     <section class="enquete-hero">
       <div class="enquete-container">
-        <div class="hero-kicker">BEZOEKERSONDERZOEK &bull; DUURT CA. 2 MINUTEN</div>
+        <div class="hero-kicker">BEZOEKERSONDERZOEK &bull; CA. 2 MINUTEN</div>
         <h1 class="hero-title">UW MENING OVER HET FESTIVAL</h1>
         <p class="hero-subtitle">
-          Help ons het International Whisky Festival in de Grote Kerk nog mooier te maken.
-          In 5 korte stappen deelt u uw ervaring &mdash; en maakt u direct kans op een exclusieve festivalbotteling.
+          Deel uw ervaring in 5 korte stappen en help ons de editie van 2027 nog mooier te maken.
         </p>
 
-        <!-- WINACTIE KAART: 2X LINDORES ABBEY 2027 -->
+        <!-- WINACTIE STRIP: 2X LINDORES ABBEY 2027 -->
         <div class="prize-card">
           <div class="prize-icon" aria-hidden="true">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M9 3h6" />
               <path d="M10 3v5l-4 7a3 3 0 0 0 2.6 4.5h6.8A3 3 0 0 0 18 15l-4-7V3" />
               <path d="M7.5 14h9" />
             </svg>
           </div>
           <div class="prize-copy">
-            <span class="prize-eyebrow">WINACTIE ONDER ALLE DEELNEMERS</span>
-            <h2>Maak kans op de Festival Botteling 2027 (Lindores Abbey)</h2>
+            <h2>Win de Festival Botteling 2027 &mdash; Lindores Abbey</h2>
             <p>
-              Wij verloten <strong>2 exclusieve flessen</strong> onder iedereen die de enquete invult:
-              <strong>1x Lindores Abbey (Vat A)</strong> en <strong>1x Lindores Abbey (Vat B)</strong>.
+              Wij verloten <strong class="no-break">1x Vat A</strong> en <strong class="no-break">1x Vat B</strong> onder alle deelnemers.
             </p>
           </div>
         </div>
@@ -616,34 +613,36 @@ const MATRIX_ITEMS = [
   }
 
   .hero-subtitle {
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 0.98rem;
+    line-height: 1.55;
     color: #4C5752;
-    max-width: 600px;
-    margin: 0 auto 1.75rem;
+    max-width: 680px;
+    margin: 0 auto 1.5rem;
   }
 
   /* WINACTIE KAART */
   .prize-card {
     background: #006448;
-    border: 2px solid #004D37;
-    border-bottom: 4px solid #CAAC8E;
-    border-radius: 14px;
-    padding: 1.35rem 1.6rem;
-    display: flex;
+    border: 1.5px solid #004D37;
+    border-bottom: 3px solid #CAAC8E;
+    border-radius: 12px;
+    padding: 1.05rem 1.5rem;
+    display: inline-flex;
     align-items: center;
-    gap: 1.2rem;
+    gap: 1rem;
     text-align: left;
     color: #FAF7F2;
-    box-shadow: 0 12px 30px rgba(0, 100, 72, 0.14);
+    max-width: 640px;
+    width: 100%;
+    box-shadow: 0 8px 22px rgba(0, 100, 72, 0.12);
   }
 
   .prize-icon {
     flex-shrink: 0;
-    width: 54px;
-    height: 54px;
-    border-radius: 10px;
-    background: rgba(202, 172, 142, 0.16);
+    width: 44px;
+    height: 44px;
+    border-radius: 9px;
+    background: rgba(202, 172, 142, 0.14);
     border: 1.5px solid #CAAC8E;
     display: flex;
     align-items: center;
@@ -651,34 +650,30 @@ const MATRIX_ITEMS = [
     color: #E4D5C4;
   }
 
-  .prize-eyebrow {
-    display: block;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    color: #E4D5C4;
-    text-transform: uppercase;
-    margin-bottom: 0.2rem;
-  }
-
   .prize-copy h2 {
     font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
-    font-size: 1.12rem;
+    font-size: 1rem;
     font-weight: 700;
     text-transform: none;
     letter-spacing: 0;
     color: #FFFFFF;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.15rem;
+    line-height: 1.3;
   }
 
   .prize-copy p {
-    font-size: 0.9rem;
-    line-height: 1.45;
+    font-size: 0.88rem;
+    line-height: 1.4;
     color: #D8E7E2;
+    margin: 0;
   }
 
   .prize-copy strong {
     color: #FFFFFF;
+  }
+
+  .no-break {
+    white-space: nowrap;
   }
 
   /* WIZARD CARD */
